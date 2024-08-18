@@ -1,0 +1,18 @@
+abstract class RoutePath {
+  static const String HOME_PAGE = "/";
+  static const String LOGIN_PAGE = '/login'; // 登录页
+  static const String REGISTER_PAGE = '/register'; // 注册页
+  static const String UPDATE_PASSWORD_PAGE = '/update_password'; // 修改密码页
+  static const String SETTING_PAGE = '/setting'; // 设置页
+  static const String MY_INFO_PAGE = "/my_info"; // 用户信息
+  static const String SEARCH_PAGE = "/search"; //
+  static const String WEBVIEW_PAGE = "/webview"; // WEB页面
+  static const String LANGUAGE_PAGE = "/language"; // 语言页面
+  static const String ACCOUNT_PAGE = "/account"; // 账号管理
+  static const String LINE_PAGE = "/line"; // 线路管理
+  static const String WINDOWS_PAGE = "/windows"; // 界面管理
+  static const String PRIVACY_PAGE = "/privacy"; // 隐私管理
+  static const String CHAT_PAGE = "/chat"; // 聊天页面
+  static const String SESSION_DETAIL_PAGE = "/session_detail"; // 聊天信息
+  static const String SELECT_CONTACTS_PAGE = "/select_contacts"; // 选择联系人
+}
