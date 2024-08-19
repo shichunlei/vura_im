@@ -1,0 +1,9 @@
+targets:
+  $default:
+    builders:
+      realm:
+        generate_for:
+          - lib/realm/**
+      json_serializable:
+        generate_for:
+          - lib/entities/**
