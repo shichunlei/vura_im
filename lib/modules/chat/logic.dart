@@ -22,10 +22,10 @@ class ChatLogic extends BaseListLogic<MessageEntity> {
 
     webSocketManager.setOnMessageCallback((int cmd, Map<String, dynamic> data) {
       Log.d("接收到消息: $cmd, 数据: $data");
-      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
+      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code && id == data["sendId"]) {
         list.insert(0, MessageEntity.fromJson(data));
       }
-      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
+      if (cmd == WebSocketCode.GROUP_MESSAGE.code && id == data["groupId"]) {
         list.insert(0, MessageEntity.fromJson(data));
       }
       list.refresh();

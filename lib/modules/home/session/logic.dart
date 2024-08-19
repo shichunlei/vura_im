@@ -13,6 +13,9 @@ import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/toast_util.dart';
 
 class SessionLogic extends BaseListLogic<SessionEntity> {
+  var loadingGroupMessages = false.obs;
+  var loadingPrivateMessages = false.obs;
+
   SessionLogic() {
     webSocketManager
       ..setOnConnectCallback(() {
@@ -23,7 +26,13 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
       })
       ..setOnMessageCallback((int cmd, Map<String, dynamic> data) {
         if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
-          if (data[Keys.TYPE] != MessageType.LOADING.code) {
+          if (data[Keys.TYPE] == MessageType.LOADING.code) {
+            if (data[Keys.CONTENT] == "true") loadingPrivateMessages.value = true;
+            if (data[Keys.CONTENT] == "false") {
+              loadingPrivateMessages.value = false;
+              refreshList();
+            }
+          } else {
             Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
             int? myUserId = Get.find<RootLogic>().user.value?.id;
@@ -32,16 +41,26 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
             if (data["recvId"] != myUserId) id = data["recvId"];
 
             SessionRealm(realm: Get.find<RootLogic>().realm)
-                .updateLastMessage(SessionEntity(id: id, name: "这个是单聊", type: "private"), MessageEntity.fromJson(data));
+                .updateLastMessage(SessionEntity(id: id, name: "这个是单聊", type: "private"), MessageEntity.fromJson(data))
+                .then((value) {
+              if (!loadingPrivateMessages.value) refreshList();
+            });
           }
-          if (data[Keys.TYPE] == MessageType.LOADING.code && data[Keys.CONTENT] == "false") refreshList();
         }
         if (cmd == WebSocketCode.GROUP_MESSAGE.code) {
-          if (data[Keys.TYPE] != MessageType.LOADING.code) {
+          if (data[Keys.TYPE] == MessageType.LOADING.code) {
+            if (data[Keys.CONTENT] == "true") loadingGroupMessages.value = true;
+            if (data[Keys.CONTENT] == "false") {
+              loadingGroupMessages.value = false;
+              refreshList();
+            }
+          } else {
             SessionRealm(realm: Get.find<RootLogic>().realm)
-                .updateLastMessage(SessionEntity(id: data["groupId"], type: "group"), MessageEntity.fromJson(data));
+                .updateLastMessage(SessionEntity(id: data["groupId"], type: "group"), MessageEntity.fromJson(data))
+                .then((value) {
+              if (!loadingGroupMessages.value) refreshList();
+            });
           }
-          if (data[Keys.TYPE] == MessageType.LOADING.code && data[Keys.CONTENT] == "false") refreshList();
         }
       });
   }

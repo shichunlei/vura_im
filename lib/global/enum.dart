@@ -71,7 +71,7 @@ enum MessageStatus {
 
 enum WebSocketCode {
   LOGIN(0, "连接成功"),
-  HEARTBEAT(1, "连接关闭"),
+  HEARTBEAT(1, "心跳"),
   LOGOFF(2, "异地登录，强制下线"),
   PRIVATE_MESSAGE(3, "私聊消息"),
   GROUP_MESSAGE(4, "群聊消息"),

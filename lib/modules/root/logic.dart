@@ -46,9 +46,6 @@ class RootLogic extends GetxController {
   bool get isLogin => StringUtil.isNotEmpty(SpUtil.getString(Keys.ACCESS_TOKEN));
 
   void getUserInfo() async {
-    if (isLogin && null == user.value) {
-      var user = await UserRepository.getUserInfo();
-      if (user != null) setUserInfo(user);
-    }
+    if (isLogin && null == user.value) user.value = await UserRepository.getUserInfo();
   }
 }
