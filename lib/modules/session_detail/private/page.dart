@@ -1,0 +1,149 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:im/utils/color_util.dart';
+import 'package:im/widgets/obx_widget.dart';
+import 'package:im/widgets/radius_inkwell_widget.dart';
+import 'package:im/widgets/round_image.dart';
+
+import 'logic.dart';
+
+class PrivateSessionDetailPage extends StatelessWidget {
+  final String? tag;
+
+  const PrivateSessionDetailPage({super.key, this.tag});
+
+  PrivateSessionDetailLogic get logic => Get.find<PrivateSessionDetailLogic>(tag: tag);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(title: const Text("聊天信息"), centerTitle: true),
+        body: BaseWidget(
+            logic: logic,
+            builder: (logic) {
+              return SingleChildScrollView(
+                child: Column(children: [
+                  Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
+                      margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
+                      padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+                      child: Row(children: [
+                        RoundImage("https://q2.itc.cn/q_70/images03/20240807/9efb7d3e616440c6ab1d7e1d9b9be14f.jpeg",
+                            width: 53.r,
+                            height: 53.r,
+                            radius: 5.r,
+                            onTap: () {},
+                            errorImage: "assets/images/default_face.webp",
+                            placeholderImage: "assets/images/default_face.webp"),
+                        SizedBox(width: 13.w),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                              Text("${logic.bean.value?.remarkNickName}",
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w600)),
+                              SizedBox(height: 13.r),
+                              Text("23423423424",
+                                  style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999))
+                            ]))
+                      ])),
+                  Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
+                      margin: EdgeInsets.symmetric(horizontal: 22.w),
+                      child: Column(children: [
+                        RadiusInkWellWidget(
+                            color: Colors.transparent,
+                            onPressed: () {},
+                            borderRadius:
+                                BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
+                            child: Container(
+                                height: 60.h,
+                                padding: EdgeInsets.only(left: 22.w, right: 22.w),
+                                child: Row(children: [
+                                  Text("昵称", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                  const Spacer(),
+                                  Text("${logic.bean.value?.showNickName}",
+                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
+                                ]))),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        RadiusInkWellWidget(
+                            color: Colors.transparent,
+                            onPressed: () {},
+                            radius: 0,
+                            child: Container(
+                                height: 60.h,
+                                padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                                child: Row(children: [
+                                  Text("设置备注",
+                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                  const Spacer(),
+                                  Text(logic.bean.value?.remarkNickName ?? "前往设置",
+                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                                  const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                                ]))),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        Container(
+                            height: 60.h,
+                            padding: EdgeInsets.only(left: 22.w, right: 15.w),
+                            child: Row(children: [
+                              Text("置顶聊天", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              const Spacer(),
+                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                            ])),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        Container(
+                            height: 60.h,
+                            padding: EdgeInsets.only(left: 22.w, right: 15.w),
+                            child: Row(children: [
+                              Text("免打扰", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              const Spacer(),
+                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                            ])),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        Container(
+                            height: 60.h,
+                            padding: EdgeInsets.only(left: 22.w, right: 15.w),
+                            child: Row(children: [
+                              Text("加入黑名单", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              const Spacer(),
+                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                            ]))
+                      ])),
+                  Container(
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
+                      margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
+                      child: Column(children: [
+                        RadiusInkWellWidget(
+                            color: Colors.transparent,
+                            onPressed: () {},
+                            borderRadius:
+                                BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
+                            child: Container(
+                                height: 60.h,
+                                padding: EdgeInsets.only(left: 22.w),
+                                alignment: Alignment.centerLeft,
+                                child: Text("删除好友",
+                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        RadiusInkWellWidget(
+                            color: Colors.transparent,
+                            onPressed: () {},
+                            borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(11.r), bottomLeft: Radius.circular(11.r)),
+                            child: Container(
+                                height: 60.h,
+                                padding: EdgeInsets.only(left: 22.w),
+                                alignment: Alignment.centerLeft,
+                                child: Text("清空聊天记录",
+                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
+                      ]))
+                ]),
+              );
+            }));
+  }
+}

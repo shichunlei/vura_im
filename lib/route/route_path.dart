@@ -1,5 +1,5 @@
 abstract class RoutePath {
-  static const String HOME_PAGE = "/";
+  static const String HOME_PAGE = "/home";
   static const String LOGIN_PAGE = '/login'; // 登录页
   static const String REGISTER_PAGE = '/register'; // 注册页
   static const String UPDATE_PASSWORD_PAGE = '/update_password'; // 修改密码页
@@ -13,6 +13,10 @@ abstract class RoutePath {
   static const String WINDOWS_PAGE = "/windows"; // 界面管理
   static const String PRIVACY_PAGE = "/privacy"; // 隐私管理
   static const String CHAT_PAGE = "/chat"; // 聊天页面
-  static const String SESSION_DETAIL_PAGE = "/session_detail"; // 聊天信息
+  static const String PRIVATE_SESSION_DETAIL_PAGE = "/private_session_detail"; // 聊天信息
+  static const String GROUP_SESSION_DETAIL_PAGE = "/group_session_detail"; // 聊天信息
   static const String SELECT_CONTACTS_PAGE = "/select_contacts"; // 选择联系人
+  static const String SESSION_MEMBER_PAGE = "/session_member"; // 群成员
+  static const String SESSION_MEMBERS_PAGE = "/session_members"; // 群成员管理
+  static const String SESSION_MANAGER_PAGE = "/session_manager"; // 群管理
 }

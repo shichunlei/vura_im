@@ -6,7 +6,7 @@ import 'package:im/utils/string_util.dart';
 import 'package:im/utils/toast_util.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import 'log_utils.dart';
 
@@ -119,34 +119,34 @@ Future<String?> _cropImage(String imagePath) async {
   return croppedFile?.path;
 }
 
-// Future<List<AssetEntity>> pickerImages(BuildContext context,
-//     {int maxImages = 9, List<AssetEntity> resultList = const []}) async {
-//   List<AssetEntity> _resultList = [];
-//
-//   List<AssetEntity> _initResultList = [];
-//   _initResultList.addAll(resultList);
-//
-//   try {
-//     await AssetPicker.pickAssets(context,
-//             pickerConfig: AssetPickerConfig(
-//                 themeColor: Get.theme.primaryColor,
-//                 maxAssets: maxImages,
-//                 selectedAssets: resultList,
-//                 requestType: RequestType.image))
-//         .then((value) {
-//       if (value != null) {
-//         _resultList = value;
-//       } else {
-//         _resultList = _initResultList;
-//       }
-//     });
-//   } on Exception catch (e) {
-//     Log.e(e.toString());
-//     _resultList = _initResultList;
-//   }
-//
-//   return _resultList;
-// }
+Future<List<AssetEntity>> pickerImages(BuildContext context,
+    {int maxImages = 9, List<AssetEntity> resultList = const []}) async {
+  List<AssetEntity> _resultList = [];
+
+  List<AssetEntity> _initResultList = [];
+  _initResultList.addAll(resultList);
+
+  try {
+    await AssetPicker.pickAssets(context,
+            pickerConfig: AssetPickerConfig(
+                themeColor: Get.theme.primaryColor,
+                maxAssets: maxImages,
+                selectedAssets: resultList,
+                requestType: RequestType.image))
+        .then((value) {
+      if (value != null) {
+        _resultList = value;
+      } else {
+        _resultList = _initResultList;
+      }
+    });
+  } on Exception catch (e) {
+    Log.e(e.toString());
+    _resultList = _initResultList;
+  }
+
+  return _resultList;
+}
 
 TextInputFormatter phoneInputFormatter() {
   return TextInputFormatter.withFunction((oldValue, newValue) {

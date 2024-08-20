@@ -7,20 +7,18 @@ import 'package:im/entities/user_entity.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/repository/session_repository.dart';
 
-class SessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
+class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   int? id;
-  late bool isGroup;
 
-  SessionDetailLogic() {
+  GroupSessionDetailLogic() {
     id = Get.arguments[Keys.ID];
-    isGroup = Get.arguments?["isGroup"] ?? true;
   }
 
   @override
   void onInit() {
     initData();
     super.onInit();
-    if (isGroup) getMembers();
+    getMembers();
   }
 
   @override
@@ -31,7 +29,7 @@ class SessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   /// 踢人
   Future deleteMembers() async {
     showLoading();
-    BaseBean result = await SessionRepository.kickMemberFromSession(id,0);
+    BaseBean result = await SessionRepository.kickMemberFromSession(id, 0);
     hiddenLoading();
   }
 

@@ -32,7 +32,12 @@ class ChatPage extends StatelessWidget {
           CustomIconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                Get.toNamed(RoutePath.SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
+                if (logic.type == "private") {
+                  Get.toNamed(RoutePath.PRIVATE_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
+                }
+                if (logic.type == "group") {
+                  Get.toNamed(RoutePath.GROUP_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
+                }
               })
         ]),
         body: BaseWidget(

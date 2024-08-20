@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/route/app_pages.dart';
+import 'package:im/utils/color_util.dart';
 import 'package:im/utils/device_utils.dart';
 import 'package:im/utils/log_utils.dart';
 
@@ -76,9 +77,15 @@ class MyApp extends StatelessWidget {
                   theme: ThemeData(
                       primaryColor: const Color(0xff83C240),
                       brightness: Brightness.light,
+                      colorScheme: ColorScheme.fromSeed(
+                          seedColor: const Color(0xff83C240),
+                          brightness: Brightness.light,
+                          surfaceTint: Colors.transparent),
                       scaffoldBackgroundColor: const Color(0xfffafafa),
-                      dividerColor: const Color(0xfff5f5f5),
-                      dividerTheme: const DividerThemeData(color: Color(0xfff5f5f5)),
+                      dividerColor: ColorUtil.lineColor,
+                      dividerTheme: const DividerThemeData(color: ColorUtil.lineColor),
+                      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                          backgroundColor: Colors.white, selectedItemColor: Color(0xff83C240)),
                       appBarTheme: AppBarTheme(
                           systemOverlayStyle: SystemUiOverlayStyle.dark,
                           elevation: 0,

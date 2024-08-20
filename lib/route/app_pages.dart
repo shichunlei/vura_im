@@ -20,8 +20,16 @@ import 'package:im/modules/register/binding.dart';
 import 'package:im/modules/register/page.dart';
 import 'package:im/modules/select_contacts/binding.dart';
 import 'package:im/modules/select_contacts/page.dart';
-import 'package:im/modules/session_detail/binding.dart';
-import 'package:im/modules/session_detail/page.dart';
+import 'package:im/modules/session_detail/group/binding.dart';
+import 'package:im/modules/session_detail/group/page.dart';
+import 'package:im/modules/session_detail/private/binding.dart';
+import 'package:im/modules/session_detail/private/page.dart';
+import 'package:im/modules/session_manager/binding.dart';
+import 'package:im/modules/session_manager/page.dart';
+import 'package:im/modules/session_member/binding.dart';
+import 'package:im/modules/session_member/page.dart';
+import 'package:im/modules/session_members/binding.dart';
+import 'package:im/modules/session_members/page.dart';
 import 'package:im/modules/setting/binding.dart';
 import 'package:im/modules/setting/page.dart';
 import 'package:im/modules/windows/binding.dart';
@@ -45,9 +53,25 @@ abstract class AppPages {
     GetPage(
         name: RoutePath.SELECT_CONTACTS_PAGE, page: () => const SelectContactsPage(), binding: SelectContactsBinding()),
     GetPage(
-        name: RoutePath.SESSION_DETAIL_PAGE,
-        page: () => SessionDetailPage(tag: "${Get.arguments[Keys.ID]}"),
-        binding: SessionDetailBinding()),
+        name: RoutePath.GROUP_SESSION_DETAIL_PAGE,
+        page: () => GroupSessionDetailPage(tag: "${Get.arguments[Keys.ID]}"),
+        binding: GroupSessionDetailBinding()),
+    GetPage(
+        name: RoutePath.PRIVATE_SESSION_DETAIL_PAGE,
+        page: () => PrivateSessionDetailPage(tag: "${Get.arguments[Keys.ID]}"),
+        binding: PrivateSessionDetailBinding()),
     GetPage(name: RoutePath.CHAT_PAGE, page: () => ChatPage(tag: "${Get.arguments[Keys.ID]}"), binding: ChatBinding()),
+    GetPage(
+        name: RoutePath.SESSION_MEMBER_PAGE,
+        page: () => SessionMemberPage(tag: "${Get.arguments[Keys.ID]}"),
+        binding: SessionMemberBinding()),
+    GetPage(
+        name: RoutePath.SESSION_MEMBERS_PAGE,
+        page: () => SessionMembersPage(tag: "${Get.arguments[Keys.ID]}"),
+        binding: SessionMembersBinding()),
+    GetPage(
+        name: RoutePath.SESSION_MANAGER_PAGE,
+        page: () => SessionManagerPage(tag: "${Get.arguments[Keys.ID]}"),
+        binding: SessionManagerBinding()),
   ];
 }

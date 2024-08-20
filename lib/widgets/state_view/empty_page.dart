@@ -25,7 +25,7 @@ class EmptyPage extends StatelessWidget {
                         Container(
                             constraints: BoxConstraints(maxWidth: 200.w, maxHeight: 200.w),
                             margin: EdgeInsets.only(bottom: 15.w),
-                            child: iconWidget ?? Image.asset("assets/images/empty.png")),
+                            child: iconWidget ?? Image.asset("assets/images/empty.webp")),
                         Text(text ?? "暂无数据", style: TextStyle(color: ColorUtil.color_999999, fontSize: 16.sp))
                       ]))));
         }));
