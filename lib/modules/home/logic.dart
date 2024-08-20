@@ -4,11 +4,8 @@ import 'package:im/entities/user_entity.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/repository/user_repository.dart';
 import 'package:im/utils/toast_util.dart';
-import 'package:im/utils/websocket.dart';
+import 'package:im/application.dart';
 import 'package:im/widgets/frame_stack.dart';
-
-// 全局 WebSocket 实例
-final WebSocketManager webSocketManager = WebSocketManager();
 
 class HomeLogic extends BaseLogic {
   var selectedIndex = 0.obs;

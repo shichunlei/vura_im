@@ -32,10 +32,10 @@ class ChatPage extends StatelessWidget {
           CustomIconButton(
               icon: const Icon(Icons.more_vert),
               onPressed: () {
-                if (logic.type == "private") {
+                if (logic.type == SessionType.private) {
                   Get.toNamed(RoutePath.PRIVATE_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
                 }
-                if (logic.type == "group") {
+                if (logic.type == SessionType.group) {
                   Get.toNamed(RoutePath.GROUP_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
                 }
               })
@@ -90,7 +90,6 @@ class ChatPage extends StatelessWidget {
                                           logic.sendMessage();
                                         },
                                         decoration: InputDecoration(
-                                            isCollapsed: true,
                                             border: InputBorder.none,
                                             contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
                                             hintText: "请输入您想说的话",

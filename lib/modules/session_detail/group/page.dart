@@ -67,7 +67,9 @@ class GroupSessionDetailPage extends StatelessWidget {
                                   Text("移除", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                 ]);
                               }
-                              if (index == logic.members.length + 1) {
+                              if (index ==
+                                  logic.members.length +
+                                      (logic.bean.value?.ownerId == Get.find<RootLogic>().user.value?.id ? 1 : 0)) {
                                 return Column(mainAxisSize: MainAxisSize.min, children: [
                                   AspectRatio(
                                       aspectRatio: 1,
@@ -184,6 +186,26 @@ class GroupSessionDetailPage extends StatelessWidget {
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ]))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        RadiusInkWellWidget(
+                            color: Colors.transparent,
+                            onPressed: () {},
+                            radius: 0,
+                            child: Container(
+                                height: 60.h,
+                                padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                                child: Row(children: [
+                                  Text("群公告",
+                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                  const Spacer(),
+                                  const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                                ]))),
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            padding: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
+                            child: Text(
+                                StringUtil.isEmpty(logic.bean.value?.notice) ? "未设置群公告" : "${logic.bean.value?.notice}",
+                                style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 14.sp))),
+                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         Container(
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),
@@ -204,7 +226,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                       ])),
                   Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
-                      margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
+                      margin: EdgeInsets.symmetric(horizontal: 22.w),
                       child: Column(children: [
                         RadiusInkWellWidget(
                             color: Colors.transparent,

@@ -1,16 +1,16 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'session.dart';
+part of 'channel.dart';
 
 // **************************************************************************
 // RealmObjectGenerator
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
+class Channel extends _Channel with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  Session(
+  Channel(
     String _id, {
     int? userId,
     String type = "group",
@@ -31,7 +31,7 @@ class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
     bool moveTop = false,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<Session>({
+      _defaultsSet = RealmObjectBase.setDefaults<Channel>({
         'type': "group",
         'deleted': false,
         'quit': false,
@@ -59,7 +59,7 @@ class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
     RealmObjectBase.set(this, 'moveTop', moveTop);
   }
 
-  Session._();
+  Channel._();
 
   @override
   String get _id => RealmObjectBase.get<String>(this, '_id') as String;
@@ -167,15 +167,15 @@ class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
   set moveTop(bool value) => RealmObjectBase.set(this, 'moveTop', value);
 
   @override
-  Stream<RealmObjectChanges<Session>> get changes =>
-      RealmObjectBase.getChanges<Session>(this);
+  Stream<RealmObjectChanges<Channel>> get changes =>
+      RealmObjectBase.getChanges<Channel>(this);
 
   @override
-  Stream<RealmObjectChanges<Session>> changesFor([List<String>? keyPaths]) =>
-      RealmObjectBase.getChangesFor<Session>(this, keyPaths);
+  Stream<RealmObjectChanges<Channel>> changesFor([List<String>? keyPaths]) =>
+      RealmObjectBase.getChangesFor<Channel>(this, keyPaths);
 
   @override
-  Session freeze() => RealmObjectBase.freezeObject<Session>(this);
+  Channel freeze() => RealmObjectBase.freezeObject<Channel>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -200,14 +200,14 @@ class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
     };
   }
 
-  static EJsonValue _toEJson(Session value) => value.toEJson();
-  static Session _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(Channel value) => value.toEJson();
+  static Channel _fromEJson(EJsonValue ejson) {
     if (ejson is! Map<String, dynamic>) return raiseInvalidEJson(ejson);
     return switch (ejson) {
       {
         '_id': EJsonValue _id,
       } =>
-        Session(
+        Channel(
           fromEJson(_id),
           userId: fromEJson(ejson['userId']),
           type: fromEJson(ejson['type'], defaultValue: "group"),
@@ -232,9 +232,9 @@ class Session extends _Session with RealmEntity, RealmObjectBase, RealmObject {
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(Session._);
+    RealmObjectBase.registerFactory(Channel._);
     register(_toEJson, _fromEJson);
-    return const SchemaObject(ObjectType.realmObject, Session, 'Session', [
+    return const SchemaObject(ObjectType.realmObject, Channel, 'Channel', [
       SchemaProperty('_id', RealmPropertyType.string, primaryKey: true),
       SchemaProperty('userId', RealmPropertyType.int, optional: true),
       SchemaProperty('type', RealmPropertyType.string),

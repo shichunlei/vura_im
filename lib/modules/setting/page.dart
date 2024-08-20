@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:im/application.dart';
 import 'package:im/global/config.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
@@ -128,6 +129,7 @@ class SettingPage extends StatelessWidget {
                     color: Colors.white,
                     onPressed: () {
                       SpUtil.clear();
+                      webSocketManager.close();
                       Get.offAllNamed(RoutePath.LOGIN_PAGE);
                     },
                     radius: 11.r,

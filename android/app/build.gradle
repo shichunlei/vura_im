@@ -54,17 +54,17 @@ android {
 
     signingConfigs {
         release {
-            storeFile file('keystore/jqdl.jks')
+            storeFile file('keystore/vura.keystore')
             storePassword '123456'
-            keyAlias = 'jqdl'
+            keyAlias = 'vura'
             keyPassword '123456'
             v1SigningEnabled true
             v2SigningEnabled true
         }
         debug {
-            storeFile file('keystore/jqdl.jks')
+            storeFile file('keystore/vura.keystore')
             storePassword '123456'
-            keyAlias = 'jqdl'
+            keyAlias = 'vura'
             keyPassword '123456'
             v1SigningEnabled true
             v2SigningEnabled true
@@ -103,7 +103,7 @@ android {
     }
     android.applicationVariants.configureEach { variant ->
         variant.outputs.configureEach {
-            outputFileName = "im_${versionName}_${buildType.name}_${buildTime()}.apk"
+            outputFileName = "vura_${versionName}_${buildType.name}_${buildTime()}.apk"
         }
     }
 }

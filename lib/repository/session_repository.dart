@@ -2,6 +2,7 @@ import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/utils/http_utils.dart';
 
@@ -144,12 +145,12 @@ class SessionRepository {
   /// [type] 消息类型 0:文字 1:图片 2:文件 3:语音 4:视频
   /// [atUserIds] 被@用户列表
   ///
-  static Future<MessageEntity?> sendMessage(int? id, String sessionType,
+  static Future<MessageEntity?> sendMessage(int? id, SessionType sessionType,
       {String? content, int type = 0, List<int?> atUserIds = const []}) async {
     var data = await HttpUtils.getInstance()
-        .request(sessionType == "private" ? "message/private/send" : 'message/group/send', params: {
-      if (sessionType == "group") "groupId": id,
-      if (sessionType == "private") "recvId": id,
+        .request(sessionType == SessionType.private ? "message/private/send" : 'message/group/send', params: {
+      if (sessionType == SessionType.group) "groupId": id,
+      if (sessionType == SessionType.private) "recvId": id,
       Keys.CONTENT: content,
       Keys.TYPE: type,
       "receipt": true,
@@ -166,15 +167,20 @@ class SessionRepository {
   /// 获取群历史消息
   ///
   /// [id] 群ID
-  /// [type] 类型
+  /// [type] 会话类型
   /// [page]
   /// [size]
   ///
-  static Future<List<MessageEntity>> getMessages(int? id, String type, {int page = 0, int size = 200}) async {
-    var data = await HttpUtils.getInstance().request(
-        type == "private" ? "message/private/history" : '/message/group/history',
-        params: {if (type == "private") "friendId": id, if (type == "group") "groupId": id, "page": page, "size": size},
-        method: HttpUtils.GET);
+  static Future<List<MessageEntity>> getMessages(int? id, SessionType type, {int page = 0, int size = 200}) async {
+    var data = await HttpUtils.getInstance()
+        .request(type == SessionType.private ? "message/private/history" : '/message/group/history',
+            params: {
+              if (type == SessionType.private) "friendId": id,
+              if (type == SessionType.group) "groupId": id,
+              "page": page,
+              "size": size
+            },
+            method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => MessageEntity.fromJson(item)).toList();

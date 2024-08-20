@@ -5,11 +5,21 @@ part 'message_entity.g.dart';
 @JsonSerializable()
 class MessageEntity {
   int? id;
+  @JsonKey(includeIfNull: false)
   int? groupId;
+  @JsonKey(includeIfNull: false)
   int? sendId;
-  @JsonKey(name: "recvId")
-  int? receiveId;
+  @JsonKey(includeIfNull: false)
   String? sendNickName;
+  @JsonKey(includeIfNull: false)
+  String? sendHeadImage;
+  @JsonKey(name: "recvId", includeIfNull: false)
+  int? receiveId;
+  @JsonKey(includeIfNull: false)
+  String? receiveNickName;
+  @JsonKey(includeIfNull: false)
+  String? receiveHeadImage;
+  @JsonKey(includeIfNull: false)
   String? content;
   int type;
   bool receipt;
@@ -25,7 +35,10 @@ class MessageEntity {
     this.groupId,
     this.sendId,
     this.receiveId,
+    this.receiveNickName,
+    this.receiveHeadImage,
     this.sendNickName,
+    this.sendHeadImage,
     this.content,
     this.type = 0,
     this.receipt = false,

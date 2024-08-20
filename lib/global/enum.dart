@@ -82,3 +82,5 @@ enum WebSocketCode {
 
   const WebSocketCode(this.code, this.label);
 }
+
+enum SessionType { group, private }

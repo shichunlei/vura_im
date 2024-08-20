@@ -28,7 +28,7 @@ class LoginLogic extends BaseLogic {
       } catch (e) {
         Log.e(e.toString());
       }
-      Get.offNamed(RoutePath.HOME_PAGE);
+      Get.offAllNamed(RoutePath.HOME_PAGE);
     }
   }
 }

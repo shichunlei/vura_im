@@ -5,6 +5,6 @@ import 'logic.dart';
 class RootBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<RootLogic>(() => RootLogic());
+    Get.lazyPut<RootLogic>(() => RootLogic(), fenix: true);
   }
 }

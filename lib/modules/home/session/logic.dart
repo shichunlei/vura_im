@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
+import 'package:im/application.dart';
 import 'package:im/base/base_list_logic.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
-import 'package:im/modules/home/logic.dart';
 import 'package:im/modules/root/logic.dart';
-import 'package:im/realm/session.dart';
+import 'package:im/realm/channel.dart';
 import 'package:im/repository/session_repository.dart';
 import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/toast_util.dart';
@@ -17,52 +17,76 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
   var loadingPrivateMessages = false.obs;
 
   SessionLogic() {
-    webSocketManager
-      ..setOnConnectCallback(() {
-        Log.d("WebSocket 连接成功");
-
-        /// 拉取离线消息
-        SessionRepository.getOfflineMessages("all", groupMinId: 0, privateMinId: 0);
-      })
-      ..setOnMessageCallback((int cmd, Map<String, dynamic> data) {
-        if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
-          if (data[Keys.TYPE] == MessageType.LOADING.code) {
-            if (data[Keys.CONTENT] == "true") loadingPrivateMessages.value = true;
-            if (data[Keys.CONTENT] == "false") {
-              loadingPrivateMessages.value = false;
-              refreshList();
-            }
-          } else {
-            Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
-
-            int? myUserId = Get.find<RootLogic>().user.value?.id;
-            int? id;
-            if (data["sendId"] != myUserId) id = data["sendId"];
-            if (data["recvId"] != myUserId) id = data["recvId"];
-
-            SessionRealm(realm: Get.find<RootLogic>().realm)
-                .updateLastMessage(SessionEntity(id: id, name: "这个是单聊", type: "private"), MessageEntity.fromJson(data))
-                .then((value) {
-              if (!loadingPrivateMessages.value) refreshList();
-            });
+    webSocketManager.listen("SessionLogic", (int cmd, Map<String, dynamic> data) {
+      Log.d("SessionLogic == 》接收到消息: $cmd, 数据: $data");
+      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
+        if (data[Keys.TYPE] == MessageType.LOADING.code) {
+          if (data[Keys.CONTENT] == "true") loadingPrivateMessages.value = true;
+          if (data[Keys.CONTENT] == "false") {
+            loadingPrivateMessages.value = false;
+            refreshList();
           }
-        }
-        if (cmd == WebSocketCode.GROUP_MESSAGE.code) {
-          if (data[Keys.TYPE] == MessageType.LOADING.code) {
-            if (data[Keys.CONTENT] == "true") loadingGroupMessages.value = true;
-            if (data[Keys.CONTENT] == "false") {
-              loadingGroupMessages.value = false;
-              refreshList();
-            }
-          } else {
-            SessionRealm(realm: Get.find<RootLogic>().realm)
-                .updateLastMessage(SessionEntity(id: data["groupId"], type: "group"), MessageEntity.fromJson(data))
-                .then((value) {
-              if (!loadingGroupMessages.value) refreshList();
-            });
+        } else {
+          MessageEntity message = MessageEntity.fromJson(data);
+          int? myUserId = Get.find<RootLogic>().user.value?.id;
+          int? id;
+          String? headImage;
+          String? name;
+          if (message.sendId != myUserId) {
+            id = message.sendId;
+            headImage = message.sendHeadImage;
+            name = message.sendNickName ?? "这个是单聊";
           }
+          if (message.receiveId != myUserId) {
+            id = message.receiveId;
+            headImage = message.receiveHeadImage;
+            name = message.receiveNickName ?? "这个是单聊";
+          }
+
+          SessionRealm(realm: Get.find<RootLogic>().realm)
+              .updateLastMessage(
+                  SessionEntity(
+                      id: id,
+                      name: name,
+                      type: SessionType.private,
+                      headImage: headImage,
+                      lastMessage: message,
+                      lastMessageTime: message.sendTime),
+                  message)
+              .then((value) {
+            if (!loadingPrivateMessages.value) refreshList();
+          });
         }
-      });
+      }
+      if (cmd == WebSocketCode.GROUP_MESSAGE.code) {
+        if (data[Keys.TYPE] == MessageType.LOADING.code) {
+          if (data[Keys.CONTENT] == "true") loadingGroupMessages.value = true;
+          if (data[Keys.CONTENT] == "false") {
+            loadingGroupMessages.value = false;
+            refreshList();
+          }
+        } else {
+          MessageEntity message = MessageEntity.fromJson(data);
+
+          SessionRealm(realm: Get.find<RootLogic>().realm)
+              .updateLastMessage(
+                  SessionEntity(
+                      id: message.groupId,
+                      type: SessionType.group,
+                      lastMessage: message,
+                      lastMessageTime: message.sendTime),
+                  message)
+              .then((value) {
+            if (!loadingGroupMessages.value) refreshList();
+          });
+        }
+      }
+    }, connectCallBack: () {
+      Log.d("WebSocket 连接成功");
+
+      /// 拉取离线消息
+      SessionRepository.getOfflineMessages("all", groupMinId: 0, privateMinId: 0);
+    });
   }
 
   @override
@@ -110,7 +134,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
     List<SessionEntity> sessions = await SessionRepository.getSessionList();
     if (sessions.isNotEmpty) {
       for (var item in sessions) {
-        item.type = "group";
+        item.type = SessionType.group;
         await SessionRealm(realm: Get.find<RootLogic>().realm).upsert(sessionEntityToRealm(item));
       }
       refreshList();
@@ -120,5 +144,11 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
   void refreshList() async {
     list.value = await SessionRealm(realm: Get.find<RootLogic>().realm).queryAllSessions();
     list.refresh();
+  }
+
+  @override
+  void onClose() {
+    webSocketManager.removeCallbacks("SessionLogic");
+    super.onClose();
   }
 }

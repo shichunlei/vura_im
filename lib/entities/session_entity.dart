@@ -1,4 +1,5 @@
 import 'package:im/entities/message_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'session_entity.g.dart';
@@ -28,7 +29,7 @@ class SessionEntity {
   bool deleted;
   bool quit;
   @JsonKey(includeFromJson: false)
-  String type;
+  SessionType type;
   @JsonKey(includeFromJson: false)
   bool moveTop;
   @JsonKey(includeFromJson: false)
@@ -49,7 +50,7 @@ class SessionEntity {
     this.remarkGroupName,
     this.deleted = false,
     this.quit = false,
-    this.type = 'group',
+    this.type = SessionType.group,
     this.moveTop = false,
     this.lastMessage,
     this.lastMessageTime = 0,

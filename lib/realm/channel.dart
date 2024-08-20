@@ -3,14 +3,16 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/modules/root/logic.dart';
+import 'package:im/utils/enum_to_string.dart';
 import 'package:im/utils/log_utils.dart';
-import 'package:realm/realm.dart' hide Session;
+import 'package:realm/realm.dart';
 
-part 'session.realm.dart';
+part 'channel.realm.dart';
 
 @RealmModel()
-class _Session {
+class _Channel {
   @PrimaryKey()
   late String _id;
   int? userId;
@@ -41,15 +43,26 @@ class SessionRealm {
   Future<List<SessionEntity>> queryAllSessions() async {
     Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
-        .all<Session>()
+        .all<Channel>()
         .query(
             r"userId == $0 AND TRUEPREDICATE SORT(lastMessageTime DESC)", [Get.find<RootLogic>().user.value?.id ?? 0])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
 
+  /// 查询会话
+  Future<SessionEntity?> querySessionById(int? id) async {
+    Log.d("querySessionById=====================$id");
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    if (session != null) {
+      return sessionRealmToEntity(session);
+    } else {
+      return null;
+    }
+  }
+
   /// 更新/插入数据
-  Future<Session> upsert(Session session) async {
+  Future<Channel> upsert(Channel session) async {
     return await _realm.writeAsync(() {
       Log.d("upsert----------------->${session.id}");
       return _realm.add(session, update: true);
@@ -58,7 +71,7 @@ class SessionRealm {
 
   /// 更新会话最后一条消息
   Future updateLastMessage(SessionEntity session, MessageEntity message) async {
-    Session? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
@@ -75,16 +88,16 @@ class SessionRealm {
     }
   }
 
-  Session? findOne(String? id) {
-    return _realm.find<Session>(id);
+  Channel? findOne(String? id) {
+    return _realm.find<Channel>(id);
   }
 }
 
-SessionEntity sessionRealmToEntity(Session session) {
+SessionEntity sessionRealmToEntity(Channel session) {
   return SessionEntity(
       id: session.id,
       name: session.name,
-      type: session.type,
+      type: EnumToString.fromString(SessionType.values, session.type),
       ownerId: session.ownerId,
       headImage: session.headImage,
       headImageThumb: session.headImageThumb,
@@ -100,12 +113,12 @@ SessionEntity sessionRealmToEntity(Session session) {
       moveTop: session.moveTop);
 }
 
-Session sessionEntityToRealm(SessionEntity session) {
-  return Session("${Get.find<RootLogic>().user.value?.id}-${session.id}",
+Channel sessionEntityToRealm(SessionEntity session) {
+  return Channel("${Get.find<RootLogic>().user.value?.id}-${session.id}",
       name: session.name,
       id: session.id,
       userId: Get.find<RootLogic>().user.value?.id,
-      type: session.type,
+      type: EnumToString.parse(session.type) ?? SessionType.group.name,
       ownerId: session.ownerId,
       headImage: session.headImage,
       headImageThumb: session.headImageThumb,
