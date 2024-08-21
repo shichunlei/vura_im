@@ -27,10 +27,14 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
     webSocketManager.listen("ChatLogic-$id-$type", (int cmd, Map<String, dynamic> data) {
       Log.d("ChatLogic == 》接收到消息: $cmd, 数据: $data");
-      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code && id == data["sendId"]) {
+      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code &&
+          id == data["sendId"] &&
+          (data[Keys.TYPE] <= MessageType.VIDEO.code || data[Keys.TYPE] == MessageType.TIP_TEXT.code)) {
         list.insert(0, MessageEntity.fromJson(data));
       }
-      if (cmd == WebSocketCode.GROUP_MESSAGE.code && id == data["groupId"]) {
+      if (cmd == WebSocketCode.GROUP_MESSAGE.code &&
+          id == data["groupId"] &&
+          (data[Keys.TYPE] <= MessageType.VIDEO.code || data[Keys.TYPE] == MessageType.TIP_TEXT.code)) {
         list.insert(0, MessageEntity.fromJson(data));
       }
       list.refresh();
@@ -51,20 +55,12 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
   /// 发送消息
   Future sendMessage() async {
-    MessageEntity? message =
-        await SessionRepository.sendMessage(id, type, content: controller.text, type: MessageType.TEXT.code);
+    MessageEntity? message = await SessionRepository.sendMessage(id, type,
+        content: controller.text,
+        type: MessageType.TEXT,
+        receiveHeadImage: session.value?.headImage,
+        receiveNickName: session.value?.name);
     if (message != null) {
-      if (type == SessionType.group) {
-        message.sendNickName = session.value?.remarkNickName;
-      } else {
-        message.sendNickName = Get.find<RootLogic>().user.value?.nickName ?? "";
-        message.receiveId = id;
-        message.receiveNickName = session.value?.name ?? ""; // todo
-        message.receiveHeadImage = session.value?.headImage ?? ""; // todo
-      }
-      message.sendId = Get.find<RootLogic>().user.value?.id;
-      message.sendHeadImage = Get.find<RootLogic>().user.value?.headImage ?? "";
-
       controller.clear();
       list.insert(0, message);
       list.refresh();

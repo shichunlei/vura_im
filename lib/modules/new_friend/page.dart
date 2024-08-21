@@ -29,7 +29,8 @@ class NewFriendPage extends StatelessWidget {
                         padding: EdgeInsets.symmetric(vertical: 11.h),
                         child: Row(children: [
                           SizedBox(width: 22.w),
-                          AvatarImageView("${logic.list[index].headImage}", radius: 26.r),
+                          AvatarImageView("${logic.list[index].nickName}",
+                              radius: 26.r, name: logic.list[index].nickName),
                           SizedBox(width: 18.w),
                           Expanded(
                               child: Column(

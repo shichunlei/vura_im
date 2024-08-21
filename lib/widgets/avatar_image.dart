@@ -1,5 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:im/utils/color_util.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/utils/tool_util.dart';
 
 /// 头像图片
@@ -20,9 +23,12 @@ class AvatarImageView extends StatelessWidget {
 
   final BoxFit fit;
 
+  final String? name;
+
   const AvatarImageView(this.path,
       {super.key,
       required this.radius,
+      required this.name,
       this.onTap,
       this.borderColor = Colors.transparent,
       this.borderWidth = 0.0,
@@ -47,8 +53,21 @@ class AvatarImageView extends StatelessWidget {
                     imageUrl: path,
                     placeholder: (_, url) =>
                         Image.asset("assets/images/default_face.webp", width: 2 * radius, height: 2 * radius),
-                    errorWidget: (_, url, error) =>
-                        Image.asset("assets/images/default_face.webp", width: 2 * radius, height: 2 * radius),
+                    errorWidget: (_, url, error) => StringUtil.isNotEmpty(name)
+                        ? Container(
+                            width: radius * 2,
+                            height: radius * 2,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(radius),
+                                border: Border.all(color: Colors.white, width: 1),
+                                color: ColorUtil.strToColor(name!)),
+                            alignment: Alignment.center,
+                            child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(name![0], style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                        : Image.asset("assets/images/default_face.webp", width: 2 * radius, height: 2 * radius),
                     fit: fit,
                     fadeInDuration: Duration.zero,
                     fadeOutDuration: Duration.zero,

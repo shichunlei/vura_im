@@ -84,3 +84,7 @@ enum WebSocketCode {
 }
 
 enum SessionType { group, private }
+
+enum YorNType { Y, N, B }
+
+enum FriendSourceType { SCAN, CARD, CHAT_NO, PHONE, SHAKE, SYS, GROUP, NEAR }

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/dialog_util.dart';
+import 'package:im/utils/tool_util.dart';
 import 'package:im/widgets/avatar_image.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
@@ -28,13 +30,20 @@ class PersonalPage extends StatelessWidget {
                     height: 88.r,
                     width: 88.r,
                     child: Stack(clipBehavior: Clip.none, children: [
-                      AvatarImageView("${logic.bean.value?.headImageThumb}", radius: 44.r),
+                      AvatarImageView("${logic.bean.value?.headImageThumb}",
+                          radius: 44.r, name: logic.bean.value?.nickName),
                       Positioned(
                           right: 0,
                           bottom: 0,
                           child: GestureDetector(
                               onTap: () {
-                                /// todo 修改头像
+                                showImagePickerDialog(context).then((value) {
+                                  if (value != null) {
+                                    pickerImage(value, cropImage: true).then((path) {
+                                      if (path != null) logic.updateAvatar(path);
+                                    });
+                                  }
+                                });
                               },
                               behavior: HitTestBehavior.translucent,
                               child: Container(

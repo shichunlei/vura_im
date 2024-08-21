@@ -1,5 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'color_util.dart';
 
 Future<T?> show<T extends Object>(BuildContext context,
     {Duration duration = const Duration(milliseconds: 300),
@@ -53,3 +58,26 @@ RouteTransitionsBuilder get elasticTransitions =>
                   parent: animation, curve: const ElasticOutCurve(0.85), reverseCurve: Curves.easeOutBack)),
               child: child));
     };
+
+/// 选择图片
+Future showImagePickerDialog(BuildContext context) async {
+  return await showCupertinoModalPopup(
+      context: context,
+      builder: (_) {
+        return CupertinoActionSheet(
+            actions: [
+              CupertinoActionSheetAction(
+                  child: const Text("从相册选择", style: TextStyle(color: Colors.blue)),
+                  onPressed: () async {
+                    Get.back(result: ImageSource.gallery);
+                  }),
+              CupertinoActionSheetAction(
+                  child: const Text("拍照", style: TextStyle(color: Colors.blue)),
+                  onPressed: () async {
+                    Get.back(result: ImageSource.camera);
+                  })
+            ],
+            cancelButton: CupertinoActionSheetAction(
+                onPressed: Get.back, child: const Text("取消", style: TextStyle(color: ColorUtil.color_666666))));
+      });
+}

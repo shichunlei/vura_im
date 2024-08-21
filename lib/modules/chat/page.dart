@@ -84,7 +84,7 @@ class ChatPage extends StatelessWidget {
                                         controller: logic.controller,
                                         maxLines: 1,
                                         textInputAction: TextInputAction.send,
-                                        style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
+                                        style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
                                         onSubmitted: (v) {
                                           DeviceUtils.hideKeyboard(context);
                                           logic.sendMessage();

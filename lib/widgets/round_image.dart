@@ -44,6 +44,9 @@ class RoundImage extends StatelessWidget {
   /// 占位控件
   final Widget? placeholderWidget;
 
+  /// 占位控件
+  final Widget? errorWidget;
+
   final EdgeInsetsGeometry? margin;
 
   final double? minHeight;
@@ -64,7 +67,8 @@ class RoundImage extends StatelessWidget {
       this.margin,
       this.minHeight,
       this.placeholderWidget,
-      this.errorImage});
+      this.errorImage,
+      this.errorWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +91,7 @@ class RoundImage extends StatelessWidget {
             placeholder: (context, url) =>
                 placeholderWidget ?? Image.asset(placeholderImage ?? "assets/images/loading.png", fit: BoxFit.cover),
             errorWidget: (context, url, error) =>
-                Image.asset(errorImage ?? "assets/images/loading.png", fit: BoxFit.cover),
+                errorWidget ?? Image.asset(errorImage ?? "assets/images/loading.png", fit: BoxFit.cover),
             fit: fit,
             cacheManager: cacheManager);
         break;

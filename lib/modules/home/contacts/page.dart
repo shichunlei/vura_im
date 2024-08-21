@@ -144,22 +144,31 @@ class ContactsPage extends StatelessWidget {
 
     return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
       Offstage(offstage: !user.isShowSuspension, child: buildSuspensionTag(susTag)),
-      Padding(
-          padding: EdgeInsets.symmetric(vertical: 11.h),
-          child: Row(children: [
-            SizedBox(width: 22.w),
-            AvatarImageView("${user.headImage}", radius: 26.r),
-            SizedBox(width: 18.w),
-            Expanded(
-              child: Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text("${user.nickName}",
-                    style: GoogleFonts.roboto(
-                        fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
-                SizedBox(height: 5.r),
-                Text("data", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
-              ]),
-            )
-          ]))
+      GestureDetector(
+          onTap: () {
+            logic.goChatPage(user);
+          },
+          behavior: HitTestBehavior.translucent,
+          child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 11.h),
+              child: Row(children: [
+                SizedBox(width: 22.w),
+                AvatarImageView("${user.headImage}", radius: 26.r, name: user.nickName),
+                SizedBox(width: 18.w),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("${user.nickName}",
+                          style: GoogleFonts.roboto(
+                              fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
+                      SizedBox(height: 5.r),
+                      Text("data", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                    ],
+                  ),
+                )
+              ])))
     ]);
   }
 }

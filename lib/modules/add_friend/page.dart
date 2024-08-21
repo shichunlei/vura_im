@@ -67,7 +67,8 @@ class AddFriendPage extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 11.h),
                               child: Row(children: [
                                 SizedBox(width: 22.w),
-                                AvatarImageView("${logic.list[index].headImage}", radius: 26.r),
+                                AvatarImageView("${logic.list[index].headImage}",
+                                    radius: 26.r, name: logic.list[index].nickName),
                                 SizedBox(width: 18.w),
                                 Expanded(
                                     child: Column(
@@ -89,7 +90,7 @@ class AddFriendPage extends StatelessWidget {
                                     child: Text("添加好友",
                                         style: GoogleFonts.roboto(
                                             color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
-                                    onPressed: () {})
+                                    onPressed: () => logic.applyFriend(index))
                               ]));
                         },
                         separatorBuilder: (_, index) => const Divider(height: 0),

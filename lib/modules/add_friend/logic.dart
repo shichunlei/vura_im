@@ -32,10 +32,10 @@ class AddFriendLogic extends BaseListLogic<UserEntity> {
     hiddenLoading();
   }
 
-  Future addFriend(int index) async {
-    BaseBean result = await ContactsRepository.addFriend(list[index].id);
+  Future applyFriend(int index) async {
+    BaseBean result = await ContactsRepository.apply(list[index].id);
     if (result.code == 200) {
-      list.removeAt(index);
+      // list.removeAt(index);
       showToast(text: "添加好友成功");
     }
   }

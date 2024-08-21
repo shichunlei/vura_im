@@ -67,7 +67,6 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
           }
         } else {
           MessageEntity message = MessageEntity.fromJson(data);
-
           SessionRealm(realm: Get.find<RootLogic>().realm)
               .updateLastMessage(
                   SessionEntity(
@@ -119,9 +118,11 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
     params["remarkGroupName"] = "";
     params['headImage'] = "";
     params['headImageThumb'] = "";
+    params['isAdmin'] = true;
+    params["friendIds"] = users.map((item) => item.id).toList();
 
     showLoading();
-    SessionEntity? session = await SessionRepository.createSession(params, users.map((item) => item.id).toList());
+    SessionEntity? session = await SessionRepository.createSession(params);
     hiddenLoading();
 
     if (session != null) {

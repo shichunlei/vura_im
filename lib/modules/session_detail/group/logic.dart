@@ -4,11 +4,13 @@ import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
 import 'package:im/repository/session_repository.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/utils/log_utils.dart';
 
 class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
@@ -27,7 +29,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   @override
   Future<SessionEntity?> loadData() async {
-    return await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id);
+    return await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, SessionType.group);
   }
 
   @override
@@ -38,7 +40,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   /// 踢人
   Future deleteMembers() async {
     showLoading();
-    BaseBean result = await SessionRepository.kickMemberFromSession(id, 0);
+    BaseBean result = await SessionRepository.kickMemberFromSession(id, []);
     hiddenLoading();
   }
 
@@ -55,6 +57,23 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     showLoading();
     BaseBean result = await SessionRepository.quitSession(id);
     hiddenLoading();
+    if (result.code == 200) {
+      /// 删除本地群聊
+      SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+      Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
+    }
+  }
+
+  /// 解散群聊
+  Future deleteSession() async {
+    showLoading();
+    BaseBean result = await SessionRepository.deleteSession(id);
+    hiddenLoading();
+    if (result.code == 200) {
+      /// 删除本地群聊
+      SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+      Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
+    }
   }
 
   RxList<MemberEntity> members = RxList<MemberEntity>([]);
@@ -66,7 +85,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   Future setTop(bool value) async {
     bean.value!.moveTop = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value).then((item) {
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value, SessionType.group).then((item) {
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {
@@ -78,7 +97,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   Future setDisturb(bool value) async {
     bean.value!.isDisturb = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value).then((item) {
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value, SessionType.group).then((item) {
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {
@@ -91,7 +110,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     SessionEntity? session = await SessionRepository.getSessionInfo(id);
     if (session != null) {
       await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session).then((value) async {
-        bean.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id);
+        bean.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, SessionType.group);
         bean.refresh();
         try {
           Get.find<SessionLogic>().refreshList();

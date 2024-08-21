@@ -135,7 +135,7 @@ class SelectContactsPage extends StatelessWidget {
                         size: 10.r);
                   }),
                   SizedBox(width: 12.w),
-                  AvatarImageView("${user.headImage}", radius: 26.r),
+                  AvatarImageView("${user.headImage}", radius: 26.r, name: user.nickName),
                   SizedBox(width: 18.w),
                   Expanded(
                       child: Column(

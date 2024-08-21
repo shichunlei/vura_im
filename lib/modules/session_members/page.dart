@@ -40,7 +40,8 @@ class SessionMembersPage extends StatelessWidget {
                                   alignment: Alignment.center,
                                   width: 46.w,
                                   child: Icon(Icons.check_circle, size: 10.r)),
-                              AvatarImageView("${logic.list[index].headImage}", radius: 26.r),
+                              AvatarImageView("${logic.list[index].headImage}",
+                                  radius: 26.r, name: logic.list[index].remarkNickName),
                               Expanded(
                                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                                   Text("${logic.list[index].remarkNickName}",

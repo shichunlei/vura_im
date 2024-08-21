@@ -14,8 +14,8 @@ class ItemReceiveMessage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
         mainAxisSize: MainAxisSize.min,
-        children: [AvatarImageView("path", radius: 22.r), buildMessageView(message.type)],
-        crossAxisAlignment: CrossAxisAlignment.start);
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [AvatarImageView("path", radius: 22.r, name: ""), buildMessageView(message.type)]);
   }
 
   Widget buildMessageView(int type) {

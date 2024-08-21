@@ -13,4 +13,6 @@ class PersonalLogic extends BaseObjectLogic<UserEntity?> {
   Future<UserEntity?> loadData() async {
     return await UserRepository.getUserInfo();
   }
+
+  Future updateAvatar(String path) async {}
 }

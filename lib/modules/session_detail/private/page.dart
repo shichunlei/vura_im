@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
@@ -31,12 +32,27 @@ class PrivateSessionDetailPage extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
                       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                       child: Row(children: [
-                        RoundImage("https://q2.itc.cn/q_70/images03/20240807/9efb7d3e616440c6ab1d7e1d9b9be14f.jpeg",
+                        RoundImage(logic.bean.value?.headImage,
                             width: 53.r,
                             height: 53.r,
                             radius: 5.r,
                             onTap: () {},
-                            errorImage: "assets/images/default_face.webp",
+                            errorWidget: StringUtil.isNotEmpty(logic.bean.value?.name)
+                                ? Container(
+                                    width: 53.r,
+                                    height: 53.r,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5.r),
+                                        border: Border.all(color: Colors.white, width: 1),
+                                        color: ColorUtil.strToColor(logic.bean.value!.name!)),
+                                    alignment: Alignment.center,
+                                    child: FittedBox(
+                                        fit: BoxFit.contain,
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(2.0),
+                                            child: Text(logic.bean.value!.name![0],
+                                                style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                                : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
                             placeholderImage: "assets/images/default_face.webp"),
                         SizedBox(width: 13.w),
                         Expanded(
@@ -44,7 +60,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                              Text("${logic.bean.value?.remarkNickName}",
+                              Text("${logic.bean.value?.name}",
                                   style: GoogleFonts.roboto(
                                       fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w600)),
                               SizedBox(height: 13.r),
@@ -67,7 +83,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                 child: Row(children: [
                                   Text("昵称", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
-                                  Text("${logic.bean.value?.showNickName}",
+                                  Text("${logic.bean.value?.name}",
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
                                 ]))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
@@ -111,7 +127,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("加入黑名单", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(value: false, onChanged: (value) => logic.addBlacklist()),
                             ]))
                       ])),
                   Container(
@@ -120,7 +136,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                       child: Column(children: [
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: logic.deleteFriend,
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                             child: Container(

@@ -15,9 +15,9 @@ class MessageEntity {
   String? sendHeadImage;
   @JsonKey(name: "recvId", includeIfNull: false)
   int? receiveId;
-  @JsonKey(includeIfNull: false)
+  @JsonKey(name: "recvNickName", includeIfNull: false)
   String? receiveNickName;
-  @JsonKey(includeIfNull: false)
+  @JsonKey(name: "recvHeadImage", includeIfNull: false)
   String? receiveHeadImage;
   @JsonKey(includeIfNull: false)
   String? content;

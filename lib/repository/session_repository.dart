@@ -9,19 +9,17 @@ import 'package:im/utils/http_utils.dart';
 class SessionRepository {
   /// 创建会话
   ///
-  static Future<SessionEntity?> createSession(Map<String, dynamic> params, List<int?> userIds) async {
-    var data = await HttpUtils.getInstance().request('group/create', params: params);
+  static Future<SessionEntity?> createSession(Map<String, dynamic> params) async {
+    var data = await HttpUtils.getInstance().request('group/create', params: params, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
-      SessionEntity session = SessionEntity.fromJson(result.data);
-      await inviteMembers(session.id, userIds);
-      return session;
+      return SessionEntity.fromJson(result.data);
     } else {
       return null;
     }
   }
 
-  /// 修改会话
+  /// 修改会话 TODO
   ///
   /// [id] 群ID
   /// [ownerId] 群主ID
@@ -59,7 +57,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 会话列表
+  /// 群列表
   ///
   static Future<List<SessionEntity>> getSessionList() async {
     var data = await HttpUtils.getInstance().request('group/list', method: HttpUtils.GET);
@@ -71,7 +69,7 @@ class SessionRepository {
     }
   }
 
-  /// 会话列表
+  /// 我创建的列表
   ///
   static Future<List<SessionEntity>> getMyCreateSessionList() async {
     var data = await HttpUtils.getInstance().request('group/my/create/list', method: HttpUtils.GET);
@@ -83,7 +81,7 @@ class SessionRepository {
     }
   }
 
-  /// 会话列表
+  /// 我加入的群列表
   ///
   static Future<List<SessionEntity>> getMyJoinSessionList() async {
     var data = await HttpUtils.getInstance().request('group/my/join/list', method: HttpUtils.GET);
@@ -115,7 +113,8 @@ class SessionRepository {
   /// [userIds] 被邀请的成员IDs
   ///
   static Future<BaseBean> inviteMembers(int? id, List<int?> userIds) async {
-    var data = await HttpUtils.getInstance().request('group/invite', params: {"groupId": id, "friendIds": userIds});
+    var data = await HttpUtils.getInstance()
+        .request('group/invite', params: {"groupId": id, "friendIds": userIds}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -133,31 +132,47 @@ class SessionRepository {
     }
   }
 
-  /// 退出群聊
+  /// 群管理员列表 TODO
+  ///
+  /// [id] 群ID
+  ///
+  static Future<List<MemberEntity>> getSessionSupAdmin(int? id) async {
+    var data = await HttpUtils.getInstance().request('group/members/supadmin/$id', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToList(data);
+    if (result.code == 200) {
+      return result.items.map((item) => MemberEntity.fromJson(item)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  /// 退出群聊 TODO
   ///
   /// [id] 群ID
   ///
   static Future<BaseBean> quitSession(int? id) async {
-    var data = await HttpUtils.getInstance().request('group/quit/$id', method: HttpUtils.DELETE);
+    var data = await HttpUtils.getInstance().request('group/quit/$id', method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 踢出群聊
+  /// 踢出群聊 TODO
   ///
   /// [id] 群ID
+  /// [userIds] 被踢出群聊的成员列表
   ///
-  static Future<BaseBean> kickMemberFromSession(int? id, int? userId) async {
-    var data = await HttpUtils.getInstance()
-        .request('/group/kick/$id', params: {Keys.USER_ID: userId}, method: HttpUtils.DELETE);
+  static Future<BaseBean> kickMemberFromSession(int? id, List<int?> userIds) async {
+    var data = await HttpUtils.getInstance().request('group/kickList',
+        params: {"friendIds": userIds, "groupId": id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 解散群聊
+  /// 解散群聊 TODO
   ///
   /// [id] 群ID
   ///
   static Future<BaseBean> deleteSession(int? id) async {
-    var data = await HttpUtils.getInstance().request('group/delete/$id', method: HttpUtils.DELETE);
+    var data =
+        await HttpUtils.getInstance().request('group/delete/$id', method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -170,15 +185,21 @@ class SessionRepository {
   /// [atUserIds] 被@用户列表
   ///
   static Future<MessageEntity?> sendMessage(int? id, SessionType sessionType,
-      {String? content, int type = 0, List<int?> atUserIds = const []}) async {
+      {String? content,
+      MessageType type = MessageType.TEXT,
+      List<int?> atUserIds = const [],
+      String? receiveNickName,
+      String? receiveHeadImage}) async {
     var data = await HttpUtils.getInstance()
         .request(sessionType == SessionType.private ? "message/private/send" : 'message/group/send', params: {
       if (sessionType == SessionType.group) "groupId": id,
       if (sessionType == SessionType.private) "recvId": id,
+      if (sessionType == SessionType.private) "recvNickName": receiveNickName,
+      if (sessionType == SessionType.private) "recvHeadImage": receiveHeadImage,
       Keys.CONTENT: content,
-      Keys.TYPE: type,
+      Keys.TYPE: type.code,
       "receipt": true,
-      "atUserIds": atUserIds
+      if (sessionType == SessionType.group) "atUserIds": atUserIds
     });
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
@@ -230,7 +251,7 @@ class SessionRepository {
     }
   }
 
-  /// 已读群聊消息
+  /// 已读群聊消息 TODO
   ///
   /// [groupId] 群ID
   ///
@@ -240,14 +261,14 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 获取已读用户id
+  /// 获取已读用户id TODO
   ///
   /// [id] 群ID
   /// [messageId]
   ///
-  static Future<List<MessageEntity>> getReadUsers(int? groupId, int? messageId) async {
+  static Future<List<MessageEntity>> getReadUsers(int? id, int? messageId) async {
     var data = await HttpUtils.getInstance().request('message/group/findReadedUsers',
-        params: {"groupId": groupId, "messageId": messageId}, method: HttpUtils.GET);
+        params: {"groupId": id, "messageId": messageId}, method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => MessageEntity.fromJson(item)).toList();
@@ -256,12 +277,66 @@ class SessionRepository {
     }
   }
 
-  /// 撤回消息
+  /// 撤回消息 TODO
   ///
-  /// [groupId] 消息ID
+  /// [id] 消息ID
   ///
   static Future<BaseBean> recallMessage(int? id) async {
-    var data = await HttpUtils.getInstance().request('message/group/recall/$id', method: HttpUtils.DELETE);
+    var data = await HttpUtils.getInstance()
+        .request('message/group/recall/$id', method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
+  }
+
+  /// 设置管理员 TODO
+  ///
+  /// [id] 群ID
+  /// [ids] 被设置管理员的用户IDS
+  ///
+  static Future<BaseBean> setSupAdmin(int? id, List<int?> ids) async {
+    var data = await HttpUtils.getInstance().request('group/setSupAdmin',
+        params: {"adminIdList": ids, "groupId": id}, method: HttpUtils.PUT, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 群主转让 TODO
+  ///
+  /// [id] 群ID
+  /// [userId] 被设置群主的用户ID
+  ///
+  static Future<BaseBean> setAdmin(int? id, int? userId) async {
+    var data = await HttpUtils.getInstance().request('group/setAdmin',
+        params: {
+          "groupId": id,
+          "adminIdList": [id]
+        },
+        method: HttpUtils.PUT,
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 设置禁言 TODO
+  ///
+  /// [id] 群ID
+  /// [ids] 被设置禁言的用户IDS
+  ///
+  static Future<BaseBean> setMute(int? id, List<int?> ids) async {
+    var data = await HttpUtils.getInstance()
+        .request('group/mute', params: {"friendIds": ids, "groupId": id}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 被禁言列表 TODO
+  ///
+  /// [id] 群ID
+  /// [ids] 被设置禁言的用户IDS
+  ///
+  static Future<List<MemberEntity>> muteList(int? id, List<int?> ids) async {
+    var data = await HttpUtils.getInstance().request('group/members/mute/$id', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToList(data);
+    if (result.code == 200) {
+      return result.items.map((item) => MemberEntity.fromJson(item)).toList();
+    } else {
+      return [];
+    }
   }
 }

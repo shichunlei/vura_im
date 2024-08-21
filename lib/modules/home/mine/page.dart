@@ -42,7 +42,8 @@ class MinePage extends StatelessWidget {
                       behavior: HitTestBehavior.translucent,
                       child: Row(children: [
                         SizedBox(width: 22.w),
-                        AvatarImageView("${Get.find<RootLogic>().user.value?.headImageThumb}", radius: 33.r),
+                        AvatarImageView("${Get.find<RootLogic>().user.value?.headImageThumb}",
+                            radius: 33.r, name: Get.find<RootLogic>().user.value?.nickName),
                         SizedBox(width: 22.w),
                         Expanded(
                           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

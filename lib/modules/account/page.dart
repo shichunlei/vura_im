@@ -54,7 +54,8 @@ class AccountPage extends StatelessWidget {
                                     child: Row(children: [
                                       AvatarImageView(
                                           "https://p1.itc.cn/q_70/images03/20220714/e3e968b1d3484c70a00a1c130472c91f.jpeg",
-                                          radius: 22.r),
+                                          radius: 22.r,
+                                          name: ""),
                                       SizedBox(width: 13.w),
                                       Expanded(
                                           child: Column(

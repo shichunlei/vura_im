@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/global/enum.dart';
+import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/utils/enum_to_string.dart';
 import 'package:im/utils/log_utils.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:realm/realm.dart';
 
 part 'channel.realm.dart';
@@ -34,7 +36,7 @@ class _Channel {
   bool moveTop = false;
   bool isDisturb = false;
   bool isAdmin = false;
-  bool isSupAdmin = false;
+  String isSupAdmin = "N";
 }
 
 class SessionRealm {
@@ -47,16 +49,16 @@ class SessionRealm {
     Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Channel>()
-        .query(r"userId == $0 AND TRUEPREDICATE SORT(moveTop ASC ,lastMessageTime DESC)",
-            [Get.find<RootLogic>().user.value?.id ?? 0])
+        .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop ASC ,lastMessageTime DESC)",
+            [Get.find<RootLogic>().user.value?.id ?? 0, false])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
 
   /// 查询会话
-  Future<SessionEntity?> querySessionById(int? id) async {
+  Future<SessionEntity?> querySessionById(int? id, SessionType sessionType) async {
     Log.d("querySessionById=====================$id");
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (session != null) {
       return sessionRealmToEntity(session);
     } else {
@@ -72,24 +74,15 @@ class SessionRealm {
     });
   }
 
-  /// 更新会话最后一条消息
+  /// 更新会话基本信息
   Future updateSessionInfo(SessionEntity session) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
       await _realm.writeAsync(() {
         _session.name = session.name;
         _session.headImage = session.headImage;
-        _session.headImageThumb = session.headImageThumb;
-        _session.ownerId = session.ownerId;
-        _session.notice = session.notice;
-        _session.remarkNickName = session.remarkNickName;
-        _session.showNickName = session.showNickName;
-        _session.showGroupName = session.showGroupName;
-        _session.remarkGroupName = session.remarkGroupName;
-        _session.deleted = session.deleted;
-        _session.quit = session.quit;
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {
@@ -100,7 +93,7 @@ class SessionRealm {
 
   /// 更新会话最后一条消息
   Future updateLastMessage(SessionEntity session, MessageEntity message) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
@@ -109,6 +102,8 @@ class SessionRealm {
       await _realm.writeAsync(() {
         _session.lastMessage = json.encode(message.toJson());
         _session.lastMessageTime = message.sendTime;
+        if (StringUtil.isNotEmpty(session.name)) _session.name = session.name;
+        if (StringUtil.isNotEmpty(session.headImage)) _session.headImage = session.headImage;
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {
@@ -118,8 +113,8 @@ class SessionRealm {
   }
 
   /// 更新会话置顶状态
-  Future setChannelTop(int? id, bool isTop) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+  Future setChannelTop(int? id, bool isTop, SessionType sessionType) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
         _session.moveTop = isTop;
@@ -129,13 +124,28 @@ class SessionRealm {
   }
 
   /// 更新会话免打扰状态
-  Future setChannelDisturb(int? id, bool isDisturb) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+  Future setChannelDisturb(int? id, bool isDisturb, SessionType sessionType) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
         _session.isDisturb = isDisturb;
       });
       Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+    }
+  }
+
+  Future deleteChannel(int? id, SessionType sessionType) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    if (_session != null) {
+      await _realm.writeAsync(() {
+        _session.deleted = true;
+      });
+      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 
@@ -163,12 +173,12 @@ SessionEntity sessionRealmToEntity(Channel session) {
       lastMessageTime: session.lastMessageTime,
       isDisturb: session.isDisturb,
       isAdmin: session.isAdmin,
-      isSupAdmin: session.isSupAdmin,
+      isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
       moveTop: session.moveTop);
 }
 
 Channel sessionEntityToRealm(SessionEntity session) {
-  return Channel("${Get.find<RootLogic>().user.value?.id}-${session.id}",
+  return Channel("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}",
       name: session.name,
       id: session.id,
       userId: Get.find<RootLogic>().user.value?.id,
@@ -187,6 +197,6 @@ Channel sessionEntityToRealm(SessionEntity session) {
       moveTop: session.moveTop,
       isDisturb: session.isDisturb,
       isAdmin: session.isAdmin,
-      isSupAdmin: session.isSupAdmin,
+      isSupAdmin: session.isSupAdmin.name,
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

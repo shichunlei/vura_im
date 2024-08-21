@@ -36,19 +36,19 @@ class UserRepository {
   /// [nickName] 昵称
   ///
   static Future<BaseBean> register({String? userName, String? password, String? nickName}) async {
-    var data = await HttpUtils.getInstance()
-        .request('register', params: {"userName": userName, "password": password, "nickName": nickName});
+    var data = await HttpUtils.getInstance().request('register',
+        params: {"userName": userName, "password": password, "nickName": nickName}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 修改密码
+  /// 修改密码 TODO
   ///
   /// [oldPassword] 旧密码
   /// [newPassword] 新密码
   ///
   static Future<BaseBean> updatePassword({String? oldPassword, String? newPassword}) async {
-    var data = await HttpUtils.getInstance()
-        .request('modifyPwd', params: {"oldPassword": oldPassword, "newPassword": newPassword}, method: HttpUtils.PUT);
+    var data = await HttpUtils.getInstance().request('modifyPwd',
+        params: {"oldPassword": oldPassword, "newPassword": newPassword}, method: HttpUtils.PUT, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -67,7 +67,7 @@ class UserRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 修改用户信息
+  /// 修改用户信息 TODO
   ///
   /// [id] ID
   /// [userName] 用户名
@@ -90,7 +90,8 @@ class UserRepository {
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb
         },
-        method: HttpUtils.PUT);
+        method: HttpUtils.PUT,
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -135,7 +136,7 @@ class UserRepository {
     }
   }
 
-  /// 获取用户设备终端
+  /// 获取用户设备终端 TODO
   ///
   /// [userIds]
   ///

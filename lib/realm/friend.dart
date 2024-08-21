@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/modules/home/contacts/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/utils/log_utils.dart';
 import 'package:realm/realm.dart';
@@ -19,6 +20,7 @@ class _Friend {
   String? headImage;
   String? headImageThumb;
   String? indexTag;
+  bool isDeleted = false;
 }
 
 class FriendRealm {
@@ -53,6 +55,21 @@ class FriendRealm {
       Log.d("upsert----------------->${user.id}");
       return _realm.add(user, update: true);
     });
+  }
+
+  Future deleteFriend(int? id) async {
+    Friend? _friend = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    if (_friend != null) {
+      await _realm.writeAsync(() {
+        _friend.isDeleted = true;
+      });
+      Log.d("deleteChannel===${_friend.id}================>${_friend.toEJson()}");
+      try {
+        Get.find<ContactsLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
   }
 
   Friend? findOne(String? id) {

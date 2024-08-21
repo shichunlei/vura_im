@@ -8,6 +8,7 @@ import 'package:im/global/keys.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/date_util.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
 
@@ -33,9 +34,25 @@ class ItemSession extends StatelessWidget {
                 width: 44.r,
                 height: 44.r,
                 radius: 9.r,
-                errorImage: session.type == SessionType.private
-                    ? "assets/images/default_face.webp"
-                    : "assets/images/default_group_head.webp",
+                errorWidget: session.type == SessionType.private
+                    ? StringUtil.isNotEmpty(session.name)
+                        ? Container(
+                            width: 53.r,
+                            height: 53.r,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5.r),
+                                border: Border.all(color: Colors.white, width: 1),
+                                color: ColorUtil.strToColor(session.name!)),
+                            alignment: Alignment.center,
+                            child: FittedBox(
+                                fit: BoxFit.contain,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(session.name![0],
+                                        style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                        : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r)
+                    : null,
+                errorImage: session.type == SessionType.private ? null : "assets/images/default_group_head.webp",
                 placeholderImage: session.type == SessionType.private
                     ? "assets/images/default_face.webp"
                     : "assets/images/default_group_head.webp"),

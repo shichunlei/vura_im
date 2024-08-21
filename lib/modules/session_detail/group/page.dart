@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
@@ -165,8 +166,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                                       height: 26.r,
                                       width: 26.r,
                                       radius: 2.r,
-                                      errorImage: "assets/images/default_face.webp",
-                                      placeholderImage: "assets/images/default_face.webp"),
+                                      errorImage: "assets/images/default_group_head.webp",
+                                      placeholderImage: "assets/images/default_group_head.webp"),
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ]))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
@@ -228,17 +229,29 @@ class GroupSessionDetailPage extends StatelessWidget {
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
                       margin: EdgeInsets.symmetric(horizontal: 22.w),
                       child: Column(children: [
-                        RadiusInkWellWidget(
-                            color: Colors.transparent,
-                            onPressed: logic.quitSession,
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
-                            child: Container(
-                                height: 60.h,
-                                padding: EdgeInsets.only(left: 22.w),
-                                alignment: Alignment.centerLeft,
-                                child: Text("退出群聊",
-                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
+                        logic.bean.value!.isAdmin
+                            ? RadiusInkWellWidget(
+                                color: Colors.transparent,
+                                onPressed: logic.deleteSession,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
+                                child: Container(
+                                    height: 60.h,
+                                    padding: EdgeInsets.only(left: 22.w),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("解散群聊",
+                                        style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549)))))
+                            : RadiusInkWellWidget(
+                                color: Colors.transparent,
+                                onPressed: logic.quitSession,
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
+                                child: Container(
+                                    height: 60.h,
+                                    padding: EdgeInsets.only(left: 22.w),
+                                    alignment: Alignment.centerLeft,
+                                    child: Text("退出群聊",
+                                        style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             margin: EdgeInsets.only(bottom: 40.h),
@@ -272,9 +285,26 @@ class ItemSessionUser extends StatelessWidget {
           child: RoundImage("${member.headImage}", width: double.infinity, height: double.infinity, radius: 5.r,
               onTap: () {
             Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId});
-          }, errorImage: "assets/images/default_face.webp", placeholderImage: "assets/images/default_face.webp")),
+          },
+              errorWidget: StringUtil.isNotEmpty(member.showNickName)
+                  ? Container(
+                      width: 53.r,
+                      height: 53.r,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5.r),
+                          border: Border.all(color: Colors.white, width: 1),
+                          color: ColorUtil.strToColor(member.showNickName!)),
+                      alignment: Alignment.center,
+                      child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: Padding(
+                              padding: const EdgeInsets.all(2.0),
+                              child: Text(member.showNickName![0],
+                                  style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                  : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
+              placeholderImage: "assets/images/default_face.webp")),
       SizedBox(height: 10.h),
-      Text("${StringUtil.isNotEmpty(member.remarkNickName) ? member.remarkNickName : member.showNickName}",
+      Text("${member.showNickName}",
           style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999),
           maxLines: 1,
           overflow: TextOverflow.ellipsis)
