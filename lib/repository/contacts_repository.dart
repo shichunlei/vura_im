@@ -6,7 +6,7 @@ class ContactsRepository {
   /// 好友列表
   ///
   static Future<List<UserEntity>> getFriendList() async {
-    var data = await HttpUtils.getInstance().request('/friend/list', method: HttpUtils.GET);
+    var data = await HttpUtils.getInstance().request('friend/list', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => UserEntity.fromJson(item)).toList();
@@ -19,8 +19,8 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<UserEntity?> getFriendInfo(int id) async {
-    var data = await HttpUtils.getInstance().request('/friend/find/$id', method: HttpUtils.GET);
+  static Future<UserEntity?> getFriendInfo(int? id) async {
+    var data = await HttpUtils.getInstance().request('friend/find/$id', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return UserEntity.fromJson(result.data);
@@ -33,8 +33,8 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> addFriend(int id) async {
-    var data = await HttpUtils.getInstance().request('/friend/find/$id', params: {"friendId": id});
+  static Future<BaseBean> addFriend(int? id) async {
+    var data = await HttpUtils.getInstance().request('friend/find/$id', params: {"friendId": id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -42,9 +42,9 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> deleteFriend(int id) async {
-    var data =
-        await HttpUtils.getInstance().request('/friend/delete/$id', params: {"friendId": id}, method: HttpUtils.DELETE);
+  static Future<BaseBean> deleteFriend(int? id) async {
+    var data = await HttpUtils.getInstance()
+        .request('friend/delete/$id', params: {"friendId": id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -52,8 +52,8 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> updateFriend(int id, {String? nickName, String? headImage}) async {
-    var data = await HttpUtils.getInstance().request('/friend/update',
+  static Future<BaseBean> updateFriend(int? id, {String? nickName, String? headImage}) async {
+    var data = await HttpUtils.getInstance().request('friend/update',
         params: {"id": id, if (nickName != null) "nickName": nickName, if (headImage != null) "headImage": headImage},
         method: HttpUtils.PUT);
     return BaseBean.fromJson(data);
@@ -63,8 +63,8 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> addFriendToBlack(int id) async {
-    var data = await HttpUtils.getInstance().request('friend/black/$id');
+  static Future<BaseBean> addFriendToBlack(int? id) async {
+    var data = await HttpUtils.getInstance().request('friend/black/$id', showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -72,15 +72,15 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> removeFriendFromBlack(int id) async {
-    var data = await HttpUtils.getInstance().request('friend/black/reset/$id');
+  static Future<BaseBean> removeFriendFromBlack(int? id) async {
+    var data = await HttpUtils.getInstance().request('friend/black/reset/$id', showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
   /// 黑名单列表
   ///
   static Future<List<UserEntity>> getBlackList() async {
-    var data = await HttpUtils.getInstance().request('/friend/black/list', method: HttpUtils.GET);
+    var data = await HttpUtils.getInstance().request('friend/black/list', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => UserEntity.fromJson(item)).toList();

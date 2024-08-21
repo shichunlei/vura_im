@@ -28,10 +28,14 @@ class SessionEntity {
   String? remarkGroupName;
   bool deleted;
   bool quit;
+  bool isAdmin; // 群主
+  bool isSupAdmin; // 管理员
   @JsonKey(includeFromJson: false)
   SessionType type;
   @JsonKey(includeFromJson: false)
   bool moveTop;
+  @JsonKey(includeFromJson: false)
+  bool isDisturb;
   @JsonKey(includeFromJson: false)
   MessageEntity? lastMessage;
   @JsonKey(includeFromJson: false)
@@ -50,8 +54,11 @@ class SessionEntity {
     this.remarkGroupName,
     this.deleted = false,
     this.quit = false,
+    this.isAdmin = false,
+    this.isSupAdmin = false,
     this.type = SessionType.group,
     this.moveTop = false,
+    this.isDisturb = false,
     this.lastMessage,
     this.lastMessageTime = 0,
   });

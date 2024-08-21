@@ -13,7 +13,7 @@ class UserRepository {
   ///
   static Future<UserEntity?> login({String? userName, String? password}) async {
     var data = await HttpUtils.getInstance()
-        .request('/login', params: {"userName": userName, "password": password, "terminal": 1}, showErrorToast: true);
+        .request('login', params: {"userName": userName, "password": password, "terminal": 1}, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       LoginEntity? login = LoginEntity.fromJson(result.data);
@@ -37,7 +37,7 @@ class UserRepository {
   ///
   static Future<BaseBean> register({String? userName, String? password, String? nickName}) async {
     var data = await HttpUtils.getInstance()
-        .request('/register', params: {"userName": userName, "password": password, "nickName": nickName});
+        .request('register', params: {"userName": userName, "password": password, "nickName": nickName});
     return BaseBean.fromJson(data);
   }
 
@@ -48,14 +48,14 @@ class UserRepository {
   ///
   static Future<BaseBean> updatePassword({String? oldPassword, String? newPassword}) async {
     var data = await HttpUtils.getInstance()
-        .request('/modifyPwd', params: {"oldPassword": oldPassword, "newPassword": newPassword}, method: HttpUtils.PUT);
+        .request('modifyPwd', params: {"oldPassword": oldPassword, "newPassword": newPassword}, method: HttpUtils.PUT);
     return BaseBean.fromJson(data);
   }
 
   /// 刷新token
   ///
   static Future<BaseBean> refreshToken() async {
-    var data = await HttpUtils.getInstance().request('/refreshToken', method: HttpUtils.PUT, refreshToken: true);
+    var data = await HttpUtils.getInstance().request('refreshToken', method: HttpUtils.PUT, refreshToken: true);
 
     LoginEntity? login = LoginEntity.fromJson(data[Keys.DATA]);
 
@@ -80,7 +80,7 @@ class UserRepository {
       String? signature,
       String? headImage,
       String? headImageThumb}) async {
-    var data = await HttpUtils.getInstance().request('/user/update',
+    var data = await HttpUtils.getInstance().request('user/update',
         params: {
           Keys.ID: id,
           "userName": userName,
@@ -97,7 +97,7 @@ class UserRepository {
   /// 用户信息
   ///
   static Future<UserEntity?> getUserInfo() async {
-    var data = await HttpUtils.getInstance().request('/user/self', method: HttpUtils.GET);
+    var data = await HttpUtils.getInstance().request('user/self', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return UserEntity.fromJson(result.data);
@@ -112,7 +112,7 @@ class UserRepository {
   ///
   static Future<List<UserEntity>> searchUserByName(String? keyword) async {
     var data =
-        await HttpUtils.getInstance().request('/user/findByName', method: HttpUtils.GET, params: {"name": keyword});
+        await HttpUtils.getInstance().request('user/findByName', method: HttpUtils.GET, params: {"name": keyword});
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => UserEntity.fromJson(item)).toList();
@@ -126,7 +126,7 @@ class UserRepository {
   /// [id] 用户ID
   ///
   static Future<UserEntity?> getUserInfoById(int id) async {
-    var data = await HttpUtils.getInstance().request('/user/find/$id', method: HttpUtils.GET);
+    var data = await HttpUtils.getInstance().request('user/find/$id', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return UserEntity.fromJson(result.data);
@@ -141,7 +141,7 @@ class UserRepository {
   ///
   static Future<List<UserEntity>> getUserDevices(int userIds) async {
     var data = await HttpUtils.getInstance()
-        .request('/user/terminal/online', method: HttpUtils.GET, params: {"userIds": userIds});
+        .request('user/terminal/online', method: HttpUtils.GET, params: {"userIds": userIds});
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => UserEntity.fromJson(item)).toList();

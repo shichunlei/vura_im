@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/icon_font.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/widgets/avatar_image.dart';
 import 'package:im/widgets/custom_icon_button.dart';
@@ -45,7 +46,9 @@ class ContactsPage extends StatelessWidget {
                             colors: const [Color(0xffF09A6F), Color(0xffED746B)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(RoutePath.ADD_FRIEND_PAGE);
+                            },
                             margin: EdgeInsets.only(bottom: 7.h),
                             child: Container(
                                 height: 66.r,
@@ -61,7 +64,9 @@ class ContactsPage extends StatelessWidget {
                             colors: const [Color(0xffF7D147), Color(0xffF2AF3D)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(RoutePath.BLACKLIST_PAGE);
+                            },
                             margin: EdgeInsets.only(bottom: 7.h),
                             child: Container(
                                 height: 66.r,
@@ -77,7 +82,9 @@ class ContactsPage extends StatelessWidget {
                             colors: const [Color(0xffA293F7), Color(0xff7971DC)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(RoutePath.NEW_FRIEND_PAGE);
+                            },
                             margin: EdgeInsets.only(bottom: 7.h),
                             child: Container(
                                 height: 66.r,

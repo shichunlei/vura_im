@@ -3,6 +3,7 @@ import 'package:im/entities/login_entity.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/realm/channel.dart';
+import 'package:im/realm/friend.dart';
 import 'package:im/realm/message.dart';
 import 'package:im/repository/user_repository.dart';
 import 'package:im/utils/sp_util.dart';
@@ -13,8 +14,8 @@ class RootLogic extends GetxController {
   late Realm realm;
 
   RootLogic() {
-    var config =
-        Configuration.local([Channel.schema, Message.schema], schemaVersion: 1, shouldDeleteIfMigrationNeeded: true);
+    var config = Configuration.local([Channel.schema, Message.schema, Friend.schema],
+        schemaVersion: 1, shouldDeleteIfMigrationNeeded: true);
     realm = Realm(config);
   }
 

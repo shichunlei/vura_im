@@ -55,7 +55,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                       child: RadiusInkWellWidget(
                                           color: Colors.transparent,
                                           onPressed: () {
-                                            Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE);
+                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
                                           },
                                           radius: 5.r,
                                           border: Border.all(color: const Color(0xfff5f5f5), width: 1),
@@ -212,7 +212,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("置顶聊天", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: logic.bean.value!.moveTop, onChanged: (value) {}),
+                              CupertinoSwitch(value: logic.bean.value!.moveTop, onChanged: logic.setTop),
                             ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         Container(
@@ -221,7 +221,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("免打扰", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(value: logic.bean.value!.isDisturb, onChanged: logic.setDisturb),
                             ]))
                       ])),
                   Container(
@@ -241,6 +241,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
+                            margin: EdgeInsets.only(bottom: 40.h),
                             color: Colors.transparent,
                             onPressed: () {},
                             borderRadius: BorderRadius.only(

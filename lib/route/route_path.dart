@@ -19,4 +19,8 @@ abstract class RoutePath {
   static const String SESSION_MEMBER_PAGE = "/session_member"; // 群成员
   static const String SESSION_MEMBERS_PAGE = "/session_members"; // 群成员管理
   static const String SESSION_MANAGER_PAGE = "/session_manager"; // 群管理
+  static const String ADD_FRIEND_PAGE = "/add_friend"; // 添加好友
+  static const String BLACKLIST_PAGE = "/blacklist"; // 黑名单
+  static const String NEW_FRIEND_PAGE = "/new_friend"; // 黑名单
+  static const String SESSIONS_PAGE = "/sessions"; // 群聊
 }

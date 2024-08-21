@@ -5,7 +5,11 @@ import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/keys.dart';
+import 'package:im/modules/home/session/logic.dart';
+import 'package:im/modules/root/logic.dart';
+import 'package:im/realm/channel.dart';
 import 'package:im/repository/session_repository.dart';
+import 'package:im/utils/log_utils.dart';
 
 class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   int? id;
@@ -23,7 +27,12 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   @override
   Future<SessionEntity?> loadData() async {
-    return await SessionRepository.getSessionInfo(id);
+    return await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id);
+  }
+
+  @override
+  void onCompleted(SessionEntity? data) {
+    asyncSessionDetail();
   }
 
   /// 踢人
@@ -52,5 +61,44 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   Future getMembers() async {
     members.value = await SessionRepository.getSessionMembers(id);
+  }
+
+  Future setTop(bool value) async {
+    bean.value!.moveTop = value;
+    bean.refresh();
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value).then((item) {
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    });
+  }
+
+  Future setDisturb(bool value) async {
+    bean.value!.isDisturb = value;
+    bean.refresh();
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value).then((item) {
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    });
+  }
+
+  void asyncSessionDetail() async {
+    SessionEntity? session = await SessionRepository.getSessionInfo(id);
+    if (session != null) {
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session).then((value) async {
+        bean.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id);
+        bean.refresh();
+        try {
+          Get.find<SessionLogic>().refreshList();
+        } catch (e) {
+          Log.e(e.toString());
+        }
+      });
+    }
   }
 }

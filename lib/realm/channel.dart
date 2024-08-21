@@ -32,6 +32,9 @@ class _Channel {
   String? lastMessage;
   int lastMessageTime = 0;
   bool moveTop = false;
+  bool isDisturb = false;
+  bool isAdmin = false;
+  bool isSupAdmin = false;
 }
 
 class SessionRealm {
@@ -44,8 +47,8 @@ class SessionRealm {
     Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Channel>()
-        .query(
-            r"userId == $0 AND TRUEPREDICATE SORT(lastMessageTime DESC)", [Get.find<RootLogic>().user.value?.id ?? 0])
+        .query(r"userId == $0 AND TRUEPREDICATE SORT(moveTop ASC ,lastMessageTime DESC)",
+            [Get.find<RootLogic>().user.value?.id ?? 0])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
@@ -70,6 +73,32 @@ class SessionRealm {
   }
 
   /// 更新会话最后一条消息
+  Future updateSessionInfo(SessionEntity session) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
+    if (_session != null) {
+      Log.d("----------------->${session.id}");
+
+      await _realm.writeAsync(() {
+        _session.name = session.name;
+        _session.headImage = session.headImage;
+        _session.headImageThumb = session.headImageThumb;
+        _session.ownerId = session.ownerId;
+        _session.notice = session.notice;
+        _session.remarkNickName = session.remarkNickName;
+        _session.showNickName = session.showNickName;
+        _session.showGroupName = session.showGroupName;
+        _session.remarkGroupName = session.remarkGroupName;
+        _session.deleted = session.deleted;
+        _session.quit = session.quit;
+      });
+      Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
+    } else {
+      Log.d("====================================${session.toJson()}");
+      upsert(sessionEntityToRealm(session));
+    }
+  }
+
+  /// 更新会话最后一条消息
   Future updateLastMessage(SessionEntity session, MessageEntity message) async {
     Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}");
     if (_session != null) {
@@ -85,6 +114,28 @@ class SessionRealm {
     } else {
       Log.d("====================================${session.toJson()}");
       upsert(sessionEntityToRealm(session));
+    }
+  }
+
+  /// 更新会话置顶状态
+  Future setChannelTop(int? id, bool isTop) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    if (_session != null) {
+      await _realm.writeAsync(() {
+        _session.moveTop = isTop;
+      });
+      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+    }
+  }
+
+  /// 更新会话免打扰状态
+  Future setChannelDisturb(int? id, bool isDisturb) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    if (_session != null) {
+      await _realm.writeAsync(() {
+        _session.isDisturb = isDisturb;
+      });
+      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
     }
   }
 
@@ -110,6 +161,9 @@ SessionEntity sessionRealmToEntity(Channel session) {
       quit: session.quit,
       lastMessage: session.lastMessage == null ? null : MessageEntity.fromJson(json.decode(session.lastMessage!)),
       lastMessageTime: session.lastMessageTime,
+      isDisturb: session.isDisturb,
+      isAdmin: session.isAdmin,
+      isSupAdmin: session.isSupAdmin,
       moveTop: session.moveTop);
 }
 
@@ -131,5 +185,8 @@ Channel sessionEntityToRealm(SessionEntity session) {
       quit: session.quit,
       lastMessageTime: session.lastMessageTime,
       moveTop: session.moveTop,
+      isDisturb: session.isDisturb,
+      isAdmin: session.isAdmin,
+      isSupAdmin: session.isSupAdmin,
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

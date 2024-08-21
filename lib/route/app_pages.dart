@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/account/binding.dart';
 import 'package:im/modules/account/page.dart';
+import 'package:im/modules/add_friend/binding.dart';
+import 'package:im/modules/add_friend/page.dart';
+import 'package:im/modules/blacklist/binding.dart';
+import 'package:im/modules/blacklist/page.dart';
 import 'package:im/modules/chat/binding.dart';
 import 'package:im/modules/chat/page.dart';
 import 'package:im/modules/home/binding.dart';
@@ -12,6 +16,8 @@ import 'package:im/modules/line/binding.dart';
 import 'package:im/modules/line/page.dart';
 import 'package:im/modules/login/binding.dart';
 import 'package:im/modules/login/page.dart';
+import 'package:im/modules/new_friend/binding.dart';
+import 'package:im/modules/new_friend/page.dart';
 import 'package:im/modules/personal/binding.dart';
 import 'package:im/modules/personal/page.dart';
 import 'package:im/modules/privacy/binding.dart';
@@ -30,6 +36,8 @@ import 'package:im/modules/session_member/binding.dart';
 import 'package:im/modules/session_member/page.dart';
 import 'package:im/modules/session_members/binding.dart';
 import 'package:im/modules/session_members/page.dart';
+import 'package:im/modules/sessions/binding.dart';
+import 'package:im/modules/sessions/page.dart';
 import 'package:im/modules/setting/binding.dart';
 import 'package:im/modules/setting/page.dart';
 import 'package:im/modules/windows/binding.dart';
@@ -73,5 +81,9 @@ abstract class AppPages {
         name: RoutePath.SESSION_MANAGER_PAGE,
         page: () => SessionManagerPage(tag: "${Get.arguments[Keys.ID]}"),
         binding: SessionManagerBinding()),
+    GetPage(name: RoutePath.BLACKLIST_PAGE, page: () => const BlacklistPage(), binding: BlacklistBinding()),
+    GetPage(name: RoutePath.NEW_FRIEND_PAGE, page: () => const NewFriendPage(), binding: NewFriendBinding()),
+    GetPage(name: RoutePath.ADD_FRIEND_PAGE, page: () => const AddFriendPage(), binding: AddFriendBinding()),
+    GetPage(name: RoutePath.SESSIONS_PAGE, page: () => const SessionsPage(), binding: SessionsBinding()),
   ];
 }

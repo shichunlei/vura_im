@@ -84,5 +84,6 @@ test_demo_page.dart
 test.dart
 java_pid91328.hprof
 *.g.dart
+*.realm.dart
 .metadata
 .kotlin/

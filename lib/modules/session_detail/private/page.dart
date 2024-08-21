@@ -93,7 +93,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("置顶聊天", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(value: logic.bean.value!.moveTop, onChanged: logic.setTop),
                             ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         Container(
@@ -102,7 +102,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("免打扰", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(value: logic.bean.value!.isDisturb, onChanged: logic.setDisturb),
                             ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         Container(
