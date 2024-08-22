@@ -28,8 +28,8 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
           }
         } else {
           MessageEntity message = MessageEntity.fromJson(data);
-          int? myUserId = Get.find<RootLogic>().user.value?.id;
-          int? id;
+          String? myUserId = Get.find<RootLogic>().user.value?.id;
+          String? id;
           String? headImage;
           String? name;
           if (message.sendId != myUserId) {
@@ -84,7 +84,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
       Log.d("WebSocket 连接成功");
 
       /// 拉取离线消息
-      SessionRepository.getOfflineMessages("all", groupMinId: 0, privateMinId: 0);
+      SessionRepository.getOfflineMessages("all", groupMinId: "0", privateMinId: "0");
     });
   }
 

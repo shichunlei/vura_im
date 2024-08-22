@@ -5,7 +5,7 @@ part 'member_entity.g.dart';
 @JsonSerializable()
 class MemberEntity {
   @JsonKey(includeIfNull: false)
-  int? userId;
+  String? userId;
   @JsonKey(includeIfNull: false)
   String? showNickName;
   @JsonKey(includeIfNull: false)

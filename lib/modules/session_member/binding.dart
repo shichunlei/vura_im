@@ -6,6 +6,6 @@ import 'logic.dart';
 class SessionMemberBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<SessionMemberLogic>(() => SessionMemberLogic(), tag: "${Get.arguments[Keys.ID]}");
+    Get.lazyPut<SessionMemberLogic>(() => SessionMemberLogic(), tag: Get.arguments[Keys.ID]);
   }
 }

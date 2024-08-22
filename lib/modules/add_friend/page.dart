@@ -3,6 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/global/icon_font.dart';
+import 'package:im/global/keys.dart';
+import 'package:im/modules/root/logic.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/widgets/appbar_bottom_search_view.dart';
 import 'package:im/widgets/avatar_image.dart';
@@ -46,7 +49,10 @@ class AddFriendPage extends StatelessWidget {
                         ]))),
                 Divider(height: 0, indent: 22.w, endIndent: 22.w),
                 RadiusInkWellWidget(
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(RoutePath.MY_QR_CODE_PAGE,
+                          arguments: {Keys.ID: Get.find<RootLogic>().user.value?.id});
+                    },
                     color: Colors.transparent,
                     radius: 0,
                     padding: EdgeInsets.symmetric(horizontal: 22.w),

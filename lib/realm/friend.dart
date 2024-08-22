@@ -11,8 +11,8 @@ part 'friend.realm.dart';
 class _Friend {
   @PrimaryKey()
   String? _id;
-  int? id;
-  int? userId;
+  String? id;
+  String? userId;
   String? nickName;
   String? userName;
   int sex = -1;
@@ -33,7 +33,7 @@ class FriendRealm {
     Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Friend>()
-        .query(r"userId == $0", [Get.find<RootLogic>().user.value?.id ?? 0])
+        .query(r"userId == $0", ["${Get.find<RootLogic>().user.value?.id}"])
         .map((item) => friendRealmToEntity(item))
         .toList();
   }
@@ -57,7 +57,7 @@ class FriendRealm {
     });
   }
 
-  Future deleteFriend(int? id) async {
+  Future deleteFriend(String? id) async {
     Friend? _friend = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
     if (_friend != null) {
       await _realm.writeAsync(() {

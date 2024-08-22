@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:im/modules/root/logic.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
@@ -39,8 +41,10 @@ class PrivacyPage extends StatelessWidget {
                                   Text("登录账号",
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
-                                  Text("234242424",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                                  Obx(() {
+                                    return Text("${Get.find<RootLogic>().user.value?.userName}",
+                                        style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999));
+                                  }),
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ]))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
@@ -48,7 +52,9 @@ class PrivacyPage extends StatelessWidget {
                             color: Colors.transparent,
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(RoutePath.UPDATE_PASSWORD_PAGE);
+                            },
                             child: Container(
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 10.w),
@@ -86,7 +92,9 @@ class PrivacyPage extends StatelessWidget {
                             color: Colors.transparent,
                             borderRadius: BorderRadius.only(
                                 bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.toNamed(RoutePath.GOOGLE_VERIFY_PAGE);
+                            },
                             child: Container(
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 10.w),

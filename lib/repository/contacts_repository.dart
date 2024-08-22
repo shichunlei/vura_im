@@ -21,7 +21,7 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<UserEntity?> getFriendInfo(int? id) async {
+  static Future<UserEntity?> getFriendInfo(String? id) async {
     var data = await HttpUtils.getInstance().request('friend/find/$id', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
@@ -35,17 +35,17 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> deleteFriend(int? id) async {
+  static Future<BaseBean> deleteFriend(String? id) async {
     var data = await HttpUtils.getInstance()
         .request('friend/delete/$id', params: {"friendId": id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 更新好友信息
+  /// 更新好友信息 TODO
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> updateFriend(int? id, {String? nickName, String? headImage}) async {
+  static Future<BaseBean> updateFriend(String? id, {String? nickName, String? headImage}) async {
     var data = await HttpUtils.getInstance().request('friend/update',
         params: {"id": id, if (nickName != null) "nickName": nickName, if (headImage != null) "headImage": headImage},
         method: HttpUtils.PUT,
@@ -57,7 +57,7 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> addFriendToBlack(int? id) async {
+  static Future<BaseBean> addFriendToBlack(String? id) async {
     var data = await HttpUtils.getInstance().request('friend/black/$id', showErrorToast: true);
     return BaseBean.fromJson(data);
   }
@@ -66,7 +66,7 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> removeFriendFromBlack(int? id) async {
+  static Future<BaseBean> removeFriendFromBlack(String? id) async {
     var data = await HttpUtils.getInstance().request('friend/black/reset/$id', showErrorToast: true);
     return BaseBean.fromJson(data);
   }
@@ -127,7 +127,7 @@ class ContactsRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<BaseBean> apply(int? id, {FriendSourceType source = FriendSourceType.NEAR, String? reason}) async {
+  static Future<BaseBean> apply(String? id, {FriendSourceType source = FriendSourceType.NEAR, String? reason}) async {
     var data = await HttpUtils.getInstance().request('apply/applyFriend',
         params: {"userId": id, "reason": reason, "source": source.name}, showErrorToast: true);
     return BaseBean.fromJson(data);

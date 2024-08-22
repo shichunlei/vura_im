@@ -6,6 +6,6 @@ import 'logic.dart';
 class GroupSessionDetailBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<GroupSessionDetailLogic>(() => GroupSessionDetailLogic(), tag: "${Get.arguments[Keys.ID]}");
+    Get.lazyPut<GroupSessionDetailLogic>(() => GroupSessionDetailLogic(), tag: Get.arguments[Keys.ID]);
   }
 }

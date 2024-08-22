@@ -60,6 +60,8 @@ dependencies:
   google_fonts: ^6.2.1
   # 图片裁剪
   image_cropper: ^8.0.2
+  # 图片保存
+  image_gallery_saver: ^2.0.3
   # 图片选择
   image_picker: ^1.1.2
   # json 注解
@@ -71,7 +73,11 @@ dependencies:
   permission_handler: ^11.3.1
   # 汉字转拼音库
   pinyin: ^3.3.0
+  # 二维码
+  pretty_qr_code: ^3.3.0
+  # 本地数据库
   realm: ^3.4.1
+  screenshot: ^3.0.0
   # 本地化存储
   shared_preferences: ^2.3.1
   synchronized: ^3.1.0+1

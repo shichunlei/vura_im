@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:im/base/base_object_logic.dart';
 import 'package:im/entities/base_bean.dart';
+import 'package:im/entities/file_entity.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
@@ -9,12 +10,14 @@ import 'package:im/global/keys.dart';
 import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
+import 'package:im/repository/common_repository.dart';
 import 'package:im/repository/session_repository.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/log_utils.dart';
+import 'package:im/utils/toast_util.dart';
 
 class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
-  int? id;
+  String? id;
 
   GroupSessionDetailLogic() {
     id = Get.arguments[Keys.ID];
@@ -85,25 +88,13 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   Future setTop(bool value) async {
     bean.value!.moveTop = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value, SessionType.group).then((item) {
-      try {
-        Get.find<SessionLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-    });
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value, SessionType.group);
   }
 
   Future setDisturb(bool value) async {
     bean.value!.isDisturb = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value, SessionType.group).then((item) {
-      try {
-        Get.find<SessionLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-    });
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value, SessionType.group);
   }
 
   void asyncSessionDetail() async {
@@ -118,6 +109,67 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
           Log.e(e.toString());
         }
       });
+    }
+  }
+
+  Future updateName(String name) async {
+    showLoading();
+    BaseBean result = await SessionRepository.updateSession(id, name: name);
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "修改成功");
+      bean.value?.name = name;
+      bean.refresh();
+
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+          id: id,
+          type: SessionType.group,
+          name: name,
+          headImage: bean.value?.headImage,
+          headImageThumb: bean.value?.headImageThumb));
+    }
+  }
+
+  Future updateNotice(String notice) async {
+    showLoading();
+    BaseBean result = await SessionRepository.updateSession(id, notice: notice);
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "修改成功");
+      bean.value?.notice = notice;
+      bean.refresh();
+
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+          id: id,
+          type: SessionType.group,
+          name: bean.value?.name,
+          notice: notice,
+          headImage: bean.value?.headImage,
+          headImageThumb: bean.value?.headImageThumb));
+    }
+  }
+
+  Future updateAvatar(String path) async {
+    showLoading();
+    FileEntity? file = await CommonRepository.uploadImage(path);
+    if (file != null) {
+      BaseBean result =
+          await SessionRepository.updateSession(id, headImage: file.originUrl, headImageThumb: file.thumbUrl);
+      hiddenLoading();
+      if (result.code == 200) {
+        showToast(text: "修改成功");
+        bean.value?.headImage = file.originUrl;
+        bean.value?.headImageThumb = file.thumbUrl;
+        bean.refresh();
+        await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+            id: id,
+            type: SessionType.group,
+            name: bean.value?.name,
+            headImage: file.originUrl,
+            headImageThumb: file.thumbUrl));
+      }
+    } else {
+      hiddenLoading();
     }
   }
 }

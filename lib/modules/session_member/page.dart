@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/device_utils.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
@@ -30,12 +31,26 @@ class SessionMemberPage extends StatelessWidget {
                     margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
                     padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                     child: Row(children: [
-                      RoundImage("https://q2.itc.cn/q_70/images03/20240807/9efb7d3e616440c6ab1d7e1d9b9be14f.jpeg",
+                      RoundImage(logic.bean.value?.headImage,
                           width: 53.r,
                           height: 53.r,
                           radius: 5.r,
-                          onTap: () {},
-                          errorImage: "assets/images/default_face.webp",
+                          errorWidget: StringUtil.isNotEmpty(logic.bean.value?.showNickName)
+                              ? Container(
+                                  width: 53.r,
+                                  height: 53.r,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                      border: Border.all(color: Colors.white, width: 1),
+                                      color: ColorUtil.strToColor(logic.bean.value!.showNickName!)),
+                                  alignment: Alignment.center,
+                                  child: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(logic.bean.value!.showNickName![0],
+                                              style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                              : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
                           placeholderImage: "assets/images/default_face.webp"),
                       SizedBox(width: 13.w),
                       Expanded(
@@ -43,7 +58,7 @@ class SessionMemberPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                            Text("张三",
+                            Text("${logic.bean.value?.remarkNickName}",
                                 style: GoogleFonts.roboto(
                                     fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w600)),
                             SizedBox(height: 13.r),
@@ -69,19 +84,20 @@ class SessionMemberPage extends StatelessWidget {
                           child: Row(children: [
                             Text("昵称", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp)),
                             const Spacer(),
-                            Text("张三", style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
+                            Text("${logic.bean.value?.remarkNickName}",
+                                style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
                           ]))
                     ])),
                 const Spacer(),
                 RadiusInkWellWidget(
+                    onPressed: logic.applyFriend,
                     child: Container(
                         height: 44.h,
                         width: 177.w,
                         alignment: Alignment.center,
                         child: Text("添加好友",
-                            style:
-                                GoogleFonts.roboto(fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))),
-                    onPressed: () {}),
+                            style: GoogleFonts.roboto(
+                                fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white)))),
                 SizedBox(height: DeviceUtils.setBottomMargin(20.h))
               ]);
             }));

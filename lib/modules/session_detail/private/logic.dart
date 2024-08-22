@@ -4,16 +4,14 @@ import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
-import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
 import 'package:im/realm/friend.dart';
 import 'package:im/repository/contacts_repository.dart';
 import 'package:im/route/route_path.dart';
-import 'package:im/utils/log_utils.dart';
 
 class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
-  int? id;
+  String? id;
 
   PrivateSessionDetailLogic() {
     id = Get.arguments[Keys.ID];
@@ -33,27 +31,13 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   Future setTop(bool value) async {
     bean.value!.moveTop = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value, SessionType.private).then((item) {
-      try {
-        Get.find<SessionLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-    });
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelTop(id, value, SessionType.private);
   }
 
   Future setDisturb(bool value) async {
     bean.value!.isDisturb = value;
     bean.refresh();
-    await SessionRealm(realm: Get.find<RootLogic>().realm)
-        .setChannelDisturb(id, value, SessionType.private)
-        .then((item) {
-      try {
-        Get.find<SessionLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-    });
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelDisturb(id, value, SessionType.private);
   }
 
   /// 删除好友
@@ -86,5 +70,12 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
       Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
     }
+  }
+
+  Future updateRemarkName(String remark) async {
+    showLoading();
+    BaseBean result = await ContactsRepository.updateFriend(id, nickName: remark);
+    hiddenLoading();
+    if (result.code == 200) {}
   }
 }

@@ -7,11 +7,11 @@ part 'session_entity.g.dart';
 @JsonSerializable()
 class SessionEntity {
   @JsonKey(includeIfNull: false)
-  int? id;
+  String? id;
   @JsonKey(includeIfNull: false)
   String? name;
   @JsonKey(includeIfNull: false)
-  int? ownerId;
+  String? ownerId;
   @JsonKey(includeIfNull: false)
   String? headImage;
   @JsonKey(includeIfNull: false)

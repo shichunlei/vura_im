@@ -17,11 +17,11 @@ part 'channel.realm.dart';
 class _Channel {
   @PrimaryKey()
   late String _id;
-  int? userId;
+  String? userId;
   String type = "group";
-  int? id;
+  String? id;
   String? name;
-  int? ownerId;
+  String? ownerId;
   String? headImage;
   String? headImageThumb;
   String? notice;
@@ -46,17 +46,17 @@ class SessionRealm {
 
   /// 查询所有会话
   Future<List<SessionEntity>> queryAllSessions() async {
-    Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
+    Log.d("queryAllSessions=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Channel>()
         .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop ASC ,lastMessageTime DESC)",
-            [Get.find<RootLogic>().user.value?.id ?? 0, false])
+            ["${Get.find<RootLogic>().user.value?.id}", false])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
 
   /// 查询会话
-  Future<SessionEntity?> querySessionById(int? id, SessionType sessionType) async {
+  Future<SessionEntity?> querySessionById(String? id, SessionType sessionType) async {
     Log.d("querySessionById=====================$id");
     Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (session != null) {
@@ -83,8 +83,16 @@ class SessionRealm {
       await _realm.writeAsync(() {
         _session.name = session.name;
         _session.headImage = session.headImage;
+        _session.headImageThumb = session.headImageThumb;
+        _session.notice = session.notice;
       });
-      Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
+      Log.d("updateSessionInfo===${_session.id}================>${_session.toEJson()}");
+
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     } else {
       Log.d("====================================${session.toJson()}");
       upsert(sessionEntityToRealm(session));
@@ -113,34 +121,45 @@ class SessionRealm {
   }
 
   /// 更新会话置顶状态
-  Future setChannelTop(int? id, bool isTop, SessionType sessionType) async {
+  Future setChannelTop(String? id, bool isTop, SessionType sessionType) async {
     Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
         _session.moveTop = isTop;
       });
       Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 
   /// 更新会话免打扰状态
-  Future setChannelDisturb(int? id, bool isDisturb, SessionType sessionType) async {
+  Future setChannelDisturb(String? id, bool isDisturb, SessionType sessionType) async {
     Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
         _session.isDisturb = isDisturb;
       });
       Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 
-  Future deleteChannel(int? id, SessionType sessionType) async {
+  /// 删除会话
+  Future deleteChannel(String? id, SessionType sessionType) async {
     Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
         _session.deleted = true;
       });
-      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      Log.d("deleteChannel===${_session.id}================>${_session.toEJson()}");
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {

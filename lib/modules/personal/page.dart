@@ -3,10 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/global/icon_font.dart';
+import 'package:im/global/keys.dart';
+import 'package:im/modules/root/logic.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/dialog_util.dart';
 import 'package:im/utils/tool_util.dart';
 import 'package:im/widgets/avatar_image.dart';
+import 'package:im/widgets/dialog/update_text_dialog.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 
@@ -60,7 +64,12 @@ class PersonalPage extends StatelessWidget {
                     child: Column(children: [
                       RadiusInkWellWidget(
                           color: Colors.transparent,
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.dialog(UpdateTextDialog(title: "请输入昵称", value: logic.bean.value?.nickName ?? ""))
+                                .then((value) {
+                              if (value != null) logic.updateNickname(value);
+                            });
+                          },
                           borderRadius:
                               BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                           child: Container(
@@ -97,7 +106,10 @@ class PersonalPage extends StatelessWidget {
                           color: Colors.transparent,
                           borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.MY_QR_CODE_PAGE,
+                                arguments: {Keys.ID: Get.find<RootLogic>().user.value?.id});
+                          },
                           child: Container(
                               height: 66.h,
                               padding: EdgeInsets.only(left: 22.w, right: 10.w),

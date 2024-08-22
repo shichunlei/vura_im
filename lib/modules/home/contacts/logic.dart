@@ -82,8 +82,12 @@ class ContactsLogic extends BaseListLogic<UserEntity> {
       });
       Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private});
     } else {
-      SessionEntity sessionEntity =
-          SessionEntity(id: user.id, name: user.nickName, type: SessionType.private, headImage: user.headImage);
+      SessionEntity sessionEntity = SessionEntity(
+          id: user.id,
+          name: user.nickName,
+          type: SessionType.private,
+          headImage: user.headImage,
+          headImageThumb: user.headImageThumb);
       await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(sessionEntity).then((value) {
         try {
           Get.find<SessionLogic>().refreshList();

@@ -116,7 +116,9 @@ class SessionManagerPage extends StatelessWidget {
                       ])),
                   RadiusInkWellWidget(
                       padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(RoutePath.MUTE_PAGE, arguments: {Keys.ID: logic.id});
+                      },
                       radius: 11.r,
                       color: Colors.white,
                       margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
@@ -135,7 +137,9 @@ class SessionManagerPage extends StatelessWidget {
                               fontSize: 13.sp, fontWeight: FontWeight.bold, color: ColorUtil.color_999999))),
                   RadiusInkWellWidget(
                       padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
+                      },
                       radius: 11.r,
                       color: Colors.white,
                       margin: EdgeInsets.symmetric(horizontal: 22.w),

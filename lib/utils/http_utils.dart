@@ -50,7 +50,7 @@ class HttpUtils {
                   responsePen: AnsiPen()..green(),
                   errorPen: AnsiPen()..red())));
         } else {
-          _dio!.interceptors.add(LoggingInterceptor());
+          // _dio!.interceptors.add(LoggingInterceptor());
         }
       }
     }
@@ -156,7 +156,8 @@ class HttpUtils {
           options: Options(
               contentType: "multipart/form-data",
               receiveTimeout: const Duration(milliseconds: UPLOAD_TIMEOUT),
-              headers: {Keys.ACCESS_TOKEN: ""}), onReceiveProgress: (int count, int total) {
+              headers: {Keys.ACCESS_TOKEN: SpUtil.getString(Keys.ACCESS_TOKEN)}),
+          onReceiveProgress: (int count, int total) {
         Log.d('onReceiveProgress: ${(count / total * 100).toStringAsFixed(0)} %');
       }, onSendProgress: (int count, int total) {
         Log.d('onSendProgress: ${(count / total * 100).toStringAsFixed(0)} %');

@@ -7,13 +7,15 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/user_entity.dart';
-import 'package:im/global/enum.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/dialog_util.dart';
 import 'package:im/utils/string_util.dart';
+import 'package:im/utils/tool_util.dart';
+import 'package:im/widgets/dialog/update_text_dialog.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
@@ -95,7 +97,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 ]);
                               }
 
-                              return ItemSessionUser(member: logic.members[index]);
+                              return ItemSessionUser(member: logic.members[index], groupId: logic.id);
                             },
                             itemCount: min(
                                 10,
@@ -137,7 +139,15 @@ class GroupSessionDetailPage extends StatelessWidget {
                       child: Column(children: [
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              if (!logic.bean.value!.isAdmin) {
+                                return;
+                              }
+                              Get.dialog(UpdateTextDialog(title: "请输入群聊名称", value: logic.bean.value?.name ?? ""))
+                                  .then((value) {
+                                if (value != null) logic.updateName(value);
+                              });
+                            },
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                             child: Container(
@@ -153,7 +163,18 @@ class GroupSessionDetailPage extends StatelessWidget {
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              if (!logic.bean.value!.isAdmin) {
+                                return;
+                              }
+                              showImagePickerDialog(context).then((value) {
+                                if (value != null) {
+                                  pickerImage(value, cropImage: true).then((path) {
+                                    if (path != null) logic.updateAvatar(path);
+                                  });
+                                }
+                              });
+                            },
                             radius: 0,
                             child: Container(
                                 height: 60.h,
@@ -189,7 +210,19 @@ class GroupSessionDetailPage extends StatelessWidget {
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              if (!logic.bean.value!.isAdmin) {
+                                return;
+                              }
+                              Get.dialog(UpdateTextDialog(
+                                      title: "请输入群公告",
+                                      value: logic.bean.value?.notice ?? "",
+                                      maxLines: 20,
+                                      minLines: 3))
+                                  .then((value) {
+                                if (value != null) logic.updateName(value);
+                              });
+                            },
                             radius: 0,
                             child: Container(
                                 height: 60.h,
@@ -274,8 +307,9 @@ class GroupSessionDetailPage extends StatelessWidget {
 
 class ItemSessionUser extends StatelessWidget {
   final MemberEntity member;
+  final String? groupId;
 
-  const ItemSessionUser({super.key, required this.member});
+  const ItemSessionUser({super.key, required this.member, this.groupId});
 
   @override
   Widget build(BuildContext context) {
@@ -284,7 +318,7 @@ class ItemSessionUser extends StatelessWidget {
           aspectRatio: 1,
           child: RoundImage("${member.headImage}", width: double.infinity, height: double.infinity, radius: 5.r,
               onTap: () {
-            Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId});
+            Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId, "groupId": groupId});
           },
               errorWidget: StringUtil.isNotEmpty(member.showNickName)
                   ? Container(

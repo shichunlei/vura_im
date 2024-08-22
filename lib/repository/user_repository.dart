@@ -73,7 +73,7 @@ class UserRepository {
   /// [userName] 用户名
   /// [nickName] 昵称
   ///
-  static Future<BaseBean> updateUser(int id,
+  static Future<BaseBean> updateUser(String? id,
       {String? userName,
       String? nickName,
       int? sex,
@@ -126,7 +126,7 @@ class UserRepository {
   ///
   /// [id] 用户ID
   ///
-  static Future<UserEntity?> getUserInfoById(int id) async {
+  static Future<UserEntity?> getUserInfoById(String? id) async {
     var data = await HttpUtils.getInstance().request('user/find/$id', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
@@ -140,7 +140,7 @@ class UserRepository {
   ///
   /// [userIds]
   ///
-  static Future<List<UserEntity>> getUserDevices(int userIds) async {
+  static Future<List<UserEntity>> getUserDevices(String? userIds) async {
     var data = await HttpUtils.getInstance()
         .request('user/terminal/online', method: HttpUtils.GET, params: {"userIds": userIds});
     BaseBean result = BaseBean.fromJsonToList(data);

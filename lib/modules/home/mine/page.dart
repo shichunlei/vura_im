@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/global/icon_font.dart';
+import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
@@ -26,7 +27,11 @@ class MinePage extends StatelessWidget {
             title: Text("mine".tr),
             actions: [
               CustomIconButton(icon: const Icon(IconFont.scan, color: ColorUtil.color_333333), onPressed: () {}),
-              CustomIconButton(icon: const Icon(IconFont.qr, color: ColorUtil.color_333333), onPressed: () {})
+              CustomIconButton(
+                  icon: const Icon(IconFont.qr, color: ColorUtil.color_333333),
+                  onPressed: () {
+                    Get.toNamed(RoutePath.MY_QR_CODE_PAGE, arguments: {Keys.ID: Get.find<RootLogic>().user.value?.id});
+                  })
             ],
             centerTitle: false),
         body: BaseWidget(

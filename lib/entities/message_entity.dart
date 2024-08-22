@@ -4,17 +4,17 @@ part 'message_entity.g.dart';
 
 @JsonSerializable()
 class MessageEntity {
-  int? id;
+  String? id;
   @JsonKey(includeIfNull: false)
-  int? groupId;
+  String? groupId;
   @JsonKey(includeIfNull: false)
-  int? sendId;
+  String? sendId;
   @JsonKey(includeIfNull: false)
   String? sendNickName;
   @JsonKey(includeIfNull: false)
   String? sendHeadImage;
   @JsonKey(name: "recvId", includeIfNull: false)
-  int? receiveId;
+  String? receiveId;
   @JsonKey(name: "recvNickName", includeIfNull: false)
   String? receiveNickName;
   @JsonKey(name: "recvHeadImage", includeIfNull: false)

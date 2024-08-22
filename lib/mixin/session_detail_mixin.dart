@@ -11,7 +11,7 @@ import 'package:im/utils/log_utils.dart';
 mixin SessionDetailMixin on GetxController {
   Rx<SessionEntity?> session = Rx<SessionEntity?>(null);
 
-  void getSessionDetail(int? id, SessionType type, {UserEntity? user}) async {
+  void getSessionDetail(String? id, SessionType type, {UserEntity? user}) async {
     SessionEntity? session = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, type);
     if (session == null && type == SessionType.private) {
       this.session.value = SessionEntity(id: id, type: type, name: "", headImage: "", headImageThumb: "");
@@ -25,7 +25,7 @@ mixin SessionDetailMixin on GetxController {
 
   RxList<MemberEntity> members = RxList<MemberEntity>([]);
 
-  Future getMembers(int? id) async {
+  Future getMembers(String? id) async {
     members.value = await SessionRepository.getSessionMembers(id);
   }
 }

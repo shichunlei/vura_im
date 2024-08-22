@@ -14,7 +14,7 @@ import 'package:im/repository/session_repository.dart';
 import 'package:im/utils/log_utils.dart';
 
 class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
-  int? id;
+  String? id;
   late SessionType type;
 
   TextEditingController controller = TextEditingController();

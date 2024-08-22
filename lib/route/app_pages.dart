@@ -8,6 +8,8 @@ import 'package:im/modules/blacklist/binding.dart';
 import 'package:im/modules/blacklist/page.dart';
 import 'package:im/modules/chat/binding.dart';
 import 'package:im/modules/chat/page.dart';
+import 'package:im/modules/google_verify/binding.dart';
+import 'package:im/modules/google_verify/page.dart';
 import 'package:im/modules/home/binding.dart';
 import 'package:im/modules/home/page.dart';
 import 'package:im/modules/language/binding.dart';
@@ -16,8 +18,16 @@ import 'package:im/modules/line/binding.dart';
 import 'package:im/modules/line/page.dart';
 import 'package:im/modules/login/binding.dart';
 import 'package:im/modules/login/page.dart';
+import 'package:im/modules/mute/binding.dart';
+import 'package:im/modules/mute/page.dart';
+import 'package:im/modules/my_qr_code/binding.dart';
+import 'package:im/modules/my_qr_code/page.dart';
 import 'package:im/modules/new_friend/binding.dart';
 import 'package:im/modules/new_friend/page.dart';
+import 'package:im/modules/package/publish/binding.dart';
+import 'package:im/modules/package/publish/page.dart';
+import 'package:im/modules/package/result/binding.dart';
+import 'package:im/modules/package/result/page.dart';
 import 'package:im/modules/personal/binding.dart';
 import 'package:im/modules/personal/page.dart';
 import 'package:im/modules/privacy/binding.dart';
@@ -62,28 +72,40 @@ abstract class AppPages {
         name: RoutePath.SELECT_CONTACTS_PAGE, page: () => const SelectContactsPage(), binding: SelectContactsBinding()),
     GetPage(
         name: RoutePath.GROUP_SESSION_DETAIL_PAGE,
-        page: () => GroupSessionDetailPage(tag: "${Get.arguments[Keys.ID]}"),
+        page: () => GroupSessionDetailPage(tag: Get.arguments[Keys.ID]),
         binding: GroupSessionDetailBinding()),
     GetPage(
         name: RoutePath.PRIVATE_SESSION_DETAIL_PAGE,
-        page: () => PrivateSessionDetailPage(tag: "${Get.arguments[Keys.ID]}"),
+        page: () => PrivateSessionDetailPage(tag: Get.arguments[Keys.ID]),
         binding: PrivateSessionDetailBinding()),
-    GetPage(name: RoutePath.CHAT_PAGE, page: () => ChatPage(tag: "${Get.arguments[Keys.ID]}"), binding: ChatBinding()),
+    GetPage(name: RoutePath.CHAT_PAGE, page: () => ChatPage(tag: Get.arguments[Keys.ID]), binding: ChatBinding()),
     GetPage(
         name: RoutePath.SESSION_MEMBER_PAGE,
-        page: () => SessionMemberPage(tag: "${Get.arguments[Keys.ID]}"),
+        page: () => SessionMemberPage(tag: Get.arguments[Keys.ID]),
         binding: SessionMemberBinding()),
     GetPage(
         name: RoutePath.SESSION_MEMBERS_PAGE,
-        page: () => SessionMembersPage(tag: "${Get.arguments[Keys.ID]}"),
+        page: () => SessionMembersPage(tag: Get.arguments[Keys.ID]),
         binding: SessionMembersBinding()),
     GetPage(
         name: RoutePath.SESSION_MANAGER_PAGE,
-        page: () => SessionManagerPage(tag: "${Get.arguments[Keys.ID]}"),
+        page: () => SessionManagerPage(tag: Get.arguments[Keys.ID]),
         binding: SessionManagerBinding()),
+    GetPage(name: RoutePath.MUTE_PAGE, page: () => MutePage(tag: Get.arguments[Keys.ID]), binding: MuteBinding()),
     GetPage(name: RoutePath.BLACKLIST_PAGE, page: () => const BlacklistPage(), binding: BlacklistBinding()),
     GetPage(name: RoutePath.NEW_FRIEND_PAGE, page: () => const NewFriendPage(), binding: NewFriendBinding()),
     GetPage(name: RoutePath.ADD_FRIEND_PAGE, page: () => const AddFriendPage(), binding: AddFriendBinding()),
     GetPage(name: RoutePath.SESSIONS_PAGE, page: () => const SessionsPage(), binding: SessionsBinding()),
+    GetPage(
+        name: RoutePath.PACKAGE_RESULT_PAGE,
+        page: () => PackageResultPage(tag: Get.arguments[Keys.ID]),
+        binding: PackageResultBinding()),
+    GetPage(
+        name: RoutePath.PACKAGE_PUBLISH_PAGE, page: () => const PackagePublishPage(), binding: PackagePublishBinding()),
+    GetPage(
+        name: RoutePath.MY_QR_CODE_PAGE,
+        page: () => MyQrCodePage(tag: Get.arguments[Keys.ID]),
+        binding: MyQrCodeBinding()),
+    GetPage(name: RoutePath.GOOGLE_VERIFY_PAGE, page: () => const GoogleVerifyPage(), binding: GoogleVerifyBinding()),
   ];
 }

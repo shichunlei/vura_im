@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/string_util.dart';
+import 'package:im/widgets/dialog/update_text_dialog.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
@@ -72,24 +73,27 @@ class PrivateSessionDetailPage extends StatelessWidget {
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
                       margin: EdgeInsets.symmetric(horizontal: 22.w),
                       child: Column(children: [
-                        RadiusInkWellWidget(
-                            color: Colors.transparent,
-                            onPressed: () {},
-                            borderRadius:
-                                BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
-                            child: Container(
-                                height: 60.h,
-                                padding: EdgeInsets.only(left: 22.w, right: 22.w),
-                                child: Row(children: [
-                                  Text("昵称", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                                  const Spacer(),
-                                  Text("${logic.bean.value?.name}",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
-                                ]))),
+                        Container(
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r))),
+                            height: 60.h,
+                            padding: EdgeInsets.only(left: 22.w, right: 22.w),
+                            child: Row(children: [
+                              Text("昵称", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              const Spacer(),
+                              Text("${logic.bean.value?.name}",
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
+                            ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              Get.dialog(UpdateTextDialog(title: "请输入备注", value: logic.bean.value?.name ?? ""))
+                                  .then((value) {
+                                if (value != null) logic.updateRemarkName(value);
+                              });
+                            },
                             radius: 0,
                             child: Container(
                                 height: 60.h,

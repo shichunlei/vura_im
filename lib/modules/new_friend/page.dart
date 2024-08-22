@@ -20,8 +20,6 @@ class NewFriendPage extends StatelessWidget {
         appBar: AppBar(title: const Text("新的好友"), centerTitle: true),
         body: BaseWidget(
             logic: logic,
-            showEmpty: false,
-            showLoading: false,
             builder: (logic) {
               return ListView.separated(
                   itemBuilder: (_, index) {

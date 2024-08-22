@@ -6,6 +6,6 @@ import 'logic.dart';
 class PrivateSessionDetailBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<PrivateSessionDetailLogic>(() => PrivateSessionDetailLogic(), tag: "${Get.arguments[Keys.ID]}");
+    Get.lazyPut<PrivateSessionDetailLogic>(() => PrivateSessionDetailLogic(), tag: Get.arguments[Keys.ID]);
   }
 }

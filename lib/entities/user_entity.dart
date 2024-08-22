@@ -2,7 +2,7 @@ import 'package:azlistview_plus/azlistview_plus.dart';
 import 'package:pinyin/pinyin.dart';
 
 class UserEntity extends ISuspensionBean {
-  int? id;
+  String? id;
   String? userName;
   String? nickName;
   int sex;
@@ -37,7 +37,7 @@ class UserEntity extends ISuspensionBean {
         : "#";
 
     return UserEntity(
-        id: (json['id'] as num?)?.toInt(),
+        id: json['id'] as String?,
         userName: json['userName'] as String?,
         nickName: nickName,
         sex: (json['sex'] as num?)?.toInt() ?? 1,

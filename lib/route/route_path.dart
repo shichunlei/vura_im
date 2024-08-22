@@ -23,4 +23,9 @@ abstract class RoutePath {
   static const String BLACKLIST_PAGE = "/blacklist"; // 黑名单
   static const String NEW_FRIEND_PAGE = "/new_friend"; // 黑名单
   static const String SESSIONS_PAGE = "/sessions"; // 群聊
+  static const String MUTE_PAGE = "/mute"; // 群聊
+  static const String PACKAGE_RESULT_PAGE = "/package_result"; // 红包结果
+  static const String PACKAGE_PUBLISH_PAGE = "/publish_package"; // 发红包
+  static const String MY_QR_CODE_PAGE = "/my_qr_code"; // 我的二维码
+  static const String GOOGLE_VERIFY_PAGE = "/google_verify"; // 我的二维码
 }
