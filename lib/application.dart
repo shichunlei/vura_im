@@ -1,3 +1,4 @@
+import 'package:im/entities/base_bean.dart';
 import 'package:im/utils/websocket.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -29,10 +30,14 @@ class Application {
 
     String accessToken = SpUtil.getString(Keys.ACCESS_TOKEN);
     if (StringUtil.isNotEmpty(accessToken)) {
-      initialRoute = RoutePath.HOME_PAGE;
-
       /// 已登录，刷新token
-      await UserRepository.refreshToken();
+      BaseBean result = await UserRepository.refreshToken();
+      if (result.code != 200) {
+        SpUtil.clear();
+        initialRoute = RoutePath.LOGIN_PAGE;
+      } else {
+        initialRoute = RoutePath.HOME_PAGE;
+      }
     } else {
       /// 未登录
       initialRoute = RoutePath.LOGIN_PAGE;

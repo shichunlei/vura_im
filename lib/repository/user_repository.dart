@@ -56,15 +56,15 @@ class UserRepository {
   ///
   static Future<BaseBean> refreshToken() async {
     var data = await HttpUtils.getInstance().request('refreshToken', method: HttpUtils.PUT, refreshToken: true);
-
-    LoginEntity? login = LoginEntity.fromJson(data[Keys.DATA]);
-
-    SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
-    SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
-    SpUtil.setString("accessTokenExpiresIn", "${login.accessTokenExpiresIn}");
-    SpUtil.setString("refreshTokenExpiresIn", "${login.refreshTokenExpiresIn}");
-
-    return BaseBean.fromJson(data);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      LoginEntity? login = LoginEntity.fromJson(result.data);
+      SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
+      SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
+      SpUtil.setString("accessTokenExpiresIn", "${login.accessTokenExpiresIn}");
+      SpUtil.setString("refreshTokenExpiresIn", "${login.refreshTokenExpiresIn}");
+    }
+    return result;
   }
 
   /// 修改用户信息 TODO
@@ -107,6 +107,18 @@ class UserRepository {
     }
   }
 
+  /// 获取当前用户二维码
+  ///
+  static Future<String?> getUserQrCode() async {
+    var data = await HttpUtils.getInstance().request('user/qrcode', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200 && result.data is String) {
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
   /// 搜索用户（名称）
   ///
   /// [keyword] 关键字
@@ -128,6 +140,20 @@ class UserRepository {
   ///
   static Future<UserEntity?> getUserInfoById(String? id) async {
     var data = await HttpUtils.getInstance().request('user/find/$id', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return UserEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
+  }
+
+  /// 扫码获取用户信息
+  ///
+  /// [qrcode] 二维码信息
+  ///
+  static Future<UserEntity?> getUserInfoByQrCode(String? qrcode) async {
+    var data = await HttpUtils.getInstance().request('user/find/qrcode/$qrcode', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return UserEntity.fromJson(result.data);

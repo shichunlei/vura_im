@@ -164,7 +164,7 @@ class ContactsPage extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                       SizedBox(height: 5.r),
-                      Text("data", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                      Text("ID:${user.id}", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                     ],
                   ),
                 )

@@ -28,4 +28,5 @@ abstract class RoutePath {
   static const String PACKAGE_PUBLISH_PAGE = "/publish_package"; // 发红包
   static const String MY_QR_CODE_PAGE = "/my_qr_code"; // 我的二维码
   static const String GOOGLE_VERIFY_PAGE = "/google_verify"; // 我的二维码
+  static const String USER_INFO_PAGE = "/user_info"; // 用户信息
 }

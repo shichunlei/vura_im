@@ -1,3 +1,4 @@
+import 'package:ai_barcode_scanner/ai_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -186,4 +187,44 @@ TextInputFormatter phoneInputFormatter() {
         text: string.length > 13 ? string.substring(0, 13) : string,
         selection: TextSelection.fromPosition(TextPosition(offset: position, affinity: TextAffinity.upstream)));
   });
+}
+
+Future goScan() async {
+  return await Get.to(AiBarcodeScanner(
+      onDetect: (BarcodeCapture capture) {
+        /// The row string scanned barcode value
+        final String? scannedValue = capture.barcodes.first.rawValue;
+        Log.d("Barcode scanned: $scannedValue");
+
+        /// The `Uint8List` image is only available if `returnImage` is set to `true`.
+        final Uint8List? image = capture.image;
+        Log.d("Barcode image: $image");
+
+        /// row data of the barcode
+        final Object? raw = capture.raw;
+        Log.d("Barcode raw: $raw");
+
+        /// List of scanned barcodes if any
+        final List<Barcode> barcodes = capture.barcodes;
+        Log.d("Barcode list: $barcodes");
+
+        Get.back(result: scannedValue);
+      },
+      onDispose: () {
+        /// This is called when the barcode scanner is disposed.
+        /// You can write your own logic here.
+        Log.d("Barcode scanner disposed!");
+      },
+      hideGalleryButton: false,
+      controller: MobileScannerController(detectionSpeed: DetectionSpeed.noDuplicates),
+      validator: (value) {
+        if (value.barcodes.isEmpty) {
+          return false;
+        }
+        if (!(value.barcodes.first.rawValue?.contains('flutter.dev') ?? false)) {
+          return false;
+        }
+        return true;
+      },
+      sheetTitle: "扫一扫"));
 }

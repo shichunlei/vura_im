@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:im/route/route_path.dart';
 import 'package:im/widgets/obx_widget.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 
@@ -23,10 +24,18 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 20.h),
                 TextField(controller: logic.passwordController),
                 SizedBox(height: 20.h),
-                RadiusInkWellWidget(
-                    padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 22.w),
-                    onPressed: logic.login,
-                    child: Container(alignment: Alignment.center, child: Text("登录")))
+                Row(children: [
+                  RadiusInkWellWidget(
+                      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 22.w),
+                      onPressed: logic.login,
+                      child: Container(alignment: Alignment.center, child: Text("登录"))),
+                  RadiusInkWellWidget(
+                      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 22.w),
+                      onPressed: () {
+                        Get.toNamed(RoutePath.REGISTER_PAGE);
+                      },
+                      child: Container(alignment: Alignment.center, child: Text("注册"))),
+                ])
               ]);
             }));
   }

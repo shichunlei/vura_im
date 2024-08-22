@@ -39,15 +39,24 @@ class NewFriendPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                                 SizedBox(height: 5.r),
-                                Text("data", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                Text("ID:${logic.list[index].userId}",
+                                    style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                               ])),
+                          RadiusInkWellWidget(
+                              color: Colors.redAccent,
+                              margin: EdgeInsets.only(right: 10.w),
+                              padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                              child: Text("拒绝",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
+                              onPressed: () => logic.refused(index)),
                           RadiusInkWellWidget(
                               margin: EdgeInsets.only(right: 22.w),
                               padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                              child: Text("审核通过",
+                              child: Text("同意",
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
-                              onPressed: () {})
+                              onPressed: () => logic.agree(index))
                         ]));
                   },
                   separatorBuilder: (_, index) => const Divider(height: 0),

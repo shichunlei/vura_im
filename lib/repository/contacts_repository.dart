@@ -114,7 +114,7 @@ class ContactsRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 拒绝申请 TODO
+  /// 忽略申请 TODO
   ///
   /// [id] 用户ID
   ///
@@ -123,13 +123,13 @@ class ContactsRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 申请添加好友 TODO
+  /// 申请添加好友
   ///
   /// [id] 用户ID
   ///
   static Future<BaseBean> apply(String? id, {FriendSourceType source = FriendSourceType.NEAR, String? reason}) async {
     var data = await HttpUtils.getInstance().request('apply/applyFriend',
-        params: {"userId": id, "reason": reason, "source": source.name}, showErrorToast: true);
+        params: {"userId": id, "reason": reason ?? "申请添加您为好友", "source": source.name}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 }

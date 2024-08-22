@@ -21,6 +21,7 @@ class _Friend {
   String? headImageThumb;
   String? indexTag;
   bool isDeleted = false;
+  String? friendship;
 }
 
 class FriendRealm {
@@ -33,7 +34,7 @@ class FriendRealm {
     Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Friend>()
-        .query(r"userId == $0", ["${Get.find<RootLogic>().user.value?.id}"])
+        .query(r"userId == $0 AND isDeleted == $1", ["${Get.find<RootLogic>().user.value?.id}", true])
         .map((item) => friendRealmToEntity(item))
         .toList();
   }
@@ -58,12 +59,12 @@ class FriendRealm {
   }
 
   Future deleteFriend(String? id) async {
-    Friend? _friend = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
-    if (_friend != null) {
+    Friend? friend = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    if (friend != null) {
       await _realm.writeAsync(() {
-        _friend.isDeleted = true;
+        friend.isDeleted = true;
       });
-      Log.d("deleteChannel===${_friend.id}================>${_friend.toEJson()}");
+      Log.d("deleteChannel===${friend.id}================>${friend.toEJson()}");
       try {
         Get.find<ContactsLogic>().refreshList();
       } catch (e) {
@@ -86,6 +87,7 @@ UserEntity friendRealmToEntity(Friend user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
+      friendship: user.friendship,
       tagIndex: user.indexTag);
 }
 
@@ -99,5 +101,6 @@ Friend friendEntityToRealm(UserEntity user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
+      friendship: user.friendship,
       indexTag: user.tagIndex);
 }

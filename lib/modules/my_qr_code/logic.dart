@@ -12,7 +12,7 @@ import 'package:screenshot/screenshot.dart';
 class MyQrCodeLogic extends BaseObjectLogic<UserEntity?> {
   ScreenshotController screenshotController = ScreenshotController();
 
-  var qrCodeStr = 'ergmelkmweorgew'.obs;
+  var qrCodeStr = ''.obs;
 
   String? id;
 
@@ -28,7 +28,13 @@ class MyQrCodeLogic extends BaseObjectLogic<UserEntity?> {
 
   @override
   Future<UserEntity?> loadData() async {
-    return await UserRepository.getUserInfoById(id);
+    String? qrCode = await UserRepository.getUserQrCode();
+    if (qrCode != null) {
+      qrCodeStr.value = qrCode;
+      return await UserRepository.getUserInfoById(id);
+    } else {
+      return null;
+    }
   }
 
   Future save() async {

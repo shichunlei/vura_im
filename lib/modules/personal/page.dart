@@ -97,7 +97,7 @@ class PersonalPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                Text("223423423423",
+                                Text("${logic.bean.value?.id}",
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                                 const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                               ]))),

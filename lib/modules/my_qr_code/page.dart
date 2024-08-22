@@ -72,7 +72,7 @@ class MyQrCodePage extends StatelessWidget {
                                     child: Obx(() {
                                       return PrettyQrView.data(
                                           errorCorrectLevel: QrErrorCorrectLevel.H,
-                                          data: "${logic.bean.value?.id}",
+                                          data: logic.qrCodeStr.value,
                                           decoration: PrettyQrDecoration(
                                               image: PrettyQrDecorationImage(
                                                   filterQuality: FilterQuality.high,

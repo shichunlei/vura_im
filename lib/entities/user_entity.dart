@@ -12,6 +12,8 @@ class UserEntity extends ISuspensionBean {
   String? headImageThumb;
   bool online;
   String? tagIndex;
+  String? friendship;
+  double money;
 
   UserEntity(
       {this.id,
@@ -23,7 +25,9 @@ class UserEntity extends ISuspensionBean {
       this.headImage,
       this.headImageThumb,
       this.online = false,
-      this.tagIndex});
+      this.tagIndex,
+      this.friendship,
+      this.money = .0});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
     String nickName = json['nickName'] ?? "";
@@ -42,8 +46,10 @@ class UserEntity extends ISuspensionBean {
         nickName: nickName,
         sex: (json['sex'] as num?)?.toInt() ?? 1,
         type: (json['type'] as num?)?.toInt() ?? 1,
+        money: (json['money'] as num?)?.toDouble() ?? .0,
         signature: json['signature'] as String?,
         headImage: json['headImage'] as String?,
+        friendship: json['friendship'] as String?,
         headImageThumb: json['headImageThumb'] as String?,
         online: json['online'] as bool? ?? false,
         tagIndex: tag);
@@ -59,7 +65,9 @@ class UserEntity extends ISuspensionBean {
         'online': online,
         'headImageThumb': headImageThumb,
         'headImage': headImage,
-        'tagIndex': tagIndex
+        'tagIndex': tagIndex,
+        'friendship': friendship,
+        "money": money,
       };
 
   @override

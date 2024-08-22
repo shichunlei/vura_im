@@ -40,6 +40,7 @@ class SessionEntity {
   MessageEntity? lastMessage;
   @JsonKey(includeFromJson: false)
   int lastMessageTime;
+  List<String> friendIds;
 
   SessionEntity({
     this.id,
@@ -61,6 +62,7 @@ class SessionEntity {
     this.isDisturb = false,
     this.lastMessage,
     this.lastMessageTime = 0,
+    this.friendIds = const [],
   });
 
   factory SessionEntity.fromJson(Map<String, dynamic> json) => _$SessionEntityFromJson(json);

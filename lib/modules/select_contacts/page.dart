@@ -24,12 +24,15 @@ class SelectContactsPage extends StatelessWidget {
         appBar: AppBar(
             actions: [
               Center(
-                child: TextButton(child: Obx(() {
-                  return Text(logic.selectUsers.isNotEmpty ? "确定(${logic.selectUsers.length}人)" : "确定");
-                }), onPressed: () {
-                  Get.back(result: logic.selectUsers);
-                }),
-              )
+                  child: TextButton(
+                      onPressed: logic.selectUsers.isNotEmpty
+                          ? () {
+                              Get.back(result: logic.selectUsers);
+                            }
+                          : null,
+                      child: Obx(() {
+                        return Text(logic.selectUsers.isNotEmpty ? "确定(${logic.selectUsers.length}人)" : "确定");
+                      })))
             ],
             title: const Text("选择联系人"),
             centerTitle: true,

@@ -33,6 +33,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  ai_barcode_scanner: ^5.1.1+2
   animated_bottom_navigation_bar: ^1.3.3
   # 按字母排序
   azlistview_plus: ^3.0.0
@@ -88,7 +89,7 @@ dependencies:
   # 仿微信选择图片
   wechat_assets_picker: ^9.2.0
   # 仿微信录制视频
-  wechat_camera_picker: ^4.3.1
+  wechat_camera_picker: ^4.3.2
   # 带尖角的方框
   wrapper: ^1.0.2
 

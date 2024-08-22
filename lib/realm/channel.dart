@@ -122,12 +122,12 @@ class SessionRealm {
 
   /// 更新会话置顶状态
   Future setChannelTop(String? id, bool isTop, SessionType sessionType) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
-    if (_session != null) {
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    if (session != null) {
       await _realm.writeAsync(() {
-        _session.moveTop = isTop;
+        session.moveTop = isTop;
       });
-      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      Log.d("setChannelTop===${session.id}================>${session.toEJson()}");
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {
@@ -138,12 +138,12 @@ class SessionRealm {
 
   /// 更新会话免打扰状态
   Future setChannelDisturb(String? id, bool isDisturb, SessionType sessionType) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
-    if (_session != null) {
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    if (session != null) {
       await _realm.writeAsync(() {
-        _session.isDisturb = isDisturb;
+        session.isDisturb = isDisturb;
       });
-      Log.d("setChannelTop===${_session.id}================>${_session.toEJson()}");
+      Log.d("setChannelTop===${session.id}================>${session.toEJson()}");
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {
@@ -154,12 +154,12 @@ class SessionRealm {
 
   /// 删除会话
   Future deleteChannel(String? id, SessionType sessionType) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
-    if (_session != null) {
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    if (session != null) {
       await _realm.writeAsync(() {
-        _session.deleted = true;
+        session.deleted = true;
       });
-      Log.d("deleteChannel===${_session.id}================>${_session.toEJson()}");
+      Log.d("deleteChannel===${session.id}================>${session.toEJson()}");
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {

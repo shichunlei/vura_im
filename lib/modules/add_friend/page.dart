@@ -34,7 +34,7 @@ class AddFriendPage extends StatelessWidget {
             builder: (logic) {
               return Column(children: [
                 RadiusInkWellWidget(
-                    onPressed: () {},
+                    onPressed: logic.scan,
                     color: Colors.transparent,
                     radius: 0,
                     padding: EdgeInsets.symmetric(horizontal: 22.w),
@@ -69,35 +69,61 @@ class AddFriendPage extends StatelessWidget {
                 Expanded(
                     child: ListView.separated(
                         itemBuilder: (_, index) {
-                          return Container(
-                              padding: EdgeInsets.symmetric(vertical: 11.h),
-                              child: Row(children: [
-                                SizedBox(width: 22.w),
-                                AvatarImageView("${logic.list[index].headImage}",
-                                    radius: 26.r, name: logic.list[index].nickName),
-                                SizedBox(width: 18.w),
-                                Expanded(
-                                    child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                      Text("${logic.list[index].nickName}",
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 18.sp,
-                                              color: ColorUtil.color_333333,
-                                              fontWeight: FontWeight.w500)),
-                                      SizedBox(height: 5.r),
-                                      Text("data",
-                                          style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
-                                    ])),
-                                RadiusInkWellWidget(
-                                    margin: EdgeInsets.only(right: 22.w),
-                                    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                                    child: Text("添加好友",
-                                        style: GoogleFonts.roboto(
-                                            color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
-                                    onPressed: () => logic.applyFriend(index))
-                              ]));
+                          return GestureDetector(
+                              onTap: logic.list[index].friendship == "Y" || logic.list[index].friendship == "M"
+                                  ? () {
+                                      if (logic.list[index].friendship == "Y") logic.goChatPage(logic.list[index]);
+                                      if (logic.list[index].friendship == "M") Get.toNamed(RoutePath.MY_INFO_PAGE);
+                                    }
+                                  : null,
+                              behavior: HitTestBehavior.translucent,
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 11.h),
+                                  child: Row(children: [
+                                    SizedBox(width: 22.w),
+                                    AvatarImageView("${logic.list[index].headImage}",
+                                        radius: 26.r, name: logic.list[index].nickName),
+                                    SizedBox(width: 18.w),
+                                    Expanded(
+                                        child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                          Row(children: [
+                                            Text("${logic.list[index].nickName}",
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 18.sp,
+                                                    color: ColorUtil.color_333333,
+                                                    fontWeight: FontWeight.w500)),
+                                            SizedBox(width: 10.w),
+                                            Visibility(
+                                                visible: logic.list[index].friendship == "B",
+                                                child: Text("已拉黑",
+                                                    style: GoogleFonts.roboto(
+                                                        fontSize: 14.sp, color: ColorUtil.color_666666)))
+                                          ]),
+                                          SizedBox(height: 5.r),
+                                          Text("ID:${logic.list[index].id}",
+                                              style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                        ])),
+                                    Visibility(
+                                        visible:
+                                            logic.list[index].friendship == "N" || logic.list[index].friendship == "B",
+                                        child: RadiusInkWellWidget(
+                                            margin: EdgeInsets.only(right: 22.w),
+                                            padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
+                                            child: Text(logic.list[index].friendship == "N" ? "添加好友" : "移除黑名单",
+                                                style: GoogleFonts.roboto(
+                                                    color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
+                                            onPressed: () {
+                                              if (logic.list[index].friendship == "N") {
+                                                logic.applyFriend(logic.list[index].id);
+                                              }
+                                              if (logic.list[index].friendship == "B") {
+                                                logic.removeFromBlacklist(index);
+                                              }
+                                            }))
+                                  ])));
                         },
                         separatorBuilder: (_, index) => const Divider(height: 0),
                         itemCount: logic.list.length))

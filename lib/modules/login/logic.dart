@@ -31,4 +31,9 @@ class LoginLogic extends BaseLogic {
       Get.offAllNamed(RoutePath.HOME_PAGE);
     }
   }
+
+  void initValues(String account, String password) {
+    accountController.text = account;
+    passwordController.text = password;
+  }
 }
