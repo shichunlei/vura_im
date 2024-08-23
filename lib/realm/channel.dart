@@ -35,8 +35,9 @@ class _Channel {
   int lastMessageTime = 0;
   bool moveTop = false;
   bool isDisturb = false;
-  bool isAdmin = false;
+  String isAdmin = "N";
   String isSupAdmin = "N";
+  String? config;
 }
 
 class SessionRealm {
@@ -49,7 +50,7 @@ class SessionRealm {
     Log.d("queryAllSessions=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Channel>()
-        .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop ASC ,lastMessageTime DESC)",
+        .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop DESC ,lastMessageTime DESC)",
             ["${Get.find<RootLogic>().user.value?.id}", false])
         .map((item) => sessionRealmToEntity(item))
         .toList();
@@ -74,6 +75,40 @@ class SessionRealm {
     });
   }
 
+  Future saveChannel(SessionEntity session) async {
+    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
+    if (_session != null) {
+      Log.d("----------------->${session.id}");
+
+      await _realm.writeAsync(() {
+        _session.name = session.name;
+        _session.headImage = session.headImage;
+        _session.headImageThumb = session.headImageThumb;
+        _session.notice = session.notice;
+        _session.config = session.configObj != null ? json.encode(session.configObj!.toJson()) : null;
+        _session.isAdmin = session.isAdmin.name;
+        _session.isSupAdmin = session.isSupAdmin.name;
+        _session.deleted = session.deleted;
+        _session.ownerId = session.ownerId;
+        _session.quit = session.quit;
+        _session.remarkGroupName = session.remarkGroupName;
+        _session.remarkNickName = session.remarkNickName;
+        _session.showGroupName = session.showGroupName;
+        _session.showNickName = session.showNickName;
+      });
+      Log.d("saveChannel===${_session.id}================>${_session.toEJson()}");
+
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    } else {
+      Log.d("====================================${session.toJson()}");
+      upsert(sessionEntityToRealm(session));
+    }
+  }
+
   /// 更新会话基本信息
   Future updateSessionInfo(SessionEntity session) async {
     Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
@@ -84,7 +119,7 @@ class SessionRealm {
         _session.name = session.name;
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
-        _session.notice = session.notice;
+        if (session.notice != null) _session.notice = session.notice;
       });
       Log.d("updateSessionInfo===${_session.id}================>${_session.toEJson()}");
 
@@ -117,6 +152,22 @@ class SessionRealm {
     } else {
       Log.d("====================================${session.toJson()}");
       upsert(sessionEntityToRealm(session));
+    }
+  }
+
+  /// 更新会话配置
+  Future setChannelConfig(String? id, SessionConfigEntity config) async {
+    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${SessionType.group.name}");
+    if (session != null) {
+      await _realm.writeAsync(() {
+        session.config = json.encode(config.toJson());
+      });
+      Log.d("setChannelConfig===${session.id}================>${session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 
@@ -191,7 +242,9 @@ SessionEntity sessionRealmToEntity(Channel session) {
       lastMessage: session.lastMessage == null ? null : MessageEntity.fromJson(json.decode(session.lastMessage!)),
       lastMessageTime: session.lastMessageTime,
       isDisturb: session.isDisturb,
-      isAdmin: session.isAdmin,
+      isAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
+      config: session.config,
+      configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
       isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
       moveTop: session.moveTop);
 }
@@ -215,7 +268,8 @@ Channel sessionEntityToRealm(SessionEntity session) {
       lastMessageTime: session.lastMessageTime,
       moveTop: session.moveTop,
       isDisturb: session.isDisturb,
-      isAdmin: session.isAdmin,
+      isAdmin: session.isAdmin.name,
       isSupAdmin: session.isSupAdmin.name,
+      config: session.configObj == null ? null : json.encode(session.configObj!.toJson()),
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

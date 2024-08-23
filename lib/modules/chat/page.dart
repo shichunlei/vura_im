@@ -49,16 +49,25 @@ class ChatPage extends StatelessWidget {
                 Expanded(
                     child: ExtendedListView.separated(
                         physics: const BouncingScrollPhysics(),
-                        padding: EdgeInsets.only(bottom: 15.h),
+                        padding: EdgeInsets.only(bottom: 15.h, left: 12.w, right: 12.w),
                         reverse: true,
                         itemBuilder: (_, index) {
                           if (logic.list[index].type == MessageType.TIP_TEXT.code) {
-                            return ItemSystemMessage(message: logic.list[index]);
+                            return ItemSystemMessage(
+                                message: logic.list[index],
+                                showTime: index == logic.list.length - 1 ||
+                                    logic.list[index].sendTime - logic.list[index + 1].sendTime > 1000 * 60);
                           }
                           if (logic.list[index].sendId == Get.find<RootLogic>().user.value?.id) {
-                            return ItemSendMessage(message: logic.list[index]);
+                            return ItemSendMessage(
+                                message: logic.list[index],
+                                showTime: index == logic.list.length - 1 ||
+                                    logic.list[index].sendTime - logic.list[index + 1].sendTime > 1000 * 60);
                           } else {
-                            return ItemReceiveMessage(message: logic.list[index]);
+                            return ItemReceiveMessage(
+                                message: logic.list[index],
+                                showTime: index == logic.list.length - 1 ||
+                                    logic.list[index].sendTime - logic.list[index + 1].sendTime > 1000 * 60);
                           }
                         },
                         separatorBuilder: (_, index) => SizedBox(height: 10.h),

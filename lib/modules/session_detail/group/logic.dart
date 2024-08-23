@@ -132,7 +132,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   Future updateNotice(String notice) async {
     showLoading();
-    BaseBean result = await SessionRepository.updateSession(id, notice: notice);
+    BaseBean result = await SessionRepository.updateSession(id, notice: notice, name: bean.value?.name);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "修改成功");
@@ -153,8 +153,8 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     showLoading();
     FileEntity? file = await CommonRepository.uploadImage(path);
     if (file != null) {
-      BaseBean result =
-          await SessionRepository.updateSession(id, headImage: file.originUrl, headImageThumb: file.thumbUrl);
+      BaseBean result = await SessionRepository.updateSession(id,
+          headImage: file.originUrl, headImageThumb: file.thumbUrl, name: bean.value?.name);
       hiddenLoading();
       if (result.code == 200) {
         showToast(text: "修改成功");

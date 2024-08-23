@@ -8,6 +8,7 @@ import 'package:im/global/keys.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/date_util.dart';
+import 'package:im/utils/dialog_util.dart';
 import 'package:im/utils/string_util.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/round_image.dart';
@@ -24,7 +25,7 @@ class ItemSession extends StatelessWidget {
         onPressed: () {
           Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: session.id, Keys.TYPE: session.type});
         },
-        onLongPress: () {},
+        onLongPress: showToolDialog,
         radius: 0,
         padding: EdgeInsets.symmetric(horizontal: 22.w),
         child: SizedBox(
@@ -74,5 +75,43 @@ class ItemSession extends StatelessWidget {
             )
           ]),
         ));
+  }
+
+  void showToolDialog() {
+    show(Get.context!, builder: (_) {
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: Get.theme.cardColor),
+            width: 250.w,
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              RadiusInkWellWidget(
+                  radius: 0,
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(8.r), topLeft: Radius.circular(8.r)),
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(session.moveTop ? "取消置顶" : "置顶",
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)))),
+              const Divider(height: .5),
+              RadiusInkWellWidget(
+                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                  color: Colors.transparent,
+                  child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(session.isDisturb ? "取消免打扰" : "消息免打扰",
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600))),
+                  onPressed: () {
+                    Get.back();
+                  })
+            ]))
+      ]);
+    });
   }
 }

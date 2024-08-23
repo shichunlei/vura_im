@@ -56,8 +56,7 @@ mixin FriendMixin on BaseLogic {
     if (session == null) {
       SessionEntity sessionEntity = SessionEntity(
           id: user.userId,
-          name: user.remarkNickName,
-          // todo
+          name: user.remarkNickName, // todo
           headImage: user.headImage,
           type: SessionType.private,
           lastMessageTime: DateTime.now().millisecondsSinceEpoch);

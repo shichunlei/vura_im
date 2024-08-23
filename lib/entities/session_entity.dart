@@ -28,7 +28,7 @@ class SessionEntity {
   String? remarkGroupName;
   bool deleted;
   bool quit;
-  bool isAdmin; // 群主
+  YorNType isAdmin; // 群主
   YorNType isSupAdmin; // 管理员
   @JsonKey(includeFromJson: false)
   SessionType type;
@@ -41,6 +41,8 @@ class SessionEntity {
   @JsonKey(includeFromJson: false)
   int lastMessageTime;
   List<String> friendIds;
+  SessionConfigEntity? configObj;
+  String? config;
 
   SessionEntity({
     this.id,
@@ -55,7 +57,7 @@ class SessionEntity {
     this.remarkGroupName,
     this.deleted = false,
     this.quit = false,
-    this.isAdmin = true,
+    this.isAdmin = YorNType.N,
     this.isSupAdmin = YorNType.N,
     this.type = SessionType.group,
     this.moveTop = false,
@@ -63,9 +65,31 @@ class SessionEntity {
     this.lastMessage,
     this.lastMessageTime = 0,
     this.friendIds = const [],
+    this.configObj,
+    this.config,
   });
 
   factory SessionEntity.fromJson(Map<String, dynamic> json) => _$SessionEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$SessionEntityToJson(this);
+}
+
+@JsonSerializable()
+class SessionConfigEntity {
+  String? id;
+  YorNType addFriend;
+  YorNType allMute;
+  YorNType vura;
+  YorNType invite;
+
+  SessionConfigEntity(
+      {this.id,
+      this.addFriend = YorNType.N,
+      this.allMute = YorNType.N,
+      this.vura = YorNType.N,
+      this.invite = YorNType.N});
+
+  factory SessionConfigEntity.fromJson(Map<String, dynamic> json) => _$SessionConfigEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SessionConfigEntityToJson(this);
 }

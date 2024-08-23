@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
@@ -24,6 +25,8 @@ class SessionManagerPage extends StatelessWidget {
         appBar: AppBar(title: const Text("群管理"), centerTitle: true),
         body: BaseWidget(
             logic: logic,
+            showEmpty: false,
+            showError: false,
             builder: (logic) {
               return SingleChildScrollView(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -37,7 +40,8 @@ class SessionManagerPage extends StatelessWidget {
                             child: Row(children: [
                               Text("群聊邀请确认", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(
+                                  value: logic.bean.value?.invite == YorNType.Y, onChanged: logic.updateInviteConfig)
                             ])),
                         Container(
                             alignment: Alignment.centerLeft,
@@ -76,7 +80,8 @@ class SessionManagerPage extends StatelessWidget {
                             child: Row(children: [
                               Text("全员禁言", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(
+                                  value: logic.bean.value?.allMute == YorNType.Y, onChanged: logic.updateAllMuteConfig),
                             ])),
                         Container(
                             alignment: Alignment.centerLeft,
@@ -91,7 +96,9 @@ class SessionManagerPage extends StatelessWidget {
                               Text("禁止群成员互加好友",
                                   style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(
+                                  value: logic.bean.value?.addFriend == YorNType.Y,
+                                  onChanged: logic.updateAddFriendConfig),
                             ])),
                         Container(
                             alignment: Alignment.centerLeft,
@@ -106,7 +113,8 @@ class SessionManagerPage extends StatelessWidget {
                               Text("群组全体禁止领取VURA",
                                   style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) {}),
+                              CupertinoSwitch(
+                                  value: logic.bean.value?.vura == YorNType.Y, onChanged: logic.updateVuraConfig),
                             ])),
                         Container(
                             alignment: Alignment.centerLeft,

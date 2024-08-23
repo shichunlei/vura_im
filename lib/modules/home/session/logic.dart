@@ -136,7 +136,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
     if (sessions.isNotEmpty) {
       for (var item in sessions) {
         item.type = SessionType.group;
-        await SessionRealm(realm: Get.find<RootLogic>().realm).upsert(sessionEntityToRealm(item));
+        await SessionRealm(realm: Get.find<RootLogic>().realm).saveChannel(item);
       }
       refreshList();
     }

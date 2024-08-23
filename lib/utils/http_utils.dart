@@ -50,7 +50,7 @@ class HttpUtils {
                   responsePen: AnsiPen()..green(),
                   errorPen: AnsiPen()..red())));
         } else {
-          // _dio!.interceptors.add(LoggingInterceptor());
+          _dio!.interceptors.add(LoggingInterceptor());
         }
       }
     }
@@ -255,7 +255,7 @@ class LoggingInterceptor extends Interceptor {
     }
     Log.d("RequestMethod: ${options.method}");
     Log.d("RequestHeaders:${json.encode(options.headers)}");
-    Log.d("RequestParams: ${json.encode(options.data)}");
+    if (options.data is Map) Log.d("RequestParams: ${json.encode(options.data)}");
     return handler.next(options);
   }
 

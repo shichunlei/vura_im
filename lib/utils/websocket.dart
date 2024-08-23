@@ -61,7 +61,7 @@ class WebSocketManager {
     Log.json(json);
     if (json[Keys.CMD] == WebSocketCode.LOGIN.code) {
       // 登录成功
-      _closeCallbacks.forEach((pageId, callback) {
+      _connectCallbacks.forEach((pageId, callback) {
         callback();
       });
     } else if (json[Keys.CMD] == WebSocketCode.HEARTBEAT.code) {

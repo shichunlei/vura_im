@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:im/entities/member_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
@@ -140,7 +141,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (!logic.bean.value!.isAdmin) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y) {
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(title: "请输入群聊名称", value: logic.bean.value?.name ?? ""))
@@ -164,7 +165,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (!logic.bean.value!.isAdmin) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y) {
                                 return;
                               }
                               showImagePickerDialog(context).then((value) {
@@ -211,7 +212,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (!logic.bean.value!.isAdmin) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y) {
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(
@@ -220,7 +221,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                       maxLines: 20,
                                       minLines: 3))
                                   .then((value) {
-                                if (value != null) logic.updateName(value);
+                                if (value != null) logic.updateNotice(value);
                               });
                             },
                             radius: 0,
@@ -262,7 +263,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
                       margin: EdgeInsets.symmetric(horizontal: 22.w),
                       child: Column(children: [
-                        logic.bean.value!.isAdmin
+                        logic.bean.value!.isAdmin == YorNType.Y
                             ? RadiusInkWellWidget(
                                 color: Colors.transparent,
                                 onPressed: logic.deleteSession,

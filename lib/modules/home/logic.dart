@@ -19,6 +19,9 @@ class HomeLogic extends BaseLogic {
         case 6: // {"cmd":6,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"","recvId":"1826547880958230528","id":"1826549763462529024","type":900,"content":"申请添加您为好友","sendTime":1724318373933}}
 
           break;
+        case 5:
+
+          break;
         default:
           break;
       }

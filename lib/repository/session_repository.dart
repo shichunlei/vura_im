@@ -32,7 +32,7 @@ class SessionRepository {
   /// [remarkGroupName] 群名备注
   ///
   static Future<BaseBean> updateSession(String? id,
-      {String? name,
+      {required String? name,
       String? ownerId,
       String? headImage,
       String? headImageThumb,
@@ -44,6 +44,7 @@ class SessionRepository {
     var data = await HttpUtils.getInstance().request('group/modify',
         params: {
           Keys.ID: id,
+          "name": name,
           if (ownerId != null) "ownerId": ownerId,
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb,
@@ -232,7 +233,7 @@ class SessionRepository {
   /// [page]
   /// [size]
   ///
-  static Future<List<MessageEntity>> getMessages(String? id, SessionType type, {int page = 0, int size = 200}) async {
+  static Future<List<MessageEntity>> getMessages(String? id, SessionType type, {int page = 1, int size = 200}) async {
     var data = await HttpUtils.getInstance()
         .request(type == SessionType.private ? "message/private/history" : 'message/group/history',
             params: {
@@ -354,5 +355,28 @@ class SessionRepository {
     } else {
       return [];
     }
+  }
+
+  /// 群配置详情
+  ///
+  /// [groupId] 群ID
+  ///
+  static Future<SessionConfigEntity?> getSessionConfig(String? groupId) async {
+    var data = await HttpUtils.getInstance().request('group/getConfig/$groupId');
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return SessionConfigEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
+  }
+
+  /// 群配置
+  ///
+  /// [groupId] 群ID
+  ///
+  static Future<BaseBean> setSessionConfig(SessionConfigEntity config) async {
+    var data = await HttpUtils.getInstance().request('group/config', params: config.toJson(), showErrorToast: true);
+    return BaseBean.fromJson(data);
   }
 }

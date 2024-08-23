@@ -23,6 +23,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
 
+    setPageSize(200);
+
     controller.addListener(update);
 
     webSocketManager.listen("ChatLogic-$id-$type", (int cmd, Map<String, dynamic> data) {
@@ -33,7 +35,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
         list.insert(0, MessageEntity.fromJson(data));
       }
       if (cmd == WebSocketCode.GROUP_MESSAGE.code &&
-          id == data["groupId"] &&
+          id == data[Keys.GROUP_ID] &&
           (data[Keys.TYPE] <= MessageType.VIDEO.code || data[Keys.TYPE] == MessageType.TIP_TEXT.code)) {
         list.insert(0, MessageEntity.fromJson(data));
       }
@@ -50,7 +52,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
   @override
   Future<List<MessageEntity>> loadData() async {
-    return SessionRepository.getMessages(id, type);
+    return SessionRepository.getMessages(id, type, page: pageNumber.value, size: pageSize.value);
   }
 
   /// 发送消息

@@ -50,7 +50,8 @@ enum MessageType {
   RTC_GROUP_DEVICE(211, "设备操作"),
   APPLY_ADD_FRIEND(900, "申请添加好友通知"),
   APPLY_ADD_GROUP(901, "申请添加群聊通知"),
-  APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知");
+  APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知"),
+  RED_PACKAGE(904, "红包");
 
   final int code;
   final String label;
