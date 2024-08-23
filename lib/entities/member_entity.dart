@@ -1,3 +1,4 @@
+import 'package:im/global/enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'member_entity.g.dart';
@@ -18,6 +19,11 @@ class MemberEntity {
   String? showGroupName;
   @JsonKey(includeIfNull: false)
   String? remarkGroupName;
+  @JsonKey(includeIfNull: false)
+  YorNType isAdmin;
+  @JsonKey(includeIfNull: false)
+  YorNType isSupAdmin;
+  YorNType friendship;
 
   MemberEntity({
     this.userId,
@@ -28,6 +34,9 @@ class MemberEntity {
     this.online = false,
     this.showGroupName,
     this.remarkGroupName,
+    this.isAdmin = YorNType.N,
+    this.isSupAdmin = YorNType.N,
+    this.friendship = YorNType.M,
   });
 
   factory MemberEntity.fromJson(Map<String, dynamic> json) => _$MemberEntityFromJson(json);

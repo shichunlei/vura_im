@@ -12,6 +12,8 @@ class RegisterLogic extends BaseLogic {
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController nicknameController = TextEditingController();
+  TextEditingController codeController = TextEditingController();
+  TextEditingController rePasswordController = TextEditingController();
 
   RegisterLogic() {
     accountController.addListener(update);

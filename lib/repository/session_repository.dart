@@ -33,7 +33,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> updateSession(String? id,
       {String? name,
-        String? ownerId,
+      String? ownerId,
       String? headImage,
       String? headImageThumb,
       String? notice,
@@ -114,7 +114,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> inviteMembers(String? id, List<String?> userIds) async {
     var data = await HttpUtils.getInstance()
-        .request('group/invite', params: {"groupId": id, "friendIds": userIds}, showErrorToast: true);
+        .request('group/invite', params: {Keys.GROUP_ID: id, "friendIds": userIds}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -129,6 +129,22 @@ class SessionRepository {
       return result.items.map((item) => MemberEntity.fromJson(item)).toList();
     } else {
       return [];
+    }
+  }
+
+  /// 群成员详情 todo
+  ///
+  /// [groupId] 群ID
+  /// [userId] 成员ID
+  ///
+  static Future<MemberEntity?> getSessionMember(String? groupId, String? userId) async {
+    var data = await HttpUtils.getInstance()
+        .request('group/members/detail', params: {Keys.USER_ID: userId, Keys.GROUP_ID: groupId});
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return MemberEntity.fromJson(result.data);
+    } else {
+      return null;
     }
   }
 
@@ -162,7 +178,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> kickMemberFromSession(String? id, List<String?> userIds) async {
     var data = await HttpUtils.getInstance().request('group/kickList',
-        params: {"friendIds": userIds, "groupId": id}, method: HttpUtils.DELETE, showErrorToast: true);
+        params: {"friendIds": userIds, Keys.GROUP_ID: id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -192,7 +208,7 @@ class SessionRepository {
       String? receiveHeadImage}) async {
     var data = await HttpUtils.getInstance()
         .request(sessionType == SessionType.private ? "message/private/send" : 'message/group/send', params: {
-      if (sessionType == SessionType.group) "groupId": id,
+      if (sessionType == SessionType.group) Keys.GROUP_ID: id,
       if (sessionType == SessionType.private) "recvId": id,
       if (sessionType == SessionType.private) "recvNickName": receiveNickName,
       if (sessionType == SessionType.private) "recvHeadImage": receiveHeadImage,
@@ -220,8 +236,8 @@ class SessionRepository {
     var data = await HttpUtils.getInstance()
         .request(type == SessionType.private ? "message/private/history" : 'message/group/history',
             params: {
-              if (type == SessionType.private) "friendId": id,
-              if (type == SessionType.group) "groupId": id,
+              if (type == SessionType.private) Keys.FRIEND_ID: id,
+              if (type == SessionType.group) Keys.GROUP_ID: id,
               "page": page,
               "size": size
             },
@@ -240,7 +256,7 @@ class SessionRepository {
   /// [groupMinId]
   /// [privateMinId]
   ///
-  static Future getOfflineMessages(String type, {String? groupMinId , String? privateMinId }) async {
+  static Future getOfflineMessages(String type, {String? groupMinId, String? privateMinId}) async {
     if (type == "group" || type == "all") {
       HttpUtils.getInstance()
           .request('message/group/pullOfflineMessage', params: {"minId": groupMinId}, method: HttpUtils.GET);
@@ -257,7 +273,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> readMessage(String? groupId) async {
     var data = await HttpUtils.getInstance()
-        .request('message/group/readed', params: {"groupId": groupId}, method: HttpUtils.PUT);
+        .request('message/group/readed', params: {Keys.GROUP_ID: groupId}, method: HttpUtils.PUT);
     return BaseBean.fromJson(data);
   }
 
@@ -268,7 +284,7 @@ class SessionRepository {
   ///
   static Future<List<MessageEntity>> getReadUsers(String? id, String? messageId) async {
     var data = await HttpUtils.getInstance().request('message/group/findReadedUsers',
-        params: {"groupId": id, "messageId": messageId}, method: HttpUtils.GET);
+        params: {Keys.GROUP_ID: id, "messageId": messageId}, method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => MessageEntity.fromJson(item)).toList();
@@ -294,7 +310,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> setSupAdmin(String? id, List<String?> ids) async {
     var data = await HttpUtils.getInstance().request('group/setSupAdmin',
-        params: {"adminIdList": ids, "groupId": id}, method: HttpUtils.PUT, showErrorToast: true);
+        params: {"adminIdList": ids, Keys.GROUP_ID: id}, method: HttpUtils.PUT, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -306,7 +322,7 @@ class SessionRepository {
   static Future<BaseBean> setAdmin(String? id, String? userId) async {
     var data = await HttpUtils.getInstance().request('group/setAdmin',
         params: {
-          "groupId": id,
+          Keys.GROUP_ID: id,
           "adminIdList": [id]
         },
         method: HttpUtils.PUT,
@@ -321,7 +337,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> setMute(String? id, List<String?> ids) async {
     var data = await HttpUtils.getInstance()
-        .request('group/mute', params: {"friendIds": ids, "groupId": id}, showErrorToast: true);
+        .request('group/mute', params: {"friendIds": ids, Keys.GROUP_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

@@ -12,6 +12,8 @@ class Keys {
   static const String IDS = "_ids";
 
   static const String USER_ID = "userId";
+  static const String GROUP_ID = "groupId";
+  static const String FRIEND_ID = "friendId";
 
   static const String TYPE = 'type';
   static const String TYPES = 'types';

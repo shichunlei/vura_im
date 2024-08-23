@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/modules/home/contacts/logic.dart';
 import 'package:im/modules/root/logic.dart';
+import 'package:im/utils/enum_to_string.dart';
 import 'package:im/utils/log_utils.dart';
 import 'package:realm/realm.dart';
 
@@ -31,10 +33,10 @@ class FriendRealm {
 
   /// 查询所有好友
   Future<List<UserEntity>> queryAllFriends() async {
-    Log.d("queryAllByCompanyId=====================${Get.find<RootLogic>().user.value?.id}");
+    Log.d("queryAllFriends=====================${Get.find<RootLogic>().user.value?.id}");
     return _realm
         .all<Friend>()
-        .query(r"userId == $0 AND isDeleted == $1", ["${Get.find<RootLogic>().user.value?.id}", true])
+        .query(r"userId == $0 AND isDeleted == $1", ["${Get.find<RootLogic>().user.value?.id}", false])
         .map((item) => friendRealmToEntity(item))
         .toList();
   }
@@ -87,7 +89,7 @@ UserEntity friendRealmToEntity(Friend user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
-      friendship: user.friendship,
+      friendship: EnumToString.fromString(YorNType.values, user.friendship),
       tagIndex: user.indexTag);
 }
 
@@ -101,6 +103,6 @@ Friend friendEntityToRealm(UserEntity user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
-      friendship: user.friendship,
+      friendship: user.friendship.name,
       indexTag: user.tagIndex);
 }

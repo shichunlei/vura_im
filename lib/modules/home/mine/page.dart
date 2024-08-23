@@ -7,7 +7,6 @@ import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
-import 'package:im/utils/tool_util.dart';
 import 'package:im/widgets/avatar_image.dart';
 import 'package:im/widgets/custom_icon_button.dart';
 import 'package:im/widgets/obx_widget.dart';

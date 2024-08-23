@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/utils/color_util.dart';
 import 'package:im/utils/device_utils.dart';
 import 'package:im/utils/string_util.dart';
@@ -76,7 +77,13 @@ class SessionMemberPage extends StatelessWidget {
                           child: Row(children: [
                             Text("群成员身份", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp)),
                             const Spacer(),
-                            Text("管理员", style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
+                            Text(
+                                logic.bean.value?.isAdmin == YorNType.Y
+                                    ? "群主"
+                                    : logic.bean.value?.isSupAdmin == YorNType.Y
+                                        ? "管理员"
+                                        : "群成员",
+                                style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
                           ])),
                       const Divider(height: 0),
                       SizedBox(

@@ -9,7 +9,7 @@ import 'package:im/repository/contacts_repository.dart';
 class SelectContactsLogic extends BaseListLogic<UserEntity> {
   var selectUsers = RxList<UserEntity>([]);
 
-  late List<int?> selectUserIds;
+  late List<String?> selectUserIds;
 
   bool _isLoadFromNet = false;
 

@@ -125,7 +125,7 @@ class UserRepository {
   ///
   static Future<List<UserEntity>> searchUserByName(String? keyword) async {
     var data =
-        await HttpUtils.getInstance().request('user/findByName', method: HttpUtils.GET, params: {"name": keyword});
+        await HttpUtils.getInstance().request('user/findByName', method: HttpUtils.GET, params: {Keys.NAME: keyword});
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => UserEntity.fromJson(item)).toList();

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
@@ -70,10 +71,10 @@ class AddFriendPage extends StatelessWidget {
                     child: ListView.separated(
                         itemBuilder: (_, index) {
                           return GestureDetector(
-                              onTap: logic.list[index].friendship == "Y" || logic.list[index].friendship == "M"
+                              onTap: logic.list[index].friendship == YorNType.Y || logic.list[index].friendship == YorNType.M
                                   ? () {
-                                      if (logic.list[index].friendship == "Y") logic.goChatPage(logic.list[index]);
-                                      if (logic.list[index].friendship == "M") Get.toNamed(RoutePath.MY_INFO_PAGE);
+                                      if (logic.list[index].friendship == YorNType.Y) logic.goChatPage(logic.list[index]);
+                                      if (logic.list[index].friendship == YorNType.M) Get.toNamed(RoutePath.MY_INFO_PAGE);
                                     }
                                   : null,
                               behavior: HitTestBehavior.translucent,
@@ -97,7 +98,7 @@ class AddFriendPage extends StatelessWidget {
                                                     fontWeight: FontWeight.w500)),
                                             SizedBox(width: 10.w),
                                             Visibility(
-                                                visible: logic.list[index].friendship == "B",
+                                                visible: logic.list[index].friendship == YorNType.B,
                                                 child: Text("已拉黑",
                                                     style: GoogleFonts.roboto(
                                                         fontSize: 14.sp, color: ColorUtil.color_666666)))
@@ -108,18 +109,18 @@ class AddFriendPage extends StatelessWidget {
                                         ])),
                                     Visibility(
                                         visible:
-                                            logic.list[index].friendship == "N" || logic.list[index].friendship == "B",
+                                            logic.list[index].friendship == YorNType.N || logic.list[index].friendship == YorNType.B,
                                         child: RadiusInkWellWidget(
                                             margin: EdgeInsets.only(right: 22.w),
                                             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
-                                            child: Text(logic.list[index].friendship == "N" ? "添加好友" : "移除黑名单",
+                                            child: Text(logic.list[index].friendship == YorNType.N ? "添加好友" : "移除黑名单",
                                                 style: GoogleFonts.roboto(
                                                     color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
                                             onPressed: () {
-                                              if (logic.list[index].friendship == "N") {
+                                              if (logic.list[index].friendship == YorNType.N) {
                                                 logic.applyFriend(logic.list[index].id);
                                               }
-                                              if (logic.list[index].friendship == "B") {
+                                              if (logic.list[index].friendship == YorNType.B) {
                                                 logic.removeFromBlacklist(index);
                                               }
                                             }))

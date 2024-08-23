@@ -1,6 +1,7 @@
 import 'package:im/base/base_list_logic.dart';
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/mixin/friend_mixin.dart';
 import 'package:im/mixin/qr_scan_mixin.dart';
 import 'package:im/repository/contacts_repository.dart';
@@ -38,7 +39,7 @@ class AddFriendLogic extends BaseListLogic<UserEntity> with QrScanMixin, FriendM
     BaseBean result = await ContactsRepository.removeFriendFromBlack(list[index].id);
     if (result.code == 200) {
       showToast(text: "已移除黑名单");
-      list[index].friendship = "N";
+      list[index].friendship = YorNType.N;
       list.refresh();
     }
   }

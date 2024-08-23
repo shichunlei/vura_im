@@ -1,4 +1,6 @@
 import 'package:azlistview_plus/azlistview_plus.dart';
+import 'package:im/global/enum.dart';
+import 'package:im/utils/enum_to_string.dart';
 import 'package:pinyin/pinyin.dart';
 
 class UserEntity extends ISuspensionBean {
@@ -12,7 +14,7 @@ class UserEntity extends ISuspensionBean {
   String? headImageThumb;
   bool online;
   String? tagIndex;
-  String? friendship;
+  YorNType friendship;
   double money;
 
   UserEntity(
@@ -26,7 +28,7 @@ class UserEntity extends ISuspensionBean {
       this.headImageThumb,
       this.online = false,
       this.tagIndex,
-      this.friendship,
+      this.friendship = YorNType.M,
       this.money = .0});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -49,7 +51,7 @@ class UserEntity extends ISuspensionBean {
         money: (json['money'] as num?)?.toDouble() ?? .0,
         signature: json['signature'] as String?,
         headImage: json['headImage'] as String?,
-        friendship: json['friendship'] as String?,
+        friendship: EnumToString.fromString(YorNType.values, json['friendship'] as String? ?? "M"),
         headImageThumb: json['headImageThumb'] as String?,
         online: json['online'] as bool? ?? false,
         tagIndex: tag);

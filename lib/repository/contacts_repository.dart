@@ -2,6 +2,7 @@ import 'package:im/entities/apply_user.dart';
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
+import 'package:im/global/keys.dart';
 import 'package:im/utils/http_utils.dart';
 
 class ContactsRepository {
@@ -47,7 +48,11 @@ class ContactsRepository {
   ///
   static Future<BaseBean> updateFriend(String? id, {String? nickName, String? headImage}) async {
     var data = await HttpUtils.getInstance().request('friend/update',
-        params: {"id": id, if (nickName != null) "nickName": nickName, if (headImage != null) "headImage": headImage},
+        params: {
+          Keys.ID: id,
+          if (nickName != null) "nickName": nickName,
+          if (headImage != null) "headImage": headImage
+        },
         method: HttpUtils.PUT,
         showErrorToast: true);
     return BaseBean.fromJson(data);
@@ -129,7 +134,7 @@ class ContactsRepository {
   ///
   static Future<BaseBean> apply(String? id, {FriendSourceType source = FriendSourceType.NEAR, String? reason}) async {
     var data = await HttpUtils.getInstance().request('apply/applyFriend',
-        params: {"userId": id, "reason": reason ?? "申请添加您为好友", "source": source.name}, showErrorToast: true);
+        params: {Keys.USER_ID: id, "reason": reason ?? "申请添加您为好友", "source": source.name}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 }

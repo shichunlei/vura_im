@@ -9,9 +9,9 @@ class ApplyUserEntity {
   @JsonKey(includeIfNull: false)
   String? applySource;
   @JsonKey(includeIfNull: false)
-  String? applyStatus;
+  String? applyStatus; // 申请状态0无1同意2拒绝
   @JsonKey(includeIfNull: false)
-  String? applyType;
+  String? applyType; // 申请类型1好友2群组
   @JsonKey(includeIfNull: false)
   String? createTime;
   @JsonKey(includeIfNull: false)
