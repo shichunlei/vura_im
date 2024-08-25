@@ -1,15 +1,19 @@
 import 'package:get/get.dart';
 import 'package:im/application.dart';
 import 'package:im/base/base_list_logic.dart';
+import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/config.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
+import 'package:im/realm/friend.dart';
 import 'package:im/repository/session_repository.dart';
 import 'package:im/utils/log_utils.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/utils/toast_util.dart';
 
 class SessionLogic extends BaseListLogic<SessionEntity> {
@@ -17,7 +21,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
   var loadingPrivateMessages = false.obs;
 
   SessionLogic() {
-    webSocketManager.listen("SessionLogic", (int cmd, Map<String, dynamic> data) {
+    webSocketManager.listen("SessionLogic", (int cmd, Map<String, dynamic> data) async {
       Log.d("SessionLogic == 》接收到消息: $cmd, 数据: $data");
       if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
         if (data[Keys.TYPE] == MessageType.LOADING.code) {
@@ -28,19 +32,27 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
           }
         } else {
           MessageEntity message = MessageEntity.fromJson(data);
-          String? myUserId = Get.find<RootLogic>().user.value?.id;
+          String? myUserId = AppConfig.userId;
           String? id;
           String? headImage;
           String? name;
           if (message.sendId != myUserId) {
             id = message.sendId;
             headImage = message.sendHeadImage;
-            name = message.sendNickName ?? "这个是单聊";
+            if (StringUtil.isEmpty(message.sendNickName)) {
+              name = await FriendRealm(realm: Get.find<RootLogic>().realm).queryFriendNicknameById(id);
+            } else {
+              name = message.sendNickName;
+            }
           }
           if (message.receiveId != myUserId) {
             id = message.receiveId;
             headImage = message.receiveHeadImage;
-            name = message.receiveNickName ?? "这个是单聊";
+            if (StringUtil.isEmpty(message.receiveNickName)) {
+              name = await FriendRealm(realm: Get.find<RootLogic>().realm).queryFriendNicknameById(id);
+            } else {
+              name = message.receiveNickName;
+            }
           }
 
           SessionRealm(realm: Get.find<RootLogic>().realm)
@@ -80,11 +92,6 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
           });
         }
       }
-    }, connectCallBack: () {
-      Log.d("WebSocket 连接成功");
-
-      /// 拉取离线消息
-      SessionRepository.getOfflineMessages("all", groupMinId: "0", privateMinId: "0");
     });
   }
 
@@ -94,9 +101,12 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
     super.onInit();
   }
 
+  bool loadFromNet = false;
+
   @override
   Future<List<SessionEntity>> loadData() async {
     if (Get.find<RootLogic>().user.value == null) {
+      loadFromNet = true;
       return await SessionRepository.getSessionList();
     }
     return await SessionRealm(realm: Get.find<RootLogic>().realm).queryAllSessions();
@@ -104,7 +114,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
 
   @override
   void onCompleted(List<SessionEntity> data) {
-    loadSessionsFromNet();
+    if (!loadFromNet) loadSessionsFromNet();
   }
 
   Future createSession(List<UserEntity> users) async {
@@ -122,12 +132,12 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
     params["friendIds"] = users.map((item) => item.id).toList();
 
     showLoading();
-    SessionEntity? session = await SessionRepository.createSession(params);
+    BaseBean result = await SessionRepository.createSession(params);
     hiddenLoading();
 
-    if (session != null) {
+    if (result.code == 200) {
       showToast(text: "创建成功");
-      refreshData();
+      loadSessionsFromNet();
     }
   }
 
@@ -145,6 +155,20 @@ class SessionLogic extends BaseListLogic<SessionEntity> {
   void refreshList() async {
     list.value = await SessionRealm(realm: Get.find<RootLogic>().realm).queryAllSessions();
     list.refresh();
+  }
+
+  Future setTop(int index) async {
+    list[index].moveTop = !list[index].moveTop;
+    list.refresh();
+    await SessionRealm(realm: Get.find<RootLogic>().realm)
+        .setChannelTop(list[index].id, list[index].moveTop, list[index].type);
+  }
+
+  Future setDisturb(int index) async {
+    list[index].isDisturb = !list[index].isDisturb;
+    list.refresh();
+    await SessionRealm(realm: Get.find<RootLogic>().realm)
+        .setChannelDisturb(list[index].id, list[index].isDisturb, list[index].type);
   }
 
   @override

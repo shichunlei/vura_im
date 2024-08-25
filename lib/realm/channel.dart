@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
+import 'package:im/global/config.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/modules/home/session/logic.dart';
-import 'package:im/modules/root/logic.dart';
 import 'package:im/utils/enum_to_string.dart';
 import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/string_util.dart';
@@ -47,11 +47,11 @@ class SessionRealm {
 
   /// 查询所有会话
   Future<List<SessionEntity>> queryAllSessions() async {
-    Log.d("queryAllSessions=====================${Get.find<RootLogic>().user.value?.id}");
+    Log.d("queryAllSessions=====================${AppConfig.userId}");
     return _realm
         .all<Channel>()
         .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop DESC ,lastMessageTime DESC)",
-            ["${Get.find<RootLogic>().user.value?.id}", false])
+            ["${AppConfig.userId}", false])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
@@ -59,7 +59,7 @@ class SessionRealm {
   /// 查询会话
   Future<SessionEntity?> querySessionById(String? id, SessionType sessionType) async {
     Log.d("querySessionById=====================$id");
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
     if (session != null) {
       return sessionRealmToEntity(session);
     } else {
@@ -70,18 +70,18 @@ class SessionRealm {
   /// 更新/插入数据
   Future<Channel> upsert(Channel session) async {
     return await _realm.writeAsync(() {
-      Log.d("upsert----------------->${session.id}");
+      Log.d("upsert----channel------------->${session.id}");
       return _realm.add(session, update: true);
     });
   }
 
   Future saveChannel(SessionEntity session) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
+    Channel? _session = findOne("${AppConfig.userId}-${session.id}-${session.type.name}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
       await _realm.writeAsync(() {
-        _session.name = session.name;
+        if (StringUtil.isNotEmpty(session.name)) _session.name = session.name;
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
         _session.notice = session.notice;
@@ -104,14 +104,14 @@ class SessionRealm {
         Log.e(e.toString());
       }
     } else {
-      Log.d("====================================${session.toJson()}");
+      Log.d("saveChannel====================================${session.toJson()}");
       upsert(sessionEntityToRealm(session));
     }
   }
 
   /// 更新会话基本信息
   Future updateSessionInfo(SessionEntity session) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
+    Channel? _session = findOne("${AppConfig.userId}-${session.id}-${session.type.name}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
@@ -119,6 +119,7 @@ class SessionRealm {
         _session.name = session.name;
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
+        _session.deleted = session.deleted;
         if (session.notice != null) _session.notice = session.notice;
       });
       Log.d("updateSessionInfo===${_session.id}================>${_session.toEJson()}");
@@ -136,7 +137,7 @@ class SessionRealm {
 
   /// 更新会话最后一条消息
   Future updateLastMessage(SessionEntity session, MessageEntity message) async {
-    Channel? _session = findOne("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}");
+    Channel? _session = findOne("${AppConfig.userId}-${session.id}-${session.type.name}");
     if (_session != null) {
       Log.d("----------------->${session.id}");
 
@@ -157,7 +158,7 @@ class SessionRealm {
 
   /// 更新会话配置
   Future setChannelConfig(String? id, SessionConfigEntity config) async {
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${SessionType.group.name}");
+    Channel? session = findOne("${AppConfig.userId}-$id-${SessionType.group.name}");
     if (session != null) {
       await _realm.writeAsync(() {
         session.config = json.encode(config.toJson());
@@ -173,7 +174,7 @@ class SessionRealm {
 
   /// 更新会话置顶状态
   Future setChannelTop(String? id, bool isTop, SessionType sessionType) async {
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
     if (session != null) {
       await _realm.writeAsync(() {
         session.moveTop = isTop;
@@ -189,7 +190,7 @@ class SessionRealm {
 
   /// 更新会话免打扰状态
   Future setChannelDisturb(String? id, bool isDisturb, SessionType sessionType) async {
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
     if (session != null) {
       await _realm.writeAsync(() {
         session.isDisturb = isDisturb;
@@ -205,7 +206,7 @@ class SessionRealm {
 
   /// 删除会话
   Future deleteChannel(String? id, SessionType sessionType) async {
-    Channel? session = findOne("${Get.find<RootLogic>().user.value?.id}-$id-${sessionType.name}");
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
     if (session != null) {
       await _realm.writeAsync(() {
         session.deleted = true;
@@ -250,10 +251,10 @@ SessionEntity sessionRealmToEntity(Channel session) {
 }
 
 Channel sessionEntityToRealm(SessionEntity session) {
-  return Channel("${Get.find<RootLogic>().user.value?.id}-${session.id}-${session.type.name}",
+  return Channel("${AppConfig.userId}-${session.id}-${session.type.name}",
       name: session.name,
       id: session.id,
-      userId: Get.find<RootLogic>().user.value?.id,
+      userId: AppConfig.userId,
       type: EnumToString.parse(session.type) ?? SessionType.group.name,
       ownerId: session.ownerId,
       headImage: session.headImage,

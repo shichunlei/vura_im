@@ -6,8 +6,9 @@ import 'package:im/application.dart';
 import 'package:im/global/config.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/dialog_util.dart';
 import 'package:im/utils/sp_util.dart';
-import 'package:im/widgets/obx_widget.dart';
+import 'package:im/widgets/dialog/alert_dialog.dart';
 import 'package:im/widgets/radius_inkwell_widget.dart';
 
 import 'logic.dart';
@@ -21,126 +22,126 @@ class SettingPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("通用设置"), centerTitle: true),
-        body: BaseWidget(
-            logic: logic,
-            builder: (logic) {
-              return Column(children: [
-                SizedBox(height: 30.h),
-                Image.asset("assets/images/logo.png", width: 88.r, height: 88.r),
-                SizedBox(height: 10.h),
-                Text("版本号：${AppConfig.version?.version}"),
-                Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
-                    margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
-                    child: Column(children: [
-                      RadiusInkWellWidget(
-                          color: Colors.transparent,
-                          onPressed: () {
-                            Get.toNamed(RoutePath.LINE_PAGE);
-                          },
-                          borderRadius:
-                              BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
-                          child: Container(
-                              height: 60.h,
-                              padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                              child: Row(children: [
-                                Text("请求线路", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                                const Spacer(),
-                                Text("线路2", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                              ]))),
-                      Divider(height: 0, indent: 22.w, endIndent: 22.w),
-                      RadiusInkWellWidget(
-                          color: Colors.transparent,
-                          borderRadius:
-                              BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                          onPressed: () {},
-                          child: Container(
-                              height: 60.h,
-                              padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                              child: Row(children: [
-                                Text("本地缓存", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                                const Spacer(),
-                                Text("1.25M",
-                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                              ])))
-                    ])),
-                Container(
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
-                    margin: EdgeInsets.symmetric(horizontal: 22.w),
-                    child: Column(children: [
-                      RadiusInkWellWidget(
-                          color: Colors.transparent,
-                          onPressed: () {},
-                          borderRadius:
-                              BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
-                          child: Container(
-                              height: 60.h,
-                              padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                              child: Row(children: [
-                                Text("官网主页",
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
-                                const Spacer(),
-                                Text("http://home.lgerapp.com",
-                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                              ]))),
-                      Divider(height: 0, indent: 22.w, endIndent: 22.w),
-                      RadiusInkWellWidget(
-                          color: Colors.transparent,
-                          borderRadius:
-                              BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                          onPressed: () {},
-                          child: Container(
-                              height: 60.h,
-                              padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                              child: Row(children: [
-                                Text("版本号",
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
-                                const Spacer(),
-                                Text("${AppConfig.version?.version}",
-                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                              ])))
-                    ])),
+        body: Column(children: [
+          SizedBox(height: 30.h),
+          Image.asset("assets/images/logo.png", width: 88.r, height: 88.r),
+          SizedBox(height: 10.h),
+          Text("版本号：${AppConfig.version?.version}"),
+          Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
+              margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+              child: Column(children: [
                 RadiusInkWellWidget(
-                    margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
-                    color: Colors.white,
+                    color: Colors.transparent,
                     onPressed: () {
-                      Get.toNamed(RoutePath.ACCOUNT_PAGE);
+                      Get.toNamed(RoutePath.LINE_PAGE);
                     },
-                    radius: 11.r,
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                     child: Container(
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
                         child: Row(children: [
-                          Text("账号管理",
-                              style: GoogleFonts.roboto(
-                                  fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
+                          Text("请求线路", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
+                          Text("线路2", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ]))),
-                const Spacer(),
+                Divider(height: 0, indent: 22.w, endIndent: 22.w),
                 RadiusInkWellWidget(
-                    margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 44.h),
-                    color: Colors.white,
+                    color: Colors.transparent,
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
                     onPressed: () {
-                      SpUtil.clear();
-                      webSocketManager.close();
-                      Get.offAllNamed(RoutePath.LOGIN_PAGE);
+                      show(builder: (_) {
+                        return CustomAlertDialog(title: "提示", content: "确定要清除缓存", onConfirm: logic.clearCache);
+                      });
                     },
-                    radius: 11.r,
                     child: Container(
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                        alignment: Alignment.centerLeft,
-                        child: Text("退出账号",
-                            style: GoogleFonts.roboto(
-                                fontSize: 15.sp, color: const Color(0xffDB5549), fontWeight: FontWeight.bold))))
-              ]);
-            }));
+                        child: Row(children: [
+                          Text("本地缓存", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                          const Spacer(),
+                          Obx(() {
+                            return Text(logic.cacheSize.value,
+                                style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999));
+                          }),
+                          const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                        ])))
+              ])),
+          Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
+              margin: EdgeInsets.symmetric(horizontal: 22.w),
+              child: Column(children: [
+                RadiusInkWellWidget(
+                    color: Colors.transparent,
+                    onPressed: () {},
+                    borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
+                    child: Container(
+                        height: 60.h,
+                        padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                        child: Row(children: [
+                          Text("官网主页",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
+                          const Spacer(),
+                          Text("http://home.lgerapp.com",
+                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                          const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                        ]))),
+                Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                RadiusInkWellWidget(
+                    color: Colors.transparent,
+                    borderRadius:
+                        BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
+                    onPressed: () {},
+                    child: Container(
+                        height: 60.h,
+                        padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                        child: Row(children: [
+                          Text("版本号",
+                              style: GoogleFonts.roboto(
+                                  fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
+                          const Spacer(),
+                          Text("${AppConfig.version?.version}",
+                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                          const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                        ])))
+              ])),
+          RadiusInkWellWidget(
+              margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+              color: Colors.white,
+              onPressed: () {
+                Get.toNamed(RoutePath.ACCOUNT_PAGE);
+              },
+              radius: 11.r,
+              child: Container(
+                  height: 60.h,
+                  padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                  child: Row(children: [
+                    Text("账号管理",
+                        style: GoogleFonts.roboto(
+                            fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
+                    const Spacer(),
+                    const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                  ]))),
+          const Spacer(),
+          RadiusInkWellWidget(
+              margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 44.h),
+              color: Colors.white,
+              onPressed: () {
+                SpUtil.clear();
+                webSocketManager.close();
+                Get.offAllNamed(RoutePath.LOGIN_PAGE);
+              },
+              radius: 11.r,
+              child: Container(
+                  height: 60.h,
+                  padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                  alignment: Alignment.centerLeft,
+                  child: Text("退出账号",
+                      style: GoogleFonts.roboto(
+                          fontSize: 15.sp, color: const Color(0xffDB5549), fontWeight: FontWeight.bold))))
+        ]));
   }
 }

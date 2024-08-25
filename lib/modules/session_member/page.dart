@@ -59,7 +59,7 @@ class SessionMemberPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                            Text("${logic.bean.value?.remarkNickName}",
+                            Text("${logic.bean.value?.showNickName}",
                                 style: GoogleFonts.roboto(
                                     fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w600)),
                             SizedBox(height: 13.r),
@@ -91,20 +91,41 @@ class SessionMemberPage extends StatelessWidget {
                           child: Row(children: [
                             Text("昵称", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp)),
                             const Spacer(),
-                            Text("${logic.bean.value?.remarkNickName}",
+                            Text("${logic.bean.value?.showNickName}",
                                 style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
                           ]))
                     ])),
                 const Spacer(),
-                RadiusInkWellWidget(
-                    onPressed: () => logic.applyFriend(logic.userId),
-                    child: Container(
-                        height: 44.h,
-                        width: 177.w,
-                        alignment: Alignment.center,
-                        child: Text("添加好友",
-                            style: GoogleFonts.roboto(
-                                fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white)))),
+                logic.bean.value?.friendship == YorNType.Y
+                    ? RadiusInkWellWidget(
+                        onPressed: () => logic.goChatPageByMember(logic.bean.value!),
+                        child: Container(
+                            height: 44.h,
+                            width: 177.w,
+                            alignment: Alignment.center,
+                            child: Text("发消息",
+                                style: GoogleFonts.roboto(
+                                    fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
+                    : logic.bean.value?.friendship == YorNType.N
+                        ? RadiusInkWellWidget(
+                            onPressed: () => logic.applyFriend(logic.userId),
+                            child: Container(
+                                height: 44.h,
+                                width: 177.w,
+                                alignment: Alignment.center,
+                                child: Text("添加好友",
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
+                        : RadiusInkWellWidget(
+                            color: Colors.redAccent,
+                            onPressed: logic.removeFromBlacklist,
+                            child: Container(
+                                height: 44.h,
+                                width: 177.w,
+                                alignment: Alignment.center,
+                                child: Text("移除黑名单",
+                                    style: GoogleFonts.roboto(
+                                        fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white)))),
                 SizedBox(height: DeviceUtils.setBottomMargin(20.h))
               ]);
             }));

@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/config.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/modules/home/contacts/logic.dart';
-import 'package:im/modules/root/logic.dart';
 import 'package:im/utils/enum_to_string.dart';
 import 'package:im/utils/log_utils.dart';
 import 'package:realm/realm.dart';
@@ -33,20 +33,31 @@ class FriendRealm {
 
   /// 查询所有好友
   Future<List<UserEntity>> queryAllFriends() async {
-    Log.d("queryAllFriends=====================${Get.find<RootLogic>().user.value?.id}");
+    Log.d("queryAllFriends=====================${AppConfig.userId}");
     return _realm
         .all<Friend>()
-        .query(r"userId == $0 AND isDeleted == $1", ["${Get.find<RootLogic>().user.value?.id}", false])
+        .query(r"userId == $0 AND isDeleted == $1", ["${AppConfig.userId}", false])
         .map((item) => friendRealmToEntity(item))
         .toList();
   }
 
   /// 查询好友
-  Future<UserEntity?> querySessionById(int? id) async {
+  Future<UserEntity?> queryFriendById(String? id) async {
     Log.d("querySessionById=====================$id");
-    Friend? user = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    Friend? user = findOne("${AppConfig.userId}-$id");
     if (user != null) {
       return friendRealmToEntity(user);
+    } else {
+      return null;
+    }
+  }
+
+  /// 查询好友昵称
+  Future<String?> queryFriendNicknameById(String? id) async {
+    Log.d("querySessionById=====================$id");
+    Friend? user = findOne("${AppConfig.userId}-$id");
+    if (user != null) {
+      return user.nickName;
     } else {
       return null;
     }
@@ -55,13 +66,13 @@ class FriendRealm {
   /// 更新/插入数据
   Future<Friend> upsert(Friend user) async {
     return await _realm.writeAsync(() {
-      Log.d("upsert----------------->${user.id}");
+      Log.d("upsert----friend------------->${user.id}");
       return _realm.add(user, update: true);
     });
   }
 
   Future deleteFriend(String? id) async {
-    Friend? friend = findOne("${Get.find<RootLogic>().user.value?.id}-$id");
+    Friend? friend = findOne("${AppConfig.userId}-$id");
     if (friend != null) {
       await _realm.writeAsync(() {
         friend.isDeleted = true;
@@ -94,11 +105,11 @@ UserEntity friendRealmToEntity(Friend user) {
 }
 
 Friend friendEntityToRealm(UserEntity user) {
-  return Friend("${Get.find<RootLogic>().user.value?.id}-${user.id}",
+  return Friend("${AppConfig.userId}-${user.id}",
       id: user.id,
       userName: user.userName,
       sex: user.sex,
-      userId: Get.find<RootLogic>().user.value?.id,
+      userId: AppConfig.userId,
       nickName: user.nickName,
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,

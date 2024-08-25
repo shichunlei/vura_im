@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:im/base/base_object_logic.dart';
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/session_entity.dart';
+import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
 import 'package:im/realm/friend.dart';
 import 'package:im/repository/contacts_repository.dart';
+import 'package:im/repository/user_repository.dart';
 import 'package:im/route/route_path.dart';
 
 class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
@@ -25,6 +27,15 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   @override
   Future<SessionEntity?> loadData() async {
+    UserEntity? user = await UserRepository.getUserInfoById(id);
+    if (user != null) {
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+          id: user.id,
+          type: SessionType.private,
+          name: user.nickName,
+          headImage: user.headImage,
+          headImageThumb: user.headImageThumb));
+    }
     return await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, SessionType.private);
   }
 

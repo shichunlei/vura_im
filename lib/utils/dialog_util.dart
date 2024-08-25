@@ -6,7 +6,7 @@ import 'package:image_picker/image_picker.dart';
 
 import 'color_util.dart';
 
-Future<T?> show<T extends Object>(BuildContext context,
+Future<T?> show<T extends Object>(
     {Duration duration = const Duration(milliseconds: 300),
     Curve curve = Curves.easeInOut,
     required WidgetBuilder builder,
@@ -14,7 +14,7 @@ Future<T?> show<T extends Object>(BuildContext context,
     bool barrierDismissible = true,
     Color? barrierColor}) async {
   return showGeneralDialog<T>(
-      context: context,
+      context: Get.context!,
       transitionDuration: duration,
       barrierColor: barrierColor ?? Colors.black54,
       barrierDismissible: barrierDismissible,

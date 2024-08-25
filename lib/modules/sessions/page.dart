@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:im/global/icon_font.dart';
 import 'package:im/modules/sessions/create/page.dart';
 import 'package:im/modules/sessions/join/page.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/widgets/custom_icon_button.dart';
 import 'package:im/widgets/keep_alive_view.dart';
 import 'package:im/widgets/obx_widget.dart';
 
@@ -18,10 +20,20 @@ class SessionsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: TabBar(tabs: const [Tab(text: "我创建的"), Tab(text: "我加入的")], controller: logic.tabController),
+            title: TabBar(
+                dividerColor: Colors.white,
+                dividerHeight: kToolbarHeight,
+                tabAlignment: TabAlignment.fill,
+                indicatorColor: Colors.transparent,
+                labelColor: ColorUtil.color_333333,
+                labelStyle: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
+                unselectedLabelStyle: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
+                unselectedLabelColor: const Color(0xffdddddd),
+                tabs: const [Tab(text: "我创建的"), Tab(text: "我加入的")],
+                controller: logic.tabController),
             centerTitle: true,
             actions: [
-              IconButton(onPressed: () {}, icon: const Icon(IconFont.add_square, color: ColorUtil.color_333333))
+              CustomIconButton(onPressed: () {}, icon: const Icon(IconFont.add_group, color: ColorUtil.color_333333))
             ]),
         body: BaseWidget(
             logic: logic,

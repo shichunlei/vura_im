@@ -25,6 +25,7 @@ mixin FriendMixin on BaseLogic {
           headImage: user.headImage,
           headImageThumb: user.headImageThumb,
           type: SessionType.private,
+          deleted: false,
           lastMessageTime: DateTime.now().millisecondsSinceEpoch);
       await SessionRealm(realm: Get.find<RootLogic>().realm).upsert(sessionEntityToRealm(sessionEntity)).then((value) {
         try {
@@ -39,13 +40,8 @@ mixin FriendMixin on BaseLogic {
       session.headImage = user.headImage;
       session.headImageThumb = user.headImageThumb;
       session.type = SessionType.private;
-      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session).then((value) {
-        try {
-          Get.find<SessionLogic>().refreshList();
-        } catch (e) {
-          Log.e(e.toString());
-        }
-      });
+      session.deleted = false;
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session);
       Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private});
     }
   }
@@ -56,7 +52,8 @@ mixin FriendMixin on BaseLogic {
     if (session == null) {
       SessionEntity sessionEntity = SessionEntity(
           id: user.userId,
-          name: user.remarkNickName, // todo
+          name: user.remarkNickName,
+          // todo
           headImage: user.headImage,
           type: SessionType.private,
           lastMessageTime: DateTime.now().millisecondsSinceEpoch);
@@ -72,19 +69,15 @@ mixin FriendMixin on BaseLogic {
       session.name = user.remarkNickName; // todo   并且没有头像缩略图
       session.headImage = user.headImage;
       session.type = SessionType.private;
-      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session).then((value) {
-        try {
-          Get.find<SessionLogic>().refreshList();
-        } catch (e) {
-          Log.e(e.toString());
-        }
-      });
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session);
       Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.userId, Keys.TYPE: SessionType.private});
     }
   }
 
   Future applyFriend(String? userId) async {
+    showLoading();
     BaseBean result = await ContactsRepository.apply(userId);
+    hiddenLoading();
     if (result.code == 200) {
       showToast(text: "申请已发送");
     }

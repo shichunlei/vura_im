@@ -1,17 +1,26 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:im/application.dart';
 import 'package:im/base/base_list_logic.dart';
+import 'package:im/entities/file_entity.dart';
 import 'package:im/entities/message_entity.dart';
 import 'package:im/entities/session_entity.dart';
+import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/mixin/session_detail_mixin.dart';
 import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
+import 'package:im/repository/common_repository.dart';
 import 'package:im/repository/session_repository.dart';
 import 'package:im/utils/log_utils.dart';
+import 'package:im/utils/string_util.dart';
+import 'package:im/utils/toast_util.dart';
+import 'package:im/utils/tool_util.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   String? id;
@@ -56,10 +65,14 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   }
 
   /// 发送消息
-  Future sendMessage() async {
+  Future sendMessage(String content, MessageType messageType) async {
+    if (StringUtil.isEmpty(content)) {
+      showToast(text: "消息不能为空");
+      return;
+    }
     MessageEntity? message = await SessionRepository.sendMessage(id, type,
-        content: controller.text,
-        type: MessageType.TEXT,
+        content: content,
+        type: messageType,
         receiveHeadImage: session.value?.headImage,
         receiveNickName: session.value?.name);
     if (message != null) {
@@ -87,9 +100,43 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     }
   }
 
+  Future getImage(ImageSource source) async {
+    String? imagePath = await pickerImage(source, cropImage: false);
+    if (StringUtil.isNotEmpty(imagePath)) {
+      showLoading();
+      FileEntity? file = await CommonRepository.uploadImage(imagePath!);
+      if (file != null) {
+        hiddenLoading();
+        await sendImage(file);
+      } else {
+        showToast(text: "图片上传失败");
+        hiddenLoading();
+      }
+    } else {}
+  }
+
+  Future sendImage(FileEntity file) async {
+    try {
+      String content = json.encode(file.toJson());
+      sendMessage(content, MessageType.IMAGE);
+    } catch (e) {
+      Log.e(e.toString());
+    }
+  }
+
+  Future sendIdCard(UserEntity? user) async {
+    try {
+      String content = json.encode(user?.toJson());
+      sendMessage(content, MessageType.ID_CARD);
+    } catch (e) {
+      Log.e(e.toString());
+    }
+  }
+
   @override
   void onClose() {
     webSocketManager.removeCallbacks("ChatLogic-$id-$type");
+    SessionRepository.readMessage(id, type);
     super.onClose();
   }
 }

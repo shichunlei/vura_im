@@ -178,4 +178,60 @@ class FileUtil {
       showToast(text: "保存失败");
     }
   }
+
+  static Future<double> loadCache() async {
+    try {
+      double value = await _getTotalSizeOfFilesInDir(await tempDirectory);
+      Log.d('临时目录大小: ${value.toStringAsFixed(2)} B');
+      return value;
+    } catch (err) {
+      Log.e(err.toString());
+      return 0.0;
+    }
+  }
+
+  static Future<double> _getTotalSizeOfFilesInDir(final FileSystemEntity file) async {
+    if (file is File) {
+      int length = await file.length();
+      return double.parse(length.toString());
+    } else if (file is Directory) {
+      final List<FileSystemEntity> children = file.listSync();
+      double total = 0;
+      for (final FileSystemEntity child in children) {
+        total += await _getTotalSizeOfFilesInDir(child);
+      }
+      return total;
+    }
+    return 0.0;
+  }
+
+  static String renderSize(double value) {
+    List<String> unitArr = ['B', 'KB', 'MB', 'GB'];
+    int index = 0;
+    while (value > 1024) {
+      value = value / 1024;
+      index++;
+    }
+    return '${value.toStringAsFixed(2)} ${unitArr[index]}';
+  }
+
+  /// 清除缓存
+  static Future clearCache() async {
+    try {
+      await delDir(await tempDirectory);
+      Log.d('清除缓存成功');
+    } catch (e) {
+      Log.e('清除缓存失败: ${e.toString()}');
+    }
+  }
+
+  static Future<Null> delDir(FileSystemEntity file) async {
+    if (file is Directory) {
+      final List<FileSystemEntity> children = file.listSync();
+      for (final FileSystemEntity child in children) {
+        await delDir(child);
+      }
+    }
+    await file.delete();
+  }
 }

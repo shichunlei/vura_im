@@ -7,13 +7,11 @@ import 'package:im/entities/session_entity.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
-import 'package:im/modules/home/session/logic.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/realm/channel.dart';
 import 'package:im/repository/common_repository.dart';
 import 'package:im/repository/session_repository.dart';
 import 'package:im/route/route_path.dart';
-import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/toast_util.dart';
 
 class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
@@ -45,6 +43,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     showLoading();
     BaseBean result = await SessionRepository.kickMemberFromSession(id, []);
     hiddenLoading();
+    if (result.code == 200) {}
   }
 
   /// 邀请人
@@ -103,11 +102,6 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
       await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session).then((value) async {
         bean.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, SessionType.group);
         bean.refresh();
-        try {
-          Get.find<SessionLogic>().refreshList();
-        } catch (e) {
-          Log.e(e.toString());
-        }
       });
     }
   }

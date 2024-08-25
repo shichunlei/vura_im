@@ -18,6 +18,7 @@ class MyJoinSessionsPage extends StatelessWidget {
             logic: logic,
             builder: (logic) {
               return ListView.separated(
+                  padding: EdgeInsets.only(top: 10.h),
                   itemBuilder: (_, index) {
                     return ItemSession(session: logic.list[index]);
                   },

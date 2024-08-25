@@ -38,6 +38,7 @@ class GroupSessionDetailPage extends StatelessWidget {
             logic: logic,
             builder: (logic) {
               return SingleChildScrollView(
+                padding: EdgeInsets.zero,
                 child: Column(children: [
                   Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
@@ -59,7 +60,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                                       child: RadiusInkWellWidget(
                                           color: Colors.transparent,
                                           onPressed: () {
-                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
+                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE,
+                                                arguments: {Keys.ID: logic.id, Keys.TITLE: "移除人员"});
                                           },
                                           radius: 5.r,
                                           border: Border.all(color: const Color(0xfff5f5f5), width: 1),
@@ -81,7 +83,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                                           color: Colors.transparent,
                                           onPressed: () {
                                             Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {
-                                              "selectUserIds": logic.members.map((item) => item.userId).toList()
+                                              "selectUserIds": logic.members.map((item) => item.userId).toList(),
+                                              "isCheckBox": true
                                             })?.then((value) {
                                               if (value != null && value is List<UserEntity>) {
                                                 logic.inviteMembers(value);
@@ -110,7 +113,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                             visible: logic.members.length > 10,
                             child: GestureDetector(
                                 onTap: () {
-                                  Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
+                                  Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE,
+                                      arguments: {Keys.ID: logic.id, Keys.TITLE: "群成员"});
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -119,24 +123,26 @@ class GroupSessionDetailPage extends StatelessWidget {
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ])))
                       ])),
-                  RadiusInkWellWidget(
-                      onPressed: () {
-                        Get.toNamed(RoutePath.SESSION_MANAGER_PAGE, arguments: {Keys.ID: logic.id});
-                      },
-                      radius: 11.r,
-                      color: Colors.white,
-                      margin: EdgeInsets.symmetric(horizontal: 22.w),
-                      child: Container(
-                          padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                          height: 60.h,
-                          child: Row(children: [
-                            Text("群管理", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                            const Spacer(),
-                            const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                          ]))),
+                  Get.find<RootLogic>().user.value?.id == logic.bean.value?.ownerId
+                      ? RadiusInkWellWidget(
+                          onPressed: () {
+                            Get.toNamed(RoutePath.SESSION_MANAGER_PAGE, arguments: {Keys.ID: logic.id});
+                          },
+                          radius: 11.r,
+                          color: Colors.white,
+                          margin: EdgeInsets.only(left: 22.w, right: 22.w, bottom: 11.h),
+                          child: Container(
+                              padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                              height: 60.h,
+                              child: Row(children: [
+                                Text("群管理", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                const Spacer(),
+                                const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                              ])))
+                      : const SizedBox(),
                   Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
-                      margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
+                      margin: EdgeInsets.only(left: 22.w, right: 22.w, bottom: 11.h),
                       child: Column(children: [
                         RadiusInkWellWidget(
                             color: Colors.transparent,
@@ -204,7 +210,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                   Text("群聊编号",
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
-                                  Text("235353",
+                                  Text("${logic.id}",
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ]))),
@@ -261,7 +267,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                       ])),
                   Container(
                       decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
-                      margin: EdgeInsets.symmetric(horizontal: 22.w),
+                      margin: EdgeInsets.only(left: 22.w, bottom: 44.h, right: 22.w),
                       child: Column(children: [
                         logic.bean.value!.isAdmin == YorNType.Y
                             ? RadiusInkWellWidget(
@@ -288,7 +294,6 @@ class GroupSessionDetailPage extends StatelessWidget {
                                         style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
-                            margin: EdgeInsets.only(bottom: 40.h),
                             color: Colors.transparent,
                             onPressed: () {},
                             borderRadius: BorderRadius.only(
@@ -319,7 +324,11 @@ class ItemSessionUser extends StatelessWidget {
           aspectRatio: 1,
           child: RoundImage("${member.headImage}", width: double.infinity, height: double.infinity, radius: 5.r,
               onTap: () {
-            Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId, "groupId": groupId});
+            if (member.friendship == YorNType.M) {
+              Get.toNamed(RoutePath.MY_INFO_PAGE);
+            } else {
+              Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId, "groupId": groupId});
+            }
           },
               errorWidget: StringUtil.isNotEmpty(member.showNickName)
                   ? Container(

@@ -1,9 +1,20 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:im/entities/file_entity.dart';
 import 'package:im/entities/message_entity.dart';
+import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
+import 'package:im/modules/chat/widgets/item_receive_red_package.dart';
+import 'package:im/utils/color_util.dart';
 import 'package:im/utils/date_util.dart';
+import 'package:im/utils/string_util.dart';
 import 'package:im/widgets/avatar_image.dart';
 
+import 'item_receive_card.dart';
+import 'item_receive_image.dart';
 import 'item_receive_text.dart';
 
 class ItemReceiveMessage extends StatelessWidget {
@@ -18,23 +29,34 @@ class ItemReceiveMessage extends StatelessWidget {
       Visibility(
           visible: showTime,
           child: Container(
-              height: 35.h, alignment: Alignment.center, child: Text(DateUtil.getWechatTime(message.sendTime)))),
-      SizedBox(height: 10.h),
-      Row(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
+              height: 30.h,
+              alignment: Alignment.center,
+              child: Text(DateUtil.getWechatTime(message.sendTime),
+                  style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
+      SizedBox(height: 5.h),
+      Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
         AvatarImageView("${message.sendHeadImage}", radius: 22.r, name: "${message.sendNickName}"),
-        buildMessageView(message.type)
+        SizedBox(width: 10.w),
+        GestureDetector(
+            onLongPress: () {
+              /// todo 消息长按操作
+            },
+            child: buildMessageView(message.type))
       ])
     ]);
   }
 
   Widget buildMessageView(int type) {
-    switch (type) {
-      case 0: // 文本
-        return ItemReceiveText(message: message);
-      case 904: // 红包
-        return ItemReceiveText(message: message);
-      default:
-        return Container(child: Text("${message.content}"));
+    if (type == MessageType.TEXT.code) return ItemReceiveText(message: message);
+    if (type == MessageType.IMAGE.code && StringUtil.isNotEmpty(message.content)) {
+      return ItemReceiveImage(message: message, file: FileEntity.fromJson(json.decode(message.content!)));
     }
+    if (type == MessageType.ID_CARD.code && StringUtil.isNotEmpty(message.content)) {
+      return ItemReceiveCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
+    }
+    if (type == MessageType.RED_PACKAGE.code && message.content != null) {
+      return ItemReceiveRedPackage(message: message);
+    }
+    return Text("暂未适配的消息类型${message.content}");
   }
 }

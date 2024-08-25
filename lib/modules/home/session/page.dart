@@ -6,9 +6,11 @@ import 'package:im/global/icon_font.dart';
 import 'package:im/modules/sessions/widgets/item_session.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/dialog_util.dart';
 import 'package:im/widgets/appbar_bottom_search_view.dart';
 import 'package:im/widgets/custom_icon_button.dart';
 import 'package:im/widgets/obx_widget.dart';
+import 'package:im/widgets/radius_inkwell_widget.dart';
 import 'package:im/widgets/state_view/empty_page.dart';
 
 import 'logic.dart';
@@ -21,7 +23,7 @@ class SessionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
             backgroundColor: Colors.white,
             title: Text("message".tr),
@@ -34,7 +36,7 @@ class SessionPage extends StatelessWidget {
               CustomIconButton(
                   icon: const Icon(IconFont.add_square, color: ColorUtil.color_333333),
                   onPressed: () {
-                    Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE)?.then((value) {
+                    Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {"isCheckBox": true})?.then((value) {
                       if (value != null && value is List<UserEntity>) logic.createSession(value);
                     });
                   })
@@ -50,11 +52,55 @@ class SessionPage extends StatelessWidget {
               }
               return ListView.separated(
                   itemBuilder: (_, index) {
-                    return ItemSession(session: logic.list[index]);
+                    return ItemSession(
+                        session: logic.list[index],
+                        onLongPress: () {
+                          showToolDialog(index);
+                        });
                   },
                   itemCount: logic.list.length,
                   separatorBuilder: (BuildContext context, int index) =>
                       Divider(height: 0, indent: 18.w, endIndent: 18.w));
             }));
+  }
+
+  void showToolDialog(int index) {
+    show(builder: (_) {
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Container(
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: Get.theme.cardColor),
+            width: 250.w,
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              RadiusInkWellWidget(
+                  radius: 0,
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.only(topRight: Radius.circular(8.r), topLeft: Radius.circular(8.r)),
+                  onPressed: () {
+                    Get.back();
+                    logic.setTop(index);
+                  },
+                  child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(logic.list[index].moveTop ? "取消置顶" : "置顶",
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)))),
+              const Divider(height: .5),
+              RadiusInkWellWidget(
+                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                  color: Colors.transparent,
+                  child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text(logic.list[index].isDisturb ? "取消免打扰" : "消息免打扰",
+                          style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600))),
+                  onPressed: () {
+                    Get.back();
+                    logic.setDisturb(index);
+                  })
+            ]))
+      ]);
+    });
   }
 }

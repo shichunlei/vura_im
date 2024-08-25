@@ -71,10 +71,15 @@ class AddFriendPage extends StatelessWidget {
                     child: ListView.separated(
                         itemBuilder: (_, index) {
                           return GestureDetector(
-                              onTap: logic.list[index].friendship == YorNType.Y || logic.list[index].friendship == YorNType.M
+                              onTap: logic.list[index].friendship == YorNType.Y ||
+                                      logic.list[index].friendship == YorNType.M
                                   ? () {
-                                      if (logic.list[index].friendship == YorNType.Y) logic.goChatPage(logic.list[index]);
-                                      if (logic.list[index].friendship == YorNType.M) Get.toNamed(RoutePath.MY_INFO_PAGE);
+                                      if (logic.list[index].friendship == YorNType.Y) {
+                                        logic.goChatPage(logic.list[index]);
+                                      }
+                                      if (logic.list[index].friendship == YorNType.M) {
+                                        Get.toNamed(RoutePath.MY_INFO_PAGE);
+                                      }
                                     }
                                   : null,
                               behavior: HitTestBehavior.translucent,
@@ -108,9 +113,12 @@ class AddFriendPage extends StatelessWidget {
                                               style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                         ])),
                                     Visibility(
-                                        visible:
-                                            logic.list[index].friendship == YorNType.N || logic.list[index].friendship == YorNType.B,
+                                        visible: logic.list[index].friendship == YorNType.N ||
+                                            logic.list[index].friendship == YorNType.B,
                                         child: RadiusInkWellWidget(
+                                            color: logic.list[index].friendship == YorNType.B
+                                                ? Colors.redAccent
+                                                : Theme.of(context).primaryColor,
                                             margin: EdgeInsets.only(right: 22.w),
                                             padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 5.h),
                                             child: Text(logic.list[index].friendship == YorNType.N ? "添加好友" : "移除黑名单",

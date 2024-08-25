@@ -1,9 +1,14 @@
 import 'package:get/get.dart';
 import 'package:im/base/base_object_logic.dart';
+import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/member_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/mixin/friend_mixin.dart';
+import 'package:im/modules/home/contacts/logic.dart';
+import 'package:im/repository/contacts_repository.dart';
 import 'package:im/repository/session_repository.dart';
+import 'package:im/utils/log_utils.dart';
 
 class SessionMemberLogic extends BaseObjectLogic<MemberEntity?> with FriendMixin {
   String? userId;
@@ -23,5 +28,20 @@ class SessionMemberLogic extends BaseObjectLogic<MemberEntity?> with FriendMixin
   @override
   Future<MemberEntity?> loadData() async {
     return await SessionRepository.getSessionMember(groupId, userId);
+  }
+
+  Future removeFromBlacklist() async {
+    showLoading();
+    BaseBean result = await ContactsRepository.removeFriendFromBlack(userId);
+    hiddenLoading();
+    if (result.code == 200) {
+      bean.value?.friendship == YorNType.N;
+      bean.refresh();
+      try {
+        Get.find<ContactsLogic>().refreshData();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
   }
 }

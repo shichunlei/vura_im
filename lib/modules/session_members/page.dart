@@ -21,19 +21,20 @@ class SessionMembersPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text("群成员"),
+            title: Text(logic.title),
             centerTitle: true,
             bottom: AppBarBottomSearchView(onSubmitted: (String value) {}, hintText: "搜索")),
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
               return ListView.separated(
-                  padding: EdgeInsets.zero,
+                  padding: EdgeInsets.only(top: 8.h),
                   itemBuilder: (_, index) {
                     return GestureDetector(
                         onTap: () {},
                         behavior: HitTestBehavior.translucent,
                         child: Container(
+                            color: Colors.white,
                             padding: EdgeInsets.only(right: 22.w, top: 11.h, bottom: 11.h),
                             child: Row(children: [
                               Container(
@@ -42,16 +43,21 @@ class SessionMembersPage extends StatelessWidget {
                                   child: Icon(Icons.check_circle, size: 10.r)),
                               AvatarImageView("${logic.list[index].headImage}",
                                   radius: 26.r, name: logic.list[index].remarkNickName),
+                              SizedBox(width: 13.w),
                               Expanded(
-                                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                  Text("${logic.list[index].remarkNickName}",
-                                      style: GoogleFonts.roboto(
-                                          fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
-                                  SizedBox(height: 5.r),
-                                  Text("data",
-                                      style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
-                                ]),
-                              ),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                    Text("${logic.list[index].remarkNickName}",
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 18.sp,
+                                            color: ColorUtil.color_333333,
+                                            fontWeight: FontWeight.w500)),
+                                    SizedBox(height: 5.r),
+                                    Text("ID:${logic.list[index].userId}",
+                                        style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                  ])),
                               RadiusInkWellWidget(
                                   child: Container(
                                       width: 62.w,

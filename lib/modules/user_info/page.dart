@@ -94,6 +94,7 @@ class UserInfoPage extends StatelessWidget {
                 logic.bean.value?.friendship == YorNType.Y
                     ? RadiusInkWellWidget(
                         radius: 4.r,
+                        margin: EdgeInsets.symmetric(horizontal: 22.w),
                         onPressed: () => logic.goChatPage(logic.bean.value!),
                         child: Container(
                             height: 44.h,
@@ -105,6 +106,7 @@ class UserInfoPage extends StatelessWidget {
                     : logic.bean.value?.friendship == YorNType.N
                         ? RadiusInkWellWidget(
                             radius: 4.r,
+                            margin: EdgeInsets.symmetric(horizontal: 22.w),
                             onPressed: () => logic.applyFriend(logic.userId),
                             child: Container(
                                 height: 44.h,
@@ -115,6 +117,7 @@ class UserInfoPage extends StatelessWidget {
                                         fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
                         : RadiusInkWellWidget(
                             radius: 4.r,
+                            margin: EdgeInsets.symmetric(horizontal: 22.w),
                             color: Colors.redAccent,
                             onPressed: logic.removeFromBlacklist,
                             child: Container(

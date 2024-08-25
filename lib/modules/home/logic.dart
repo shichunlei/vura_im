@@ -3,7 +3,9 @@ import 'package:im/application.dart';
 import 'package:im/base/base_logic.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/modules/root/logic.dart';
+import 'package:im/repository/session_repository.dart';
 import 'package:im/repository/user_repository.dart';
+import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/toast_util.dart';
 import 'package:im/widgets/frame_stack.dart';
 
@@ -13,18 +15,21 @@ class HomeLogic extends BaseLogic {
   IndexController indexController = IndexController();
 
   HomeLogic() {
-    webSocketManager.connect();
     webSocketManager.listen("HomeLogic", (int cmd, Map<String, dynamic> data) {
       switch (cmd) {
         case 6: // {"cmd":6,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"","recvId":"1826547880958230528","id":"1826549763462529024","type":900,"content":"申请添加您为好友","sendTime":1724318373933}}
 
           break;
         case 5:
-
           break;
         default:
           break;
       }
+    }, connectCallBack: () {
+      Log.d("WebSocket 连接成功");
+
+      /// 拉取离线消息
+      SessionRepository.getOfflineMessages("all", groupMinId: "0", privateMinId: "0");
     });
   }
 
@@ -63,8 +68,15 @@ class HomeLogic extends BaseLogic {
   }
 
   void getUserInfo() async {
-    UserEntity? user = await UserRepository.getUserInfo();
-    if (user != null) Get.find<RootLogic>().setUserInfo(user);
+    if (Get.find<RootLogic>().user.value == null) {
+      UserEntity? user = await UserRepository.getUserInfo();
+      if (user != null) {
+        Get.find<RootLogic>().setUserInfo(user);
+        webSocketManager.connect();
+      }
+    } else {
+      webSocketManager.connect();
+    }
   }
 
   @override

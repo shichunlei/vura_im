@@ -97,7 +97,7 @@ class HttpUtils {
 
       Response response = await _dio!.request(path,
           data: params,
-          queryParameters: method == GET ? params : null,
+          queryParameters: method == GET || method == PUT ? params : null,
           options: Options(method: method, headers: {
             if (!refreshToken) Keys.ACCESS_TOKEN: accessToken,
             if (refreshToken) Keys.REFRESH_TOKEN: refreshTokenValue

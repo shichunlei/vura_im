@@ -7,6 +7,7 @@ import 'package:im/global/keys.dart';
 import 'package:im/modules/root/logic.dart';
 import 'package:im/route/route_path.dart';
 import 'package:im/utils/color_util.dart';
+import 'package:im/utils/tool_util.dart';
 import 'package:im/widgets/avatar_image.dart';
 import 'package:im/widgets/custom_icon_button.dart';
 import 'package:im/widgets/obx_widget.dart';
@@ -23,12 +24,11 @@ class MinePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
             title: Text("mine".tr),
             actions: [
-              CustomIconButton(
-                  icon: const Icon(IconFont.scan, color: ColorUtil.color_333333),
-                  onPressed: logic.scan),
+              CustomIconButton(icon: const Icon(IconFont.scan, color: ColorUtil.color_333333), onPressed: logic.scan),
               CustomIconButton(
                   icon: const Icon(IconFont.qr, color: ColorUtil.color_333333),
                   onPressed: () {
@@ -59,12 +59,13 @@ class MinePage extends StatelessWidget {
                                 style: GoogleFonts.dmSans(
                                     fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                             Row(children: [
-                              Text("id".trParams({"number": "2942482048209"}),
+                              Text("id".trParams({"number": "${Get.find<RootLogic>().user.value?.id}"}),
                                   style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                               SizedBox(width: 22.w),
                               GestureDetector(
                                   onTap: () {
                                     /// 复制ID号
+                                    copyToClipboard("${Get.find<RootLogic>().user.value?.id}");
                                   },
                                   child: Icon(IconFont.copy, size: 15.sp, color: ColorUtil.color_999999))
                             ]),
@@ -84,8 +85,14 @@ class MinePage extends StatelessWidget {
                         Row(children: [
                           Text("总资产", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white)),
                           SizedBox(width: 20.w),
-                          Icon(IconFont.eye_open_fill, color: Colors.white, size: 15.sp),
+                          GestureDetector(
+                              onTap: logic.showMoney.toggle,
+                              behavior: HitTestBehavior.translucent,
+                              child: Icon(logic.showMoney.value ? IconFont.eye_open_fill : IconFont.eye_close_fill,
+                                  color: Colors.white, size: 15.sp)),
                           const Spacer(),
+                          const Icon(IconFont.idcard),
+                          SizedBox(width: 10.w)
                         ]),
                         SizedBox(height: 20.h),
                         Row(children: [
@@ -104,15 +111,21 @@ class MinePage extends StatelessWidget {
                                     style: GoogleFonts.dmSans(
                                         fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
                                 SizedBox(height: 5.h),
-                                Text("12.34 RMB", style: GoogleFonts.dmSans(fontSize: 11.sp, color: Colors.white))
+                                SizedBox(
+                                    height: 15.h,
+                                    child: Text(logic.showMoney.value ? "0.00 RMB" : "****",
+                                        style: GoogleFonts.dmSans(fontSize: 11.sp, color: Colors.white)))
                               ]),
                           const Spacer(),
                           Column(children: [
-                            Text("0.00",
+                            Text(logic.showMoney.value ? "${Get.find<RootLogic>().user.value?.money}" : "****",
                                 style: GoogleFonts.daiBannaSil(
                                     fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
                             SizedBox(height: 5.h),
-                            Text("≈￥0.00", style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white))
+                            SizedBox(
+                                height: 15.h,
+                                child: Text(logic.showMoney.value ? "≈￥0.00" : "****",
+                                    style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white)))
                           ])
                         ])
                       ])),
@@ -127,7 +140,9 @@ class MinePage extends StatelessWidget {
                     SizedBox(width: 22.w),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.CHARGE_WAY_PAGE);
+                          },
                           radius: 18.r,
                           color: const Color(0xffF6FAFD),
                           child: Container(
@@ -141,7 +156,9 @@ class MinePage extends StatelessWidget {
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.CHARGE_PAGE);
+                          },
                           radius: 18.r,
                           color: const Color(0xffF6FAFD),
                           child: Container(
@@ -155,7 +172,9 @@ class MinePage extends StatelessWidget {
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.TRANSFER_PAGE);
+                          },
                           radius: 18.r,
                           color: const Color(0xffF6FAFD),
                           child: Container(
@@ -169,7 +188,9 @@ class MinePage extends StatelessWidget {
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.DEVICES_PAGE);
+                          },
                           radius: 18.r,
                           color: const Color(0xffF6FAFD),
                           child: Container(
@@ -269,7 +290,8 @@ class MinePage extends StatelessWidget {
                                 SizedBox(height: 15.h),
                                 Text("基础设置都在这里奥~",
                                     style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
-                              ]))))
+                              ])))),
+                  SizedBox(height: 35.h)
                 ]),
               );
             }));

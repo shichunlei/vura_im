@@ -13,14 +13,18 @@ class IconFont {
   static const IconData charge_way = IconData(0xe7b0, fontFamily: "iconFontCai");
   static const IconData transfer = IconData(0xe7c0, fontFamily: "iconFontCai");
 
+  static const IconData idcard = IconData(0xe7bb, fontFamily: "iconFontCai");
+
   static const IconData usdt = IconData(0xe7c1, fontFamily: "iconFontCai");
   static const IconData add_round = IconData(0xe7b2, fontFamily: "iconFontCai");
   static const IconData question_mark = IconData(0xe7b8, fontFamily: "iconFontCai");
 
-  static const IconData tab_mine = IconData(0xe7b5, fontFamily: "iconFont");
+  static const IconData tab_mine = IconData(0xe7cf, fontFamily: "iconFont");
   static const IconData tab_mine_selected = IconData(0xe7b5, fontFamily: "iconFontCai");
-  static const IconData tab_message = IconData(0xe7b9, fontFamily: "iconFont");
+  static const IconData tab_message = IconData(0xe7cd, fontFamily: "iconFont");
   static const IconData tab_message_selected = IconData(0xe7b9, fontFamily: "iconFontCai");
+  static const IconData tab_contacts_line = IconData(0xe7ce, fontFamily: "iconFont");
+  static const IconData tab_contacts_fill = IconData(0xe7cc, fontFamily: "iconFont");
 
   static const IconData scan = IconData(0xe7b4, fontFamily: "iconFont");
   static const IconData qr = IconData(0xe7ae, fontFamily: "iconFont");
@@ -43,4 +47,18 @@ class IconFont {
 
   static const IconData add_square = IconData(0xe7c1, fontFamily: "iconFont");
   static const IconData message = IconData(0xe7c0, fontFamily: "iconFont");
+
+  static const IconData minus_user = IconData(0xe7c5, fontFamily: "iconFont");
+
+  static const IconData face = IconData(0xe7ad, fontFamily: "iconFont");
+
+  static const IconData send_voice = IconData(0xe7c7, fontFamily: "iconFont");
+  static const IconData receive_voice = IconData(0xe7c6, fontFamily: "iconFont");
+
+  static const IconData voice = IconData(0xe7d2, fontFamily: "iconFont");
+  static const IconData camera = IconData(0xe7d3, fontFamily: "iconFont");
+  static const IconData gallery = IconData(0xe7c8, fontFamily: "iconFont");
+  static const IconData name_card = IconData(0xe7ca, fontFamily: "iconFont");
+  static const IconData red_package = IconData(0xe7c9, fontFamily: "iconFont");
+  static const IconData expression = IconData(0xe7cb, fontFamily: "iconFont");
 }

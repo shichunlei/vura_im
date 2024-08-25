@@ -50,7 +50,7 @@ class NewFriendPage extends StatelessWidget {
                                             color: ColorUtil.color_333333,
                                             fontWeight: FontWeight.w500)),
                                     SizedBox(height: 5.r),
-                                    Text(logic.list[index].reason ?? "",
+                                    Text(logic.list[index].createTime ?? "",
                                         style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                   ])),
                               Container(
@@ -78,7 +78,11 @@ class NewFriendPage extends StatelessWidget {
                                               onPressed: () => logic.agree(index))
                                         ])
                                       : Text(logic.list[index].applyStatus == "1" ? "已添加" : "已拒绝",
-                                          style: GoogleFonts.roboto(fontSize: 12.sp, color: ColorUtil.color_999999)))
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 12.sp,
+                                              color: logic.list[index].applyStatus == "2"
+                                                  ? Colors.redAccent
+                                                  : ColorUtil.color_999999)))
                             ])));
                   },
                   separatorBuilder: (_, index) => const Divider(height: 0),

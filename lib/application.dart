@@ -1,4 +1,5 @@
 import 'package:im/entities/base_bean.dart';
+import 'package:im/entities/user_entity.dart';
 import 'package:im/utils/websocket.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
@@ -36,6 +37,8 @@ class Application {
         SpUtil.clear();
         initialRoute = RoutePath.LOGIN_PAGE;
       } else {
+        UserEntity? user = await UserRepository.getUserInfo();
+        if (user?.id != null) AppConfig.setUserId(user!.id!);
         initialRoute = RoutePath.HOME_PAGE;
       }
     } else {

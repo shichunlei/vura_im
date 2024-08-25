@@ -67,7 +67,7 @@ class ContactsRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 移除黑名单 TODO
+  /// 移除黑名单
   ///
   /// [id] 用户ID
   ///
@@ -88,7 +88,7 @@ class ContactsRepository {
     }
   }
 
-  /// 好友申请列表 TODO
+  /// 好友申请列表
   ///
   static Future<List<ApplyUserEntity>> applyList({int page = 1, int size = 20}) async {
     var data =
@@ -101,7 +101,7 @@ class ContactsRepository {
     }
   }
 
-  /// 同意申请 TODO
+  /// 同意申请
   ///
   /// [id] 用户ID
   ///

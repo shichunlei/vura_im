@@ -38,6 +38,8 @@ class RadiusInkWellWidget extends StatelessWidget {
 
   final AlignmentGeometry end;
 
+  final Decoration? foregroundDecoration;
+
   const RadiusInkWellWidget({
     super.key,
     required this.child,
@@ -59,12 +61,14 @@ class RadiusInkWellWidget extends StatelessWidget {
     this.begin = Alignment.topCenter,
     this.end = Alignment.bottomCenter,
     this.elevation = 0,
+    this.foregroundDecoration,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: margin,
+        foregroundDecoration: foregroundDecoration,
         decoration: BoxDecoration(
             boxShadow: showShadow
                 ? boxShadow ??

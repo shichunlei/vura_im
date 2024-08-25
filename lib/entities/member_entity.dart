@@ -24,6 +24,7 @@ class MemberEntity {
   @JsonKey(includeIfNull: false)
   YorNType isSupAdmin;
   YorNType friendship;
+  YorNType isMute;
 
   MemberEntity({
     this.userId,
@@ -37,6 +38,7 @@ class MemberEntity {
     this.isAdmin = YorNType.N,
     this.isSupAdmin = YorNType.N,
     this.friendship = YorNType.M,
+    this.isMute = YorNType.N,
   });
 
   factory MemberEntity.fromJson(Map<String, dynamic> json) => _$MemberEntityFromJson(json);

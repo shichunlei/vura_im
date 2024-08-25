@@ -1,8 +1,11 @@
+import 'package:get/get.dart';
 import 'package:im/base/base_list_logic.dart';
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/user_entity.dart';
 import 'package:im/global/enum.dart';
+import 'package:im/modules/home/contacts/logic.dart';
 import 'package:im/repository/contacts_repository.dart';
+import 'package:im/utils/log_utils.dart';
 
 class BlacklistLogic extends BaseListLogic<UserEntity> {
   @override
@@ -24,6 +27,11 @@ class BlacklistLogic extends BaseListLogic<UserEntity> {
       list.removeAt(index);
       list.refresh();
       if (list.isEmpty) pageState.value = ViewState.empty;
+      try {
+        Get.find<ContactsLogic>().refreshData();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 }

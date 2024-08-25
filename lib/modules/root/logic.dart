@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:im/entities/login_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/realm/channel.dart';
 import 'package:im/realm/friend.dart';
@@ -41,6 +42,31 @@ class RootLogic extends GetxController {
 
   void updateNickName(String? nickName) {
     user.value?.nickName = nickName;
+    user.refresh();
+  }
+
+  void updateVura(YorNType value) {
+    user.value?.vura = value;
+    user.refresh();
+  }
+
+  void updateSetGroup(YorNType value) {
+    user.value?.setGroup = value;
+    user.refresh();
+  }
+
+  void updateAddFriend(YorNType value) {
+    user.value?.addFriend = value;
+    user.refresh();
+  }
+
+  void updateProtect(YorNType value) {
+    user.value?.protect = value;
+    user.refresh();
+  }
+
+  void updateSearch(YorNType value) {
+    user.value?.search = value;
     user.refresh();
   }
 

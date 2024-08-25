@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,19 +19,26 @@ class RegisterPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Scaffold(resizeToAvoidBottomInset: false, body: Image.asset("assets/images/register_bg.png", fit: BoxFit.cover)),
+      Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Hero(tag: "bg", child: Image.asset("assets/images/register_bg.png", fit: BoxFit.cover))),
       Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 22.w),
               child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 SizedBox(height: 135.h),
-                Container(
-                    alignment: Alignment.centerLeft,
-                    child: Text("HELLO,\n注册账号",
-                        style: GoogleFonts.roboto(
-                            fontSize: 26.sp, fontWeight: FontWeight.bold, color: ColorUtil.color_333333),
-                        textAlign: TextAlign.start)),
+                Hero(
+                    tag: "hello",
+                    child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text("HELLO,\n注册账号",
+                            style: GoogleFonts.roboto(
+                                decoration: TextDecoration.none,
+                                fontSize: 26.sp,
+                                fontWeight: FontWeight.bold,
+                                color: ColorUtil.color_333333),
+                            textAlign: TextAlign.start))),
                 SizedBox(height: 22.h),
                 Container(
                     alignment: Alignment.centerLeft,
@@ -83,20 +92,24 @@ class RegisterPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9.r), border: Border.all(color: const Color(0xffe5e5e5))),
                     child: Row(children: [
-                      Expanded(
-                          child: TextField(
-                              controller: logic.passwordController,
-                              maxLines: 1,
-                              obscureText: true,
-                              style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-                                  hintText: "请输入密码",
-                                  hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
+                      Expanded(child: Obx(() {
+                        return TextField(
+                            controller: logic.passwordController,
+                            maxLines: 1,
+                            obscureText: logic.obscureText.value,
+                            style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+                                hintText: "请输入密码",
+                                hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)));
+                      })),
                       CustomIconButton(
-                          icon: const Icon(IconFont.eye_close_line, color: ColorUtil.color_333333),
-                          onPressed: () {},
+                          icon: Obx(() {
+                            return Icon(logic.obscureText.value ? IconFont.eye_close_line : IconFont.eye_open_line,
+                                color: ColorUtil.color_333333);
+                          }),
+                          onPressed: logic.obscureText.toggle,
                           radius: 18.r),
                       SizedBox(width: 10.w)
                     ])),
@@ -112,20 +125,24 @@ class RegisterPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9.r), border: Border.all(color: const Color(0xffe5e5e5))),
                     child: Row(children: [
-                      Expanded(
-                          child: TextField(
-                              controller: logic.rePasswordController,
-                              maxLines: 1,
-                              obscureText: true,
-                              style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
-                              decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
-                                  hintText: "请再次输入密码",
-                                  hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
+                      Expanded(child: Obx(() {
+                        return TextField(
+                            controller: logic.rePasswordController,
+                            maxLines: 1,
+                            obscureText: logic.reObscureText.value,
+                            style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
+                            decoration: InputDecoration(
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.symmetric(horizontal: 18.w),
+                                hintText: "请再次输入密码",
+                                hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)));
+                      })),
                       CustomIconButton(
-                          icon: const Icon(IconFont.eye_open_line, color: ColorUtil.color_333333),
-                          onPressed: () {},
+                          icon: Obx(() {
+                            return Icon(logic.reObscureText.value ? IconFont.eye_close_line : IconFont.eye_open_line,
+                                color: ColorUtil.color_333333);
+                          }),
+                          onPressed: logic.reObscureText.toggle,
                           radius: 18.r),
                       SizedBox(width: 10.w)
                     ])),
@@ -141,7 +158,7 @@ class RegisterPage extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(9.r), border: Border.all(color: const Color(0xffe5e5e5))),
                     child: TextField(
-                        controller: logic.passwordController,
+                        controller: logic.securityIssuesController,
                         maxLines: 1,
                         style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
                         decoration: InputDecoration(
@@ -164,7 +181,7 @@ class RegisterPage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(9.r),
                               border: Border.all(color: const Color(0xffe5e5e5))),
                           child: TextField(
-                              controller: logic.passwordController,
+                              controller: logic.codeController,
                               maxLines: 1,
                               style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
                               decoration: InputDecoration(
@@ -176,28 +193,38 @@ class RegisterPage extends StatelessWidget {
                       width: 124.w,
                       margin: EdgeInsets.only(top: 13.h, bottom: 22.h, left: 22.w),
                       height: 50.h,
+                      decoration: BoxDecoration(border: Border.all(width: .5, color: Theme.of(context).primaryColor)),
                       alignment: Alignment.centerLeft,
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xffe5e5e5)))
+                      child: Obx(() {
+                        return logic.base64Img.value != null
+                            ? Image(
+                                height: 50.h,
+                                width: 124.w,
+                                fit: BoxFit.fill,
+                                image: MemoryImage(base64.decode("${logic.base64Img.value?.img}")))
+                            : const SizedBox();
+                      }))
                 ]),
                 GestureDetector(
-                    onTap: () {},
+                    onTap: logic.getAuthCode,
                     behavior: HitTestBehavior.translucent,
                     child: Container(
                         alignment: Alignment.centerRight,
                         child: Text("刷新验证码",
                             style: GoogleFonts.roboto(color: Theme.of(context).primaryColor, fontSize: 13.sp)))),
-                RadiusInkWellWidget(
-                    onPressed: logic.register,
-                    radius: 44,
-                    margin: EdgeInsets.only(bottom: 40.h, top: 47.h),
-                    child: Container(
-                        width: 180.w,
-                        height: 44.h,
-                        alignment: Alignment.center,
-                        child: Text("注册",
-                            style:
-                                GoogleFonts.roboto(color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.sp))))
+                Hero(
+                    tag: "submit_button",
+                    child: RadiusInkWellWidget(
+                        onPressed: logic.register,
+                        radius: 44,
+                        margin: EdgeInsets.only(bottom: 40.h, top: 47.h),
+                        child: Container(
+                            width: 180.w,
+                            height: 44.h,
+                            alignment: Alignment.center,
+                            child: Text("注册",
+                                style: GoogleFonts.roboto(
+                                    color: Colors.white, fontWeight: FontWeight.w600, fontSize: 18.sp)))))
               ]))),
       Positioned(top: DeviceUtils.topSafeHeight, left: 0, child: const BackButton())
     ]);

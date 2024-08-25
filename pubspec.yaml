@@ -63,8 +63,6 @@ dependencies:
   image_cropper: ^8.0.2
   # 图片保存
   image_gallery_saver: ^2.0.3
-  # 图片选择
-  image_picker: ^1.1.2
   # json 注解
   json_annotation: ^4.9.0
   # 包信息
@@ -78,6 +76,7 @@ dependencies:
   pretty_qr_code: ^3.3.0
   # 本地数据库
   realm: ^3.4.1
+  rotated_corner_decoration: ^2.1.0+1
   screenshot: ^3.0.0
   # 本地化存储
   shared_preferences: ^2.3.1
@@ -93,6 +92,9 @@ dependencies:
   # 带尖角的方框
   wrapper: ^1.0.2
 
+dependency_overrides:
+  video_player_android: 2.6.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -107,6 +109,14 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   build_runner: ^2.4.11
+  flutter_launcher_icons: ^0.13.1
+
+flutter_launcher_icons:
+  android: "ic_launcher"
+  ios: true
+  image_path_ios: "logo2.png"
+  image_path_android: "logo.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

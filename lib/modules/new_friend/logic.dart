@@ -1,7 +1,10 @@
+import 'package:get/get.dart';
 import 'package:im/base/base_list_logic.dart';
 import 'package:im/entities/apply_user.dart';
 import 'package:im/entities/base_bean.dart';
+import 'package:im/modules/home/contacts/logic.dart';
 import 'package:im/repository/contacts_repository.dart';
+import 'package:im/utils/log_utils.dart';
 import 'package:im/utils/toast_util.dart';
 
 class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
@@ -22,7 +25,13 @@ class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "已同意");
-
+      list[index].applyStatus = "1";
+      list.refresh();
+      try {
+        Get.find<ContactsLogic>().refreshData();
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 
@@ -31,6 +40,8 @@ class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
     BaseBean result = await ContactsRepository.refused(list[index].applyId);
     hiddenLoading();
     if (result.code == 200) {
+      list[index].applyStatus = "2";
+      list.refresh();
       showToast(text: "已拒绝");
     }
   }

@@ -16,6 +16,11 @@ class UserEntity extends ISuspensionBean {
   String? tagIndex;
   YorNType friendship;
   double money;
+  YorNType addFriend;
+  YorNType protect;
+  YorNType search;
+  YorNType setGroup;
+  YorNType vura;
 
   UserEntity(
       {this.id,
@@ -29,6 +34,11 @@ class UserEntity extends ISuspensionBean {
       this.online = false,
       this.tagIndex,
       this.friendship = YorNType.M,
+      this.addFriend = YorNType.N,
+      this.protect = YorNType.N,
+      this.search = YorNType.N,
+      this.setGroup = YorNType.N,
+      this.vura = YorNType.N,
       this.money = .0});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
@@ -54,6 +64,11 @@ class UserEntity extends ISuspensionBean {
         friendship: EnumToString.fromString(YorNType.values, json['friendship'] as String? ?? "M"),
         headImageThumb: json['headImageThumb'] as String?,
         online: json['online'] as bool? ?? false,
+        addFriend: EnumToString.fromString(YorNType.values, json['addFriend'] as String? ?? "N"),
+        protect: EnumToString.fromString(YorNType.values, json['protect'] as String? ?? "N"),
+        search: EnumToString.fromString(YorNType.values, json['search'] as String? ?? "N"),
+        setGroup: EnumToString.fromString(YorNType.values, json['setGroup'] as String? ?? "N"),
+        vura: EnumToString.fromString(YorNType.values, json['vura'] as String? ?? "N"),
         tagIndex: tag);
   }
 
@@ -64,12 +79,8 @@ class UserEntity extends ISuspensionBean {
         'sex': sex,
         'type': type,
         'signature': signature,
-        'online': online,
         'headImageThumb': headImageThumb,
         'headImage': headImage,
-        'tagIndex': tagIndex,
-        'friendship': friendship,
-        "money": money,
       };
 
   @override

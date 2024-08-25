@@ -46,13 +46,13 @@ class SessionManagerPage extends StatelessWidget {
                         Container(
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(left: 22.w, right: 22.w, bottom: 20.h),
-                            child: Text("开启登陆保护后，每次登录都会需要安全校验，推荐开启，保障您的安全",
+                            child: Text("启用后，群成员需群主或群管理员确认才能邀请朋友进群，扫描二维码进群将同时停用",
                                 style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))
                       ])),
                   RadiusInkWellWidget(
                       padding: EdgeInsets.only(left: 22.w, right: 10.w),
                       onPressed: () {
-                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
+                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id, Keys.TITLE: "转让群主"});
                       },
                       radius: 11.r,
                       color: Colors.white,
@@ -146,7 +146,7 @@ class SessionManagerPage extends StatelessWidget {
                   RadiusInkWellWidget(
                       padding: EdgeInsets.only(left: 22.w, right: 10.w),
                       onPressed: () {
-                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id});
+                        Get.toNamed(RoutePath.SESSION_SUP_ADMIN_PAGE, arguments: {Keys.ID: logic.id});
                       },
                       radius: 11.r,
                       color: Colors.white,

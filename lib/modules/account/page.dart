@@ -38,7 +38,7 @@ class AccountPage extends StatelessWidget {
                                       onTap: () {},
                                       behavior: HitTestBehavior.translucent,
                                       child: Row(children: [
-                                        Icon(IconFont.add, size: 44.r),
+                                        Icon(IconFont.add_round, size: 44.r),
                                         SizedBox(width: 13.w),
                                         const Text("添加或注册账号")
                                       ])));

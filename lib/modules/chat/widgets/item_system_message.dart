@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:im/entities/message_entity.dart';
+import 'package:im/utils/color_util.dart';
 import 'package:im/utils/date_util.dart';
 
 class ItemSystemMessage extends StatelessWidget {
@@ -15,8 +17,11 @@ class ItemSystemMessage extends StatelessWidget {
       Visibility(
           visible: showTime,
           child: Container(
-              height: 35.h, alignment: Alignment.center, child: Text(DateUtil.getWechatTime(message.sendTime)))),
-      SizedBox(height: 10.h),
+              height: 30.h,
+              alignment: Alignment.center,
+              child: Text(DateUtil.getWechatTime(message.sendTime),
+                  style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
+      SizedBox(height: 5.h),
       Container(alignment: Alignment.center, child: Text("${message.content}"))
     ]);
   }

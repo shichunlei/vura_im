@@ -2,18 +2,17 @@ import 'package:azlistview_plus/azlistview_plus.dart';
 import 'package:get/get.dart';
 import 'package:im/base/base_list_logic.dart';
 import 'package:im/entities/user_entity.dart';
-import 'package:im/modules/root/logic.dart';
-import 'package:im/realm/friend.dart';
 import 'package:im/repository/contacts_repository.dart';
 
 class SelectContactsLogic extends BaseListLogic<UserEntity> {
   var selectUsers = RxList<UserEntity>([]);
 
+  late bool isCheckBox;
+
   late List<String?> selectUserIds;
 
-  bool _isLoadFromNet = false;
-
   SelectContactsLogic() {
+    isCheckBox = Get.arguments?["isCheckBox"] ?? true;
     selectUserIds = Get.arguments?["selectUserIds"] ?? [];
   }
 
@@ -25,13 +24,7 @@ class SelectContactsLogic extends BaseListLogic<UserEntity> {
 
   @override
   Future<List<UserEntity>> loadData() async {
-    List<UserEntity> users = [];
-    users = await FriendRealm(realm: Get.find<RootLogic>().realm).queryAllFriends();
-    if (users.isEmpty) {
-      _isLoadFromNet = true;
-      users = await ContactsRepository.getFriendList();
-    }
-    return users;
+    return await ContactsRepository.getFriendList();
   }
 
   @override
@@ -39,23 +32,22 @@ class SelectContactsLogic extends BaseListLogic<UserEntity> {
     super.onCompleted(data);
     SuspensionUtil.sortListBySuspensionTag(list);
     SuspensionUtil.setShowSuspensionStatus(list);
-    if (data.isNotEmpty && _isLoadFromNet) {
-      saveToRealm(list);
+    _allUsers.clear();
+    _allUsers.addAll(list);
+  }
+
+  final List<UserEntity> _allUsers = [];
+
+  void search(String keyword) async {
+    if (keywords.value == keyword) return;
+    keywords.value = keyword;
+    if (keywords.value.isEmpty) {
+      list.value = _allUsers;
     } else {
-      asyncFriends();
+      list.value = _allUsers
+          .where((element) => element.nickName.toString().toUpperCase().contains(keywords.value.toUpperCase()))
+          .toList();
     }
-  }
-
-  void asyncFriends() async {
-    List<UserEntity> users = await ContactsRepository.getFriendList();
-    if (users.isNotEmpty) saveToRealm(users);
-  }
-
-  void saveToRealm(List<UserEntity> users) async {
-    for (var user in users) {
-      await FriendRealm(realm: Get.find<RootLogic>().realm).upsert(friendEntityToRealm(user));
-    }
-    list.value = await FriendRealm(realm: Get.find<RootLogic>().realm).queryAllFriends();
     SuspensionUtil.sortListBySuspensionTag(list);
     SuspensionUtil.setShowSuspensionStatus(list);
     list.refresh();

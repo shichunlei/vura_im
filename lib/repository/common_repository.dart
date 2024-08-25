@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:im/entities/base64.dart';
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/file_entity.dart';
 import 'package:im/utils/http_utils.dart';
@@ -39,6 +40,16 @@ class CommonRepository {
     BaseBean result = await HttpUtils.getInstance().uploadFile("file/upload", formData);
     if (result.code == 200) {
       return FileEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<Base64Entity?> getAuthCode() async {
+    var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return Base64Entity.fromJson(result.data);
     } else {
       return null;
     }

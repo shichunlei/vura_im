@@ -3,6 +3,7 @@ abstract class RoutePath {
   static const String LOGIN_PAGE = '/login'; // 登录页
   static const String REGISTER_PAGE = '/register'; // 注册页
   static const String UPDATE_PASSWORD_PAGE = '/update_password'; // 修改密码页
+  static const String SET_PASSWORD_PAGE = '/set_password'; // 忘记密码页
   static const String SETTING_PAGE = '/setting'; // 设置页
   static const String MY_INFO_PAGE = "/my_info"; // 用户信息
   static const String SEARCH_PAGE = "/search"; //
@@ -29,4 +30,9 @@ abstract class RoutePath {
   static const String MY_QR_CODE_PAGE = "/my_qr_code"; // 我的二维码
   static const String GOOGLE_VERIFY_PAGE = "/google_verify"; // 我的二维码
   static const String USER_INFO_PAGE = "/user_info"; // 用户信息
+  static const String SESSION_SUP_ADMIN_PAGE = "/session_sup_admin"; // 群管理员
+  static const String DEVICES_PAGE = "/devices"; // 设备
+  static const String CHARGE_WAY_PAGE = "/charge_way"; // 设备
+  static const String CHARGE_PAGE = "/charge"; // 设备
+  static const String TRANSFER_PAGE = "/transfer"; // 转账
 }

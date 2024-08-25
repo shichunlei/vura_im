@@ -24,8 +24,9 @@ class ContactsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
             title: const Text("通讯录"),
             actions: [CustomIconButton(icon: const Icon(IconFont.search), onPressed: () {})],
             centerTitle: false),

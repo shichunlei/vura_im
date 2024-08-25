@@ -1,6 +1,7 @@
 import 'package:im/entities/base_bean.dart';
 import 'package:im/entities/login_entity.dart';
 import 'package:im/entities/user_entity.dart';
+import 'package:im/global/enum.dart';
 import 'package:im/global/keys.dart';
 import 'package:im/utils/http_utils.dart';
 import 'package:im/utils/sp_util.dart';
@@ -34,21 +35,55 @@ class UserRepository {
   /// [userName] 用户名
   /// [password] 密码
   /// [nickName] 昵称
+  /// [answer] 密保问题
+  /// [code] 验证码
+  /// [uuid] 校验验证码的UUID
   ///
-  static Future<BaseBean> register({String? userName, String? password, String? nickName}) async {
+  static Future<BaseBean> register(
+      {String? userName, String? password, String? nickName, String? answer, String? code, String? uuid}) async {
     var data = await HttpUtils.getInstance().request('register',
-        params: {"userName": userName, "password": password, "nickName": nickName}, showErrorToast: true);
+        params: {
+          "userName": userName,
+          "password": password,
+          "nickName": nickName,
+          "answer": answer,
+          "code": code,
+          "uuid": uuid
+        },
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 修改密码 TODO
+  /// 忘记密码 TODO
+  ///
+  /// [userName] 用户名
+  /// [password] 密码
+  /// [answer] 密保问题
+  /// [code] 验证码
+  /// [uuid] 校验验证码的UUID
+  ///
+  static Future<BaseBean> forgetPassword(
+      {String? userName, String? password, String? answer, String? code, String? uuid}) async {
+    var data = await HttpUtils.getInstance().request('forget',
+        params: {"userName": userName, "password": password, "answer": answer, "code": code, "uuid": uuid},
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 修改密码
   ///
   /// [oldPassword] 旧密码
   /// [newPassword] 新密码
+  /// [answer] 密保问题
+  /// [code] 验证码
+  /// [uuid] 校验验证码的UUID
   ///
-  static Future<BaseBean> updatePassword({String? oldPassword, String? newPassword}) async {
+  static Future<BaseBean> updatePassword(
+      {String? oldPassword, String? newPassword, String? answer, String? code, String? uuid}) async {
     var data = await HttpUtils.getInstance().request('modifyPwd',
-        params: {"oldPassword": oldPassword, "newPassword": newPassword}, method: HttpUtils.PUT, showErrorToast: true);
+        params: {"oldPassword": oldPassword, "newPassword": newPassword, "answer": answer, "code": code, "uuid": uuid},
+        method: HttpUtils.PUT,
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -67,7 +102,7 @@ class UserRepository {
     return result;
   }
 
-  /// 修改用户信息 TODO
+  /// 修改用户基本信息
   ///
   /// [id] ID
   /// [userName] 用户名
@@ -89,6 +124,31 @@ class UserRepository {
           if (signature != null) "signature": signature,
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb
+        },
+        method: HttpUtils.PUT,
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 修改用户配置
+  ///
+  /// [id] ID
+  /// [addFriend] 允许加好友
+  /// [protect] 登录保护
+  /// [search] 允许搜索
+  /// [setGroup] 开启群聊功能
+  /// [vura] vura
+  ///
+  static Future<BaseBean> updateUserConfig(String? id,
+      {YorNType? addFriend, YorNType? protect, YorNType? search, YorNType? setGroup, YorNType? vura}) async {
+    var data = await HttpUtils.getInstance().request('user/update/secrecy',
+        params: {
+          Keys.ID: id,
+          if (addFriend != null) "addFriend": addFriend.name,
+          if (protect != null) "protect": protect.name,
+          if (search != null) "search": search.name,
+          if (setGroup != null) "setGroup": setGroup.name,
+          if (vura != null) "vura": vura.name
         },
         method: HttpUtils.PUT,
         showErrorToast: true);
