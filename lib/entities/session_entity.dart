@@ -1,5 +1,5 @@
-import 'package:im/entities/message_entity.dart';
-import 'package:im/global/enum.dart';
+import 'package:vura/entities/message_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'session_entity.g.dart';

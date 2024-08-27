@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:im/global/icon_font.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/utils/device_utils.dart';
-import 'package:im/utils/string_util.dart';
+import 'package:vura/global/icon_font.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/string_util.dart';
 
 import 'custom_icon_button.dart';
 
@@ -82,7 +82,7 @@ class _AppBarBottomSearchViewState extends State<AppBarBottomSearchView> {
                       isCollapsed: true,
                       border: InputBorder.none,
                       hintText: widget.hintText,
-                      hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
+                      hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
           ...StringUtil.isNotEmpty(controller?.text)
               ? [
                   CustomIconButton(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:im/utils/color_util.dart';
+import 'package:vura/utils/color_util.dart';
 
 class EmptyPage extends StatelessWidget {
   final Color? bgColor;

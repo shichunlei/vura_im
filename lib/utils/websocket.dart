@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:im/global/config.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/utils/log_utils.dart';
-import 'package:im/utils/sp_util.dart';
-import 'package:im/utils/string_util.dart';
+import 'package:vura/global/config.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/sp_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 typedef OnWebSocketData = void Function(int cmd, Map<String, dynamic> data);

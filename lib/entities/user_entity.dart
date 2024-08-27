@@ -1,6 +1,6 @@
 import 'package:azlistview_plus/azlistview_plus.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/utils/enum_to_string.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/utils/enum_to_string.dart';
 import 'package:pinyin/pinyin.dart';
 
 class UserEntity extends ISuspensionBean {

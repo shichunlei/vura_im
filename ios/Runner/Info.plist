@@ -26,6 +26,14 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>When you are using the app to live broadcast or scan the QR code or upload pictures, you need to use the camera, please agree to open your camera permissions</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Description of why you need the contacts permission.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>We need to access to the microphone to record audio file</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>方便为您保存图片，用于选取照片设置头像，上传发布照片视频，以及保存作品至本地</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
@@ -45,13 +53,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>NSContactsUsageDescription</key>
-    <string>Description of why you need the contacts permission.</string>
-    <key>NSCameraUsageDescription</key>
-    <string>When you are using the app to live broadcast or scan the QR code or upload pictures, you need to use the camera, please agree to open your camera permissions</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>方便为您保存图片，用于选取照片设置头像，上传发布照片视频，以及保存作品至本地</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>We need to access to the microphone to record audio file</string>
 </dict>
 </plist>

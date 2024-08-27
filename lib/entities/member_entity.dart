@@ -1,4 +1,4 @@
-import 'package:im/global/enum.dart';
+import 'package:vura/global/enum.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'member_entity.g.dart';

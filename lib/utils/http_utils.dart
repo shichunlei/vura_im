@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:ansicolor/ansicolor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-import 'package:im/entities/base_bean.dart';
-import 'package:im/global/config.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/utils/device_utils.dart';
-import 'package:im/utils/sp_util.dart';
-import 'package:im/utils/toast_util.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/global/config.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/sp_util.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
 import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 

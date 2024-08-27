@@ -1,4 +1,4 @@
-name: im
+name: vura
 description: "这是一个IM项目"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -83,6 +83,8 @@ dependencies:
   synchronized: ^3.1.0+1
   # DIO LOG拦截器
   talker_dio_logger: ^4.4.1
+  # 时间线
+  timelines_plus: ^1.0.3
   # webview
   webview_flutter: ^4.8.0
   # 仿微信选择图片

@@ -1,11 +1,11 @@
 import 'package:get/get.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/repository/user_repository.dart';
-import 'package:im/route/route_path.dart';
-import 'package:im/utils/tool_util.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/repository/user_repository.dart';
+import 'package:vura/route/route_path.dart';
+import 'package:vura/utils/tool_util.dart';
 
 mixin QrScanMixin on BaseLogic {
   void scan() {

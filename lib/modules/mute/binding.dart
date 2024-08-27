@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:im/global/keys.dart';
+import 'package:vura/global/keys.dart';
 
 import 'logic.dart';
 

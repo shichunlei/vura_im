@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:im/utils/log_utils.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import 'logic.dart';

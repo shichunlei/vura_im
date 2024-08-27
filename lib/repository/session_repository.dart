@@ -1,10 +1,10 @@
-import 'package:im/entities/base_bean.dart';
-import 'package:im/entities/member_entity.dart';
-import 'package:im/entities/message_entity.dart';
-import 'package:im/entities/session_entity.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/utils/http_utils.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/member_entity.dart';
+import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/session_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/utils/http_utils.dart';
 
 class SessionRepository {
   /// 创建会话

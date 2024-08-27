@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:im/base/base_list_logic.dart';
-import 'package:im/entities/base_bean.dart';
-import 'package:im/entities/member_entity.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/repository/session_repository.dart';
+import 'package:vura/base/base_list_logic.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/member_entity.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/repository/session_repository.dart';
 
 class MuteLogic extends BaseListLogic<MemberEntity> {
   String? id;

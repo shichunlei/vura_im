@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
-import 'package:im/entities/message_entity.dart';
-import 'package:im/entities/session_entity.dart';
-import 'package:im/global/config.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/modules/home/session/logic.dart';
-import 'package:im/utils/enum_to_string.dart';
-import 'package:im/utils/log_utils.dart';
-import 'package:im/utils/string_util.dart';
+import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/session_entity.dart';
+import 'package:vura/global/config.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/modules/im/session/logic.dart';
+import 'package:vura/utils/enum_to_string.dart';
+import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:realm/realm.dart';
 
 part 'channel.realm.dart';

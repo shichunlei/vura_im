@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/entities/member_entity.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/entities/member_entity.dart';
 
 mixin SessionMembersMixin on BaseLogic {
   var selectUsers = RxList<MemberEntity>([]);

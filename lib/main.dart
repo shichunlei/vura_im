@@ -7,10 +7,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:im/route/app_pages.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/utils/device_utils.dart';
-import 'package:im/utils/log_utils.dart';
+import 'package:vura/route/app_pages.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/log_utils.dart';
 
 import 'application.dart';
 import 'global/messages.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:im/utils/toast_util.dart';
+import 'package:vura/utils/toast_util.dart';
 
 class StringUtil {
   static bool isEmpty(String? v) {

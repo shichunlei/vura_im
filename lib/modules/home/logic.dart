@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:im/application.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/modules/root/logic.dart';
-import 'package:im/repository/session_repository.dart';
-import 'package:im/repository/user_repository.dart';
-import 'package:im/utils/log_utils.dart';
-import 'package:im/utils/toast_util.dart';
-import 'package:im/widgets/frame_stack.dart';
+import 'package:vura/application.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/modules/root/logic.dart';
+import 'package:vura/repository/session_repository.dart';
+import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/toast_util.dart';
+import 'package:vura/widgets/frame_stack.dart';
 
 class HomeLogic extends BaseLogic {
   var selectedIndex = 0.obs;

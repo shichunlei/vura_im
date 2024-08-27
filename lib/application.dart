@@ -1,6 +1,6 @@
-import 'package:im/entities/base_bean.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/utils/websocket.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/utils/websocket.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'global/config.dart';

@@ -1,14 +1,14 @@
 import 'package:get/get.dart';
-import 'package:im/entities/login_entity.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/realm/channel.dart';
-import 'package:im/realm/friend.dart';
-import 'package:im/realm/message.dart';
-import 'package:im/repository/user_repository.dart';
-import 'package:im/utils/sp_util.dart';
-import 'package:im/utils/string_util.dart';
+import 'package:vura/entities/login_entity.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/realm/channel.dart';
+import 'package:vura/realm/friend.dart';
+import 'package:vura/realm/message.dart';
+import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/sp_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:realm/realm.dart' hide Session;
 
 class RootLogic extends GetxController {

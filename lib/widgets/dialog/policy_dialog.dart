@@ -2,9 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/route/route_path.dart';
-import 'package:im/widgets/radius_inkwell_widget.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/route/route_path.dart';
+import 'package:vura/widgets/radius_inkwell_widget.dart';
 
 /// 登录前隐私政策提示弹窗
 class PolicyDialog extends StatelessWidget {

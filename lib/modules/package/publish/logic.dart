@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/entities/base_bean.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/repository/session_repository.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/repository/session_repository.dart';
 
 class PackagePublishLogic extends BaseLogic {
   var showCover = false.obs;

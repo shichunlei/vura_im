@@ -1,13 +1,13 @@
 import 'package:get/get.dart';
-import 'package:im/entities/member_entity.dart';
-import 'package:im/entities/session_entity.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/modules/root/logic.dart';
-import 'package:im/realm/channel.dart';
-import 'package:im/repository/session_repository.dart';
-import 'package:im/repository/user_repository.dart';
-import 'package:im/utils/log_utils.dart';
+import 'package:vura/entities/member_entity.dart';
+import 'package:vura/entities/session_entity.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/modules/root/logic.dart';
+import 'package:vura/realm/channel.dart';
+import 'package:vura/repository/session_repository.dart';
+import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/log_utils.dart';
 
 mixin SessionDetailMixin on GetxController {
   Rx<SessionEntity?> session = Rx<SessionEntity?>(null);

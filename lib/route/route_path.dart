@@ -35,4 +35,5 @@ abstract class RoutePath {
   static const String CHARGE_WAY_PAGE = "/charge_way"; // 设备
   static const String CHARGE_PAGE = "/charge"; // 设备
   static const String TRANSFER_PAGE = "/transfer"; // 转账
+  static const String WALLET_PAGE = "/wallet"; // 钱包
 }

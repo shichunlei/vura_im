@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/utils/string_util.dart';
-import 'package:im/utils/tool_util.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/string_util.dart';
+import 'package:vura/utils/tool_util.dart';
 
 /// 头像图片
 class AvatarImageView extends StatelessWidget {

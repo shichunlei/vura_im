@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/widgets/widgets.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

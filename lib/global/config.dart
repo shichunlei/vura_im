@@ -1,5 +1,5 @@
-import 'package:im/utils/log_utils.dart';
-import 'package:im/utils/sp_util.dart';
+import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/sp_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConfig {

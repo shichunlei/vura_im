@@ -3,11 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/icon_font.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/utils/device_utils.dart';
-import 'package:im/widgets/widgets.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/icon_font.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/device_utils.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

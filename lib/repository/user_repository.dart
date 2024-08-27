@@ -1,10 +1,10 @@
-import 'package:im/entities/base_bean.dart';
-import 'package:im/entities/login_entity.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/global/keys.dart';
-import 'package:im/utils/http_utils.dart';
-import 'package:im/utils/sp_util.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/login_entity.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/utils/http_utils.dart';
+import 'package:vura/utils/sp_util.dart';
 
 class UserRepository {
   /// 登录

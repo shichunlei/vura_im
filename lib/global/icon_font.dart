@@ -13,6 +13,7 @@ class IconFont {
   static const IconData charge_way = IconData(0xe7b0, fontFamily: "iconFontCai");
   static const IconData transfer = IconData(0xe7c0, fontFamily: "iconFontCai");
 
+  static const IconData google = IconData(0xe7c6, fontFamily: "iconFontCai");
   static const IconData idcard = IconData(0xe7bb, fontFamily: "iconFontCai");
 
   static const IconData usdt = IconData(0xe7c1, fontFamily: "iconFontCai");
@@ -45,6 +46,9 @@ class IconFont {
   static const IconData add = IconData(0xe7c4, fontFamily: "iconFont");
   static const IconData minus = IconData(0xe7c3, fontFamily: "iconFont");
 
+  static const IconData time = IconData(0xe7be, fontFamily: "iconFont");
+  static const IconData sort = IconData(0xe7bf, fontFamily: "iconFont");
+
   static const IconData add_square = IconData(0xe7c1, fontFamily: "iconFont");
   static const IconData message = IconData(0xe7c0, fontFamily: "iconFont");
 
@@ -54,6 +58,9 @@ class IconFont {
 
   static const IconData send_voice = IconData(0xe7c7, fontFamily: "iconFont");
   static const IconData receive_voice = IconData(0xe7c6, fontFamily: "iconFont");
+
+  static const IconData buy_coins = IconData(0xe7b6, fontFamily: "iconFont");
+  static const IconData sell_coins = IconData(0xe7b7, fontFamily: "iconFont");
 
   static const IconData voice = IconData(0xe7d2, fontFamily: "iconFont");
   static const IconData camera = IconData(0xe7d3, fontFamily: "iconFont");

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/widgets/state_view/empty_page.dart';
-import 'package:im/widgets/state_view/error_page.dart';
-import 'package:im/widgets/state_view/loading_widget.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/widgets/state_view/empty_page.dart';
+import 'package:vura/widgets/state_view/error_page.dart';
+import 'package:vura/widgets/state_view/loading_widget.dart';
 
 class BaseWidget<T extends BaseLogic> extends StatelessWidget {
   final T logic;

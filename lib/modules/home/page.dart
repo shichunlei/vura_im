@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:im/global/icon_font.dart';
-import 'package:im/utils/color_util.dart';
-import 'package:im/widgets/frame_stack.dart';
-import 'package:im/widgets/keep_alive_view.dart';
+import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/contacts/home/page.dart';
+import 'package:vura/modules/dashboard/mine/page.dart';
+import 'package:vura/modules/im/session/page.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/widgets/frame_stack.dart';
+import 'package:vura/widgets/keep_alive_view.dart';
 
-import 'contacts/page.dart';
 import 'logic.dart';
-import 'mine/page.dart';
-import 'session/page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});

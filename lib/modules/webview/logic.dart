@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:im/base/base_logic.dart';
-import 'package:im/utils/log_utils.dart';
+import 'package:vura/base/base_logic.dart';
+import 'package:vura/utils/log_utils.dart';
 
 class WebViewLogic extends BaseLogic {
   String? url;

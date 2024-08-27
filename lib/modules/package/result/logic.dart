@@ -1,4 +1,4 @@
-import 'package:im/base/base_logic.dart';
+import 'package:vura/base/base_logic.dart';
 
 class PackageResultLogic extends BaseLogic{
 

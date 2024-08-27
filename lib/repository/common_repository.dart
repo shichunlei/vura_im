@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
-import 'package:im/entities/base64.dart';
-import 'package:im/entities/base_bean.dart';
-import 'package:im/entities/file_entity.dart';
-import 'package:im/utils/http_utils.dart';
-import 'package:im/utils/log_utils.dart';
-import 'package:im/utils/tool_util.dart';
+import 'package:vura/entities/base64.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/file_entity.dart';
+import 'package:vura/utils/http_utils.dart';
+import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/tool_util.dart';
 
 class CommonRepository {
   /// 上传图片

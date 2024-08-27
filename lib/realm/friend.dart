@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:im/entities/user_entity.dart';
-import 'package:im/global/config.dart';
-import 'package:im/global/enum.dart';
-import 'package:im/modules/home/contacts/logic.dart';
-import 'package:im/utils/enum_to_string.dart';
-import 'package:im/utils/log_utils.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/config.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/modules/contacts/home/logic.dart';
+import 'package:vura/utils/enum_to_string.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:realm/realm.dart';
 
 part 'friend.realm.dart';

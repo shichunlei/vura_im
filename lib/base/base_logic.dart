@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh_strong/easy_refresh.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:im/global/enum.dart';
+import 'package:vura/global/enum.dart';
 
 abstract class BaseLogic extends GetxController {
   Rx<ViewState> pageState = ViewState.success.obs;
