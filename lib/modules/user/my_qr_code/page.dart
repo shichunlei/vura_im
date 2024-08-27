@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/string_util.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/round_image.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/string_util.dart';
+import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/obx_widget.dart';
 
 import 'logic.dart';
 
@@ -38,27 +38,8 @@ class MyQrCodePage extends StatelessWidget {
                               children: [
                                 Row(children: [
                                   SizedBox(width: 20.w),
-                                  RoundImage("${logic.bean.value?.headImageThumb}",
-                                      width: 40.r,
-                                      height: 40.r,
-                                      radius: 8.r,
-                                      errorWidget: StringUtil.isNotEmpty(logic.bean.value?.nickName)
-                                          ? Container(
-                                              width: 40.r,
-                                              height: 40.r,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(5.r),
-                                                  border: Border.all(color: Colors.white, width: 1),
-                                                  color: ColorUtil.strToColor(logic.bean.value!.nickName!)),
-                                              alignment: Alignment.center,
-                                              child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.all(2.0),
-                                                      child: Text(logic.bean.value!.nickName![0],
-                                                          style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                                          : Image.asset("assets/images/default_face.webp", width: 40.r, height: 40.r),
-                                      placeholderImage: "assets/images/default_face.webp"),
+                                  AvatarRoundImage("${logic.bean.value?.headImageThumb}",
+                                      width: 40.r, height: 40.r, radius: 8.r, name: logic.bean.value?.nickName),
                                   SizedBox(width: 8.w),
                                   Text("${logic.bean.value?.nickName}",
                                       style: Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.black))

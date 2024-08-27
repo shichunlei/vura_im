@@ -4,11 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/string_util.dart';
+import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/dialog/update_text_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
-import 'package:vura/widgets/round_image.dart';
 
 import 'logic.dart';
 
@@ -33,28 +32,8 @@ class PrivateSessionDetailPage extends StatelessWidget {
                       margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 11.h),
                       padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                       child: Row(children: [
-                        RoundImage(logic.bean.value?.headImage,
-                            width: 53.r,
-                            height: 53.r,
-                            radius: 5.r,
-                            onTap: () {},
-                            errorWidget: StringUtil.isNotEmpty(logic.bean.value?.name)
-                                ? Container(
-                                    width: 53.r,
-                                    height: 53.r,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5.r),
-                                        border: Border.all(color: Colors.white, width: 1),
-                                        color: ColorUtil.strToColor(logic.bean.value!.name!)),
-                                    alignment: Alignment.center,
-                                    child: FittedBox(
-                                        fit: BoxFit.contain,
-                                        child: Padding(
-                                            padding: const EdgeInsets.all(2.0),
-                                            child: Text(logic.bean.value!.name![0],
-                                                style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                                : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
-                            placeholderImage: "assets/images/default_face.webp"),
+                        AvatarRoundImage("${logic.bean.value?.headImage}",
+                            width: 53.r, height: 53.r, radius: 5.r, onTap: () {}, name: logic.bean.value?.name),
                         SizedBox(width: 13.w),
                         Expanded(
                             child: Column(

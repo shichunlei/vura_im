@@ -5,9 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/string_util.dart';
+import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/round_image.dart';
 
 import 'logic.dart';
 
@@ -37,26 +36,7 @@ class PackageResultPage extends StatelessWidget {
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 80.h),
-                  RoundImage("path",
-                      width: 88.r,
-                      height: 88.r,
-                      radius: 9.r,
-                      errorWidget: StringUtil.isNotEmpty("张三")
-                          ? Container(
-                              width: 88.r,
-                              height: 88.r,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(9.r),
-                                  border: Border.all(color: Colors.white, width: 1),
-                                  color: ColorUtil.strToColor("张三")),
-                              alignment: Alignment.center,
-                              child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Text("张三"[0], style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                          : Image.asset("assets/images/default_face.webp", width: 88.r, height: 88.r),
-                      placeholderImage: "assets/images/default_face.webp"),
+                  AvatarRoundImage("path", width: 88.r, height: 88.r, radius: 9.r, name: "张三"),
                   SizedBox(height: 22.h),
                   Text("张三的幸运值",
                       style: GoogleFonts.roboto(
@@ -67,7 +47,8 @@ class PackageResultPage extends StatelessWidget {
                           fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
                   SizedBox(height: 44.h),
                   Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text("70.00",
@@ -91,27 +72,7 @@ class PackageResultPage extends StatelessWidget {
                             return Container(
                                 padding: EdgeInsets.symmetric(vertical: 11.h),
                                 child: Row(children: [
-                                  RoundImage("path",
-                                      width: 66.r,
-                                      height: 66.r,
-                                      radius: 7.r,
-                                      errorWidget: StringUtil.isNotEmpty("张三")
-                                          ? Container(
-                                              width: 66.r,
-                                              height: 66.r,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(7.r),
-                                                  border: Border.all(color: Colors.white, width: 1),
-                                                  color: ColorUtil.strToColor("张三")),
-                                              alignment: Alignment.center,
-                                              child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Padding(
-                                                      padding: const EdgeInsets.all(2.0),
-                                                      child: Text("张三"[0],
-                                                          style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                                          : Image.asset("assets/images/default_face.webp", width: 66.r, height: 66.r),
-                                      placeholderImage: "assets/images/default_face.webp"),
+                                  AvatarRoundImage("path", width: 66.r, height: 66.r, radius: 7.r, name: "张三"),
                                   SizedBox(width: 22.w),
                                   Expanded(
                                     child: Column(mainAxisSize: MainAxisSize.min, children: [

@@ -3,10 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/entities/member_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/dialog_util.dart';
+import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
@@ -52,7 +55,24 @@ class SessionManagerPage extends StatelessWidget {
                   RadiusInkWellWidget(
                       padding: EdgeInsets.only(left: 22.w, right: 10.w),
                       onPressed: () {
-                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {Keys.ID: logic.id, Keys.TITLE: "转让群主"});
+                        Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
+                          Keys.ID: logic.id,
+                          Keys.TITLE: "转让群主",
+                          "selectType": SelectType.radio,
+                          "includeMe": false
+                        })?.then((value) {
+                          if (value != null) {
+                            show(builder: (_) {
+                              return CustomAlertDialog(
+                                  title: "提示",
+                                  content: "您确认要将群主权限转给${(value as MemberEntity).showNickName}吗？",
+                                  confirmText: "转让",
+                                  onConfirm: () {
+
+                                  });
+                            });
+                          }
+                        });
                       },
                       radius: 11.r,
                       color: Colors.white,

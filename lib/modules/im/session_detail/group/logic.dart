@@ -39,11 +39,16 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   }
 
   /// 踢人
-  Future deleteMembers() async {
+  Future deleteMembers(List<MemberEntity> users) async {
     showLoading();
-    BaseBean result = await SessionRepository.kickMemberFromSession(id, []);
+    BaseBean result = await SessionRepository.kickMemberFromSession(id, users.map((item) => item.userId).toList());
     hiddenLoading();
-    if (result.code == 200) {}
+    if (result.code == 200) {
+      for (var user in users) {
+        members.removeWhere((item) => item.userId == user.userId);
+      }
+      members.refresh();
+    }
   }
 
   /// 邀请人

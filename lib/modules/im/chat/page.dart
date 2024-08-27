@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
-import 'package:vura/modules/im/chat/widgets/item_receive_message.dart';
-import 'package:vura/modules/im/chat/widgets/item_send_message.dart';
-import 'package:vura/modules/im/chat/widgets/item_system_message.dart';
+import 'package:vura/modules/im/widgets/item_receive_message.dart';
+import 'package:vura/modules/im/widgets/item_send_message.dart';
+import 'package:vura/modules/im/widgets/item_system_message.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
@@ -18,7 +19,6 @@ import 'package:vura/utils/device_utils.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
-import 'package:image_picker/image_picker.dart';
 
 import 'logic.dart';
 

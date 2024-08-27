@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
@@ -11,7 +12,6 @@ import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 import 'package:vura/widgets/round_image.dart';
-import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 
 class ItemSession extends StatelessWidget {
   final SessionEntity session;
@@ -43,8 +43,8 @@ class ItemSession extends StatelessWidget {
                 errorWidget: session.type == SessionType.private
                     ? StringUtil.isNotEmpty(session.name)
                         ? Container(
-                            width: 53.r,
-                            height: 53.r,
+                            width: 44.r,
+                            height: 44.r,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5.r),
                                 border: Border.all(color: Colors.white, width: 1),
@@ -55,8 +55,8 @@ class ItemSession extends StatelessWidget {
                                 child: Padding(
                                     padding: const EdgeInsets.all(2.0),
                                     child: Text(session.name![0],
-                                        style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                        : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r)
+                                        style: TextStyle(fontSize: 40.sp, color: Colors.white)))))
+                        : Image.asset("assets/images/default_face.webp", width: 44.r, height: 44.r)
                     : null,
                 errorImage: session.type == SessionType.private ? null : "assets/images/default_group_head.webp",
                 placeholderImage: session.type == SessionType.private

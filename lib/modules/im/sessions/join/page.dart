@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:vura/modules/im/sessions/widgets/item_session.dart';
+import 'package:vura/modules/im/widgets/item_session.dart';
 import 'package:vura/widgets/obx_widget.dart';
 
 import 'logic.dart';

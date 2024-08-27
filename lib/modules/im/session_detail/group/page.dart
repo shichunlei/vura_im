@@ -10,12 +10,14 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/im/widgets/item_session_user.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
+import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/dialog/update_text_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -60,8 +62,25 @@ class GroupSessionDetailPage extends StatelessWidget {
                                       child: RadiusInkWellWidget(
                                           color: Colors.transparent,
                                           onPressed: () {
-                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE,
-                                                arguments: {Keys.ID: logic.id, Keys.TITLE: "移除人员"});
+                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
+                                              Keys.ID: logic.id,
+                                              Keys.TITLE: "移除人员",
+                                              "selectType": SelectType.checkbox,
+                                              "includeMe": false
+                                            })?.then((value) {
+                                              if (value != null) {
+                                                show(builder: (_) {
+                                                  return CustomAlertDialog(
+                                                      title: "提示",
+                                                      content:
+                                                          "您确认要将${(value as List<MemberEntity>).map((item) => item.showNickName).toList().join(",")}从该群移除吗？",
+                                                      confirmText: "移除",
+                                                      onConfirm: () {
+                                                        logic.deleteMembers(value);
+                                                      });
+                                                });
+                                              }
+                                            });
                                           },
                                           radius: 5.r,
                                           border: Border.all(color: const Color(0xfff5f5f5), width: 1),
@@ -199,21 +218,15 @@ class GroupSessionDetailPage extends StatelessWidget {
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ]))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
-                        RadiusInkWellWidget(
-                            color: Colors.transparent,
-                            onPressed: () {},
-                            radius: 0,
-                            child: Container(
-                                height: 60.h,
-                                padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                                child: Row(children: [
-                                  Text("群聊编号",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                                  const Spacer(),
-                                  Text("${logic.id}",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                  const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                                ]))),
+                        Container(
+                            height: 60.h,
+                            padding: EdgeInsets.only(left: 22.w, right: 22.w),
+                            child: Row(children: [
+                              Text("群聊编号", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              const Spacer(),
+                              Text("${logic.id}",
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
+                            ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
@@ -308,50 +321,5 @@ class GroupSessionDetailPage extends StatelessWidget {
                 ]),
               );
             }));
-  }
-}
-
-class ItemSessionUser extends StatelessWidget {
-  final MemberEntity member;
-  final String? groupId;
-
-  const ItemSessionUser({super.key, required this.member, this.groupId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(mainAxisSize: MainAxisSize.min, children: [
-      AspectRatio(
-          aspectRatio: 1,
-          child: RoundImage("${member.headImage}", width: double.infinity, height: double.infinity, radius: 5.r,
-              onTap: () {
-            if (member.friendship == YorNType.M) {
-              Get.toNamed(RoutePath.MY_INFO_PAGE);
-            } else {
-              Get.toNamed(RoutePath.SESSION_MEMBER_PAGE, arguments: {Keys.ID: member.userId, "groupId": groupId});
-            }
-          },
-              errorWidget: StringUtil.isNotEmpty(member.showNickName)
-                  ? Container(
-                      width: 53.r,
-                      height: 53.r,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.r),
-                          border: Border.all(color: Colors.white, width: 1),
-                          color: ColorUtil.strToColor(member.showNickName!)),
-                      alignment: Alignment.center,
-                      child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: Padding(
-                              padding: const EdgeInsets.all(2.0),
-                              child: Text(member.showNickName![0],
-                                  style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                  : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
-              placeholderImage: "assets/images/default_face.webp")),
-      SizedBox(height: 10.h),
-      Text("${member.showNickName}",
-          style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis)
-    ]);
   }
 }

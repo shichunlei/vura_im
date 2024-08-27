@@ -92,3 +92,5 @@ enum SessionType { group, private }
 enum YorNType { Y, N, B, M }
 
 enum FriendSourceType { SCAN, CARD, CHAT_NO, PHONE, SHAKE, SYS, GROUP, NEAR }
+
+enum SelectType { checkbox, radio, none }

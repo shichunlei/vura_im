@@ -7,7 +7,6 @@ import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
-import 'item_receive_red_package.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -15,6 +14,7 @@ import 'package:vura/widgets/avatar_image.dart';
 
 import 'item_receive_card.dart';
 import 'item_receive_image.dart';
+import 'item_receive_red_package.dart';
 import 'item_receive_text.dart';
 
 class ItemReceiveMessage extends StatelessWidget {

@@ -5,11 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/appbar_bottom_search_view.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/round_image.dart';
 
 import 'logic.dart';
 
@@ -55,27 +53,8 @@ class SelectContactsPage extends StatelessWidget {
                         height: 60.r,
                         child: ListView.separated(
                             itemBuilder: (_, index) {
-                              return RoundImage("${logic.selectUsers[index].headImage}",
-                                  height: 44.r,
-                                  width: 44.r,
-                                  radius: 4.r,
-                                  errorWidget: StringUtil.isNotEmpty(logic.selectUsers[index].nickName)
-                                      ? Container(
-                                          width: 53.r,
-                                          height: 53.r,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(5.r),
-                                              border: Border.all(color: Colors.white, width: 1),
-                                              color: ColorUtil.strToColor(logic.selectUsers[index].nickName!)),
-                                          alignment: Alignment.center,
-                                          child: FittedBox(
-                                              fit: BoxFit.contain,
-                                              child: Padding(
-                                                  padding: const EdgeInsets.all(2.0),
-                                                  child: Text(logic.selectUsers[index].nickName![0],
-                                                      style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                                      : Image.asset("assets/images/default_face.webp", width: 53.r, height: 53.r),
-                                  placeholderImage: "assets/images/default_face.webp");
+                              return AvatarRoundImage("${logic.selectUsers[index].headImage}",
+                                  height: 44.r, width: 44.r, radius: 4.r, name: logic.selectUsers[index].nickName);
                             },
                             itemCount: logic.selectUsers.length,
                             scrollDirection: Axis.horizontal,

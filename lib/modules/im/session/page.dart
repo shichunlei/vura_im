@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
-import 'package:vura/modules/im/sessions/widgets/item_session.dart';
+import 'package:vura/modules/im/widgets/item_session.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';

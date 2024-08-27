@@ -405,12 +405,17 @@ class SessionRepository {
 
   /// 发红包
   ///
-  static Future<BaseBean> sendRedPackage(Map<String, dynamic> params, SessionType type) async {
+  static Future<MessageEntity?> sendRedPackage(Map<String, dynamic> params, SessionType type) async {
     var data = await HttpUtils.getInstance().request(
         type == SessionType.private ? 'redPacket/send' : "redPacket/group/send",
         params: params,
         showErrorToast: true);
-    return BaseBean.fromJson(data);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return MessageEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
   }
 
   /// 拆红包

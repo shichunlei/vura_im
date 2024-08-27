@@ -7,9 +7,7 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
-import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
-import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 class ItemSendCard extends StatelessWidget {
@@ -42,27 +40,8 @@ class ItemSendCard extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 13.w),
                   height: 65.h,
                   child: Row(children: [
-                    RoundImage("${user.headImageThumb}",
-                        width: 35.r,
-                        height: 35.r,
-                        radius: 8.r,
-                        errorWidget: StringUtil.isNotEmpty(user.nickName)
-                            ? Container(
-                                width: 35.r,
-                                height: 35.r,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    border: Border.all(color: Colors.white, width: 1),
-                                    color: ColorUtil.strToColor(user.nickName!)),
-                                alignment: Alignment.center,
-                                child: FittedBox(
-                                    fit: BoxFit.contain,
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(2.0),
-                                        child: Text(user.nickName![0],
-                                            style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
-                            : Image.asset("assets/images/default_face.webp", width: 35.r, height: 35.r),
-                        placeholderImage: "assets/images/default_face.webp"),
+                    AvatarRoundImage("${user.headImageThumb}",
+                        width: 35.r, height: 35.r, radius: 8.r, name: user.nickName),
                     SizedBox(width: 13.w),
                     Expanded(
                         child:

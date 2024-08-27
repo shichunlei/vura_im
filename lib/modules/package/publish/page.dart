@@ -106,7 +106,7 @@ class PackagePublishPage extends StatelessWidget {
                                             isCollapsed: true,
                                             border: InputBorder.none,
                                             contentPadding: EdgeInsets.only(right: 10.w),
-                                            hintText: "恭喜发财，大吉大利",
+                                            hintText: "请输入幸运值",
                                             hintStyle:
                                                 GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
                                 const Icon(IconFont.face)
@@ -166,7 +166,8 @@ class PackagePublishPage extends StatelessWidget {
                               ])),
                           SizedBox(height: 10.h),
                           Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Text("￥",
@@ -178,7 +179,7 @@ class PackagePublishPage extends StatelessWidget {
                               ]),
                           RadiusInkWellWidget(
                               color: const Color(0xffDB5549),
-                              onPressed: () {},
+                              onPressed: logic.sendRedPackage,
                               radius: 40,
                               margin: EdgeInsets.only(top: 22.h),
                               child: Container(
