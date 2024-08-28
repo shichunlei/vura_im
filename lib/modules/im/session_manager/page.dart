@@ -8,8 +8,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/dialog_util.dart';
-import 'package:vura/widgets/dialog/alert_dialog.dart';
+import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
@@ -62,15 +61,12 @@ class SessionManagerPage extends StatelessWidget {
                           "includeMe": false
                         })?.then((value) {
                           if (value != null) {
-                            show(builder: (_) {
-                              return CustomAlertDialog(
-                                  title: "提示",
-                                  content: "您确认要将群主权限转给${(value as MemberEntity).showNickName}吗？",
-                                  confirmText: "转让",
-                                  onConfirm: () {
-                                    logic.updateAdmin(value.userId);
-                                  });
-                            });
+                            Get.bottomSheet(BottomDialog(
+                                content: "您确认要将群主权限转给${(value as MemberEntity).showNickName}吗？",
+                                confirmText: "转让",
+                                onConfirm: () {
+                                  logic.updateAdmin(value.userId);
+                                }));
                           }
                         });
                       },

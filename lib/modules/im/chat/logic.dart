@@ -15,6 +15,7 @@ import 'package:vura/mixin/session_detail_mixin.dart';
 import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/channel.dart';
+import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/utils/log_utils.dart';
@@ -40,12 +41,16 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       Log.d("ChatLogic == 》接收到消息: $cmd, 数据: $data");
       if (cmd == WebSocketCode.PRIVATE_MESSAGE.code &&
           id == data["sendId"] &&
-          (data[Keys.TYPE] <= MessageType.VIDEO.code || data[Keys.TYPE] == MessageType.TIP_TEXT.code)) {
+          (data[Keys.TYPE] < MessageType.RECALL.code ||
+              data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+              data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
         list.insert(0, MessageEntity.fromJson(data));
       }
       if (cmd == WebSocketCode.GROUP_MESSAGE.code &&
           id == data[Keys.GROUP_ID] &&
-          (data[Keys.TYPE] <= MessageType.VIDEO.code || data[Keys.TYPE] == MessageType.TIP_TEXT.code)) {
+          (data[Keys.TYPE] < MessageType.RECALL.code ||
+              data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+              data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
         list.insert(0, MessageEntity.fromJson(data));
       }
       list.refresh();
@@ -79,7 +84,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       controller.clear();
       list.insert(0, message);
       list.refresh();
-
+      message.sessionId = id;
+      MessageRealm(realm: Get.find<RootLogic>().realm).upsert(messageEntityToRealm(message));
       SessionRealm(realm: Get.find<RootLogic>().realm)
           .updateLastMessage(
               SessionEntity(
@@ -137,6 +143,34 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     showLoading();
     SessionRepository.openRedPackage(redPackageId);
     hiddenLoading();
+  }
+
+  Future sendRedPackage(MessageEntity message) async {
+    list.insert(0, message);
+    list.refresh();
+    if (type == SessionType.private) {
+      message.sessionId = id;
+      message.receiveHeadImage = session.value?.headImage;
+      message.receiveNickName = session.value?.name;
+    }
+    MessageRealm(realm: Get.find<RootLogic>().realm).upsert(messageEntityToRealm(message));
+    SessionRealm(realm: Get.find<RootLogic>().realm)
+        .updateLastMessage(
+            SessionEntity(
+                id: id,
+                name: session.value?.name,
+                type: type,
+                headImage: session.value?.headImage,
+                lastMessage: message,
+                lastMessageTime: message.sendTime),
+            message)
+        .then((value) {
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    });
   }
 
   @override

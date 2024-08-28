@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/dialog/update_text_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -110,7 +112,19 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             child: Row(children: [
                               Text("加入黑名单", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
-                              CupertinoSwitch(value: false, onChanged: (value) => logic.addBlacklist()),
+                              CupertinoSwitch(
+                                  value: logic.bean.value?.friendship == YorNType.B,
+                                  onChanged: (value) {
+                                    if (value) {
+                                      Get.bottomSheet(BottomDialog(
+                                          content: "加入黑名单，你将不再接受对方的消息",
+                                          onConfirm: () {
+                                            logic.addBlacklist();
+                                          }));
+                                    } else {
+                                      logic.removeFromBlacklist();
+                                    }
+                                  })
                             ]))
                       ])),
                   Container(

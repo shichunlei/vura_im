@@ -17,13 +17,16 @@ class PackagePublishLogic extends BaseLogic {
   PackagePublishLogic() {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
+
+    amountController.addListener(update);
   }
 
   TextEditingController amountController = TextEditingController();
   TextEditingController countController = TextEditingController();
   TextEditingController textController = TextEditingController();
+  TextEditingController valueController = TextEditingController();
 
-  List<int> mines = [1, 2];
+  List<int?> mines = [];
 
   Future sendRedPackage() async {
     if (StringUtil.isEmpty(amountController.text)) {
@@ -31,17 +34,25 @@ class PackagePublishLogic extends BaseLogic {
       return;
     }
 
-    if (StringUtil.isEmpty(countController.text)) {
+    if (type == SessionType.group && StringUtil.isEmpty(countController.text)) {
       showToast(text: "请输入幸运值个数");
       return;
     }
 
+    if (type == SessionType.group && StringUtil.isNotEmpty(valueController.text)) {
+      mines = List.generate(valueController.text.length, (int index) {
+        return int.tryParse(valueController.text[index]);
+      }).toList();
+    }
+
     params["receiverId"] = id; // 接收人ID/群聊ID
-    params["blessing"] = textController.text;
+    params["blessing"] = StringUtil.isEmpty(textController.text) ? "恭喜发财，大吉大利" : textController.text;
     // params["amountOne"] = ""; // 单个红包金额，单位是元，最少0.01元
-    params["cover"] = "default"; // 红包封面
-    if (type == SessionType.group) params['mines'] = [1, 2]; // 雷点号
-    params["totalAmount"] = double.tryParse(amountController.text); // 红包总金额
+    params["cover"] = "default"; // todo 红包封面
+    if (type == SessionType.group) params['mines'] = mines; // 雷点号
+    params["totalAmount"] = StringUtil.isEmpty(amountController.text)
+        ? 0.00
+        : double.tryParse(double.parse(amountController.text).toStringAsFixed(2)); // 红包总金额
     params["totalPacket"] = type == SessionType.group ? int.tryParse(countController.text) : 1; // 红包总个数
     params["type"] = type == SessionType.private
         ? 1
@@ -49,10 +60,11 @@ class PackagePublishLogic extends BaseLogic {
             ? 3
             : 2; // 红包类型 1 单人红包 2 普通群红包 3 拼手气红包(红包雷)
     showLoading();
-    MessageEntity? result = await SessionRepository.sendRedPackage(params, type);
+    MessageEntity? message = await SessionRepository.sendRedPackage(params, type);
     hiddenLoading();
-    if (result != null) {
-      Get.back();
+    if (message != null) {
+      showToast(text: "已发送");
+      Get.back(result: message);
     }
   }
 }

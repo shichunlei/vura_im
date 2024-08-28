@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
@@ -39,7 +40,8 @@ class BlacklistPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                                 SizedBox(height: 5.r),
-                                Text("data", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                Text("ID:${logic.list[index].id}",
+                                    style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                               ])),
                           RadiusInkWellWidget(
                               color: Colors.deepOrange,
@@ -48,7 +50,9 @@ class BlacklistPage extends StatelessWidget {
                               child: Text("移除",
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontSize: 12.sp, fontWeight: FontWeight.w600)),
-                              onPressed: () => logic.remove(index))
+                              onPressed: () {
+                                logic.remove(index);
+                              })
                         ]));
                   },
                   separatorBuilder: (_, index) => const Divider(height: 0),

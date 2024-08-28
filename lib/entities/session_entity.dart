@@ -1,6 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/global/enum.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 part 'session_entity.g.dart';
 
@@ -43,31 +43,32 @@ class SessionEntity {
   List<String> friendIds;
   SessionConfigEntity? configObj;
   String? config;
+  YorNType friendship;
 
-  SessionEntity({
-    this.id,
-    this.name,
-    this.ownerId,
-    this.headImage,
-    this.headImageThumb,
-    this.notice,
-    this.remarkNickName,
-    this.showNickName,
-    this.showGroupName,
-    this.remarkGroupName,
-    this.deleted = false,
-    this.quit = false,
-    this.isAdmin = YorNType.N,
-    this.isSupAdmin = YorNType.N,
-    this.type = SessionType.group,
-    this.moveTop = false,
-    this.isDisturb = false,
-    this.lastMessage,
-    this.lastMessageTime = 0,
-    this.friendIds = const [],
-    this.configObj,
-    this.config,
-  });
+  SessionEntity(
+      {this.id,
+      this.name,
+      this.ownerId,
+      this.headImage,
+      this.headImageThumb,
+      this.notice,
+      this.remarkNickName,
+      this.showNickName,
+      this.showGroupName,
+      this.remarkGroupName,
+      this.deleted = false,
+      this.quit = false,
+      this.isAdmin = YorNType.N,
+      this.isSupAdmin = YorNType.N,
+      this.type = SessionType.group,
+      this.moveTop = false,
+      this.isDisturb = false,
+      this.lastMessage,
+      this.lastMessageTime = 0,
+      this.friendIds = const [],
+      this.configObj,
+      this.config,
+      this.friendship = YorNType.Y});
 
   factory SessionEntity.fromJson(Map<String, dynamic> json) => _$SessionEntityFromJson(json);
 
@@ -76,18 +77,13 @@ class SessionEntity {
 
 @JsonSerializable()
 class SessionConfigEntity {
-  String? id;
   YorNType addFriend;
   YorNType allMute;
   YorNType vura;
   YorNType invite;
 
   SessionConfigEntity(
-      {this.id,
-      this.addFriend = YorNType.N,
-      this.allMute = YorNType.N,
-      this.vura = YorNType.N,
-      this.invite = YorNType.N});
+      {this.addFriend = YorNType.N, this.allMute = YorNType.N, this.vura = YorNType.N, this.invite = YorNType.N});
 
   factory SessionConfigEntity.fromJson(Map<String, dynamic> json) => _$SessionConfigEntityFromJson(json);
 

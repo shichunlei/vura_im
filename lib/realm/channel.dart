@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:get/get.dart';
+import 'package:realm/realm.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/config.dart';
@@ -9,7 +10,6 @@ import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:realm/realm.dart';
 
 part 'channel.realm.dart';
 
@@ -38,6 +38,7 @@ class _Channel {
   String isAdmin = "N";
   String isSupAdmin = "N";
   String? config;
+  String friendship = "Y";
 }
 
 class SessionRealm {
@@ -50,8 +51,9 @@ class SessionRealm {
     Log.d("queryAllSessions=====================${AppConfig.userId}");
     return _realm
         .all<Channel>()
-        .query(r"userId == $0 AND deleted == $1 AND TRUEPREDICATE SORT(moveTop DESC ,lastMessageTime DESC)",
-            ["${AppConfig.userId}", false])
+        .query(
+            r"userId == $0 AND deleted == $1 AND id <> null AND friendship == $2 AND TRUEPREDICATE SORT(moveTop DESC ,lastMessageTime DESC)",
+            ["${AppConfig.userId}", false, "Y"])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }
@@ -78,8 +80,6 @@ class SessionRealm {
   Future saveChannel(SessionEntity session) async {
     Channel? _session = findOne("${AppConfig.userId}-${session.id}-${session.type.name}");
     if (_session != null) {
-      Log.d("----------------->${session.id}");
-
       await _realm.writeAsync(() {
         if (StringUtil.isNotEmpty(session.name)) _session.name = session.name;
         _session.headImage = session.headImage;
@@ -104,8 +104,7 @@ class SessionRealm {
         Log.e(e.toString());
       }
     } else {
-      Log.d("saveChannel====================================${session.toJson()}");
-      upsert(sessionEntityToRealm(session));
+      await upsert(sessionEntityToRealm(session));
     }
   }
 
@@ -130,8 +129,7 @@ class SessionRealm {
         Log.e(e.toString());
       }
     } else {
-      Log.d("====================================${session.toJson()}");
-      upsert(sessionEntityToRealm(session));
+      await upsert(sessionEntityToRealm(session));
     }
   }
 
@@ -151,8 +149,7 @@ class SessionRealm {
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {
-      Log.d("====================================${session.toJson()}");
-      upsert(sessionEntityToRealm(session));
+      await upsert(sessionEntityToRealm(session));
     }
   }
 
@@ -220,6 +217,22 @@ class SessionRealm {
     }
   }
 
+  /// 拉黑
+  Future blacklistChannel(String? id, YorNType type) async {
+    Channel? session = findOne("${AppConfig.userId}-$id-${SessionType.private.name}");
+    if (session != null) {
+      await _realm.writeAsync(() {
+        session.friendship = type.name;
+      });
+      Log.d("deleteChannel===${session.id}================>${session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
+
   Channel? findOne(String? id) {
     return _realm.find<Channel>(id);
   }
@@ -247,7 +260,8 @@ SessionEntity sessionRealmToEntity(Channel session) {
       config: session.config,
       configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
       isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
-      moveTop: session.moveTop);
+      moveTop: session.moveTop,
+      friendship: EnumToString.fromString(YorNType.values, session.friendship));
 }
 
 Channel sessionEntityToRealm(SessionEntity session) {
@@ -271,6 +285,7 @@ Channel sessionEntityToRealm(SessionEntity session) {
       isDisturb: session.isDisturb,
       isAdmin: session.isAdmin.name,
       isSupAdmin: session.isSupAdmin.name,
+      friendship: session.friendship.name,
       config: session.configObj == null ? null : json.encode(session.configObj!.toJson()),
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

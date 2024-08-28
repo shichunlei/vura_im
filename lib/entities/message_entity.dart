@@ -5,8 +5,9 @@ part 'message_entity.g.dart';
 @JsonSerializable()
 class MessageEntity {
   String? id;
-  @JsonKey(includeIfNull: false)
-  String? groupId;
+  @JsonKey(includeIfNull: false, name: "groupId")
+  String? sessionId;
+  String? groupName;
   @JsonKey(includeIfNull: false)
   String? sendId;
   @JsonKey(includeIfNull: false)
@@ -26,13 +27,14 @@ class MessageEntity {
   bool receiptOk;
   @JsonKey(name: "readedCount")
   int readCount;
-  List<int> atUserIds;
+  List<String?> atUserIds;
   int status;
   int sendTime;
 
   MessageEntity({
     this.id,
-    this.groupId,
+    this.sessionId,
+    this.groupName,
     this.sendId,
     this.receiveId,
     this.receiveNickName,

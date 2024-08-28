@@ -18,6 +18,7 @@ import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
+import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/dialog/update_text_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -285,7 +286,14 @@ class GroupSessionDetailPage extends StatelessWidget {
                         logic.bean.value!.isAdmin == YorNType.Y
                             ? RadiusInkWellWidget(
                                 color: Colors.transparent,
-                                onPressed: logic.deleteSession,
+                                onPressed: () {
+                                  Get.bottomSheet(BottomDialog(
+                                      content: "解散群聊后，群成员和群主都将被移除群聊",
+                                      confirmText: "解散",
+                                      onConfirm: () {
+                                        logic.deleteSession();
+                                      }));
+                                },
                                 borderRadius:
                                     BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                                 child: Container(
@@ -296,7 +304,14 @@ class GroupSessionDetailPage extends StatelessWidget {
                                         style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549)))))
                             : RadiusInkWellWidget(
                                 color: Colors.transparent,
-                                onPressed: logic.quitSession,
+                                onPressed: () {
+                                  Get.bottomSheet(BottomDialog(
+                                      content: "即将退出群聊“${logic.bean.value?.name}”",
+                                      confirmText: "退出群聊",
+                                      onConfirm: () {
+                                        logic.quitSession();
+                                      }));
+                                },
                                 borderRadius:
                                     BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                                 child: Container(

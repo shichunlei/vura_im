@@ -16,6 +16,7 @@ import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -135,7 +136,11 @@ class ChatPage extends StatelessWidget {
                           Padding(
                               padding: EdgeInsets.symmetric(horizontal: 22.w),
                               child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                CustomIconButton(icon: const Icon(IconFont.voice), onPressed: () {}),
+                                CustomIconButton(
+                                    icon: const Icon(IconFont.voice),
+                                    onPressed: () {
+                                      showToast(text: "开发中。。。");
+                                    }),
                                 CustomIconButton(
                                     icon: const Icon(IconFont.camera),
                                     onPressed: () {
@@ -183,9 +188,16 @@ class ChatPage extends StatelessWidget {
                                     icon: const Icon(IconFont.red_package),
                                     onPressed: () {
                                       Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
-                                          arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type});
+                                          arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})?.then((value) {
+                                        if (value != null) logic.sendRedPackage(value);
+                                      });
                                     }),
-                                CustomIconButton(icon: const Icon(IconFont.expression), onPressed: () {})
+                                CustomIconButton(
+                                    icon: const Icon(IconFont.expression),
+                                    onPressed: () {
+                                      ///
+                                      showToast(text: "这是发什么？");
+                                    })
                               ]))
                         ])))
               ]);

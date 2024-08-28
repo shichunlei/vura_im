@@ -33,17 +33,25 @@ class ItemReceiveRedPackage extends StatelessWidget {
             width: 227.w,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               SizedBox(height: 13.h),
-              Row(children: [
-                SizedBox(width: 18.w),
-                Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
-                SizedBox(width: 13.w),
-                Text("x23429",
-                    style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text("23432",
-                    style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                SizedBox(width: 15.w)
-              ]),
+              redPackage.type == 3
+                  ? Row(children: [
+                      SizedBox(width: 18.w),
+                      Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
+                      SizedBox(width: 13.w),
+                      Text("x${redPackage.mines.length}",
+                          style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                      const Spacer(),
+                      Text("${redPackage.minesStr}",
+                          style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 15.w)
+                    ])
+                  : Container(
+                      padding: EdgeInsets.symmetric(horizontal: 22.w),
+                      height: 35.r,
+                      alignment: Alignment.centerLeft,
+                      child: Text("${redPackage.blessing}",
+                          style:
+                              GoogleFonts.roboto(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp))),
               SizedBox(height: 13.h),
               const Divider(height: 0, color: Colors.white12),
               Container(

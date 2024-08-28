@@ -67,6 +67,9 @@ class SetPasswordLogic extends BaseLogic with AuthCodeMixin {
       }
 
       Get.until((route) => route.settings.name == RoutePath.LOGIN_PAGE);
+    } else {
+      // 刷新验证码
+      getAuthCode();
     }
   }
 }

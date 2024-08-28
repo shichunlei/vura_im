@@ -29,6 +29,7 @@ class NewFriendPage extends StatelessWidget {
                         onTap: logic.list[index].applyStatus == "0"
                             ? null
                             : () {
+                                /// todo
                                 Get.toNamed(RoutePath.USER_INFO_PAGE, arguments: {Keys.ID: logic.list[index].userId});
                               },
                         behavior: HitTestBehavior.translucent,

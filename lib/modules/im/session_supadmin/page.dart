@@ -11,6 +11,7 @@ import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
+import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 
 import 'logic.dart';
@@ -28,6 +29,7 @@ class SessionSupAdminPage extends StatelessWidget {
         appBar: AppBar(backgroundColor: Colors.transparent),
         body: BaseWidget(
             logic: logic,
+            showEmpty: false,
             builder: (logic) {
               return Container(
                   padding: EdgeInsets.symmetric(horizontal: 42.w),
@@ -97,7 +99,16 @@ class SessionSupAdminPage extends StatelessWidget {
                                             fontSize: 18.sp,
                                             color: ColorUtil.color_333333,
                                             fontWeight: FontWeight.w500))),
-                                TextButton(onPressed: () {}, child: const Text("移除"))
+                                TextButton(
+                                    onPressed: () {
+                                      Get.bottomSheet(BottomDialog(
+                                          content: "您确认要移除管理员${logic.list[index].showNickName}吗？",
+                                          confirmText: "移除",
+                                          onConfirm: () {
+                                            logic.removeSupAdmin(logic.list[index].userId);
+                                          }));
+                                    },
+                                    child: const Text("移除"))
                               ]));
                         },
                         separatorBuilder: (_, index) {

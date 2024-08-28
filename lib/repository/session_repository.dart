@@ -202,16 +202,18 @@ class SessionRepository {
       List<String?> atUserIds = const [],
       String? receiveNickName,
       String? receiveHeadImage}) async {
-    var data = await HttpUtils.getInstance().request("message/${sessionType.name}/send", params: {
-      if (sessionType == SessionType.group) Keys.GROUP_ID: id,
-      if (sessionType == SessionType.private) "recvId": id,
-      if (sessionType == SessionType.private) "recvNickName": receiveNickName,
-      if (sessionType == SessionType.private) "recvHeadImage": receiveHeadImage,
-      Keys.CONTENT: content,
-      Keys.TYPE: type.code,
-      "receipt": true,
-      if (sessionType == SessionType.group) "atUserIds": atUserIds
-    });
+    var data = await HttpUtils.getInstance().request("message/${sessionType.name}/send",
+        params: {
+          if (sessionType == SessionType.group) Keys.GROUP_ID: id,
+          if (sessionType == SessionType.private) "recvId": id,
+          if (sessionType == SessionType.private) "recvNickName": receiveNickName,
+          if (sessionType == SessionType.private) "recvHeadImage": receiveHeadImage,
+          Keys.CONTENT: content,
+          Keys.TYPE: type.code,
+          "receipt": true,
+          if (sessionType == SessionType.group) "atUserIds": atUserIds
+        },
+        showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return MessageEntity.fromJson(result.data);
@@ -261,7 +263,7 @@ class SessionRepository {
     }
   }
 
-  /// 已读群聊消息 TODO
+  /// 已读群聊消息
   ///
   /// [id] 会话ID
   ///
@@ -303,7 +305,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 设置管理员 TODO
+  /// 设置管理员
   ///
   /// [id] 群ID
   /// [ids] 被设置管理员的用户IDS
@@ -312,6 +314,31 @@ class SessionRepository {
     var data = await HttpUtils.getInstance().request('group/setSupAdmin',
         params: {"adminIdList": ids, Keys.GROUP_ID: id}, method: HttpUtils.PUT, showErrorToast: true);
     return BaseBean.fromJson(data);
+  }
+
+  /// 移除管理员 TODO
+  ///
+  /// [id] 群ID
+  /// [ids] 被移除管理员的用户IDS
+  ///
+  static Future<BaseBean> removeSupAdmin(String? id, List<String?> ids) async {
+    var data = await HttpUtils.getInstance().request('group/resetSupAdmin',
+        params: {"adminIdList": ids, Keys.GROUP_ID: id}, method: HttpUtils.PUT, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 群管理员列表
+  ///
+  /// [id] 群ID
+  ///
+  static Future<List<MemberEntity>> sessionSupAdmin(String? id) async {
+    var data = await HttpUtils.getInstance().request('group/members/supadmin/$id', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToList(data);
+    if (result.code == 200) {
+      return result.items.map((item) => MemberEntity.fromJson(item)).toList();
+    } else {
+      return [];
+    }
   }
 
   /// 群主转让 TODO
@@ -358,20 +385,6 @@ class SessionRepository {
   ///
   static Future<List<MemberEntity>> muteList(String? id) async {
     var data = await HttpUtils.getInstance().request('group/members/mute/$id', method: HttpUtils.GET);
-    BaseBean result = BaseBean.fromJsonToList(data);
-    if (result.code == 200) {
-      return result.items.map((item) => MemberEntity.fromJson(item)).toList();
-    } else {
-      return [];
-    }
-  }
-
-  /// 群管理员列表
-  ///
-  /// [id] 群ID
-  ///
-  static Future<List<MemberEntity>> sessionSupAdmin(String? id) async {
-    var data = await HttpUtils.getInstance().request('group/members/supadmin/$id', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => MemberEntity.fromJson(item)).toList();
@@ -427,8 +440,8 @@ class SessionRepository {
 
   /// 红包结果
   ///
-  static Future<BaseBean> getRedPackageResult(String? id) async {
-    var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id', showErrorToast: true);
-    return BaseBean.fromJson(data);
+  static Future<Map> getRedPackageResult(String? id) async {
+    var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id');
+    return {};
   }
 }

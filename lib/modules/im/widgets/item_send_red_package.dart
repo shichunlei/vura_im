@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/package_entity.dart';
+import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/chat/logic.dart';
+import 'package:vura/route/route_path.dart';
 
 class ItemSendRedPackage extends StatelessWidget {
   final MessageEntity message;
@@ -19,8 +22,12 @@ class ItemSendRedPackage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          logic.openRedPackage(message.id, redPackage.id);
-          // Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: message.id});
+          if (logic.type == SessionType.private) {
+            // 单聊自己发的红包不能打开，可以直接查看结果
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+          } else {
+            logic.openRedPackage(message.id, redPackage.id);
+          }
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
@@ -33,17 +40,25 @@ class ItemSendRedPackage extends StatelessWidget {
             width: 227.w,
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               SizedBox(height: 13.h),
-              Row(children: [
-                SizedBox(width: 18.w),
-                Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
-                SizedBox(width: 13.w),
-                Text("x23429",
-                    style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                const Spacer(),
-                Text("23432",
-                    style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                SizedBox(width: 15.w)
-              ]),
+              redPackage.type == 3
+                  ? Row(children: [
+                      SizedBox(width: 18.w),
+                      Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
+                      SizedBox(width: 13.w),
+                      Text("x${redPackage.mines.length}",
+                          style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                      const Spacer(),
+                      Text("${redPackage.minesStr}",
+                          style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 15.w)
+                    ])
+                  : Container(
+                      padding: EdgeInsets.symmetric(horizontal: 22.w),
+                      height: 35.r,
+                      alignment: Alignment.centerLeft,
+                      child: Text("${redPackage.blessing}",
+                          style:
+                              GoogleFonts.roboto(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp))),
               SizedBox(height: 13.h),
               const Divider(height: 0, color: Colors.white12),
               Container(

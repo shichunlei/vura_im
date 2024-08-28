@@ -58,6 +58,10 @@ class UpdatePasswordLogic extends BaseLogic with AuthCodeMixin {
 
     if (result.code == 200) {
       showToast(text: "修改成功");
+      Get.back();
+    } else {
+      // 刷新验证码
+      getAuthCode();
     }
   }
 }
