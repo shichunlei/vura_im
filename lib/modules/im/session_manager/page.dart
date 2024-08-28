@@ -68,7 +68,7 @@ class SessionManagerPage extends StatelessWidget {
                                   content: "您确认要将群主权限转给${(value as MemberEntity).showNickName}吗？",
                                   confirmText: "转让",
                                   onConfirm: () {
-
+                                    logic.updateAdmin(value.userId);
                                   });
                             });
                           }

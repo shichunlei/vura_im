@@ -51,8 +51,9 @@ enum MessageType {
   APPLY_ADD_FRIEND(900, "申请添加好友通知"),
   APPLY_ADD_GROUP(901, "申请添加群聊通知"),
   APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知"),
-  RED_PACKAGE(904, "红包"),
-  ID_CARD(905, "个人名片");
+  RED_PACKAGE(904, "单人红包"),
+  ID_CARD(905, "个人名片"),
+  GROUP_RED_PACKAGE(906, "群红包");
 
   final int code;
   final String label;

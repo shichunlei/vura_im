@@ -69,11 +69,13 @@ class ChatPage extends StatelessWidget {
                           }
                           if (logic.list[index].sendId == AppConfig.userId) {
                             return ItemSendMessage(
+                                tag: tag,
                                 message: logic.list[index],
                                 showTime: index == logic.list.length - 1 ||
                                     logic.list[index].sendTime - logic.list[index + 1].sendTime > 1000 * 60);
                           } else {
                             return ItemReceiveMessage(
+                                tag: tag,
                                 message: logic.list[index],
                                 showTime: index == logic.list.length - 1 ||
                                     logic.list[index].sendTime - logic.list[index + 1].sendTime > 1000 * 60);

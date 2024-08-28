@@ -425,7 +425,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 拆红包
+  /// 红包结果
   ///
   static Future<BaseBean> getRedPackageResult(String? id) async {
     var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id', showErrorToast: true);

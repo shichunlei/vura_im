@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/utils/color_util.dart';
@@ -20,8 +21,9 @@ import 'item_receive_text.dart';
 class ItemReceiveMessage extends StatelessWidget {
   final MessageEntity message;
   final bool showTime;
+  final String? tag;
 
-  const ItemReceiveMessage({super.key, required this.message, this.showTime = false});
+  const ItemReceiveMessage({super.key, required this.message, this.showTime = false, this.tag});
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +56,10 @@ class ItemReceiveMessage extends StatelessWidget {
     if (type == MessageType.ID_CARD.code && StringUtil.isNotEmpty(message.content)) {
       return ItemReceiveCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
     }
-    if (type == MessageType.RED_PACKAGE.code && message.content != null) {
-      return ItemReceiveRedPackage(message: message);
+    if ((type == MessageType.RED_PACKAGE.code || type == MessageType.GROUP_RED_PACKAGE.code) &&
+        message.content != null) {
+      return ItemReceiveRedPackage(
+          message: message, tag: tag, redPackage: RedPackageEntity.fromJson(json.decode(message.content!)));
     }
     return Text("暂未适配的消息类型${message.content}");
   }

@@ -4,9 +4,11 @@ import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/im/session_detail/group/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/channel.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
@@ -72,6 +74,21 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
       showToast(text: "设置成功");
       bean.refresh();
       await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+    }
+  }
+
+  Future updateAdmin(String? userId) async {
+    showLoading();
+    BaseBean result = await SessionRepository.setAdmin(id, userId);
+    hiddenLoading();
+    if (result.code == 200) {
+      try {
+        Get.find<GroupSessionDetailLogic>(tag: id).updateAdmin(userId);
+        Get.find<GroupSessionDetailLogic>(tag: id).getMembers();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      Get.back();
     }
   }
 }

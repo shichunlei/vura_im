@@ -11,12 +11,16 @@ class SessionMembersLogic extends BaseListLogic<MemberEntity> {
   late String title;
   late SelectType selectType;
   late bool includeMe;
+  int? maxCount;
+  late List<String?> selectIds;
 
   SessionMembersLogic() {
     id = Get.arguments[Keys.ID];
     title = Get.arguments[Keys.TITLE];
     selectType = Get.arguments["selectType"] ?? SelectType.none;
     includeMe = Get.arguments["includeMe"] ?? true;
+    selectIds = Get.arguments?["selectIds"] ?? [];
+    maxCount = Get.arguments?["maxCount"];
   }
 
   RxList<MemberEntity> selectMembers = RxList<MemberEntity>([]);

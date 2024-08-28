@@ -3,44 +3,44 @@ import 'package:json_annotation/json_annotation.dart';
 part 'package_entity.g.dart';
 
 @JsonSerializable()
-class PackageEntity {
-  int? id;
-  int? type;
-  int? userId;
-  int? receiverId;
-  num? totalAmount;
+class RedPackageEntity {
+  String? id;
+  int type;
+  String? userId;
+  String? receiverId;
+  num totalAmount;
   int totalPacket;
   String? blessing;
   String? cover;
-  int? leftAmount;
-  int? leftPacket;
+  int leftAmount;
+  int leftPacket;
   String? expireTime;
-  int? status;
+  int status;
   String? createDate;
   String? updateDate;
-  int? isValid;
+  int isValid;
   String? minesStr;
 
-  PackageEntity({
+  RedPackageEntity({
     this.id,
-    this.type,
+    this.type = 2,
     this.userId,
     this.receiverId,
-    this.totalAmount,
-    this.totalPacket=1,
+    this.totalAmount = .0,
+    this.totalPacket = 1,
     this.blessing,
     this.cover,
-    this.leftAmount,
-    this.leftPacket,
+    this.leftAmount = 0,
+    this.leftPacket = 0,
     this.expireTime,
-    this.status,
+    this.status = 1,
     this.createDate,
     this.updateDate,
-    this.isValid,
+    this.isValid = 0,
     this.minesStr,
   });
 
-  factory PackageEntity.fromJson(Map<String, dynamic> json) => _$PackageEntityFromJson(json);
+  factory RedPackageEntity.fromJson(Map<String, dynamic> json) => _$RedPackageEntityFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PackageEntityToJson(this);
+  Map<String, dynamic> toJson() => _$RedPackageEntityToJson(this);
 }

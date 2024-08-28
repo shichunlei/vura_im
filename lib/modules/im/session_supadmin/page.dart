@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/entities/member_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/global/keys.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 
 import 'logic.dart';
@@ -49,7 +55,28 @@ class SessionSupAdminPage extends StatelessWidget {
                             return Container(
                                 padding: EdgeInsets.only(top: 11.h, bottom: 11.h),
                                 child: GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
+                                        Keys.ID: logic.id,
+                                        Keys.TITLE: "设置管理员",
+                                        "selectType": SelectType.checkbox,
+                                        "includeMe": false,
+                                        "selectIds": logic.list.map((item) => item.userId).toList(),
+                                        "maxCount": 3
+                                      })?.then((value) {
+                                        if (value != null) {
+                                          show(builder: (_) {
+                                            return CustomAlertDialog(
+                                                title: "提示",
+                                                content:
+                                                    "您确认要将${(value as List<MemberEntity>).map((item) => item.showNickName).toList().join(",")}设置为管理员吗？",
+                                                onConfirm: () {
+                                                  logic.addSupAdmin(value);
+                                                });
+                                          });
+                                        }
+                                      });
+                                    },
                                     behavior: HitTestBehavior.translucent,
                                     child: Row(children: [
                                       Icon(IconFont.add_round, size: 44.r),
@@ -62,10 +89,10 @@ class SessionSupAdminPage extends StatelessWidget {
                               padding: EdgeInsets.only(top: 11.h, bottom: 11.h),
                               child: Row(children: [
                                 AvatarImageView("${logic.list[index].headImage}",
-                                    radius: 22.r, name: logic.list[index].remarkNickName),
+                                    radius: 22.r, name: logic.list[index].showNickName),
                                 SizedBox(width: 13.w),
                                 Expanded(
-                                    child: Text("${logic.list[index].remarkNickName}",
+                                    child: Text("${logic.list[index].showNickName}",
                                         style: GoogleFonts.roboto(
                                             fontSize: 18.sp,
                                             color: ColorUtil.color_333333,

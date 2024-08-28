@@ -83,7 +83,8 @@ class ItemSession extends StatelessWidget {
                                 ? "[视频]"
                                 : session.lastMessage?.type == MessageType.FILE.code
                                     ? "[文件]"
-                                    : session.lastMessage?.type == MessageType.RED_PACKAGE.code
+                                    : session.lastMessage?.type == MessageType.RED_PACKAGE.code ||
+                                            session.lastMessage?.type == MessageType.GROUP_RED_PACKAGE.code
                                         ? "[红包]"
                                         : session.lastMessage?.type == MessageType.ID_CARD.code
                                             ? "[个人名片]"

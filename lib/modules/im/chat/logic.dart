@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/file_entity.dart';
@@ -20,7 +21,6 @@ import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/utils/tool_util.dart';
-import 'package:image_picker/image_picker.dart';
 
 class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   String? id;
@@ -131,6 +131,12 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     } catch (e) {
       Log.e(e.toString());
     }
+  }
+
+  Future openRedPackage(String? id, String? redPackageId) async {
+    showLoading();
+    SessionRepository.openRedPackage(redPackageId);
+    hiddenLoading();
   }
 
   @override

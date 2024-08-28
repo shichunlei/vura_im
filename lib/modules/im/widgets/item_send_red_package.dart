@@ -3,20 +3,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/message_entity.dart';
-import 'package:vura/global/keys.dart';
-import 'package:vura/route/route_path.dart';
-import 'package:vura/utils/date_util.dart';
+import 'package:vura/entities/package_entity.dart';
+import 'package:vura/modules/im/chat/logic.dart';
 
 class ItemSendRedPackage extends StatelessWidget {
   final MessageEntity message;
+  final String? tag;
+  final RedPackageEntity redPackage;
 
-  const ItemSendRedPackage({super.key, required this.message});
+  const ItemSendRedPackage({super.key, required this.message, this.tag, required this.redPackage});
+
+  ChatLogic get logic => Get.find<ChatLogic>(tag: tag);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: message.id});
+          logic.openRedPackage(message.id, redPackage.id);
+          // Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: message.id});
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
@@ -46,8 +50,8 @@ class ItemSendRedPackage extends StatelessWidget {
                   height: 38.h,
                   alignment: Alignment.centerRight,
                   padding: EdgeInsets.only(right: 13.w),
-                  child: Text("${DateUtil.getDateStrByMs(message.sendTime)}",
-                      style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white)))
+                  child:
+                      Text("${redPackage.expireTime}", style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white)))
             ])));
   }
 }

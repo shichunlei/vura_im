@@ -171,4 +171,9 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
       hiddenLoading();
     }
   }
+
+  Future updateAdmin(String? userId) async {
+    bean.value?.ownerId = userId;
+    bean.refresh();
+  }
 }

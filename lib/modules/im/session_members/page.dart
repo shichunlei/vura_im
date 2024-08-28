@@ -33,6 +33,11 @@ class SessionMembersPage extends StatelessWidget {
                 : [
                     TextButton(
                         onPressed: () {
+                          if (logic.maxCount != null &&
+                              (logic.selectMembers.length + logic.selectIds.length) >= logic.maxCount!) {
+                            showToast(text: "最多选择${logic.maxCount}个成员");
+                            return;
+                          }
                           if (logic.selectMembers.isEmpty && logic.selectUser.value == null) {
                             showToast(text: "请选择群成员");
                             return;
@@ -56,6 +61,7 @@ class SessionMembersPage extends StatelessWidget {
                         onTap: logic.selectType == SelectType.none
                             ? null
                             : () {
+                                if (logic.selectIds.any((item) => item == logic.list[index].userId)) return;
                                 if (logic.selectType == SelectType.checkbox) {
                                   if (logic.selectMembers.any((item) => item.userId == logic.list[index].userId)) {
                                     logic.selectMembers.removeWhere((item) => item.userId == logic.list[index].userId);
@@ -77,17 +83,20 @@ class SessionMembersPage extends StatelessWidget {
                                       width: 46.w,
                                       child: Obx(() {
                                         return Icon(
-                                            logic.selectMembers
+                                            logic.selectIds.any((item) => item == logic.list[index].userId) ||
+                                                    logic.selectMembers
                                                         .any((item) => item.userId == logic.list[index].userId) ||
                                                     logic.selectUser.value?.userId == logic.list[index].userId
                                                 ? Icons.check_circle
                                                 : Icons.circle_outlined,
                                             size: 10.r,
-                                            color: logic.selectMembers
-                                                        .any((item) => item.userId == logic.list[index].userId) ||
-                                                    logic.selectUser.value?.userId == logic.list[index].userId
+                                            color: logic.selectIds.any((item) => item == logic.list[index].userId)
                                                 ? Theme.of(Get.context!).primaryColor.withOpacity(.5)
-                                                : const Color(0xffdddddd));
+                                                : logic.selectMembers
+                                                            .any((item) => item.userId == logic.list[index].userId) ||
+                                                        logic.selectUser.value?.userId == logic.list[index].userId
+                                                    ? Theme.of(Get.context!).primaryColor
+                                                    : const Color(0xffdddddd));
                                       }))
                                   : SizedBox(width: 22.w),
                               AvatarImageView("${logic.list[index].headImage}",
