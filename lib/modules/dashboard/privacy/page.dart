@@ -19,7 +19,7 @@ class PrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("隐私设置"), centerTitle: true),
+        appBar: AppBar(title: Text("privacy_setting".tr), centerTitle: true),
         body: SingleChildScrollView(
           child: Column(children: [
             Container(
@@ -66,7 +66,9 @@ class PrivacyPage extends StatelessWidget {
                 child: Column(children: [
                   RadiusInkWellWidget(
                       color: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(RoutePath.PAY_PASSWORD_PAGE);
+                      },
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                       child: Container(
                           height: 60.h,
@@ -101,7 +103,9 @@ class PrivacyPage extends StatelessWidget {
                 child: Column(children: [
                   RadiusInkWellWidget(
                       color: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.toNamed(RoutePath.LOCK_SCREEN_PASSWORD_PAGE);
+                      },
                       borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                       child: Container(
                           height: 60.h,

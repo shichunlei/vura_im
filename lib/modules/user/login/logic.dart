@@ -20,7 +20,7 @@ class LoginLogic extends BaseLogic {
   }
 
   Future login() async {
-    DeviceUtils.hideKeyboard(Get.context!);
+    DeviceUtils.hideKeyboard();
     if (accountController.text.isEmpty) {
       showToast(text: "请输入登录账号");
       return;

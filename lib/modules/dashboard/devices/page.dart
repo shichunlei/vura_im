@@ -77,9 +77,13 @@ class DevicesPage extends StatelessWidget {
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                  Text("iPhone 12 Pro Max",
-                                      style: GoogleFonts.roboto(
-                                          color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.w600)),
+                                  Obx(() {
+                                    return Text(logic.deviceName.value,
+                                        style: GoogleFonts.roboto(
+                                            color: ColorUtil.color_333333,
+                                            fontSize: 18.sp,
+                                            fontWeight: FontWeight.w600));
+                                  }),
                                   SizedBox(height: 11.h),
                                   Text("12.999 英��",
                                       style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp))

@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/dialog/bottom_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 

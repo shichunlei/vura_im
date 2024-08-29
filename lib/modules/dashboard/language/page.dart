@@ -17,7 +17,7 @@ class LanguagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("语言设置"), centerTitle: true),
+        appBar: AppBar(title: Text("language_setting".tr), centerTitle: true),
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
@@ -28,7 +28,10 @@ class LanguagePage extends StatelessWidget {
                     child: Column(children: [
                       RadiusInkWellWidget(
                           color: Colors.transparent,
-                          onPressed: () {},
+                          onPressed: () {
+                            var locale = const Locale('zh', 'CN');
+                            Get.updateLocale(locale);
+                          },
                           borderRadius:
                               BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                           child: Container(
@@ -43,7 +46,10 @@ class LanguagePage extends StatelessWidget {
                       RadiusInkWellWidget(
                           color: Colors.transparent,
                           radius: 0,
-                          onPressed: () {},
+                          onPressed: () {
+                            var locale = const Locale('zh', 'HK');
+                            Get.updateLocale(locale);
+                          },
                           child: Container(
                               height: 60.h,
                               padding: EdgeInsets.only(left: 22.w, right: 30.w),
@@ -57,7 +63,10 @@ class LanguagePage extends StatelessWidget {
                           color: Colors.transparent,
                           borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                          onPressed: () {},
+                          onPressed: () {
+                            var locale = const Locale('en', 'US');
+                            Get.updateLocale(locale);
+                          },
                           child: Container(
                               height: 60.h,
                               padding: EdgeInsets.only(left: 22.w, right: 30.w),

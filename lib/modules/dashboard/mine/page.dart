@@ -199,7 +199,7 @@ class MinePage extends StatelessWidget {
                               width: 62.r,
                               child: Icon(IconFont.device, size: 26.r))),
                       SizedBox(height: 13.h),
-                      Text("设备", style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
+                      Text("device".tr, style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
                     ]),
                     SizedBox(width: 22.w)
                   ]),
@@ -208,7 +208,9 @@ class MinePage extends StatelessWidget {
                     SizedBox(width: 22.w),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.toNamed(RoutePath.NOTICE_SETTING_PAGE);
+                          },
                           radius: 18.r,
                           color: const Color(0xffF6FAFD),
                           child: Container(
@@ -233,7 +235,7 @@ class MinePage extends StatelessWidget {
                               width: 62.r,
                               child: Icon(IconFont.privacy, size: 26.r))),
                       SizedBox(height: 13.h),
-                      Text("隐私", style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
+                      Text("privacy".tr, style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
                     ]),
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
@@ -265,7 +267,7 @@ class MinePage extends StatelessWidget {
                               width: 62.r,
                               child: Icon(IconFont.language, size: 26.r))),
                       SizedBox(height: 13.h),
-                      Text("语言", style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
+                      Text("language".tr, style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
                     ]),
                     SizedBox(width: 22.w)
                   ]),

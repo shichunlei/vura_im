@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// 页面状态类型
 enum ViewState {
   success,
@@ -90,8 +92,19 @@ enum WebSocketCode {
 
 enum SessionType { group, private }
 
-enum YorNType { Y, N, B, M }
+enum YorNType { Y, N, B, M, EXPIRE }
 
 enum FriendSourceType { SCAN, CARD, CHAT_NO, PHONE, SHAKE, SYS, GROUP, NEAR }
 
 enum SelectType { checkbox, radio, none }
+
+enum LocalType {
+  zh_CN("zh_CN", Locale("zh", "CN")),
+  zh_HK("zh_HK", Locale("zh", "HK")),
+  en_US("en_US", Locale("en", "US"));
+
+  final String code;
+  final Locale locale;
+
+  const LocalType(this.code, this.locale);
+}

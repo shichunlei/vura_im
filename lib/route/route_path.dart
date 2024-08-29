@@ -36,4 +36,10 @@ abstract class RoutePath {
   static const String CHARGE_PAGE = "/charge"; // 设备
   static const String TRANSFER_PAGE = "/transfer"; // 转账
   static const String WALLET_PAGE = "/wallet"; // 钱包
+  static const String NOTICE_SETTING_PAGE = "/notice_setting"; // 通知
+  static const String CHAT_BACKGROUND_PAGE = "/chat_background"; // 聊天背景
+  static const String FONT_SIZE_PAGE = "/font_size"; // 字体大小
+  static const String PAY_PASSWORD_PAGE = "/pay_password"; // 支付密码
+  static const String GESTURE_PASSWORD_PAGE = "/gesture_password"; // 手势密码
+  static const String LOCK_SCREEN_PASSWORD_PAGE = "/lock_screen_password"; // 锁屏密码
 }

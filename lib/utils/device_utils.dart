@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:vura/utils/log_utils.dart';
 
 class DeviceUtils {
   static bool get isDesktop => !isWeb && (isWindows || isLinux || isMacOS);
@@ -47,10 +49,8 @@ class DeviceUtils {
 
   /// 隐藏键盘
   ///
-  /// [context] 上下文
-  ///
-  static void hideKeyboard(BuildContext context) {
-    FocusScope.of(context).requestFocus(FocusNode());
+  static void hideKeyboard() {
+    FocusScope.of(Get.context!).requestFocus(FocusNode());
   }
 
   /// 隐藏状态栏
@@ -99,9 +99,22 @@ class DeviceUtils {
       return iosInfo.systemVersion;
     }
 
-    if (isWeb) {
-      WebBrowserInfo webBrowserInfo = await deviceInfo.webBrowserInfo;
-      return '${webBrowserInfo.browserName}-${webBrowserInfo.appVersion}';
+    return 'unKnow';
+  }
+
+  static Future<String> getDeviceName() async {
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    if (isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      Log.json(androidInfo.data);
+      return '${androidInfo.brand} ${androidInfo.model} Android ${androidInfo.version.release}';
+    }
+
+    if (isIOS) {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      Log.json(iosInfo.data);
+      return iosInfo.name;
     }
 
     return 'unKnow';

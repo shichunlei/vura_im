@@ -22,7 +22,7 @@ void main() async {
     await Application.getInstance().initApp();
     return launchApp();
   }, (Object error, StackTrace stack) {
-    Log.d("");
+    Log.e("");
   });
 }
 
@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
     final builder = BotToastInit();
 
     return GestureDetector(
-        onTap: () {
-          DeviceUtils.hideKeyboard(context);
-        },
+        onTap: DeviceUtils.hideKeyboard,
         child: ScreenUtilInit(
             designSize: const Size(414, 896),
             minTextAdapt: true,

@@ -41,7 +41,6 @@ class BottomDialog extends StatelessWidget {
                   color: Colors.transparent,
                   child: Container(
                       height: 60.h,
-                      padding: EdgeInsets.only(bottom: DeviceUtils.bottomSafeHeight),
                       alignment: Alignment.center,
                       child: Text("$confirmText",
                           style: GoogleFonts.roboto(

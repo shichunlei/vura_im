@@ -14,9 +14,21 @@ import 'package:vura/modules/dashboard/google_verify/binding.dart';
 import 'package:vura/modules/dashboard/google_verify/page.dart';
 import 'package:vura/modules/dashboard/language/binding.dart';
 import 'package:vura/modules/dashboard/language/page.dart';
+import 'package:vura/modules/dashboard/notice_setting/binding.dart';
+import 'package:vura/modules/dashboard/notice_setting/page.dart';
 import 'package:vura/modules/dashboard/privacy/binding.dart';
+import 'package:vura/modules/dashboard/privacy/gesture_password/binding.dart';
+import 'package:vura/modules/dashboard/privacy/gesture_password/page.dart';
+import 'package:vura/modules/dashboard/privacy/lock_screen_password/binding.dart';
+import 'package:vura/modules/dashboard/privacy/lock_screen_password/page.dart';
 import 'package:vura/modules/dashboard/privacy/page.dart';
+import 'package:vura/modules/dashboard/privacy/pay_password/binding.dart';
+import 'package:vura/modules/dashboard/privacy/pay_password/page.dart';
 import 'package:vura/modules/dashboard/windows/binding.dart';
+import 'package:vura/modules/dashboard/windows/chat_background/binding.dart';
+import 'package:vura/modules/dashboard/windows/chat_background/page.dart';
+import 'package:vura/modules/dashboard/windows/font_size_setting/binding.dart';
+import 'package:vura/modules/dashboard/windows/font_size_setting/page.dart';
 import 'package:vura/modules/dashboard/windows/page.dart';
 import 'package:vura/modules/finance/charge/binding.dart';
 import 'package:vura/modules/finance/charge/page.dart';
@@ -92,6 +104,20 @@ abstract class AppPages {
     GetPage(
         name: RoutePath.SELECT_CONTACTS_PAGE, page: () => const SelectContactsPage(), binding: SelectContactsBinding()),
     GetPage(name: RoutePath.DEVICES_PAGE, page: () => const DevicesPage(), binding: DevicesBinding()),
+    GetPage(
+        name: RoutePath.NOTICE_SETTING_PAGE, page: () => const NoticeSettingPage(), binding: NoticeSettingBinding()),
+    GetPage(
+        name: RoutePath.CHAT_BACKGROUND_PAGE, page: () => const ChatBackgroundPage(), binding: ChatBackgroundBinding()),
+    GetPage(name: RoutePath.PAY_PASSWORD_PAGE, page: () => const PayPasswordPage(), binding: PayPasswordBinding()),
+    GetPage(
+        name: RoutePath.LOCK_SCREEN_PASSWORD_PAGE,
+        page: () => const LockScreenPasswordPage(),
+        binding: LockScreenPasswordBinding()),
+    GetPage(
+        name: RoutePath.GESTURE_PASSWORD_PAGE,
+        page: () => const GesturePasswordPage(),
+        binding: GesturePasswordBinding()),
+    GetPage(name: RoutePath.FONT_SIZE_PAGE, page: () => const FontSizeSettingPage(), binding: FontSizeSettingBinding()),
     GetPage(name: RoutePath.CHARGE_PAGE, page: () => const ChargePage(), binding: ChargeBinding()),
     GetPage(name: RoutePath.CHARGE_WAY_PAGE, page: () => const ChargeWayPage(), binding: ChargeWayBinding()),
     GetPage(name: RoutePath.TRANSFER_PAGE, page: () => const TransferPage(), binding: TransferBinding()),

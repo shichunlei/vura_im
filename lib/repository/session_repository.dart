@@ -1,6 +1,7 @@
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/member_entity.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/red_package.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
@@ -433,15 +434,27 @@ class SessionRepository {
 
   /// 拆红包
   ///
-  static Future<BaseBean> openRedPackage(String? id) async {
+  static Future<RedPackage?> openRedPackage(String? id) async {
     var data = await HttpUtils.getInstance().request('redPacket/apartRedPacket/$id', showErrorToast: true);
-    return BaseBean.fromJson(data);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return RedPackage.fromJson(result.data);
+    } else {
+      return null;
+    }
   }
 
   /// 红包结果
   ///
   static Future<Map> getRedPackageResult(String? id) async {
-    var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id');
+    var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id', method: HttpUtils.GET);
+    return {};
+  }
+
+  /// 检查红包状态
+  ///
+  static Future<Map> checkRedPackage(String? id) async {
+    var data = await HttpUtils.getInstance().request('redPacket/check/$id', method: HttpUtils.GET);
     return {};
   }
 }
