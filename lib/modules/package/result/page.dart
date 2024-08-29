@@ -36,7 +36,7 @@ class PackageResultPage extends StatelessWidget {
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 80.h),
-                  AvatarRoundImage("path", width: 88.r, height: 88.r, radius: 9.r, name: "张三"),
+                  AvatarRoundImage("path", width: 88.r, height: 88.r, radius: 9.r, name: logic.bean.value?.nickName),
                   SizedBox(height: 22.h),
                   Text("张三的幸运值",
                       style: GoogleFonts.roboto(
@@ -51,10 +51,10 @@ class PackageResultPage extends StatelessWidget {
                       textBaseline: TextBaseline.alphabetic,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("70.00",
+                        Text("${logic.bean.value?.amount}",
                             style: GoogleFonts.roboto(
                                 fontSize: 44.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
-                        Text("元",
+                        Text("幸运值",
                             style: GoogleFonts.roboto(
                                 fontSize: 15.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
                       ]),
@@ -72,22 +72,26 @@ class PackageResultPage extends StatelessWidget {
                             return Container(
                                 padding: EdgeInsets.symmetric(vertical: 11.h),
                                 child: Row(children: [
-                                  AvatarRoundImage("path", width: 66.r, height: 66.r, radius: 7.r, name: "张三"),
+                                  AvatarRoundImage("path",
+                                      width: 66.r,
+                                      height: 66.r,
+                                      radius: 7.r,
+                                      name: logic.bean.value!.detailList[index].nickName),
                                   SizedBox(width: 22.w),
                                   Expanded(
                                     child: Column(mainAxisSize: MainAxisSize.min, children: [
                                       Row(children: [
-                                        Text("张三",
+                                        Text("${logic.bean.value!.detailList[index].nickName}",
                                             style: GoogleFonts.roboto(
                                                 color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp)),
                                         const Spacer(),
-                                        Text("70.00元",
+                                        Text("${logic.bean.value!.detailList[index].amount}幸运值",
                                             style: GoogleFonts.roboto(
                                                 color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp))
                                       ]),
                                       SizedBox(height: 5.h),
                                       Row(children: [
-                                        Text("08-08 12:23",
+                                        Text("${logic.bean.value!.detailList[index].createDate}",
                                             style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp)),
                                         const Spacer(),
                                         Icon(IconFont.like, size: 22.sp),
@@ -104,7 +108,7 @@ class PackageResultPage extends StatelessWidget {
                           separatorBuilder: (_, index) {
                             return const Divider(height: 0);
                           },
-                          itemCount: 10))
+                          itemCount: logic.bean.value!.detailList.length))
                 ]);
               }))
     ]);

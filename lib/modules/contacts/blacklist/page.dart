@@ -24,6 +24,7 @@ class BlacklistPage extends StatelessWidget {
               return ListView.separated(
                   itemBuilder: (_, index) {
                     return Container(
+                        color: Colors.white,
                         padding: EdgeInsets.symmetric(vertical: 11.h),
                         child: Row(children: [
                           SizedBox(width: 22.w),

@@ -3,6 +3,7 @@ import 'package:vura/application.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/session_repository.dart';
@@ -21,12 +22,13 @@ class HomeLogic extends BaseLogic {
 
   HomeLogic() {
     webSocketManager.listen("HomeLogic", (int cmd, Map<String, dynamic> data) {
+      Log.d("HomeLogic == 》接收到消息: $cmd, 数据: $data");
       switch (cmd) {
         case 6: // {"cmd":6,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"","recvId":"1826547880958230528","id":"1826549763462529024","type":900,"content":"申请添加您为好友","sendTime":1724318373933}}
           show(builder: (_) {
             return CustomAlertDialog(
                 title: "提示",
-                content: "${data["data"]["sendNickName"]}申请添加您为好友",
+                content: "${data["sendNickName"]}申请添加您为好友",
                 onConfirm: () {
                   Get.toNamed(RoutePath.NEW_FRIEND_PAGE);
                 },
@@ -36,7 +38,7 @@ class HomeLogic extends BaseLogic {
         case 5:
           break;
         case 3: // {"cmd":3,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"http://39.98.127.91:9001/box-im/image/20240825/1724562459243.jpg","id":"1828641371536359424","type":902,"content":"添加好友成功","sendTime":1724817052145}}
-          if (data["data"]["type"] == MessageType.APPLY_ADD_FRIEND_SUCCESS.code) {
+          if (data[Keys.TYPE] == MessageType.APPLY_ADD_FRIEND_SUCCESS.code) {
             // 对方同意您的好友申请，刷新好友列表
             try {
               Get.find<ContactsLogic>().refreshData();

@@ -38,7 +38,7 @@ class ContactsRepository {
   ///
   static Future<BaseBean> deleteFriend(String? id) async {
     var data = await HttpUtils.getInstance()
-        .request('friend/delete/$id', params: {"friendId": id}, method: HttpUtils.DELETE, showErrorToast: true);
+        .request('friend/delete/$id', params: {Keys.FRIEND_ID: id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -50,8 +50,8 @@ class ContactsRepository {
     var data = await HttpUtils.getInstance().request('friend/update',
         params: {
           Keys.ID: id,
-          if (nickName != null) "nickName": nickName,
-          if (headImage != null) "headImage": headImage
+          if (nickName != null) Keys.NICK_NAME: nickName,
+          if (headImage != null) Keys.HEAD_IMAGE: headImage
         },
         method: HttpUtils.PUT,
         showErrorToast: true);
@@ -91,8 +91,8 @@ class ContactsRepository {
   /// 好友申请列表
   ///
   static Future<List<ApplyUserEntity>> applyList({int page = 1, int size = 20}) async {
-    var data =
-        await HttpUtils.getInstance().request('apply/listByPage', params: {"currentPage": page, "pageSize": size});
+    var data = await HttpUtils.getInstance()
+        .request('apply/listByPage', params: {Keys.CURRENT_PAGE: page, Keys.PAGE_SIZE: size});
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return (result.data["records"] as List).map((item) => ApplyUserEntity.fromJson(item)).toList();
@@ -106,7 +106,7 @@ class ContactsRepository {
   /// [id] 用户ID
   ///
   static Future<BaseBean> agree(String? id) async {
-    var data = await HttpUtils.getInstance().request('apply/agree', params: {"applyId": id}, showErrorToast: true);
+    var data = await HttpUtils.getInstance().request('apply/agree', params: {Keys.APPLY_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -115,7 +115,8 @@ class ContactsRepository {
   /// [id] 用户ID
   ///
   static Future<BaseBean> refused(String? id) async {
-    var data = await HttpUtils.getInstance().request('apply/refused', params: {"applyId": id}, showErrorToast: true);
+    var data =
+        await HttpUtils.getInstance().request('apply/refused', params: {Keys.APPLY_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -124,7 +125,7 @@ class ContactsRepository {
   /// [id] 用户ID
   ///
   static Future<BaseBean> ignore(String? id) async {
-    var data = await HttpUtils.getInstance().request('apply/ignore', params: {"applyId": id}, showErrorToast: true);
+    var data = await HttpUtils.getInstance().request('apply/ignore', params: {Keys.APPLY_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

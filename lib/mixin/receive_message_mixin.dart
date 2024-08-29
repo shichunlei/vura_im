@@ -22,7 +22,7 @@ mixin ReceiveMessageMixin on BaseLogic {
 
   void receiveMessageListener(String pageName) {
     webSocketManager.listen(pageName, (int cmd, Map<String, dynamic> data) async {
-      Log.d("SessionLogic == 》接收到消息: $cmd, 数据: $data");
+      Log.d("$pageName == 》接收到消息: $cmd, 数据: $data");
       if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
         if (data[Keys.TYPE] == MessageType.LOADING.code) {
           if (data[Keys.CONTENT] == "true") loadingPrivateMessages.value = true;

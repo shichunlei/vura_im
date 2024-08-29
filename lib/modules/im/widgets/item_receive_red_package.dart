@@ -20,7 +20,6 @@ class ItemReceiveRedPackage extends StatelessWidget {
     return GestureDetector(
         onTap: () {
           logic.openRedPackage(message.id, redPackage.id);
-          // Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: message.id});
         },
         behavior: HitTestBehavior.translucent,
         child: Container(

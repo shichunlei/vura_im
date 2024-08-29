@@ -7,6 +7,7 @@ import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/red_package.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
@@ -18,6 +19,7 @@ import 'package:vura/realm/channel.dart';
 import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
@@ -140,9 +142,21 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   }
 
   Future openRedPackage(String? id, String? redPackageId) async {
-    showLoading();
-    SessionRepository.openRedPackage(redPackageId);
-    hiddenLoading();
+    String? result = await SessionRepository.checkRedPackage(redPackageId);
+    if (result != null) {
+      if (result == "Y") {
+        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+      } else if (result == "N") {
+        showLoading();
+        RedPackage? result = await SessionRepository.openRedPackage(redPackageId);
+        hiddenLoading();
+        if (result != null) {
+          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+        }
+      } else {
+        showToast(text: "红包已过期");
+      }
+    }
   }
 
   Future sendRedPackage(MessageEntity message) async {

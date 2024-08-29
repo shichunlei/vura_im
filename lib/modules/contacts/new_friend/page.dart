@@ -6,6 +6,7 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/custom_refresh_widget.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
@@ -23,17 +24,20 @@ class NewFriendPage extends StatelessWidget {
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
-              return ListView.separated(
+              return CustomRefreshWidget(
+                  controller: logic.easyRefreshController,
+                  onRefresh: () async => await logic.refreshData(),
+                  onLoad: logic.list.length < logic.pageSize.value ? null : () async => await logic.loadMore(),
                   itemBuilder: (_, index) {
                     return GestureDetector(
                         onTap: logic.list[index].applyStatus == "0"
                             ? null
                             : () {
-                                /// todo
                                 Get.toNamed(RoutePath.USER_INFO_PAGE, arguments: {Keys.ID: logic.list[index].userId});
                               },
                         behavior: HitTestBehavior.translucent,
                         child: Container(
+                            margin: const EdgeInsets.only(bottom: 1),
                             color: Colors.white,
                             padding: EdgeInsets.symmetric(vertical: 11.h, horizontal: 22.w),
                             child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -86,8 +90,8 @@ class NewFriendPage extends StatelessWidget {
                                                   : ColorUtil.color_999999)))
                             ])));
                   },
-                  separatorBuilder: (_, index) => const Divider(height: 0),
-                  itemCount: logic.list.length);
+                  itemCount: logic.list.length,
+                  padding: EdgeInsets.only(top: 5.h));
             }));
   }
 }

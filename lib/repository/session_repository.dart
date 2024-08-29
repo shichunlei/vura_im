@@ -2,6 +2,7 @@ import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/member_entity.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/red_package.dart';
+import 'package:vura/entities/red_package_result.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
@@ -40,7 +41,7 @@ class SessionRepository {
     var data = await HttpUtils.getInstance().request('group/modify',
         params: {
           Keys.ID: id,
-          "name": name,
+          Keys.NAME: name,
           if (ownerId != null) "ownerId": ownerId,
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb,
@@ -111,7 +112,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> inviteMembers(String? id, List<String?> userIds) async {
     var data = await HttpUtils.getInstance()
-        .request('group/invite', params: {Keys.GROUP_ID: id, "friendIds": userIds}, showErrorToast: true);
+        .request('group/invite', params: {Keys.GROUP_ID: id, Keys.FRIEND_IDS: userIds}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -175,7 +176,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> kickMemberFromSession(String? id, List<String?> userIds) async {
     var data = await HttpUtils.getInstance().request('group/kickList',
-        params: {"friendIds": userIds, Keys.GROUP_ID: id}, method: HttpUtils.DELETE, showErrorToast: true);
+        params: {Keys.FRIEND_IDS: userIds, Keys.GROUP_ID: id}, method: HttpUtils.DELETE, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -235,8 +236,8 @@ class SessionRepository {
         params: {
           if (type == SessionType.private) Keys.FRIEND_ID: id,
           if (type == SessionType.group) Keys.GROUP_ID: id,
-          "page": page,
-          "size": size
+          Keys.PAGE: page,
+          Keys.SIZE: size
         },
         method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
@@ -256,11 +257,11 @@ class SessionRepository {
   static Future getOfflineMessages(String type, {String? groupMinId, String? privateMinId}) async {
     if (type == "group" || type == "all") {
       HttpUtils.getInstance()
-          .request('message/group/pullOfflineMessage', params: {"minId": groupMinId}, method: HttpUtils.GET);
+          .request('message/group/pullOfflineMessage', params: {Keys.MIN_ID: groupMinId}, method: HttpUtils.GET);
     }
     if (type == "private" || type == "all") {
       HttpUtils.getInstance()
-          .request('message/private/pullOfflineMessage', params: {"minId": privateMinId}, method: HttpUtils.GET);
+          .request('message/private/pullOfflineMessage', params: {Keys.MIN_ID: privateMinId}, method: HttpUtils.GET);
     }
   }
 
@@ -285,7 +286,7 @@ class SessionRepository {
         params: {
           if (type == SessionType.group) Keys.GROUP_ID: id,
           if (type == SessionType.private) Keys.FRIEND_ID: id,
-          "messageId": messageId
+          Keys.MESSAGE_ID: messageId
         },
         method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
@@ -312,8 +313,8 @@ class SessionRepository {
   /// [ids] 被设置管理员的用户IDS
   ///
   static Future<BaseBean> setSupAdmin(String? id, List<String?> ids) async {
-    var data = await HttpUtils.getInstance().request('group/setSupAdmin',
-        params: {"adminIdList": ids, Keys.GROUP_ID: id}, method: HttpUtils.PUT, showErrorToast: true);
+    var data = await HttpUtils.getInstance()
+        .request('group/setSupAdmin', params: {Keys.ADMIN_IDS: ids, Keys.GROUP_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -323,8 +324,8 @@ class SessionRepository {
   /// [ids] 被移除管理员的用户IDS
   ///
   static Future<BaseBean> removeSupAdmin(String? id, List<String?> ids) async {
-    var data = await HttpUtils.getInstance().request('group/resetSupAdmin',
-        params: {"adminIdList": ids, Keys.GROUP_ID: id}, method: HttpUtils.PUT, showErrorToast: true);
+    var data = await HttpUtils.getInstance()
+        .request('group/resetSupAdmin', params: {Keys.ADMIN_IDS: ids, Keys.GROUP_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -351,9 +352,8 @@ class SessionRepository {
     var data = await HttpUtils.getInstance().request('group/setAdmin',
         params: {
           Keys.GROUP_ID: id,
-          "adminIdList": [id]
+          Keys.ADMIN_IDS: [userId]
         },
-        method: HttpUtils.PUT,
         showErrorToast: true);
     return BaseBean.fromJson(data);
   }
@@ -365,7 +365,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> setMute(String? id, List<String?> ids) async {
     var data = await HttpUtils.getInstance()
-        .request('group/mute', params: {"friendIds": ids, Keys.GROUP_ID: id}, showErrorToast: true);
+        .request('group/mute', params: {Keys.FRIEND_IDS: ids, Keys.GROUP_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -376,7 +376,7 @@ class SessionRepository {
   ///
   static Future<BaseBean> resetMute(String? id, List<String?> ids) async {
     var data = await HttpUtils.getInstance()
-        .request('group/mute/reset', params: {"friendIds": ids, Keys.GROUP_ID: id}, showErrorToast: true);
+        .request('group/mute/reset', params: {Keys.FRIEND_IDS: ids, Keys.GROUP_ID: id}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -446,15 +446,26 @@ class SessionRepository {
 
   /// 红包结果
   ///
-  static Future<Map> getRedPackageResult(String? id) async {
+  static Future<RedPackageResultEntity?> getRedPackageResult(String? id) async {
     var data = await HttpUtils.getInstance().request('redPacket/getRedPacketRecord/$id', method: HttpUtils.GET);
-    return {};
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return RedPackageResultEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
   }
 
   /// 检查红包状态
   ///
-  static Future<Map> checkRedPackage(String? id) async {
-    var data = await HttpUtils.getInstance().request('redPacket/check/$id', method: HttpUtils.GET);
-    return {};
+  static Future<String?> checkRedPackage(String? id) async {
+    var data =
+        await HttpUtils.getInstance().request('redPacket/check/$id', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return result.data as String;
+    } else {
+      return null;
+    }
   }
 }
