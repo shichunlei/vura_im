@@ -7,6 +7,8 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/permission_util.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
@@ -28,7 +30,17 @@ class ContactsPage extends StatelessWidget {
             backgroundColor: Colors.transparent,
             elevation: 0,
             title: const Text("通讯录"),
-            actions: [CustomIconButton(icon: const Icon(IconFont.search), onPressed: () {})],
+            actions: [
+              CustomIconButton(
+                  icon: const Icon(IconFont.search),
+                  onPressed: () async {
+                    if (await PermissionUtil.checkContactsPermissionStatus(context)) {
+                      Get.toNamed(RoutePath.PHONE_CONTACTS_PAGE);
+                    } else {
+                      showToast(text: '请先打开访问通讯录权限');
+                    }
+                  })
+            ],
             centerTitle: false),
         body: BaseWidget(
             logic: logic,

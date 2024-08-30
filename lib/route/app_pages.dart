@@ -6,6 +6,8 @@ import 'package:vura/modules/contacts/blacklist/binding.dart';
 import 'package:vura/modules/contacts/blacklist/page.dart';
 import 'package:vura/modules/contacts/new_friend/binding.dart';
 import 'package:vura/modules/contacts/new_friend/page.dart';
+import 'package:vura/modules/contacts/phone_contacts/binding.dart';
+import 'package:vura/modules/contacts/phone_contacts/page.dart';
 import 'package:vura/modules/contacts/select/binding.dart';
 import 'package:vura/modules/contacts/select/page.dart';
 import 'package:vura/modules/dashboard/devices/binding.dart';
@@ -109,6 +111,8 @@ abstract class AppPages {
     GetPage(
         name: RoutePath.CHAT_BACKGROUND_PAGE, page: () => const ChatBackgroundPage(), binding: ChatBackgroundBinding()),
     GetPage(name: RoutePath.PAY_PASSWORD_PAGE, page: () => const PayPasswordPage(), binding: PayPasswordBinding()),
+    GetPage(
+        name: RoutePath.PHONE_CONTACTS_PAGE, page: () => const PhoneContactsPage(), binding: PhoneContactsBinding()),
     GetPage(
         name: RoutePath.LOCK_SCREEN_PASSWORD_PAGE,
         page: () => const LockScreenPasswordPage(),
