@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
@@ -36,13 +37,14 @@ class PackageResultPage extends StatelessWidget {
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 80.h),
-                  AvatarRoundImage("path", width: 88.r, height: 88.r, radius: 9.r, name: logic.bean.value?.nickName),
+                  AvatarRoundImage("${logic.bean.value!.senderHeadImage}",
+                      width: 88.r, height: 88.r, radius: 9.r, name: logic.bean.value?.senderNickName),
                   SizedBox(height: 22.h),
-                  Text("张三的幸运值",
+                  Text("${logic.bean.value!.senderNickName}的幸运值",
                       style: GoogleFonts.roboto(
                           fontSize: 15.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333)),
                   SizedBox(height: 13.h),
-                  Text("239幸运值",
+                  Text("${logic.bean.value!.totalAmount}幸运值",
                       style: GoogleFonts.roboto(
                           fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
                   SizedBox(height: 44.h),
@@ -62,7 +64,7 @@ class PackageResultPage extends StatelessWidget {
                   Container(
                       margin: EdgeInsets.only(bottom: 11.h, left: 22.w),
                       alignment: Alignment.centerLeft,
-                      child: Text("1个幸运值,26秒被抢光",
+                      child: Text("${logic.bean.value!.totalPacket}个幸运值,26秒被抢光",
                           style: GoogleFonts.roboto(
                               fontSize: 15.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333))),
                   Expanded(
@@ -72,7 +74,7 @@ class PackageResultPage extends StatelessWidget {
                             return Container(
                                 padding: EdgeInsets.symmetric(vertical: 11.h),
                                 child: Row(children: [
-                                  AvatarRoundImage("path",
+                                  AvatarRoundImage("${logic.bean.value!.detailList[index].headImage}",
                                       width: 66.r,
                                       height: 66.r,
                                       radius: 7.r,
@@ -94,12 +96,16 @@ class PackageResultPage extends StatelessWidget {
                                         Text("${logic.bean.value!.detailList[index].createDate}",
                                             style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp)),
                                         const Spacer(),
-                                        Icon(IconFont.like, size: 22.sp),
-                                        Text("手气最佳",
-                                            style: GoogleFonts.roboto(
-                                                color: const Color(0xffFFAE58),
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 13.sp))
+                                        Visibility(
+                                            visible: logic.bean.value!.detailList[index].isGreat == YorNType.Y,
+                                            child: Row(mainAxisSize: MainAxisSize.min, children: [
+                                              Icon(IconFont.like, size: 22.sp),
+                                              Text("手气最佳",
+                                                  style: GoogleFonts.roboto(
+                                                      color: const Color(0xffFFAE58),
+                                                      fontWeight: FontWeight.w600,
+                                                      fontSize: 13.sp))
+                                            ]))
                                       ])
                                     ]),
                                   )

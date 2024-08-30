@@ -16,8 +16,8 @@ class RedPackageEntity {
   int leftPacket;
   String? expireTime;
   int status;
-  String? createDate;
-  String? updateDate;
+  int createDate;
+  int updateDate;
   int isValid;
   String? minesStr;
   List<int> mines;
@@ -35,8 +35,8 @@ class RedPackageEntity {
       this.leftPacket = 0,
       this.expireTime,
       this.status = 1,
-      this.createDate,
-      this.updateDate,
+      this.createDate = 0,
+      this.updateDate = 0,
       this.isValid = 0,
       this.minesStr,
       this.mines = const []});

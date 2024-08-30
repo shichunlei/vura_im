@@ -218,7 +218,9 @@ class PackagePublishPage extends StatelessWidget {
                                     fontWeight: FontWeight.w600, color: Colors.white, fontSize: 18.sp))))
                   ])))),
       Positioned(
-          top: 73.h, left: 8.w, child: Image.asset("assets/images/red_package_image.png", width: 56.w, height: 56.w))
+          top: 30.h + DeviceUtils.topSafeHeight,
+          left: 8.w,
+          child: Image.asset("assets/images/red_package_image.png", width: 56.w, height: 56.w))
     ]);
   }
 }
