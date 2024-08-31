@@ -66,7 +66,9 @@ class AvatarImageView extends StatelessWidget {
                                 fit: BoxFit.contain,
                                 child: Padding(
                                     padding: const EdgeInsets.all(2.0),
-                                    child: Text(name![0], style: TextStyle(fontSize: 20.sp, color: Colors.white)))))
+                                    child: Text(name![0],
+                                        style: TextStyle(
+                                            fontSize: 28.sp, fontWeight: FontWeight.bold, color: Colors.white)))))
                         : Image.asset("assets/images/default_face.webp", width: 2 * radius, height: 2 * radius),
                     fit: fit,
                     fadeInDuration: Duration.zero,

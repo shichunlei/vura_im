@@ -52,7 +52,11 @@ class PackagePublishPage extends StatelessWidget {
                                   controller: logic.amountController,
                                   style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
                                   textAlign: TextAlign.end,
-                                  keyboardType: TextInputType.number,
+                                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                                  ],
+                                  onChanged: logic.onTextChanged,
                                   decoration: InputDecoration(
                                       isCollapsed: true,
                                       border: InputBorder.none,
@@ -102,12 +106,12 @@ class PackagePublishPage extends StatelessWidget {
                                 controller: logic.valueController,
                                 style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.digitsOnly, //只输入数字
-                                  LengthLimitingTextInputFormatter(3) //限制长度
+                                  FilteringTextInputFormatter.allow(RegExp(r'[0-9,]')), // 只允许输入数字和逗号
+                                  LengthLimitingTextInputFormatter(5) //限制长度
                                 ],
+                                onChanged: logic.validateInput,
                                 keyboardType: TextInputType.number,
                                 decoration: InputDecoration(
-                                    isCollapsed: true,
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.only(right: 10.w),
                                     hintText: "请输入幸运值",

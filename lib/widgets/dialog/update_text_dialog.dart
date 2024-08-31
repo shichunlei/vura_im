@@ -34,8 +34,7 @@ class _UpdateTextDialogState extends State<UpdateTextDialog> {
         type: MaterialType.transparency,
         child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Container(
-              decoration: BoxDecoration(
-                  color: Theme.of(context).dialogBackgroundColor, borderRadius: BorderRadius.circular(15.w)),
+              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15.w)),
               margin: EdgeInsets.symmetric(horizontal: 40.w),
               padding: EdgeInsets.only(left: 15.w, right: 15.w, bottom: 10.w),
               child: Column(mainAxisSize: MainAxisSize.min, children: [

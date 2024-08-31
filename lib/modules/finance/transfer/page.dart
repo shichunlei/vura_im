@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -41,85 +42,89 @@ class TransferPage extends StatelessWidget {
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: Colors.white),
                           margin: EdgeInsets.symmetric(vertical: 13.h),
                           padding: EdgeInsets.symmetric(horizontal: 22.w),
-                          child: Stack(children: [
-                            Column(children: [
-                              Expanded(
-                                child: Row(children: [
-                                  Expanded(
+                          child: Column(children: [
+                            Expanded(
+                              child: Row(children: [
+                                Expanded(
                                     child: Column(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          Text("数量",
-                                              style:
-                                                  GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
-                                          SizedBox(height: 10.h),
-                                          Text("0",
-                                              style: GoogleFonts.poppins(
+                                      Text("数量",
+                                          style: GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                                      SizedBox(height: 10.h),
+                                      TextField(
+                                          controller: logic.amountController,
+                                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}')),
+                                          ],
+                                          onChanged: logic.onTextChanged,
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 26.sp,
+                                              color: ColorUtil.color_333333,
+                                              fontWeight: FontWeight.bold,
+                                              height: 1),
+                                          decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "0",
+                                              hintStyle: GoogleFonts.roboto(
                                                   fontSize: 26.sp,
-                                                  color: ColorUtil.color_333333,
-                                                  fontWeight: FontWeight.bold)),
-                                          Row(children: [
-                                            Text("可用:70.42 USDT",
-                                                style: GoogleFonts.poppins(
-                                                    fontSize: 13.sp, color: ColorUtil.color_999999)),
-                                            const Spacer(),
-                                            Text("全部",
+                                                  fontWeight: FontWeight.bold,
+                                                  height: 1,
+                                                  color: ColorUtil.color_999999))),
+                                      Row(children: [
+                                        Text("可用:${logic.bean.value!.money} USDT",
+                                            style: GoogleFonts.poppins(fontSize: 13.sp, color: ColorUtil.color_999999)),
+                                        const Spacer(),
+                                        GestureDetector(
+                                            onTap: () {
+                                              logic.amountController.text = "${logic.bean.value!.money}";
+                                            },
+                                            child: Text("全部",
                                                 style: GoogleFonts.poppins(
                                                     decoration: TextDecoration.underline,
                                                     fontSize: 13.sp,
                                                     decorationColor: ColorUtil.color_333333,
-                                                    color: ColorUtil.color_333333)),
-                                            SizedBox(width: 13.w)
-                                          ])
-                                        ]),
-                                  ),
-                                  CustomIconButton(
-                                      icon: Icon(IconFont.usdt, size: 18.sp),
-                                      bgColor: const Color(0xfff5f5f5),
-                                      radius: 17.5.r),
-                                  SizedBox(width: 13.w),
-                                  Text("USDT",
-                                      style: GoogleFonts.poppins(fontSize: 15.sp, color: ColorUtil.color_333333))
-                                ]),
-                              ),
-                              const Divider(height: 0),
-                              Expanded(
-                                  child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                    Text("地址",
-                                        style: GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
-                                    SizedBox(height: 10.h),
-                                    Row(children: [
-                                      Expanded(
-                                          child: TextField(
-                                              controller: logic.controller,
-                                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
-                                              decoration: InputDecoration(
-                                                  border: InputBorder.none,
-                                                  hintText: "请输入接收者地址",
-                                                  hintStyle: GoogleFonts.roboto(
-                                                      fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                                      Text("粘贴",
-                                          style: GoogleFonts.poppins(
-                                              color: const Color(0xff2ECC72),
-                                              fontSize: 13.sp,
-                                              decoration: TextDecoration.underline,
-                                              decorationColor: const Color(0xff2ECC72)))
-                                    ])
-                                  ]))
-                            ]),
-                            Positioned(
-                                top: 115.h,
-                                bottom: 115.h,
-                                right: 22.w,
-                                child: CustomIconButton(
-                                    onPressed: () {},
-                                    bgColor: const Color(0xffF5F5F5),
-                                    icon: Icon(IconFont.sort, color: ColorUtil.color_333333, size: 18.sp),
-                                    radius: 17.5.h))
+                                                    color: ColorUtil.color_333333))),
+                                        SizedBox(width: 13.w)
+                                      ])
+                                    ])),
+                                CustomIconButton(
+                                    icon: Icon(IconFont.usdt, size: 18.sp),
+                                    bgColor: const Color(0xfff5f5f5),
+                                    radius: 17.5.r),
+                                SizedBox(width: 13.w),
+                                Text("USDT", style: GoogleFonts.poppins(fontSize: 15.sp, color: ColorUtil.color_333333))
+                              ]),
+                            ),
+                            const Divider(height: 0),
+                            Expanded(
+                                child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                  Text("地址",
+                                      style: GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                                  SizedBox(height: 10.h),
+                                  Row(children: [
+                                    Expanded(
+                                        child: TextField(
+                                            controller: logic.addressController,
+                                            style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
+                                            decoration: InputDecoration(
+                                                border: InputBorder.none,
+                                                hintText: "请输入接收者地址",
+                                                hintStyle: GoogleFonts.roboto(
+                                                    fontSize: 15.sp, color: ColorUtil.color_999999)))),
+                                    Text("粘贴",
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff2ECC72),
+                                            fontSize: 13.sp,
+                                            decoration: TextDecoration.underline,
+                                            decorationColor: const Color(0xff2ECC72)))
+                                  ])
+                                ]))
                           ])),
                       Center(
                           child: RadiusInkWellWidget(

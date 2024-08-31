@@ -5,6 +5,7 @@ import 'package:vura/entities/message_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 
@@ -26,6 +27,41 @@ class PackagePublishLogic extends BaseLogic {
   TextEditingController textController = TextEditingController();
   TextEditingController valueController = TextEditingController();
 
+  var previousText = ''.obs;
+
+  void onTextChanged(String currentText) {
+    // 检查是否是删除操作
+    if (previousText.value.length > currentText.length) {
+      // 如果当前文本包含小数点，并且小数点在最后
+      if (currentText.contains('.') && currentText.endsWith('.')) {
+        // 如果小数点后面没有数字了，则删除小数点
+        amountController.text = currentText.substring(0, currentText.length - 1);
+        // 调整光标位置
+        amountController.selection = TextSelection.fromPosition(TextPosition(offset: amountController.text.length));
+      }
+    }
+
+    // 更新 previousText 为当前文本
+    previousText.value = amountController.text;
+  }
+
+  void validateInput(String text) {
+    String _text = text.replaceAll(',', ''); // 移除已有的逗号
+    if (_text.isNotEmpty) {
+      // 分割输入的数字
+      List<String> numbers = _text.split('').where((s) => s.isNotEmpty).toList();
+      // 移除重复数字
+      List<String> uniqueNumbers = numbers.toSet().toList();
+      // 重新组合为字符串，保留逗号分隔符
+      String newText = uniqueNumbers.join(',');
+      // 如果内容有变化，更新输入框内容并调整光标位置
+      if (newText != text) {
+        valueController.value =
+            TextEditingValue(text: newText, selection: TextSelection.collapsed(offset: newText.length));
+      }
+    }
+  }
+
   List<int?> mines = [];
 
   Future sendRedPackage() async {
@@ -40,9 +76,7 @@ class PackagePublishLogic extends BaseLogic {
     }
 
     if (type == SessionType.group && StringUtil.isNotEmpty(valueController.text)) {
-      mines = List.generate(valueController.text.length, (int index) {
-        return int.tryParse(valueController.text[index]);
-      }).toList();
+      mines = valueController.text.split(",").map((e) => int.tryParse(e)).toList();
     }
 
     params["receiverId"] = id; // 接收人ID/群聊ID
@@ -59,6 +93,8 @@ class PackagePublishLogic extends BaseLogic {
         : mines.isNotEmpty
             ? 3
             : 2; // 红包类型 1 单人红包 2 普通群红包 3 拼手气红包(红包雷)
+    Log.json(params);
+
     showLoading();
     MessageEntity? message = await SessionRepository.sendRedPackage(params, type);
     hiddenLoading();

@@ -77,4 +77,46 @@ class StringUtil {
     Pattern regex = RegExp(r'(1\w{2})(\w{4})(\w{4})');
     return mobile.replaceAllMapped(regex, (match) => '${match[1]}****${match[3]}');
   }
+
+  static String numToChinese(int num) {
+    if (num == 0) return "零";
+
+    List<String> units = ["", "十", "百", "千"];
+    List<String> numChinese = ["", "万", "亿", "兆"];
+    List<String> digits = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
+
+    String result = '';
+    int unitPos = 0; // 用于标识万、亿、兆等单位
+    bool needZero = false;
+
+    while (num > 0) {
+      String part = '';
+      int partNum = num % 10000;
+
+      for (int i = 0; i < 4 && partNum > 0; i++) {
+        int digit = partNum % 10;
+        if (digit > 0) {
+          part = digits[digit] + units[i] + part;
+          needZero = true;
+        } else {
+          if (needZero) {
+            part = digits[0] + part;
+            needZero = false;
+          }
+        }
+        partNum ~/= 10;
+      }
+
+      result = part + numChinese[unitPos] + result;
+      unitPos++;
+      num ~/= 10000;
+    }
+
+    // 处理数字10的特殊情况
+    if (result.startsWith("一十")) {
+      result = result.substring(1);
+    }
+
+    return result;
+  }
 }

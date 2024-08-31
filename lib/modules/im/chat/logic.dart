@@ -21,6 +21,7 @@ import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/utils/tool_util.dart';
@@ -31,9 +32,13 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
   TextEditingController controller = TextEditingController();
 
+  int selectedBgIndex = 0;
+
   ChatLogic() {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
+
+    selectedBgIndex = SpUtil.getInt("_chat_bg_image_index_", defValue: 0);
 
     setPageSize(200);
 

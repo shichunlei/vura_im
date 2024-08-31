@@ -85,7 +85,7 @@ class DevicesPage extends StatelessWidget {
                                             fontWeight: FontWeight.w600));
                                   }),
                                   SizedBox(height: 11.h),
-                                  Text("12.999 英��",
+                                  Text("12.999",
                                       style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp))
                                 ]))
                           ])
