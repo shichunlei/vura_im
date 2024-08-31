@@ -107,9 +107,9 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   }
 
   Future updateRemarkName(String remark) async {
-    showLoading();
-    BaseBean result = await ContactsRepository.updateFriend(id, nickName: remark);
-    hiddenLoading();
-    if (result.code == 200) {}
+    // showLoading();
+    // BaseBean result = await ContactsRepository.updateFriend(id, nickName: remark);
+    // hiddenLoading();
+    // if (result.code == 200) {}
   }
 }

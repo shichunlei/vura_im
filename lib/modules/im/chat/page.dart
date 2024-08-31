@@ -19,7 +19,6 @@ import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
 
 import 'logic.dart';
 
@@ -95,11 +94,11 @@ class ChatPage extends StatelessWidget {
                         child: Column(mainAxisSize: MainAxisSize.min, children: [
                           Container(
                               margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                              height: 40.h,
+                              height: 50.h,
                               child: Row(children: [
                                 Expanded(
                                     child: Container(
-                                        height: 40.h,
+                                        height: 50.h,
                                         alignment: Alignment.centerLeft,
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(11.r), color: const Color(0xfff5f5f5)),
@@ -107,27 +106,22 @@ class ChatPage extends StatelessWidget {
                                             controller: logic.controller,
                                             maxLines: 1,
                                             textInputAction: TextInputAction.send,
-                                            style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
+                                            style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
                                             onSubmitted: (v) {
                                               DeviceUtils.hideKeyboard();
                                               logic.sendMessage(v, MessageType.TEXT);
                                             },
                                             decoration: InputDecoration(
-                                                border: InputBorder.none,
                                                 contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
                                                 hintText: "请输入您想说的话",
+                                                border: InputBorder.none,
                                                 hintStyle: GoogleFonts.roboto(
-                                                    fontSize: 13.sp, color: ColorUtil.color_999999))))),
-                                RadiusInkWellWidget(
-                                    margin: EdgeInsets.only(left: 10.w),
-                                    radius: 4.r,
-                                    child: Container(
-                                        width: 50.w,
-                                        height: 30.h,
-                                        alignment: Alignment.center,
-                                        child: Text("发送",
-                                            style: GoogleFonts.roboto(
-                                                fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w500))),
+                                                    fontSize: 15.sp, color: ColorUtil.color_999999))))),
+                                SizedBox(width: 10.w),
+                                CustomIconButton(
+                                    bgColor: const Color(0xff2ECC72),
+                                    icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
+                                    radius: 25.h,
                                     onPressed: () {
                                       logic.sendMessage(logic.controller.text, MessageType.TEXT);
                                     })

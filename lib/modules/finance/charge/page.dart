@@ -71,7 +71,7 @@ class ChargePage extends StatelessWidget {
                                     fontSize: 13.sp, color: ColorUtil.color_999999, fontWeight: FontWeight.w600)),
                             Center(
                                 child: RadiusInkWellWidget(
-                                    border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+                                    border: Border.all(width: 1, color: const Color(0xff2ECC72)),
                                     radius: 40,
                                     color: Colors.transparent,
                                     onPressed: () {},
@@ -82,7 +82,7 @@ class ChargePage extends StatelessWidget {
                                         alignment: Alignment.center,
                                         child: Text("复制地址串",
                                             style: GoogleFonts.roboto(
-                                                color: Theme.of(context).primaryColor,
+                                                color: const Color(0xff2ECC72),
                                                 fontWeight: FontWeight.bold,
                                                 fontSize: 18.sp))))),
                           ])),

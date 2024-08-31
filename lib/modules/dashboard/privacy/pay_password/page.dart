@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/utils/color_util.dart';
 
 import 'logic.dart';
 
@@ -10,6 +14,60 @@ class PayPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text("支付密码")), body: Column(children: []));
+    return Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(),
+        body: Column(children: [
+          Container(
+              margin: EdgeInsets.only(top: 22.h, left: 44.w),
+              alignment: Alignment.centerLeft,
+              child: Text("请设置6位支付密码",
+                  style:
+                      GoogleFonts.dmSans(color: ColorUtil.color_333333, fontWeight: FontWeight.bold, fontSize: 22.sp))),
+          Container(
+              margin: EdgeInsets.only(top: 13.h, left: 44.w, bottom: 35.h),
+              alignment: Alignment.centerLeft,
+              child: Text("请输入设置的支付密码", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))),
+          SizedBox(
+              height: 53.h,
+              width: double.infinity,
+              child: Stack(children: [
+                Center(
+                    child: Wrap(
+                        spacing: 12.w,
+                        children: List.generate(
+                            logic.maxCount,
+                            (index) => Container(
+                                height: 53.h,
+                                width: 44.w,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.r), color: const Color(0xffF7F8F8)),
+                                child: Obx(() {
+                                  return Text(logic.codeList[index],
+                                      style: GoogleFonts.dmSans(
+                                          fontWeight: FontWeight.bold, fontSize: 22.sp, color: ColorUtil.color_333333));
+                                }))))),
+                Container(
+                    alignment: Alignment.center,
+                    height: 53.h,
+                    child: Opacity(
+                        opacity: 0,
+                        child: TextField(
+                            autofocus: true,
+                            controller: logic.controller,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly, //只输入数字
+                              LengthLimitingTextInputFormatter(logic.maxCount) //限制长度
+                            ],
+                            onChanged: (value) => logic.textChange(context, value),
+                            keyboardType: TextInputType.number)))
+              ])),
+          Container(
+              margin: EdgeInsets.only(top: 35.h, left: 44.w, right: 44.w),
+              alignment: Alignment.centerLeft,
+              child: Text("支付密码用于付款、转账等操作，请避免设置常用密码，并且不要泄露给他人",
+                  style: GoogleFonts.dmSans(color: ColorUtil.color_999999, fontSize: 13.sp)))
+        ]));
   }
 }

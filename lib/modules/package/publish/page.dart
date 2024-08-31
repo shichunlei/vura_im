@@ -45,7 +45,7 @@ class PackagePublishPage extends StatelessWidget {
                         decoration:
                             BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
                         child: Row(children: [
-                          Text(logic.type == SessionType.private ? "红包金额" : "总金额",
+                          Text(logic.type == SessionType.private ? "幸运值金额" : "总金额",
                               style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp)),
                           Expanded(
                               child: TextField(
@@ -190,7 +190,7 @@ class PackagePublishPage extends StatelessWidget {
                         textBaseline: TextBaseline.alphabetic,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("￥",
+                          Text("u",
                               style: GoogleFonts.roboto(
                                   color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold)),
                           GetBuilder<PackagePublishLogic>(

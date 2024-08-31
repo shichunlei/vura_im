@@ -4,7 +4,7 @@ import 'package:vura/global/enum.dart';
 part 'red_package.g.dart';
 
 @JsonSerializable()
-class RedPackage {
+class RedPackageBean {
   String? redPacketId;
   int type;
   String? sendUserId;
@@ -15,7 +15,7 @@ class RedPackage {
   String? cover;
   YorNType isMine;
 
-  RedPackage({
+  RedPackageBean({
     this.redPacketId,
     this.type = 1,
     this.sendUserId,
@@ -27,7 +27,7 @@ class RedPackage {
     this.isMine = YorNType.N,
   });
 
-  factory RedPackage.fromJson(Map<String, dynamic> json) => _$RedPackageFromJson(json);
+  factory RedPackageBean.fromJson(Map<String, dynamic> json) => _$RedPackageBeanFromJson(json);
 
-  Map<String, dynamic> toJson() => _$RedPackageToJson(this);
+  Map<String, dynamic> toJson() => _$RedPackageBeanToJson(this);
 }

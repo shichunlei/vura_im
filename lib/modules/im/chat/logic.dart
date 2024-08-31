@@ -148,7 +148,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
         Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       } else if (result == "N") {
         showLoading();
-        RedPackage? result = await SessionRepository.openRedPackage(redPackageId);
+        RedPackageBean? result = await SessionRepository.openRedPackage(redPackageId);
         hiddenLoading();
         if (result != null) {
           Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});

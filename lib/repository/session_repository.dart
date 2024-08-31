@@ -434,11 +434,11 @@ class SessionRepository {
 
   /// 拆红包
   ///
-  static Future<RedPackage?> openRedPackage(String? id) async {
+  static Future<RedPackageBean?> openRedPackage(String? id) async {
     var data = await HttpUtils.getInstance().request('redPacket/apartRedPacket/$id', showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
-      return RedPackage.fromJson(result.data);
+      return RedPackageBean.fromJson(result.data);
     } else {
       return null;
     }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/utils/color_util.dart';
+import 'package:vura/widgets/widgets.dart';
 
 class CustomAlertDialog extends Dialog {
   final String title;
@@ -26,43 +28,46 @@ class CustomAlertDialog extends Dialog {
         type: MaterialType.transparency,
         child: Center(
             child: Container(
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: Theme.of(context).cardColor),
+                decoration: BoxDecoration(borderRadius: BorderRadius.circular(10.r), color: Colors.white),
                 width: 330.w,
-                padding: EdgeInsets.symmetric(horizontal: 30.w, vertical: 20.r),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Text(title, style: Theme.of(context).textTheme.titleMedium),
+                  SizedBox(height: 22.h),
+                  Text(title,
+                      style: GoogleFonts.roboto(
+                          fontSize: 18.sp, fontWeight: FontWeight.bold, color: ColorUtil.color_333333)),
                   Container(
-                      margin: EdgeInsets.only(bottom: 20.r, top: 10.r),
-                      child: Text(content, style: Theme.of(context).textTheme.titleSmall)),
+                      alignment: Alignment.center,
+                      constraints: BoxConstraints(minHeight: 82.h),
+                      child: Text(content, style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333))),
+                  const Divider(height: 0),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                    RadiusInkWellWidget(
-                        radius: 40.r,
-                        color: Colors.transparent,
-                        border: Border.all(color: Theme.of(context).primaryColor, width: .5),
-                        onPressed: () {
-                          Get.back(result: false);
-                          onCancel?.call();
-                        },
-                        margin: EdgeInsets.only(right: 15.w),
-                        child: Container(
-                            alignment: Alignment.center,
-                            height: 40.r,
-                            width: 100.w,
-                            child: Text(cancelText,
-                                style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 13.sp)))),
-                    RadiusInkWellWidget(
-                        margin: EdgeInsets.only(left: 15.w),
-                        radius: 40.r,
-                        border: Border.all(color: Colors.transparent, width: .5),
-                        onPressed: () {
-                          Get.back(result: true);
-                          onConfirm?.call();
-                        },
-                        child: Container(
-                            alignment: Alignment.center,
-                            height: 40.r,
-                            width: 100.w,
-                            child: Text(confirmText, style: TextStyle(color: Colors.white, fontSize: 13.sp))))
+                    Expanded(
+                        child: RadiusInkWellWidget(
+                            borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r)),
+                            color: Colors.transparent,
+                            onPressed: () {
+                              Get.back(result: false);
+                              onCancel?.call();
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 52.h,
+                                child: Text(cancelText,
+                                    style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))))),
+                    Container(height: 52.h, width: .5, color: Theme.of(context).dividerColor),
+                    Expanded(
+                        child: RadiusInkWellWidget(
+                            borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.r)),
+                            color: Colors.transparent,
+                            onPressed: () {
+                              Get.back(result: true);
+                              onConfirm?.call();
+                            },
+                            child: Container(
+                                alignment: Alignment.center,
+                                height: 52.h,
+                                child: Text(confirmText,
+                                    style: GoogleFonts.roboto(color: const Color(0xff2ECC72), fontSize: 15.sp)))))
                   ])
                 ]))));
   }

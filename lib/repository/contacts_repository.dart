@@ -110,7 +110,7 @@ class ContactsRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 拒绝申请 TODO
+  /// 拒绝申请
   ///
   /// [id] 用户ID
   ///

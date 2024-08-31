@@ -37,6 +37,7 @@ abstract class RoutePath {
   static const String CHARGE_PAGE = "/charge"; // 设备
   static const String TRANSFER_PAGE = "/transfer"; // 转账
   static const String WALLET_PAGE = "/wallet"; // 钱包
+  static const String ADD_CHARGE_WAY_PAGE = "/add_charge_way"; // 添加收款方式
   static const String NOTICE_SETTING_PAGE = "/notice_setting"; // 通知
   static const String CHAT_BACKGROUND_PAGE = "/chat_background"; // 聊天背景
   static const String FONT_SIZE_PAGE = "/font_size"; // 字体大小

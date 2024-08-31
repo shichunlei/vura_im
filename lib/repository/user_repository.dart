@@ -213,7 +213,8 @@ class UserRepository {
   /// [qrcode] 二维码信息
   ///
   static Future<UserEntity?> getUserInfoByQrCode(String? qrcode) async {
-    var data = await HttpUtils.getInstance().request('user/find/qrcode/$qrcode', method: HttpUtils.GET);
+    var data =
+        await HttpUtils.getInstance().request('user/find/qrcode/$qrcode', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return UserEntity.fromJson(result.data);

@@ -62,6 +62,11 @@ class IconFont {
   static const IconData buy_coins = IconData(0xe7b6, fontFamily: "iconFont");
   static const IconData sell_coins = IconData(0xe7b7, fontFamily: "iconFont");
 
+  static const IconData account_edit = IconData(0xe7d0, fontFamily: "iconFont");
+  static const IconData account_address = IconData(0xe7d1, fontFamily: "iconFont");
+
+  static const IconData send = IconData(0xe7d4, fontFamily: "iconFont");
+
   static const IconData voice = IconData(0xe7d2, fontFamily: "iconFont");
   static const IconData camera = IconData(0xe7d3, fontFamily: "iconFont");
   static const IconData gallery = IconData(0xe7c8, fontFamily: "iconFont");

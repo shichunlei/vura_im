@@ -88,7 +88,7 @@ class RadiusInkWellWidget extends StatelessWidget {
                 elevation: elevation,
                 color: colors.isNotEmpty
                     ? Colors.transparent
-                    : color ?? (onPressed == null ? const Color(0xffcfcfcf) : Theme.of(context).primaryColor),
+                    : color ?? (onPressed == null ? const Color(0xffcfcfcf) : const Color(0xff2ECC72)),
                 child: Ink(
                     decoration: BoxDecoration(
                         borderRadius: borderRadius ?? BorderRadius.circular(radius ?? 15.w),

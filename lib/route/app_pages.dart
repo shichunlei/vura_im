@@ -32,6 +32,8 @@ import 'package:vura/modules/dashboard/windows/chat_background/page.dart';
 import 'package:vura/modules/dashboard/windows/font_size_setting/binding.dart';
 import 'package:vura/modules/dashboard/windows/font_size_setting/page.dart';
 import 'package:vura/modules/dashboard/windows/page.dart';
+import 'package:vura/modules/finance/add_way/binding.dart';
+import 'package:vura/modules/finance/add_way/page.dart';
 import 'package:vura/modules/finance/charge/binding.dart';
 import 'package:vura/modules/finance/charge/page.dart';
 import 'package:vura/modules/finance/charge_way/binding.dart';
@@ -124,6 +126,7 @@ abstract class AppPages {
     GetPage(name: RoutePath.FONT_SIZE_PAGE, page: () => const FontSizeSettingPage(), binding: FontSizeSettingBinding()),
     GetPage(name: RoutePath.CHARGE_PAGE, page: () => const ChargePage(), binding: ChargeBinding()),
     GetPage(name: RoutePath.CHARGE_WAY_PAGE, page: () => const ChargeWayPage(), binding: ChargeWayBinding()),
+    GetPage(name: RoutePath.ADD_CHARGE_WAY_PAGE, page: () => const AddWayPage(), binding: AddWayBinding()),
     GetPage(name: RoutePath.TRANSFER_PAGE, page: () => const TransferPage(), binding: TransferBinding()),
     GetPage(
         name: RoutePath.GROUP_SESSION_DETAIL_PAGE,
