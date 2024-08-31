@@ -29,6 +29,11 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     return SessionRepository.getSessionConfig(id);
   }
 
+  @override
+  void onCompleted(SessionConfigEntity? data) {
+    if (data != null) bean.value!.id = id;
+  }
+
   Future updateAllMuteConfig(bool value) async {
     bean.value!.allMute = value ? YorNType.Y : YorNType.N;
     showLoading();

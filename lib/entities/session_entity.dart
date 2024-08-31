@@ -81,9 +81,14 @@ class SessionConfigEntity {
   YorNType allMute;
   YorNType vura;
   YorNType invite;
+  String? id;
 
   SessionConfigEntity(
-      {this.addFriend = YorNType.N, this.allMute = YorNType.N, this.vura = YorNType.N, this.invite = YorNType.N});
+      {this.id,
+      this.addFriend = YorNType.N,
+      this.allMute = YorNType.N,
+      this.vura = YorNType.N,
+      this.invite = YorNType.N});
 
   factory SessionConfigEntity.fromJson(Map<String, dynamic> json) => _$SessionConfigEntityFromJson(json);
 
