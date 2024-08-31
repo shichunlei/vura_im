@@ -125,7 +125,9 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
           type: SessionType.group,
           name: name,
           headImage: bean.value?.headImage,
-          headImageThumb: bean.value?.headImageThumb));
+          headImageThumb: bean.value?.headImageThumb,
+          isAdmin: bean.value!.isAdmin,
+          isSupAdmin: bean.value!.isSupAdmin));
     }
   }
 
@@ -144,7 +146,9 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
           name: bean.value?.name,
           notice: notice,
           headImage: bean.value?.headImage,
-          headImageThumb: bean.value?.headImageThumb));
+          headImageThumb: bean.value?.headImageThumb,
+          isAdmin: bean.value!.isAdmin,
+          isSupAdmin: bean.value!.isSupAdmin));
     }
   }
 
@@ -165,7 +169,9 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
             type: SessionType.group,
             name: bean.value?.name,
             headImage: file.originUrl,
-            headImageThumb: file.thumbUrl));
+            headImageThumb: file.thumbUrl,
+            isAdmin: bean.value!.isAdmin,
+            isSupAdmin: bean.value!.isSupAdmin));
       }
     } else {
       hiddenLoading();

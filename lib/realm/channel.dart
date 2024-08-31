@@ -63,6 +63,7 @@ class SessionRealm {
     Log.d("querySessionById=====================$id");
     Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
     if (session != null) {
+      Log.d("querySessionById=====================${session.toEJson()}");
       return sessionRealmToEntity(session);
     } else {
       return null;
@@ -119,8 +120,13 @@ class SessionRealm {
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
         _session.deleted = session.deleted;
-        if (session.notice != null) _session.notice = session.notice;
+        if (session.type == SessionType.group) {
+          if (session.notice != null) _session.notice = session.notice;
+          _session.isAdmin = session.isAdmin.name;
+          _session.isSupAdmin = session.isSupAdmin.name;
+        }
       });
+
       Log.d("updateSessionInfo===${_session.id}================>${_session.toEJson()}");
 
       try {
@@ -256,7 +262,7 @@ SessionEntity sessionRealmToEntity(Channel session) {
       lastMessage: session.lastMessage == null ? null : MessageEntity.fromJson(json.decode(session.lastMessage!)),
       lastMessageTime: session.lastMessageTime,
       isDisturb: session.isDisturb,
-      isAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
+      isAdmin: EnumToString.fromString(YorNType.values, session.isAdmin),
       config: session.config,
       configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
       isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
