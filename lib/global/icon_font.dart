@@ -48,6 +48,7 @@ class IconFont {
 
   static const IconData time = IconData(0xe7be, fontFamily: "iconFont");
   static const IconData sort = IconData(0xe7bf, fontFamily: "iconFont");
+  static const IconData notice2 = IconData(0xe7c2, fontFamily: "iconFont");
 
   static const IconData add_square = IconData(0xe7c1, fontFamily: "iconFont");
   static const IconData message = IconData(0xe7c0, fontFamily: "iconFont");

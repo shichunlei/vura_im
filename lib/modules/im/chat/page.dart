@@ -144,17 +144,17 @@ class ChatPage extends StatelessWidget {
                                     padding: EdgeInsets.symmetric(horizontal: 22.w),
                                     child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.voice),
+                                          icon: const Icon(IconFont.voice, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             showToast(text: "开发中。。。");
                                           }),
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.camera),
+                                          icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             logic.getImage(ImageSource.camera);
                                           }),
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.name_card),
+                                          icon: const Icon(IconFont.name_card, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             showCupertinoModalPopup(
                                                 context: Get.context!,
@@ -187,12 +187,12 @@ class ChatPage extends StatelessWidget {
                                                 });
                                           }),
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.gallery),
+                                          icon: const Icon(IconFont.gallery, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             logic.getImage(ImageSource.gallery);
                                           }),
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.red_package),
+                                          icon: const Icon(IconFont.red_package, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
                                                 arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})?.then((value) {
@@ -200,7 +200,7 @@ class ChatPage extends StatelessWidget {
                                             });
                                           }),
                                       CustomIconButton(
-                                          icon: const Icon(IconFont.expression),
+                                          icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
                                           onPressed: () {
                                             ///
                                             showToast(text: "这是发什么？");

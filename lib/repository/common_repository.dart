@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:vura/entities/base64.dart';
 import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/bill_record_entity.dart';
 import 'package:vura/entities/file_entity.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/utils/http_utils.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/tool_util.dart';
@@ -53,5 +55,26 @@ class CommonRepository {
     } else {
       return null;
     }
+  }
+
+  /// 收支记录
+  ///
+  /// [startDate] 开始时间 yyyy-MM-dd
+  /// [endDate] 结束时间 yyyy-MM-dd
+  /// [type] 收入 INCOME 支出 PAY
+  /// [userId] 用户Id 查询自己的 不用给
+  ///
+  static Future<List<BillRecordEntity>> bookMoneyList(
+      {int page = 0, int size = 20, String? type, String? startDate, String? endDate, String? userId}) async {
+    var data = await HttpUtils.getInstance().request("bookMoney/myListByPage", params: {
+      Keys.CURRENT_PAGE: page,
+      Keys.PAGE_SIZE: size,
+      if (endDate != null) "endDate": endDate,
+      if (startDate != null) "startDate": startDate,
+      if (type != null) Keys.TYPE: type,
+      if (userId != null) Keys.USER_ID: userId
+    });
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    return (result.data["records"] as List).map((item) => BillRecordEntity.fromJson(item)).toList();
   }
 }

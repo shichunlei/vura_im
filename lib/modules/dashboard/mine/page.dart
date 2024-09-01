@@ -91,7 +91,12 @@ class MinePage extends StatelessWidget {
                               child: Icon(logic.showMoney.value ? IconFont.eye_open_fill : IconFont.eye_close_fill,
                                   color: Colors.white, size: 15.sp)),
                           const Spacer(),
-                          const Icon(IconFont.idcard),
+                          GestureDetector(
+                              onTap: () {
+                                Get.toNamed(RoutePath.WALLET_PAGE);
+                              },
+                              behavior: HitTestBehavior.translucent,
+                              child: const Icon(IconFont.idcard)),
                           SizedBox(width: 10.w)
                         ]),
                         SizedBox(height: 20.h),

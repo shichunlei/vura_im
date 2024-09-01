@@ -45,7 +45,7 @@ class ItemSendRedPackage extends StatelessWidget {
                       SizedBox(width: 18.w),
                       Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
                       SizedBox(width: 13.w),
-                      Text("x${redPackage.mines.length}",
+                      Text("x${redPackage.totalAmount}",
                           style: GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
                       const Spacer(),
                       Text("${redPackage.minesStr}",

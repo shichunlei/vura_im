@@ -27,6 +27,7 @@ class WalletPage extends StatelessWidget {
           appBar: AppBar(title: const Text("USDT钱包"), backgroundColor: Colors.transparent, centerTitle: true),
           body: BaseWidget(
               logic: logic,
+              showEmpty: false,
               builder: (logic) {
                 return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Center(
@@ -84,38 +85,50 @@ class WalletPage extends StatelessWidget {
                         Text("类型:", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
                         Text("全部", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
                         Icon(Icons.keyboard_arrow_down, size: 15.sp),
+                        SizedBox(width: 5.w),
                         Icon(IconFont.time, color: ColorUtil.color_333333, size: 22.sp)
                       ])),
                   ListView.separated(
                       padding: EdgeInsets.symmetric(horizontal: 22.w),
                       itemBuilder: (_, index) {
                         return Container(
+                            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 20.h),
                             decoration:
                                 BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xfff5f5f5)),
-                            child: Column(children: [
+                            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Row(children: [
-                                Text("VURAnw...7o6gdk",
+                                Text("${logic.list[index].walletCard}",
                                     style: GoogleFonts.dmSans(
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                Text("+1,000 USDT",
+                                Text(
+                                    logic.list[index].type == "INCOME"
+                                        ? "+${logic.list[index].money} USDT"
+                                        : "-${logic.list[index].money} USDT",
                                     style: GoogleFonts.dmSans(
-                                        fontSize: 18.sp, color: const Color(0xff2ECC72), fontWeight: FontWeight.bold))
+                                        fontSize: 18.sp,
+                                        color: logic.list[index].type == "INCOME"
+                                            ? const Color(0xff2ECC72)
+                                            : const Color(0xffFF4255),
+                                        fontWeight: FontWeight.bold))
                               ]),
+                              SizedBox(height: 3.h),
                               Row(children: [
-                                Text("抢红包", style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
+                                Text("${logic.list[index].detailDesc}",
+                                    style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                                 const Spacer(),
-                                Text("≈￥7,164.4",
+                                Text("≈￥${logic.list[index].money}",
                                     style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                               ]),
-                              Text("2022-02-02 12:23:32",
+                              SizedBox(height: 3.h),
+                              Text("${logic.list[index].updateTime}",
                                   style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                             ]));
                       },
                       separatorBuilder: (_, index) {
                         return SizedBox(height: 11.h);
                       },
-                      itemCount: 3,
+                      itemCount: logic.list.length,
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics())
                 ]);

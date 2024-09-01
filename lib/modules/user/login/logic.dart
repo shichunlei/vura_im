@@ -4,6 +4,7 @@ import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/realm/account.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/device_utils.dart';
@@ -37,12 +38,14 @@ class LoginLogic extends BaseLogic {
     hiddenLoading();
 
     if (result != null) {
-      if (result.id != null) AppConfig.setUserId(result.id!);
       try {
+        await AccountRealm(realm: Get.find<RootLogic>().realm)
+            .upsert(Account(accountController.text, password: passwordController.text));
         Get.find<RootLogic>().setUserInfo(result);
       } catch (e) {
         Log.e(e.toString());
       }
+      if (result.id != null) AppConfig.setUserId(result.id!);
       Get.offAllNamed(RoutePath.HOME_PAGE);
     }
   }

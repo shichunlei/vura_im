@@ -1,9 +1,11 @@
 import 'package:get/get.dart';
 import 'package:realm/realm.dart' hide Session;
+import 'package:vura/entities/account_entity.dart';
 import 'package:vura/entities/login_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/realm/account.dart';
 import 'package:vura/realm/channel.dart';
 import 'package:vura/realm/friend.dart';
 import 'package:vura/realm/message.dart';
@@ -15,7 +17,7 @@ class RootLogic extends GetxController {
   late Realm realm;
 
   RootLogic() {
-    var config = Configuration.local([Channel.schema, Message.schema, Friend.schema],
+    var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema],
         schemaVersion: 1, shouldDeleteIfMigrationNeeded: true);
     realm = Realm(config);
   }
@@ -32,17 +34,32 @@ class RootLogic extends GetxController {
 
   void setUserInfo(UserEntity? user) {
     this.user.value = user;
+    AccountRealm(realm: Get.find<RootLogic>().realm).update(AccountEntity(
+        userName: user?.userName,
+        nickName: user?.nickName,
+        headImageThumb: user?.headImageThumb,
+        headImage: user?.headImage));
   }
 
   void updateUserAvatar({String? headImage, String? headImageThumb}) {
     user.value?.headImage = headImage;
     user.value?.headImageThumb = headImageThumb;
     user.refresh();
+    AccountRealm(realm: Get.find<RootLogic>().realm).update(AccountEntity(
+        userName: user.value?.userName,
+        nickName: user.value?.nickName,
+        headImageThumb: user.value?.headImageThumb,
+        headImage: user.value?.headImage));
   }
 
   void updateNickName(String? nickName) {
     user.value?.nickName = nickName;
     user.refresh();
+    AccountRealm(realm: Get.find<RootLogic>().realm).update(AccountEntity(
+        userName: user.value?.userName,
+        nickName: user.value?.nickName,
+        headImageThumb: user.value?.headImageThumb,
+        headImage: user.value?.headImage));
   }
 
   void updateWallet(String? walletCard, String? walletRemark) {

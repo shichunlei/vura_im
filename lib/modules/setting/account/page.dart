@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 
 import 'logic.dart';
@@ -20,6 +22,7 @@ class AccountPage extends StatelessWidget {
         appBar: AppBar(title: const Text("账号管理"), centerTitle: true),
         body: BaseWidget(
             logic: logic,
+            showEmpty: false,
             builder: (logic) {
               return SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
@@ -45,30 +48,36 @@ class AccountPage extends StatelessWidget {
                             }
                             return GestureDetector(
                                 onTap: () {
-                                  logic.selectIndex.value = index;
+                                  show(builder: (_) {
+                                    return CustomAlertDialog(
+                                        title: "切换用户",
+                                        content: "确认要切换到用户${logic.list[index].nickName}吗？",
+                                        confirmText: "切换",
+                                        onConfirm: () {
+                                          logic.switchAccount(index);
+                                        });
+                                  });
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: Container(
                                     padding: EdgeInsets.only(left: 22.w, right: 30.w),
                                     height: 80.r,
                                     child: Row(children: [
-                                      AvatarImageView(
-                                          "https://p1.itc.cn/q_70/images03/20220714/e3e968b1d3484c70a00a1c130472c91f.jpeg",
-                                          radius: 22.r,
-                                          name: ""),
+                                      AvatarImageView("${logic.list[index].headImage}",
+                                          radius: 22.r, name: "${logic.list[index].nickName}"),
                                       SizedBox(width: 13.w),
                                       Expanded(
                                           child: Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                            Text("张三",
+                                            Text("${logic.list[index].nickName}",
                                                 style: GoogleFonts.roboto(
                                                     fontSize: 15.sp,
                                                     color: ColorUtil.color_333333,
                                                     fontWeight: FontWeight.bold)),
                                             SizedBox(height: 3.h),
-                                            Text("223423423423",
+                                            Text("${logic.list[index].userName}",
                                                 style:
                                                     GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
                                           ])),

@@ -64,7 +64,10 @@ class PackageResultPage extends StatelessWidget {
                   Container(
                       margin: EdgeInsets.only(bottom: 11.h, left: 22.w),
                       alignment: Alignment.centerLeft,
-                      child: Text("${logic.bean.value!.totalPacket}个幸运值,26秒被抢光",
+                      child: Text(
+                          logic.bean.value!.totalTime > 0
+                              ? "${logic.bean.value!.totalPacket}个幸运值,${logic.bean.value!.totalTime}秒被抢光"
+                              : "${logic.bean.value!.totalPacket}个幸运值",
                           style: GoogleFonts.roboto(
                               fontSize: 15.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333))),
                   Expanded(

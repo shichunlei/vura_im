@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/im/widgets/item_session.dart';
@@ -47,20 +48,35 @@ class SessionPage extends StatelessWidget {
             logic: logic,
             showEmpty: false,
             builder: (logic) {
-              if (logic.list.isEmpty) {
-                return const EmptyPage(text: "温馨提示：\n您现在还没有任何聊天消息\n快跟您的好友发起聊天吧~");
-              }
-              return ListView.separated(
-                  itemBuilder: (_, index) {
-                    return ItemSession(
-                        session: logic.list[index],
-                        onLongPress: () {
-                          showToolDialog(index);
-                        });
-                  },
-                  itemCount: logic.list.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(height: 0, indent: 18.w, endIndent: 18.w));
+              return Column(children: [
+                SizedBox(
+                    height: 44.h,
+                    child: Row(children: [
+                      SizedBox(width: 22.w),
+                      Icon(IconFont.notice2, color: ColorUtil.color_666666, size: 18.sp),
+                      Expanded(
+                          child: Text("祝大家生活愉快,前程似锦！欢迎大家得到来,祝大家身体健康!",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp))),
+                      SizedBox(width: 22.w)
+                    ])),
+                const Divider(height: 0),
+                Expanded(
+                    child: logic.list.isEmpty
+                        ? const EmptyPage(text: "温馨提示：\n您现在还没有任何聊天消息\n快跟您的好友发起聊天吧~")
+                        : ListView.separated(
+                            itemBuilder: (_, index) {
+                              return ItemSession(
+                                  session: logic.list[index],
+                                  onLongPress: () {
+                                    showToolDialog(index);
+                                  });
+                            },
+                            itemCount: logic.list.length,
+                            separatorBuilder: (BuildContext context, int index) =>
+                                Divider(height: 0, indent: 18.w, endIndent: 18.w)))
+              ]);
             }));
   }
 
