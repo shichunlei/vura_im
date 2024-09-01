@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/tool_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -43,10 +45,13 @@ class ChargePage extends StatelessWidget {
                                 child: AspectRatio(
                                     aspectRatio: 1,
                                     child: PrettyQrView.data(
-                                        errorCorrectLevel: QrErrorCorrectLevel.H, data: "1231231313"))),
+                                        errorCorrectLevel: QrErrorCorrectLevel.H,
+                                        data: "${Get.find<RootLogic>().user.value?.walletCard}"))),
                             RadiusInkWellWidget(
                                 radius: 40,
-                                onPressed: () {},
+                                onPressed: () {
+                                  // todo
+                                },
                                 margin: EdgeInsets.only(top: 22.h, bottom: 22.h),
                                 child: Container(
                                     height: 44.h,
@@ -66,7 +71,7 @@ class ChargePage extends StatelessWidget {
                                 style: GoogleFonts.roboto(
                                     fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w600)),
                             SizedBox(height: 22.h),
-                            Text("3443244234242343423",
+                            Text("${Get.find<RootLogic>().user.value?.walletCard}",
                                 style: GoogleFonts.roboto(
                                     fontSize: 13.sp, color: ColorUtil.color_999999, fontWeight: FontWeight.w600)),
                             Center(
@@ -74,7 +79,9 @@ class ChargePage extends StatelessWidget {
                                     border: Border.all(width: 1, color: const Color(0xff2ECC72)),
                                     radius: 40,
                                     color: Colors.transparent,
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      copyToClipboard("${Get.find<RootLogic>().user.value?.walletCard}");
+                                    },
                                     margin: EdgeInsets.only(top: 22.h),
                                     child: Container(
                                         height: 44.h,

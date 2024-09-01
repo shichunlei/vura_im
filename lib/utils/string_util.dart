@@ -78,6 +78,14 @@ class StringUtil {
     return mobile.replaceAllMapped(regex, (match) => '${match[1]}****${match[3]}');
   }
 
+  static String truncateString(String input) {
+    if (input.length <= 20) {
+      return input;
+    } else {
+      return input.substring(0, 20);
+    }
+  }
+
   static String numToChinese(int num) {
     if (num == 0) return "零";
 

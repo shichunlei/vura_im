@@ -1,7 +1,7 @@
 import 'package:azlistview_plus/azlistview_plus.dart';
+import 'package:pinyin/pinyin.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/utils/enum_to_string.dart';
-import 'package:pinyin/pinyin.dart';
 
 class UserEntity extends ISuspensionBean {
   String? id;
@@ -21,6 +21,8 @@ class UserEntity extends ISuspensionBean {
   YorNType search;
   YorNType setGroup;
   YorNType vura;
+  String? walletCard; // 钱包地址
+  String? walletRemark; // 钱包备注
 
   UserEntity(
       {this.id,
@@ -39,7 +41,9 @@ class UserEntity extends ISuspensionBean {
       this.search = YorNType.N,
       this.setGroup = YorNType.N,
       this.vura = YorNType.N,
-      this.money = .0});
+      this.money = .0,
+      this.walletCard,
+      this.walletRemark});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
     String nickName = json['nickName'] ?? "";
@@ -64,6 +68,8 @@ class UserEntity extends ISuspensionBean {
         friendship: EnumToString.fromString(YorNType.values, json['friendship'] as String? ?? "M"),
         headImageThumb: json['headImageThumb'] as String?,
         online: json['online'] as bool? ?? false,
+        walletCard: json['walletCard'] as String?,
+        walletRemark: json['walletRemark'] as String?,
         addFriend: EnumToString.fromString(YorNType.values, json['addFriend'] as String? ?? "N"),
         protect: EnumToString.fromString(YorNType.values, json['protect'] as String? ?? "N"),
         search: EnumToString.fromString(YorNType.values, json['search'] as String? ?? "N"),

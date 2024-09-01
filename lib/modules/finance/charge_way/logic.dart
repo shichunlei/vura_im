@@ -1,5 +1,8 @@
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/receiving_payment_entity.dart';
+import 'package:vura/entities/user_entity.dart';
+import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/string_util.dart';
 
 class ChargeWayLogic extends BaseListLogic<ReceivingPaymentEntity> {
   @override
@@ -10,14 +13,19 @@ class ChargeWayLogic extends BaseListLogic<ReceivingPaymentEntity> {
 
   @override
   Future<List<ReceivingPaymentEntity>> loadData() async {
-    return [
-      ReceivingPaymentEntity(id: "12143423", address: "234234243rr43f323ed34444434", remark: "张三"),
-      ReceivingPaymentEntity(id: "34534535", address: "234234243rr43f323ed44434", remark: "李四")
-    ];
+    UserEntity? user = await UserRepository.getUserInfo();
+    if (user != null) {
+      if (StringUtil.isEmpty(user.walletCard) || StringUtil.isEmpty(user.walletRemark)) {
+        return [];
+      }
+      return [ReceivingPaymentEntity(walletCard: user.walletCard, walletRemark: user.walletRemark)];
+    } else {
+      return [];
+    }
   }
 
   void updateWay(ReceivingPaymentEntity way) {
-    if (list.any((e) => e.id == way.id)) list.removeWhere((e) => e.id == way.id);
+    list.clear();
     list.add(way);
     list.refresh();
   }

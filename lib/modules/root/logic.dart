@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:realm/realm.dart' hide Session;
 import 'package:vura/entities/login_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
@@ -9,7 +10,6 @@ import 'package:vura/realm/message.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:realm/realm.dart' hide Session;
 
 class RootLogic extends GetxController {
   late Realm realm;
@@ -42,6 +42,12 @@ class RootLogic extends GetxController {
 
   void updateNickName(String? nickName) {
     user.value?.nickName = nickName;
+    user.refresh();
+  }
+
+  void updateWallet(String? walletCard, String? walletRemark) {
+    user.value?.walletCard = walletCard;
+    user.value?.walletRemark = walletRemark;
     user.refresh();
   }
 

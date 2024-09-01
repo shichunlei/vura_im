@@ -237,4 +237,15 @@ class UserRepository {
       return [];
     }
   }
+
+  /// 修改用户钱包信息
+  ///
+  /// [walletCard] 地址
+  /// [walletRemark] 备注
+  ///
+  static Future<BaseBean> updateWallet(String? walletCard, String? walletRemark) async {
+    var data = await HttpUtils.getInstance().request('user/updateWallet',
+        params: {"walletCard": walletCard, "walletRemark": walletRemark}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
 }

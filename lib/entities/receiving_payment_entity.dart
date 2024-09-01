@@ -4,14 +4,12 @@ part 'receiving_payment_entity.g.dart';
 
 @JsonSerializable()
 class ReceivingPaymentEntity {
-  String? id;
-  String? remark;
-  String? address;
+  String? walletRemark;
+  String? walletCard;
 
   ReceivingPaymentEntity({
-    this.id,
-    this.remark,
-    this.address,
+    this.walletRemark,
+    this.walletCard,
   });
 
   factory ReceivingPaymentEntity.fromJson(Map<String, dynamic> json) => _$ReceivingPaymentEntityFromJson(json);

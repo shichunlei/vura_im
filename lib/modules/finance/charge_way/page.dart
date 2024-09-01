@@ -47,36 +47,6 @@ class ChargeWayPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         color: const Color(0xff2ECC72), fontWeight: FontWeight.bold, fontSize: 18.sp))),
                             const Divider(height: 0),
-                            SizedBox(height: 22.h),
-                            Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                                CustomIconButton(
-                                    icon: Icon(IconFont.download, size: 26.sp),
-                                    radius: 27.w,
-                                    bgColor: const Color(0xffF1FAEF)),
-                                SizedBox(height: 11.h),
-                                Text("K豆钱包下载1",
-                                    style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_333333))
-                              ]),
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                                CustomIconButton(
-                                    icon: Icon(IconFont.download, size: 26.sp),
-                                    radius: 27.w,
-                                    bgColor: const Color(0xffF1FAEF)),
-                                SizedBox(height: 11.h),
-                                Text("K豆钱包下载2",
-                                    style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_333333))
-                              ]),
-                              Column(mainAxisSize: MainAxisSize.min, children: [
-                                CustomIconButton(
-                                    icon: Icon(IconFont.download, size: 26.sp),
-                                    radius: 27.w,
-                                    bgColor: const Color(0xffF1FAEF)),
-                                SizedBox(height: 11.h),
-                                Text("K豆钱包下载3",
-                                    style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_333333))
-                              ])
-                            ]),
                             Expanded(
                                 child: Container(
                                     padding: EdgeInsets.symmetric(vertical: 22.h),
@@ -105,7 +75,7 @@ class ChargeWayPage extends StatelessWidget {
                                                             color: ColorUtil.color_333333, size: 18.sp))
                                                   ]),
                                                   SizedBox(height: 5.h),
-                                                  Text("${logic.list[index].address}",
+                                                  Text("${logic.list[index].walletCard}",
                                                       style: GoogleFonts.roboto(
                                                           fontWeight: FontWeight.bold,
                                                           color: ColorUtil.color_333333,
@@ -116,7 +86,7 @@ class ChargeWayPage extends StatelessWidget {
                                                         style: GoogleFonts.roboto(
                                                             color: ColorUtil.color_999999, fontSize: 13.sp)),
                                                     const Spacer(),
-                                                    Text("${logic.list[index].remark}",
+                                                    Text("${logic.list[index].walletRemark}",
                                                         style: GoogleFonts.roboto(
                                                             color: ColorUtil.color_999999, fontSize: 13.sp))
                                                   ])
@@ -135,20 +105,22 @@ class ChargeWayPage extends StatelessWidget {
                                                     GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp))
                                           ])))
                           ]))),
-                  RadiusInkWellWidget(
-                      border: Border.all(width: 1, color: Theme.of(context).primaryColor),
-                      radius: 40,
-                      onPressed: () {
-                        Get.toNamed(RoutePath.ADD_CHARGE_WAY_PAGE);
-                      },
-                      margin: EdgeInsets.only(top: 44.h, bottom: DeviceUtils.setBottomMargin(22.h)),
-                      child: Container(
-                          height: 53.h,
-                          width: 180.w,
-                          alignment: Alignment.center,
-                          child: Text("新增收款方式",
-                              style: GoogleFonts.roboto(
-                                  color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.sp))))
+                  Visibility(
+                      visible: logic.list.isEmpty,
+                      child: RadiusInkWellWidget(
+                          border: Border.all(width: 1, color: Theme.of(context).primaryColor),
+                          radius: 40,
+                          onPressed: () {
+                            Get.toNamed(RoutePath.ADD_CHARGE_WAY_PAGE);
+                          },
+                          margin: EdgeInsets.only(top: 44.h, bottom: DeviceUtils.setBottomMargin(22.h)),
+                          child: Container(
+                              height: 53.h,
+                              width: 180.w,
+                              alignment: Alignment.center,
+                              child: Text("新增收款方式",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.sp)))))
                 ]);
               }))
     ]);

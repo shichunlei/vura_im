@@ -7,6 +7,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/mixin/receive_message_mixin.dart';
 import 'package:vura/realm/channel.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin {
@@ -33,7 +34,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin
   Future createSession(List<UserEntity> users) async {
     Map<String, dynamic> params = {};
 
-    params["name"] = users.map((item) => item.nickName).toList().join(",");
+    params["name"] = StringUtil.truncateString(users.map((item) => item.nickName).toList().join(","));
     params["ownerId"] = rootLogic.user.value?.id;
     params["remarkNickName"] = rootLogic.user.value?.nickName;
     params["showNickName"] = rootLogic.user.value?.nickName;

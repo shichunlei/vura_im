@@ -22,7 +22,7 @@ class ItemSystemMessage extends StatelessWidget {
               child: Text(DateUtil.getWechatTime(message.sendTime),
                   style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
       SizedBox(height: 5.h),
-      Container(alignment: Alignment.center, child: Text("${message.content}"))
+      Container(alignment: Alignment.center, child: Text("${message.content}", textAlign: TextAlign.center))
     ]);
   }
 }
