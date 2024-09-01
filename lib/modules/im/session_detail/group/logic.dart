@@ -178,8 +178,16 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     }
   }
 
-  Future updateAdmin(String? userId) async {
-    bean.value?.ownerId = userId;
+  Future updateAdmin() async {
+    bean.value?.isAdmin = YorNType.N;
     bean.refresh();
+    await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+        id: id,
+        type: SessionType.group,
+        name: bean.value?.name,
+        headImage: bean.value?.headImage,
+        headImageThumb: bean.value?.headImageThumb,
+        isAdmin: bean.value!.isAdmin,
+        isSupAdmin: bean.value!.isSupAdmin));
   }
 }

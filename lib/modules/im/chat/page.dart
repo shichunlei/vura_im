@@ -34,8 +34,10 @@ class ChatPage extends StatelessWidget {
     return Material(
         color: Theme.of(context).scaffoldBackgroundColor,
         child: Stack(children: [
-          Image.asset("assets/images/chat_bg_${logic.selectedBgIndex}.png",
-              width: double.infinity, height: double.infinity, fit: BoxFit.fill),
+          logic.selectedBgIndex == 0
+              ? const SizedBox()
+              : Image.asset("assets/images/chat_bg_${logic.selectedBgIndex}.png",
+                  width: double.infinity, height: double.infinity, fit: BoxFit.fill),
           Scaffold(
               backgroundColor:
                   logic.selectedBgIndex == 0 ? Theme.of(context).scaffoldBackgroundColor : Colors.transparent,

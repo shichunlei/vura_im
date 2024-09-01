@@ -146,7 +146,7 @@ class SessionRepository {
     }
   }
 
-  /// 群管理员列表 TODO
+  /// 群管理员列表
   ///
   /// [id] 群ID
   ///
@@ -318,14 +318,14 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 移除管理员 TODO
+  /// 移除管理员
   ///
   /// [id] 群ID
   /// [ids] 被移除管理员的用户IDS
   ///
   static Future<BaseBean> removeSupAdmin(String? id, List<String?> ids) async {
-    var data = await HttpUtils.getInstance()
-        .request('group/resetSupAdmin', params: {Keys.ADMIN_IDS: ids, Keys.GROUP_ID: id}, showErrorToast: true);
+    var data = await HttpUtils.getInstance().request('group/resetSupAdmin',
+        params: {Keys.GROUP_ID: id, Keys.ADMIN_IDS: ids.toList()}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -343,7 +343,7 @@ class SessionRepository {
     }
   }
 
-  /// 群主转让 TODO
+  /// 群主转让
   ///
   /// [id] 群ID
   /// [userId] 被设置群主的用户ID

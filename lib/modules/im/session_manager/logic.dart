@@ -88,7 +88,7 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     hiddenLoading();
     if (result.code == 200) {
       try {
-        Get.find<GroupSessionDetailLogic>(tag: id).updateAdmin(userId);
+        Get.find<GroupSessionDetailLogic>(tag: id).updateAdmin();
         Get.find<GroupSessionDetailLogic>(tag: id).getMembers();
       } catch (e) {
         Log.e(e.toString());

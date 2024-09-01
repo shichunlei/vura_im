@@ -63,7 +63,7 @@ class PackagePublishPage extends StatelessWidget {
                                       contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
                                       hintText: "0.00",
                                       hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                          Text("元", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
+                          Text("幸运值", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
                         ])),
                     logic.type == SessionType.private
                         ? const SizedBox()

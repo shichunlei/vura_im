@@ -42,7 +42,7 @@ class SessionSupAdminLogic extends BaseListLogic<MemberEntity> {
 
   Future removeSupAdmin(String? userId) async {
     showLoading();
-    BaseBean result = await SessionRepository.setSupAdmin(id, [userId]);
+    BaseBean result = await SessionRepository.removeSupAdmin(id, [userId]);
     hiddenLoading();
     if (result.code == 200) {
       list.removeWhere((item) => item.userId == userId);
