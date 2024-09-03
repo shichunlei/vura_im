@@ -3,6 +3,7 @@ import 'package:vura/entities/base64.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/bill_record_entity.dart';
 import 'package:vura/entities/file_entity.dart';
+import 'package:vura/entities/version_entity.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/utils/http_utils.dart';
 import 'package:vura/utils/log_utils.dart';
@@ -47,6 +48,7 @@ class CommonRepository {
     }
   }
 
+  /// 验证码
   static Future<Base64Entity?> getAuthCode() async {
     var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
@@ -76,5 +78,16 @@ class CommonRepository {
     });
     BaseBean result = BaseBean.fromJsonToObject(data);
     return (result.data["records"] as List).map((item) => BillRecordEntity.fromJson(item)).toList();
+  }
+
+  /// 版本检查
+  static Future<VersionEntity?> checkVersion() async {
+    var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return VersionEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
   }
 }

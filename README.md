@@ -1,16 +1,63 @@
 # im
 
-A new Flutter project.
+## 运行环境
 
-## Getting Started
+**************************************************************************************
 
-This project is a starting point for a Flutter application.
+    [✓] Flutter (Channel stable, 3.22.3, on macOS 14.1.1 23B81 darwin-x64, locale zh-Hans-CN)
+        • Flutter version 3.22.3 on channel stable at /Users/mac104/workspace/flutter
+        • Upstream repository https://github.com/flutter/flutter.git
+        • Framework revision b0850beeb2 (7 weeks ago), 2024-07-16 21:43:41 -0700
+        • Engine revision 235db911ba
+        • Dart version 3.4.4
+        • DevTools version 2.34.3
+        • Pub download mirror https://pub.flutter-io.cn
+        • Flutter download mirror https://storage.flutter-io.cn
+    
+    [✓] Android toolchain - develop for Android devices (Android SDK version 35.0.0)
+        • Android SDK at /Users/mac104/Library/Android/sdk
+        • Platform android-35, build-tools 35.0.0
+        • ANDROID_HOME = /Users/mac104/Library/Android/sdk
+        • Java binary at: /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+        • Java version OpenJDK Runtime Environment (build 17.0.11+0-17.0.11b1207.24-11852314)
+        • All Android licenses accepted.
+    
+    [✓] Xcode - develop for iOS and macOS (Xcode 15.2)
+        • Xcode at /Applications/Xcode.app/Contents/Developer
+        • Build 15C500b
+        • CocoaPods version 1.15.2
+    
+    [✓] Android Studio (version 2024.1)
+        • Android Studio at /Applications/Android Studio.app/Contents
+        • Flutter plugin can be installed from:
+            🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+        • Dart plugin can be installed from:
+            🔨 https://plugins.jetbrains.com/plugin/6351-dart
+        • Java version OpenJDK Runtime Environment (build 17.0.11+0-17.0.11b1207.24-11852314)
 
-A few resources to get you started if this is your first Flutter project:
+**************************************************************************************
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Android 签名密钥
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+## Android 包名
+
+    com.example.vura
+
+## 打包
+
+- Android
+
+```bash
+  flutter clean
+  flutter pub get
+  flutter build apk --release --no-tree-shake-icons --verbose
+```
+
+- iOS
+
+```bash
+  flutter clean
+  flutter pub get
+  flutter build ios --release --no-tree-shake-icons --verbose
+```

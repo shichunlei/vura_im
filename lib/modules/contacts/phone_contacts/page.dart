@@ -48,7 +48,7 @@ class PhoneContactsPage extends StatelessWidget {
 }
 
 class _ContactImage extends StatefulWidget {
-  const _ContactImage({super.key, required this.id});
+  const _ContactImage({required this.id});
 
   final String id;
 

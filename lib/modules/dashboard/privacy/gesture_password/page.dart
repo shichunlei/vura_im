@@ -64,7 +64,7 @@ class GesturePasswordPage extends StatelessWidget {
                           BoxDecoration(color: const Color(0xff0C6BFE), borderRadius: BorderRadius.circular(10)))),
               arrowItem: const Icon(Icons.arrow_right, color: Color(0xff0C6BFE)),
               errorArrowItem: const Icon(Icons.arrow_right, color: Colors.redAccent),
-              answer: [0, 1, 2, 4, 7],
+              answer: const [0, 1, 2, 4, 7],
               color: Colors.white,
               onComplete: (data) {})
         ]));

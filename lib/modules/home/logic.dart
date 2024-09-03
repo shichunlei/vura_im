@@ -64,6 +64,14 @@ class HomeLogic extends BaseLogic {
     super.onInit();
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+
+    /// todo
+    // Future.delayed(const Duration(seconds: 2), Get.find<RootLogic>().checkVersion);
+  }
+
   void onItemTapped(int index) {
     if (index != selectedIndex.value) {
       selectedIndex.value = index;
