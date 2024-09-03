@@ -7,13 +7,13 @@ import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
-import 'package:vura/entities/red_package.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/mixin/session_detail_mixin.dart';
 import 'package:vura/modules/im/session/logic.dart';
+import 'package:vura/modules/package/widgets/red_package.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/channel.dart';
 import 'package:vura/realm/message.dart';
@@ -146,20 +146,29 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     }
   }
 
-  Future openRedPackage(String? id, String? redPackageId) async {
+  Future openRedPackage(context, MessageEntity message, String? redPackageId) async {
+    if (type == SessionType.group &&
+        session.value?.configObj?.vura == YorNType.N &&
+        session.value?.isAdmin == YorNType.N &&
+        session.value?.isSupAdmin == YorNType.N) {
+      showToast(text: "群主设置了禁止领取VURA");
+      return;
+    }
+
     String? result = await SessionRepository.checkRedPackage(redPackageId);
     if (result != null) {
       if (result == "Y") {
         Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       } else if (result == "N") {
-        showLoading();
-        RedPackageBean? result = await SessionRepository.openRedPackage(redPackageId);
-        hiddenLoading();
-        if (result != null) {
+        showRedPacket(context, () {
           Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        }
+        }, message.sendNickName, message.sendHeadImage, redPackageId);
+      } else if (result == "F") {
+        showToast(text: "红包已抢完");
+        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       } else {
         showToast(text: "红包已过期");
+        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       }
     }
   }

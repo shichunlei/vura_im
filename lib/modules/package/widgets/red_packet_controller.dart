@@ -1,6 +1,5 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:vura/repository/session_repository.dart';
 
 class RedPacketController {
   final TickerProviderStateMixin tickerProvider;
@@ -17,8 +16,6 @@ class RedPacketController {
   bool isAdd = false;
   bool showOpenText = true;
   bool showOpenBtn = true;
-
-  Timer? timer;
 
   Function? onFinish;
   Function? onOpen;
@@ -62,7 +59,7 @@ class RedPacketController {
     }
   }
 
-  void clickGold(TapUpDetails details) {
+  void clickGold(TapUpDetails details, String? redPackageId) async {
     if (checkClickGold(details.globalPosition)) {
       if (angleController.isAnimating) {
         stop();
@@ -71,9 +68,8 @@ class RedPacketController {
         tickerProvider.setState(() {
           showOpenText = false;
         });
-        timer = Timer(const Duration(seconds: 12), () {
-          stop();
-        });
+        await SessionRepository.openRedPackage(redPackageId);
+        stop();
       }
     }
   }
@@ -93,6 +89,5 @@ class RedPacketController {
   void dispose() {
     angleController.dispose();
     translateController.dispose();
-    timer?.cancel();
   }
 }

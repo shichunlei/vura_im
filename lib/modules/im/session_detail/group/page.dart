@@ -14,7 +14,6 @@ import 'package:vura/modules/im/widgets/item_session_user.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
@@ -55,8 +54,6 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 crossAxisSpacing: 13.r,
                                 mainAxisSpacing: 13.r),
                             itemBuilder: (_, index) {
-                              Log.d("isAdmin => ${logic.bean.value!.isAdmin == YorNType.Y}");
-
                               return Obx(() => index == logic.members.length &&
                                       (logic.bean.value!.isAdmin == YorNType.Y ||
                                           logic.bean.value!.isSupAdmin == YorNType.Y)
@@ -177,7 +174,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (logic.bean.value!.isAdmin != YorNType.Y) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y &&
+                                  logic.bean.value!.isSupAdmin != YorNType.Y) {
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(title: "请输入群聊名称", value: logic.bean.value?.name ?? ""))
@@ -201,7 +199,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (logic.bean.value!.isAdmin != YorNType.Y) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y &&
+                                  logic.bean.value!.isSupAdmin != YorNType.Y) {
                                 return;
                               }
                               showImagePickerDialog(context).then((value) {
@@ -242,7 +241,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                         RadiusInkWellWidget(
                             color: Colors.transparent,
                             onPressed: () {
-                              if (logic.bean.value!.isAdmin != YorNType.Y) {
+                              if (logic.bean.value!.isAdmin != YorNType.Y &&
+                                  logic.bean.value!.isSupAdmin != YorNType.Y) {
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(

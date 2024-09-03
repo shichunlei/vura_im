@@ -38,7 +38,34 @@ class PackagePublishPage extends StatelessWidget {
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
                   padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                   child: Column(children: [
+                    logic.type == SessionType.private
+                        ? const SizedBox()
+                        : Container(
+                            height: 50.h,
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(horizontal: 18.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
+                            child: Row(children: [
+                              Text("幸运值个数", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp)),
+                              Expanded(
+                                  child: TextField(
+                                      controller: logic.countController,
+                                      style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
+                                      textAlign: TextAlign.end,
+                                      keyboardType: TextInputType.number,
+                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                      decoration: InputDecoration(
+                                          isCollapsed: true,
+                                          border: InputBorder.none,
+                                          contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                                          hintText: "填写个数",
+                                          hintStyle:
+                                              GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
+                              Text("个", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
+                            ])),
                     Container(
+                        margin: EdgeInsets.only(top: 13.h),
                         height: 50.h,
                         width: double.infinity,
                         padding: EdgeInsets.symmetric(horizontal: 18.w),
@@ -65,33 +92,6 @@ class PackagePublishPage extends StatelessWidget {
                                       hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
                           Text("幸运值", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
                         ])),
-                    logic.type == SessionType.private
-                        ? const SizedBox()
-                        : Container(
-                            margin: EdgeInsets.only(top: 13.h),
-                            height: 50.h,
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 18.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
-                            child: Row(children: [
-                              Text("幸运值个数", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp)),
-                              Expanded(
-                                  child: TextField(
-                                      controller: logic.countController,
-                                      style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
-                                      textAlign: TextAlign.end,
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                                      decoration: InputDecoration(
-                                          isCollapsed: true,
-                                          border: InputBorder.none,
-                                          contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                                          hintText: "填写个数",
-                                          hintStyle:
-                                              GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                              Text("个", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
-                            ])),
                     logic.type == SessionType.private
                         ? Container(
                             margin: EdgeInsets.only(top: 13.h),

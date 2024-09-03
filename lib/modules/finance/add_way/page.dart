@@ -101,7 +101,6 @@ class AddWayPage extends StatelessWidget {
                       ])),
                   Center(
                       child: RadiusInkWellWidget(
-                          border: Border.all(width: 1, color: Theme.of(context).primaryColor),
                           radius: 40,
                           onPressed: logic.addWay,
                           margin: EdgeInsets.only(top: 31.h),

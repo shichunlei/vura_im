@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
@@ -56,11 +57,15 @@ class WalletPage extends StatelessWidget {
                       height: 93.h,
                       child: Row(children: [
                         Expanded(
-                          child: Column(mainAxisSize: MainAxisSize.min, children: [
-                            Icon(IconFont.buy_coins, color: Colors.white, size: 35.sp),
-                            Text("购买币", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white))
-                          ]),
-                        ),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(RoutePath.RECHARGE_PAGE);
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                  Icon(IconFont.buy_coins, color: Colors.white, size: 35.sp),
+                                  Text("购买币", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white))
+                                ]))),
                         Container(
                             margin: EdgeInsets.symmetric(vertical: 15.h),
                             height: double.infinity,
@@ -69,11 +74,15 @@ class WalletPage extends StatelessWidget {
                                 gradient:
                                     LinearGradient(colors: [Colors.transparent, Colors.white, Colors.transparent]))),
                         Expanded(
-                          child: Column(mainAxisSize: MainAxisSize.min, children: [
-                            Icon(IconFont.sell_coins, color: Colors.white, size: 35.sp),
-                            Text("出售币", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white))
-                          ]),
-                        )
+                            child: GestureDetector(
+                                onTap: () {
+                                  Get.toNamed(RoutePath.WITHDRAW_PAGE);
+                                },
+                                behavior: HitTestBehavior.translucent,
+                                child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                  Icon(IconFont.sell_coins, color: Colors.white, size: 35.sp),
+                                  Text("出售币", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white))
+                                ])))
                       ])),
                   Container(
                       margin: EdgeInsets.only(top: 22.h, left: 22.w, right: 22.w, bottom: 22.h),

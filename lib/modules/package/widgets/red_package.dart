@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:vura/widgets/avatar_image.dart';
 
 import 'red_packet_controller.dart';
 import 'red_packet_painter.dart';
 
 OverlayEntry? entry;
 
-void showRedPacket(BuildContext context, Function? onOpen) {
-  entry = OverlayEntry(builder: (_) => RedPacket(onFinish: _removeRedPacket, onOpen: onOpen));
+void showRedPacket(BuildContext context, Function? onOpen, String? nickName, String? headImage, String? redPackageId) {
+  entry = OverlayEntry(
+      builder: (_) => RedPacket(
+          onFinish: _removeRedPacket,
+          onOpen: onOpen,
+          nickName: nickName,
+          headImage: headImage,
+          redPackageId: redPackageId));
   Overlay.of(context).insert(entry!);
 }
 
@@ -19,8 +26,11 @@ void _removeRedPacket() {
 class RedPacket extends StatefulWidget {
   final Function? onFinish;
   final Function? onOpen;
+  final String? nickName;
+  final String? headImage;
+  final String? redPackageId;
 
-  const RedPacket({super.key, this.onFinish, this.onOpen});
+  const RedPacket({super.key, this.onFinish, this.onOpen, this.nickName, this.headImage, this.redPackageId});
 
   @override
   createState() => _RedPacketState();
@@ -56,7 +66,9 @@ class _RedPacketState extends State<RedPacket> with TickerProviderStateMixin {
 
   Widget buildRedPacket() {
     return GestureDetector(
-        onTapUp: controller.clickGold,
+        onTapUp: (TapUpDetails details) {
+          controller.clickGold(details,widget.redPackageId);
+        },
         child: CustomPaint(
             size: Size(1.sw, 1.sh), painter: RedPacketPainter(controller: controller), child: buildChild()));
   }
@@ -68,13 +80,9 @@ class _RedPacketState extends State<RedPacket> with TickerProviderStateMixin {
             padding: EdgeInsets.only(top: 0.3.sh * (1 - controller.translateCtrl.value)),
             child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(3.w),
-                    child: Image.network(
-                        "https://p26-passport.byteacctimg.com/img/user-avatar/32f1f514b874554f69fe265644ca84e4~300x300.image",
-                        width: 24.w)),
+                AvatarRoundImage("${widget.headImage}", radius: 3.r, height: 24.w, width: 24.w, name: widget.nickName),
                 SizedBox(width: 5.w),
-                Text("loongwind发出的红包",
+                Text("${widget.nickName}发出的红包",
                     style: TextStyle(fontSize: 16.sp, color: const Color(0xFFF8E7CB), fontWeight: FontWeight.w500))
               ]),
               SizedBox(height: 15.w),
