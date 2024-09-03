@@ -22,7 +22,7 @@ void main() async {
     await Application.getInstance().initApp();
     return launchApp();
   }, (Object error, StackTrace stack) {
-    Log.e("");
+    Log.e(error.toString());
   });
 }
 

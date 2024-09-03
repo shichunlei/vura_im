@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/widgets.dart';
@@ -40,12 +43,12 @@ class WalletPage extends StatelessWidget {
                     Column(mainAxisSize: MainAxisSize.min, children: [
                       Text("USDT数量:", style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                       SizedBox(height: 13.h),
-                      Text("0.00",
+                      Text("${Get.find<RootLogic>().user.value?.money}",
                           style: GoogleFonts.roboto(
                               color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold))
                     ]),
                     const Spacer(),
-                    Text("≈￥0.00",
+                    Text("≈￥${Get.find<RootLogic>().user.value?.money}", // TODO  人民币
                         style: GoogleFonts.roboto(
                             color: ColorUtil.color_333333, fontSize: 26.sp, fontWeight: FontWeight.bold)),
                     SizedBox(width: 22.w)
@@ -92,7 +95,12 @@ class WalletPage extends StatelessWidget {
                                 color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold)),
                         const Spacer(),
                         Text("类型:", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
-                        Text("全部", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                        GestureDetector(
+                            onTap: () {
+                              morePicker(context);
+                            },
+                            child: Text(logic.type.value.label,
+                                style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp))),
                         Icon(Icons.keyboard_arrow_down, size: 15.sp),
                         SizedBox(width: 5.w),
                         Icon(IconFont.time, color: ColorUtil.color_333333, size: 22.sp)
@@ -111,12 +119,12 @@ class WalletPage extends StatelessWidget {
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
                                 Text(
-                                    logic.list[index].type == "INCOME"
+                                    logic.list[index].type == FeeType.INCOME
                                         ? "+${logic.list[index].money} USDT"
                                         : "-${logic.list[index].money} USDT",
                                     style: GoogleFonts.dmSans(
                                         fontSize: 18.sp,
-                                        color: logic.list[index].type == "INCOME"
+                                        color: logic.list[index].type == FeeType.INCOME
                                             ? const Color(0xff2ECC72)
                                             : const Color(0xffFF4255),
                                         fontWeight: FontWeight.bold))
@@ -126,7 +134,7 @@ class WalletPage extends StatelessWidget {
                                 Text("${logic.list[index].detailDesc}",
                                     style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                                 const Spacer(),
-                                Text("≈￥${logic.list[index].money}",
+                                Text("≈￥${logic.list[index].money}",// TODO  人民币
                                     style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                               ]),
                               SizedBox(height: 3.h),
@@ -143,5 +151,37 @@ class WalletPage extends StatelessWidget {
                 ]);
               }))
     ]);
+  }
+
+  void morePicker(BuildContext context) {
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) {
+          return CupertinoActionSheet(
+              actions: [
+                CupertinoActionSheetAction(
+                    child: Text("收入", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                    onPressed: () {
+                      Get.back(result: FeeType.INCOME);
+                    }),
+                CupertinoActionSheetAction(
+                    child: Text("支出", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                    onPressed: () {
+                      Get.back(result: FeeType.PAY);
+                    }),
+                CupertinoActionSheetAction(
+                    child: Text("全部", style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                    onPressed: () {
+                      Get.back(result: FeeType.ALL);
+                    })
+              ],
+              cancelButton: CupertinoActionSheetAction(
+                  isDefaultAction: true, onPressed: Get.back, child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
+        }).then((value) {
+      if (value != null && logic.type.value != value) {
+        logic.type.value = value;
+        logic.refreshData();
+      }
+    });
   }
 }

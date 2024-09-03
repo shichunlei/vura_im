@@ -97,116 +97,128 @@ class ChatPage extends StatelessWidget {
                               extendedListDelegate: const ExtendedListDelegate(closeToTrailing: true))),
                       SafeArea(
                           top: false,
-                          child: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
-                              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                    height: 50.h,
-                                    child: Row(children: [
-                                      Expanded(
-                                          child: Container(
-                                              height: 50.h,
-                                              alignment: Alignment.centerLeft,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(11.r),
-                                                  color: const Color(0xfff5f5f5)),
-                                              child: TextField(
-                                                  controller: logic.controller,
-                                                  maxLines: 1,
-                                                  textInputAction: TextInputAction.send,
-                                                  style: GoogleFonts.roboto(
-                                                      fontSize: 15.sp, color: ColorUtil.color_333333),
-                                                  onSubmitted: (v) {
-                                                    DeviceUtils.hideKeyboard();
-                                                    logic.sendMessage(v, MessageType.TEXT);
-                                                  },
-                                                  decoration: InputDecoration(
-                                                      contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                                                      hintText: "请输入您想说的话",
-                                                      border: InputBorder.none,
-                                                      hintStyle: GoogleFonts.roboto(
-                                                          fontSize: 15.sp, color: ColorUtil.color_999999))))),
-                                      SizedBox(width: 10.w),
-                                      CustomIconButton(
-                                          bgColor: const Color(0xff2ECC72),
-                                          icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
-                                          radius: 25.h,
-                                          onPressed: () {
-                                            logic.sendMessage(logic.controller.text, MessageType.TEXT);
-                                          })
-                                    ])),
-                                Divider(height: 0, color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
-                                Padding(
-                                    padding: EdgeInsets.symmetric(horizontal: 22.w),
-                                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.voice, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            showToast(text: "开发中。。。");
-                                          }),
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            logic.getImage(ImageSource.camera);
-                                          }),
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.name_card, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            showCupertinoModalPopup(
-                                                context: Get.context!,
-                                                builder: (_) {
-                                                  return CupertinoActionSheet(
-                                                      actions: [
-                                                        CupertinoActionSheetAction(
-                                                            child: Text("我自己",
-                                                                style: TextStyle(
-                                                                    fontWeight: FontWeight.w400, fontSize: 16.sp)),
-                                                            onPressed: () {
-                                                              Get.back();
-                                                              logic.sendIdCard(Get.find<RootLogic>().user.value);
-                                                            }),
-                                                        CupertinoActionSheetAction(
-                                                            child: Text("我的好友",
-                                                                style: TextStyle(
-                                                                    fontWeight: FontWeight.w400, fontSize: 16.sp)),
-                                                            onPressed: () {
-                                                              Get.offNamed(RoutePath.SELECT_CONTACTS_PAGE,
-                                                                  arguments: {"isCheckBox": false})?.then((value) {
-                                                                if (value != null) logic.sendIdCard(value);
-                                                              });
-                                                            }),
-                                                      ],
-                                                      cancelButton: CupertinoActionSheetAction(
-                                                          isDefaultAction: true,
-                                                          onPressed: Get.back,
-                                                          child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
+                          child: logic.type == SessionType.group &&
+                                  logic.session.value?.configObj?.allMute == YorNType.Y
+                              ? Container(
+                                  height: 50.h,
+                                  decoration: BoxDecoration(
+                                      color: const Color(0xfff5f5f5),
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+                                  alignment: Alignment.center,
+                                  child: Text("禁言中...",
+                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)))
+                              : Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.transparent,
+                                      borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+                                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                    Container(
+                                        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                        height: 50.h,
+                                        child: Row(children: [
+                                          Expanded(
+                                              child: Container(
+                                                  height: 50.h,
+                                                  alignment: Alignment.centerLeft,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius: BorderRadius.circular(11.r),
+                                                      color: const Color(0xfff5f5f5)),
+                                                  child: TextField(
+                                                      controller: logic.controller,
+                                                      maxLines: 1,
+                                                      textInputAction: TextInputAction.send,
+                                                      style: GoogleFonts.roboto(
+                                                          fontSize: 15.sp, color: ColorUtil.color_333333),
+                                                      onSubmitted: (v) {
+                                                        DeviceUtils.hideKeyboard();
+                                                        logic.sendMessage(v, MessageType.TEXT);
+                                                      },
+                                                      decoration: InputDecoration(
+                                                          contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                                                          hintText: "请输入您想说的话",
+                                                          border: InputBorder.none,
+                                                          hintStyle: GoogleFonts.roboto(
+                                                              fontSize: 15.sp, color: ColorUtil.color_999999))))),
+                                          SizedBox(width: 10.w),
+                                          CustomIconButton(
+                                              bgColor: const Color(0xff2ECC72),
+                                              icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
+                                              radius: 25.h,
+                                              onPressed: () {
+                                                logic.sendMessage(logic.controller.text, MessageType.TEXT);
+                                              })
+                                        ])),
+                                    Divider(height: 0, color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
+                                    Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 22.w),
+                                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.voice, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+
+                                              }),
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+                                                logic.getImage(ImageSource.camera);
+                                              }),
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.name_card, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+                                                showCupertinoModalPopup(
+                                                    context: Get.context!,
+                                                    builder: (_) {
+                                                      return CupertinoActionSheet(
+                                                          actions: [
+                                                            CupertinoActionSheetAction(
+                                                                child: Text("我自己",
+                                                                    style: TextStyle(
+                                                                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                  logic.sendIdCard(Get.find<RootLogic>().user.value);
+                                                                }),
+                                                            CupertinoActionSheetAction(
+                                                                child: Text("我的好友",
+                                                                    style: TextStyle(
+                                                                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
+                                                                onPressed: () {
+                                                                  Get.offNamed(RoutePath.SELECT_CONTACTS_PAGE,
+                                                                      arguments: {"isCheckBox": false})?.then((value) {
+                                                                    if (value != null) logic.sendIdCard(value);
+                                                                  });
+                                                                }),
+                                                          ],
+                                                          cancelButton: CupertinoActionSheetAction(
+                                                              isDefaultAction: true,
+                                                              onPressed: Get.back,
+                                                              child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
+                                                    });
+                                              }),
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.gallery, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+                                                logic.getImage(ImageSource.gallery);
+                                              }),
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.red_package, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+                                                Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
+                                                        arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})
+                                                    ?.then((value) {
+                                                  if (value != null) logic.sendRedPackage(value);
                                                 });
-                                          }),
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.gallery, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            logic.getImage(ImageSource.gallery);
-                                          }),
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.red_package, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
-                                                arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})?.then((value) {
-                                              if (value != null) logic.sendRedPackage(value);
-                                            });
-                                          }),
-                                      CustomIconButton(
-                                          icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
-                                          onPressed: () {
-                                            ///
-                                            showToast(text: "这是发什么？");
-                                          })
-                                    ]))
-                              ])))
+                                              }),
+                                          CustomIconButton(
+                                              icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
+                                              onPressed: () {
+                                                ///
+                                                showToast(text: "这是发什么？");
+                                              })
+                                        ]))
+                                  ])))
                     ]);
                   }))
         ]));

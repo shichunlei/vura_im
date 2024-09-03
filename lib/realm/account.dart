@@ -1,5 +1,7 @@
+import 'package:get/get.dart';
 import 'package:realm/realm.dart';
 import 'package:vura/entities/account_entity.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/log_utils.dart';
 
 part 'account.realm.dart';
@@ -12,6 +14,7 @@ class _Account {
   String? password;
   String? headImage;
   String? headImageThumb;
+  String? payPassword;
 }
 
 class AccountRealm {
@@ -50,6 +53,18 @@ class AccountRealm {
       Log.d("update===================>${_account.toEJson()}");
     }
   }
+
+  /// 更新信息
+  Future updatePayPassword(String payPassword) async {
+    Account? _account = findOne(Get.find<RootLogic>().user.value?.userName);
+    if (_account != null) {
+      await _realm.writeAsync(() {
+        _account.payPassword = payPassword;
+      });
+
+      Log.d("updatePayPassword===================>${_account.toEJson()}");
+    }
+  }
 }
 
 AccountEntity accountRealmToEntity(Account account) {
@@ -58,7 +73,8 @@ AccountEntity accountRealmToEntity(Account account) {
       nickName: account.nickName,
       password: account.password,
       headImage: account.headImage,
-      headImageThumb: account.headImageThumb);
+      headImageThumb: account.headImageThumb,
+      payPassword: account.payPassword);
 }
 
 Account accountEntityToRealm(AccountEntity account) {
@@ -66,5 +82,6 @@ Account accountEntityToRealm(AccountEntity account) {
       nickName: account.nickName,
       password: account.password,
       headImage: account.headImage,
-      headImageThumb: account.headImageThumb);
+      headImageThumb: account.headImageThumb,
+      payPassword: account.payPassword);
 }

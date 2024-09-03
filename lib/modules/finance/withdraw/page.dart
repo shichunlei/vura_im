@@ -75,20 +75,40 @@ class WithdrawPage extends StatelessWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (_, int index) {
-                              return Container(
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xff2ECC72).withOpacity(.2),
-                                      borderRadius: BorderRadius.circular(6.r),
-                                      border: Border.all(color: const Color(0xff83C240), width: 1)),
-                                  child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                    Text("300",
-                                        style: GoogleFonts.roboto(
-                                            color: const Color(0xff83C240),
-                                            fontSize: 22.sp,
-                                            fontWeight: FontWeight.bold)),
-                                    Text("≈￥2163",
-                                        style: GoogleFonts.roboto(color: const Color(0xff83C240), fontSize: 13.sp))
-                                  ]));
+                              return Obx(() {
+                                return GestureDetector(
+                                    onTap: () {
+                                      logic.selectIndex.value = index;
+                                      logic.controller.text = "";
+                                    },
+                                    behavior: HitTestBehavior.translucent,
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                            color: logic.selectIndex.value == index
+                                                ? const Color(0xff2ECC72).withOpacity(.2)
+                                                : const Color(0xffF1F6F7),
+                                            borderRadius: BorderRadius.circular(10.r),
+                                            border: Border.all(
+                                                color: logic.selectIndex.value == index
+                                                    ? const Color(0xff83C240)
+                                                    : const Color(0xffF1F6F7),
+                                                width: 1)),
+                                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                          Text("300",
+                                              style: GoogleFonts.roboto(
+                                                  color: logic.selectIndex.value == index
+                                                      ? const Color(0xff83C240)
+                                                      : ColorUtil.color_333333,
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.bold)),
+                                          Text("≈￥2163", // TODO  人民币
+                                              style: GoogleFonts.roboto(
+                                                  color: logic.selectIndex.value == index
+                                                      ? const Color(0xff83C240)
+                                                      : ColorUtil.color_999999,
+                                                  fontSize: 13.sp))
+                                        ])));
+                              });
                             },
                             itemCount: 8),
                         const Divider(height: 0),
@@ -118,12 +138,13 @@ class WithdrawPage extends StatelessWidget {
                           Text("参考单价", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
                           Text("7.15CNY", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333))
+                          // TODO 汇率
                         ]),
                         SizedBox(height: 22.h),
                         Row(children: [
                           Text("预计获得", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
-                          Text("≈￥2163",
+                          Text("≈￥2163", // TODO  人民币
                               style: GoogleFonts.roboto(
                                   color: const Color(0xffFF4255), fontWeight: FontWeight.bold, fontSize: 13.sp))
                         ]),

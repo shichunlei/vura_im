@@ -44,7 +44,7 @@ dependencies:
   cached_network_image: ^3.4.1
   # 设备信息
   device_info_plus: ^10.1.2
-  dio: ^5.6.0
+  dio: ^5.7.0
   extended_list: ^3.0.2
   # event_bus
   event_bus: ^2.0.0
@@ -94,6 +94,9 @@ dependencies:
   wechat_assets_picker: ^9.2.0
   # 仿微信录制视频
   wechat_camera_picker: ^4.3.2
+  # 仿微信录制音频
+  xbr_plugin_record:
+    path: ../../cses/flutter_third_plugins/xbr_plugin_record
 
 dependency_overrides:
   video_player_android: 2.6.0

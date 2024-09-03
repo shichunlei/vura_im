@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:vura/global/enum.dart';
 
 part 'bill_record_entity.g.dart';
 
@@ -14,7 +15,7 @@ class BillRecordEntity {
   String? walletRemark;
   String? nickName;
   String? walletCard;
-  String? type;
+  FeeType type;
   String? detailDesc;
   String? updateTime;
 
@@ -29,7 +30,7 @@ class BillRecordEntity {
     this.walletRemark,
     this.nickName,
     this.walletCard,
-    this.type,
+    this.type = FeeType.PAY,
     this.detailDesc,
     this.updateTime,
   });

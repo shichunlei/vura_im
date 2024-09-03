@@ -27,6 +27,8 @@ class MuteLogic extends BaseListLogic<MemberEntity> {
     showLoading();
     BaseBean result = await SessionRepository.resetMute(id, [list[index].userId]);
     hiddenLoading();
-    if (result.code == 200) {}
+    if (result.code == 200) {
+
+    }
   }
 }

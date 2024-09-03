@@ -108,3 +108,13 @@ enum LocalType {
 
   const LocalType(this.code, this.locale);
 }
+
+enum FeeType {
+  PAY("支出"),
+  INCOME("收入"),
+  ALL("全部");
+
+  final String label;
+
+  const FeeType(this.label);
+}
