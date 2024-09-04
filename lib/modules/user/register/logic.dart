@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/mixin/auth_code_mixin.dart';
+import 'package:vura/modules/setting/account/logic.dart';
 import 'package:vura/modules/user/login/logic.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
@@ -16,7 +17,11 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
   TextEditingController nicknameController = TextEditingController();
   TextEditingController rePasswordController = TextEditingController();
 
+  late bool isAddAccount;
+
   RegisterLogic() {
+    isAddAccount = Get.arguments?["isAddAccount"] ?? false;
+
     accountController.addListener(update);
     nicknameController.addListener(update);
     rePasswordController.addListener(update);
@@ -63,14 +68,22 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
 
     if (result.code == 200) {
       showToast(text: "注册成功");
+      if (isAddAccount) {
+        try {
+          Get.find<AccountLogic>().addAccount(accountController.text, nicknameController.text,passwordController.text,);
+        } catch (e) {
+          Log.e(e.toString());
+        }
+        Get.back();
+      } else {
+        try {
+          Get.find<LoginLogic>().initValues(accountController.text, passwordController.text);
+        } catch (e) {
+          Log.e(e.toString());
+        }
 
-      try {
-        Get.find<LoginLogic>().initValues(accountController.text, passwordController.text);
-      } catch (e) {
-        Log.e(e.toString());
+        Get.until((route) => route.settings.name == RoutePath.LOGIN_PAGE);
       }
-
-      Get.until((route) => route.settings.name == RoutePath.LOGIN_PAGE);
     } else {
       // 刷新验证码
       getAuthCode();

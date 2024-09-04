@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/setting/add_account/dialog.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
@@ -38,7 +39,9 @@ class AccountPage extends StatelessWidget {
                                   padding: EdgeInsets.only(left: 22.w),
                                   height: 80.r,
                                   child: GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        Get.bottomSheet(const AddAccountDialog(), isScrollControlled: true);
+                                      },
                                       behavior: HitTestBehavior.translucent,
                                       child: Row(children: [
                                         Icon(IconFont.add_round, size: 44.r),

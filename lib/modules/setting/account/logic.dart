@@ -46,4 +46,12 @@ class AccountLogic extends BaseListLogic<AccountEntity> {
       Get.offAllNamed(RoutePath.HOME_PAGE);
     }
   }
+
+  Future addAccount(String userName, String nickName, String password) async {
+    AccountRealm(realm: Get.find<RootLogic>().realm)
+        .upsert(Account(userName, nickName: nickName, password: password))
+        .then((value) {
+      refreshData();
+    });
+  }
 }
