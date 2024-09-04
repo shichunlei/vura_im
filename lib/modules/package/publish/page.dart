@@ -5,9 +5,11 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -171,7 +173,7 @@ class PackagePublishPage extends StatelessWidget {
                                       margin: EdgeInsets.only(left: 18.w),
                                       alignment: Alignment.centerLeft,
                                       child:
-                                          Image.asset("assets/images/default_cover.png", height: 137.r, width: 94.r)),
+                                          Image.asset(logic.selectCover.value.imagePath, height: 137.r, width: 94.r)),
                                   Container(
                                       alignment: Alignment.centerLeft,
                                       margin: EdgeInsets.only(left: 18.w, top: 18.h, bottom: 15.h),
@@ -180,11 +182,17 @@ class PackagePublishPage extends StatelessWidget {
                                   Container(
                                       alignment: Alignment.centerLeft,
                                       margin: EdgeInsets.only(left: 18.w, bottom: 18.h),
-                                      child: Wrap(spacing: 11.w, children: [
-                                        Image.asset("assets/images/cover-1.png", height: 132.r, width: 89.r),
-                                        Image.asset("assets/images/cover-2.png", height: 132.r, width: 89.r),
-                                        Image.asset("assets/images/cover-3.png", height: 132.r, width: 89.r)
-                                      ]))
+                                      child: Wrap(
+                                          spacing: 11.w,
+                                          children: List.generate(3, (index) {
+                                            return GestureDetector(
+                                                onTap: () {
+                                                  logic.selectCoverFun(logic.packageCovers2[index]);
+                                                },
+                                                behavior: HitTestBehavior.translucent,
+                                                child: Image.asset(logic.packageCovers2[index].imagePath,
+                                                    height: 132.r, width: 89.r));
+                                          })))
                                 ]));
                           })
                         ])),
@@ -210,7 +218,23 @@ class PackagePublishPage extends StatelessWidget {
                         ]),
                     RadiusInkWellWidget(
                         color: const Color(0xffDB5549),
-                        onPressed: logic.sendRedPackage,
+                        onPressed: () {
+                          if (StringUtil.isEmpty(logic.amountController.text)) {
+                            showToast(text: "请输入总金额");
+                            return;
+                          }
+
+                          if (logic.type == SessionType.group && StringUtil.isEmpty(logic.countController.text)) {
+                            showToast(text: "请输入幸运值个数");
+                            return;
+                          }
+
+                          Get.bottomSheet(InputPayPasswordDialog(amount: double.tryParse(logic.amountController.text)),
+                                  isScrollControlled: true)
+                              .then((value) {
+                            if (value != null) logic.sendRedPackage(value);
+                          });
+                        },
                         radius: 40,
                         margin: EdgeInsets.only(top: 22.h),
                         child: Container(

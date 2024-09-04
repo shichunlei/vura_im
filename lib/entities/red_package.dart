@@ -31,3 +31,10 @@ class RedPackageBean {
 
   Map<String, dynamic> toJson() => _$RedPackageBeanToJson(this);
 }
+
+class PackageCoverEntity {
+  String id;
+  String imagePath;
+
+  PackageCoverEntity(this.id, this.imagePath);
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/red_package.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/repository/session_repository.dart';
@@ -20,6 +21,24 @@ class PackagePublishLogic extends BaseLogic {
     type = Get.arguments[Keys.TYPE];
 
     amountController.addListener(update);
+
+    packageCovers2.value = packageCovers.where((item) => item.id != selectCover.value.id).toList();
+  }
+
+  var selectCover = PackageCoverEntity("default", "assets/images/default_cover.png").obs;
+
+  RxList<PackageCoverEntity> packageCovers2 = RxList<PackageCoverEntity>([]);
+
+  List<PackageCoverEntity> packageCovers = [
+    PackageCoverEntity("default", "assets/images/default_cover.png"),
+    PackageCoverEntity("cover-1", "assets/images/cover-1.png"),
+    PackageCoverEntity("cover-2", "assets/images/cover-2.png"),
+    PackageCoverEntity("cover-3", "assets/images/cover-3.png"),
+  ];
+
+  void selectCoverFun(PackageCoverEntity cover) {
+    selectCover.value = cover;
+    packageCovers2.value = packageCovers.where((item) => item.id != selectCover.value.id).toList();
   }
 
   TextEditingController amountController = TextEditingController();
@@ -64,7 +83,7 @@ class PackagePublishLogic extends BaseLogic {
 
   List<int?> mines = [];
 
-  Future sendRedPackage() async {
+  Future sendRedPackage(String? password) async {
     if (StringUtil.isEmpty(amountController.text)) {
       showToast(text: "请输入总金额");
       return;
@@ -81,8 +100,7 @@ class PackagePublishLogic extends BaseLogic {
 
     params["receiverId"] = id; // 接收人ID/群聊ID
     params["blessing"] = StringUtil.isEmpty(textController.text) ? "恭喜发财，大吉大利" : textController.text;
-    // params["amountOne"] = ""; // 单个红包金额，单位是元，最少0.01元
-    params["cover"] = "default"; // todo 红包封面
+    params["cover"] = selectCover.value.id; // todo 红包封面
     if (type == SessionType.group) params['mines'] = mines; // 雷点号
     params["totalAmount"] = StringUtil.isEmpty(amountController.text)
         ? 0.00
@@ -93,6 +111,7 @@ class PackagePublishLogic extends BaseLogic {
         : mines.isNotEmpty
             ? 3
             : 2; // 红包类型 1 单人红包 2 普通群红包 3 拼手气红包(红包雷)
+    params["password"] = password; // 支付密码
     Log.json(params);
 
     showLoading();
