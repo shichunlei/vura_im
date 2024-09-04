@@ -20,8 +20,8 @@ class LoginLogic extends BaseLogic {
     passwordController.addListener(update);
   }
 
-  Future login() async {
-    DeviceUtils.hideKeyboard();
+  Future login(BuildContext context) async {
+    DeviceUtils.hideKeyboard(context);
     if (accountController.text.isEmpty) {
       showToast(text: "请输入登录账号");
       return;
@@ -56,4 +56,11 @@ class LoginLogic extends BaseLogic {
   }
 
   var obscureText = true.obs;
+
+  @override
+  void onClose() {
+    accountController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
 }

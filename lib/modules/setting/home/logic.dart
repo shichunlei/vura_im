@@ -1,6 +1,9 @@
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:vura/base/base_logic.dart';
+import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/file_util.dart';
+import 'package:vura/widgets/dialog/tip_dialog.dart';
 
 class SettingLogic extends BaseLogic {
   var cacheSize = "0 B".obs;
@@ -20,5 +23,25 @@ class SettingLogic extends BaseLogic {
     await FileUtil.clearCache().then((value) {
       getCSize();
     });
+  }
+
+  Future checkVersion() async {
+    showLoading();
+    // todo
+    Future.delayed(const Duration(seconds: 1), () {
+      hiddenLoading();
+      show(builder: (_) {
+        return CustomTipDialog(title: "版本更新", content: "已是最新版本", btnText: "我知道了", onConfirm: () {});
+      });
+    });
+  }
+
+  /// todo
+  void launchURL() async {
+    if (await canLaunchUrl(Uri(scheme: 'http', host: 'home.lgerapp.com', path: ''))) {
+      await launchUrl(Uri(scheme: 'http', host: 'home.lgerapp.com', path: ''));
+    } else {
+      throw 'Could not launch';
+    }
   }
 }

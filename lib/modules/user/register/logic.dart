@@ -39,8 +39,8 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
   var obscureText = true.obs;
   var reObscureText = true.obs;
 
-  Future register() async {
-    DeviceUtils.hideKeyboard();
+  Future register(BuildContext context) async {
+    DeviceUtils.hideKeyboard(context);
     if (accountController.text.isEmpty) {
       showToast(text: "请输入账号");
       return;

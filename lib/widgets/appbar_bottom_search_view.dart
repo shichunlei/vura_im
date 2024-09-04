@@ -74,7 +74,7 @@ class _AppBarBottomSearchViewState extends State<AppBarBottomSearchView> {
                   textInputAction: TextInputAction.search,
                   style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
                   onSubmitted: (v) {
-                    DeviceUtils.hideKeyboard();
+                    DeviceUtils.hideKeyboard(context);
                     widget.onSubmitted.call(v);
                   },
                   onChanged: widget.onChanged?.call,
@@ -89,7 +89,7 @@ class _AppBarBottomSearchViewState extends State<AppBarBottomSearchView> {
                       radius: 22.r,
                       icon: const Icon(Icons.clear, color: ColorUtil.color_999999),
                       onPressed: () {
-                        DeviceUtils.hideKeyboard();
+                        DeviceUtils.hideKeyboard(context);
                         controller?.text = '';
                         widget.onChanged?.call("");
                         if (mounted) setState(() {});

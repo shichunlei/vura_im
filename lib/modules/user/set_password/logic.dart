@@ -32,8 +32,8 @@ class SetPasswordLogic extends BaseLogic with AuthCodeMixin {
   var obscureText = true.obs;
   var reObscureText = true.obs;
 
-  Future setPassword() async {
-    DeviceUtils.hideKeyboard();
+  Future setPassword(BuildContext context) async {
+    DeviceUtils.hideKeyboard(context);
     if (accountController.text.isEmpty) {
       showToast(text: "请输入账号");
       return;

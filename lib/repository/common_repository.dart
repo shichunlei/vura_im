@@ -6,6 +6,7 @@ import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/version_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/http_utils.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/tool_util.dart';
@@ -68,12 +69,17 @@ class CommonRepository {
   /// [userId] 用户Id 查询自己的 不用给
   ///
   static Future<List<BillRecordEntity>> bookMoneyList(
-      {int page = 0, int size = 20, required FeeType type, String? startDate, String? endDate, String? userId}) async {
+      {int page = 0,
+      int size = 20,
+      required FeeType type,
+      DateTime? startDate,
+      DateTime? endDate,
+      String? userId}) async {
     var data = await HttpUtils.getInstance().request("bookMoney/myListByPage", params: {
       Keys.CURRENT_PAGE: page,
       Keys.PAGE_SIZE: size,
-      if (endDate != null) "endDate": endDate,
-      if (startDate != null) "startDate": startDate,
+      if (endDate != null) "endDate": DateUtil.getDateStrByDateTime(endDate, format: DateFormat.YEAR_MONTH_DAY),
+      if (startDate != null) "startDate": DateUtil.getDateStrByDateTime(startDate, format: DateFormat.YEAR_MONTH_DAY),
       if (type != FeeType.ALL) Keys.TYPE: type.name,
       if (userId != null) Keys.USER_ID: userId
     });

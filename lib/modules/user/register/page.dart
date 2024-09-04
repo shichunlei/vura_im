@@ -215,7 +215,7 @@ class RegisterPage extends StatelessWidget {
                 Hero(
                     tag: "submit_button",
                     child: RadiusInkWellWidget(
-                        onPressed: logic.register,
+                        onPressed: () => logic.register(context),
                         radius: 44,
                         margin: EdgeInsets.only(bottom: 40.h, top: 47.h),
                         child: Container(

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/global/icon_font.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -75,14 +76,23 @@ class AddAccountDialog extends StatelessWidget {
                                 border: InputBorder.none,
                                 contentPadding: EdgeInsets.only(right: 18.w),
                                 hintText: "请输入登录密码",
-                                hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999))))
+                                hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
+                    CustomIconButton(
+                        icon: Obx(() {
+                          return Icon(logic.obscureText.value ? IconFont.eye_close_line : IconFont.eye_open_line,
+                              color: ColorUtil.color_333333);
+                        }),
+                        onPressed: logic.obscureText.toggle,
+                        radius: 18.r),
+                    SizedBox(width: 10.w)
                   ])),
               Row(children: [
                 SizedBox(width: 22.w),
                 Expanded(
                     child: RadiusInkWellWidget(
                         onPressed: () {
-                          Get.toNamed(RoutePath.REGISTER_PAGE, arguments: {"isAddAccount": true});
+                          DeviceUtils.hideKeyboard(context);
+                          Get.offNamed(RoutePath.REGISTER_PAGE, arguments: {"isAddAccount": true});
                         },
                         radius: 40,
                         color: Colors.transparent,
@@ -98,7 +108,7 @@ class AddAccountDialog extends StatelessWidget {
                 SizedBox(width: 22.w),
                 Expanded(
                     child: RadiusInkWellWidget(
-                        onPressed: logic.login,
+                        onPressed: () => logic.login(context),
                         radius: 40,
                         color: Theme.of(context).primaryColor,
                         child: Container(

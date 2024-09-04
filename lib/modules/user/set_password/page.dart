@@ -195,7 +195,7 @@ class SetPasswordPage extends StatelessWidget {
                 Hero(
                     tag: "submit_button",
                     child: RadiusInkWellWidget(
-                        onPressed: logic.setPassword,
+                        onPressed: () => logic.setPassword(context),
                         radius: 44,
                         margin: EdgeInsets.only(bottom: 40.h, top: 47.h),
                         child: Container(

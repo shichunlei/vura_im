@@ -44,7 +44,7 @@ class PayPasswordLogic extends BaseLogic {
         rePassword = codeList.toList().join("");
 
         if (password == rePassword) {
-          DeviceUtils.hideKeyboard();
+          DeviceUtils.hideKeyboard(context);
           showToast(text: "设置成功");
           try {
             AccountRealm(realm: Get.find<RootLogic>().realm).updatePayPassword(password);

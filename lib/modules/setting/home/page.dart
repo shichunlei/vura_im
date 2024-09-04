@@ -75,7 +75,7 @@ class SettingPage extends StatelessWidget {
               child: Column(children: [
                 RadiusInkWellWidget(
                     color: Colors.transparent,
-                    onPressed: () {},
+                    onPressed: logic.launchURL,
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                     child: Container(
                         height: 60.h,
@@ -94,7 +94,9 @@ class SettingPage extends StatelessWidget {
                     color: Colors.transparent,
                     borderRadius:
                         BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                    onPressed: () {},
+                    onPressed: () {
+                      logic.checkVersion();
+                    },
                     child: Container(
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),

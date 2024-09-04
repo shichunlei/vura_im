@@ -88,6 +88,8 @@ dependencies:
   talker_dio_logger: ^4.4.1
   # 时间线
   timelines_plus: ^1.0.3
+
+  url_launcher: ^6.3.0
   # webview
   webview_flutter: ^4.8.0
   # 仿微信选择图片

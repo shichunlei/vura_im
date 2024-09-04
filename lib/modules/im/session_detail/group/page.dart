@@ -18,6 +18,7 @@ import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/dialog/bottom_dialog.dart';
+import 'package:vura/widgets/dialog/tip_dialog.dart';
 import 'package:vura/widgets/dialog/update_text_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -176,6 +177,9 @@ class GroupSessionDetailPage extends StatelessWidget {
                             onPressed: () {
                               if (logic.bean.value!.isAdmin != YorNType.Y &&
                                   logic.bean.value!.isSupAdmin != YorNType.Y) {
+                                show(builder: (_) {
+                                  return const CustomTipDialog(title: "温馨提示", content: "仅群主和管理员可修改群名称");
+                                });
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(title: "请输入群聊名称", value: logic.bean.value?.name ?? ""))
@@ -201,6 +205,9 @@ class GroupSessionDetailPage extends StatelessWidget {
                             onPressed: () {
                               if (logic.bean.value!.isAdmin != YorNType.Y &&
                                   logic.bean.value!.isSupAdmin != YorNType.Y) {
+                                show(builder: (_) {
+                                  return const CustomTipDialog(title: "温馨提示", content: "仅群主和管理员可修改群头像");
+                                });
                                 return;
                               }
                               showImagePickerDialog(context).then((value) {
@@ -243,6 +250,9 @@ class GroupSessionDetailPage extends StatelessWidget {
                             onPressed: () {
                               if (logic.bean.value!.isAdmin != YorNType.Y &&
                                   logic.bean.value!.isSupAdmin != YorNType.Y) {
+                                show(builder: (_) {
+                                  return const CustomTipDialog(title: "温馨提示", content: "仅群主和管理员可修改群公告");
+                                });
                                 return;
                               }
                               Get.dialog(UpdateTextDialog(
@@ -333,7 +343,11 @@ class GroupSessionDetailPage extends StatelessWidget {
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              show(builder: (_) {
+                                return CustomAlertDialog(title: "温馨提示", content: "您确定要清空该群聊的聊天记录吗？", onConfirm: () {});
+                              });
+                            },
                             borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(11.r), bottomLeft: Radius.circular(11.r)),
                             child: Container(

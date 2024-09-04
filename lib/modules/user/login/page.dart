@@ -116,7 +116,7 @@ class LoginPage extends StatelessWidget {
                 Hero(
                     tag: "submit_button",
                     child: RadiusInkWellWidget(
-                        onPressed: logic.login,
+                        onPressed: () => logic.login(context),
                         radius: 44,
                         margin: EdgeInsets.only(top: 47.h),
                         child: Container(

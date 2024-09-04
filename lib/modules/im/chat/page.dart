@@ -132,7 +132,7 @@ class ChatPage extends StatelessWidget {
                                                       style: GoogleFonts.roboto(
                                                           fontSize: 15.sp, color: ColorUtil.color_333333),
                                                       onSubmitted: (v) {
-                                                        DeviceUtils.hideKeyboard();
+                                                        DeviceUtils.hideKeyboard(context);
                                                         logic.sendMessage(v, MessageType.TEXT);
                                                       },
                                                       decoration: InputDecoration(

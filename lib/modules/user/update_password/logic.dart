@@ -30,8 +30,8 @@ class UpdatePasswordLogic extends BaseLogic with AuthCodeMixin {
   var reObscureText = true.obs;
   var newObscureText = true.obs;
 
-  Future updatePassword() async {
-    DeviceUtils.hideKeyboard();
+  Future updatePassword(BuildContext context) async {
+    DeviceUtils.hideKeyboard(context);
     if (oldPasswordController.text.isEmpty) {
       showToast(text: "请输入原始密码");
       return;

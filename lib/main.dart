@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
     final builder = BotToastInit();
 
     return GestureDetector(
-        onTap: DeviceUtils.hideKeyboard,
+        onTap: () => DeviceUtils.hideKeyboard(context),
         child: ScreenUtilInit(
             designSize: const Size(414, 896),
             minTextAdapt: true,

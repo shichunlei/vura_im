@@ -15,12 +15,12 @@ class AddAccountLogic extends BaseLogic {
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  LoginLogic() {
+  AddAccountLogic() {
     accountController.addListener(update);
     passwordController.addListener(update);
   }
 
-  Future login() async {
+  Future login(BuildContext context) async {
     if (accountController.text.isEmpty) {
       showToast(text: "请输入登录账号");
       return;
@@ -37,7 +37,7 @@ class AddAccountLogic extends BaseLogic {
     hiddenLoading();
 
     if (result != null) {
-      DeviceUtils.hideKeyboard();
+      if (context.mounted) DeviceUtils.hideKeyboard(context);
       try {
         await AccountRealm(realm: Get.find<RootLogic>().realm)
             .upsert(Account(accountController.text, password: passwordController.text));
@@ -51,4 +51,11 @@ class AddAccountLogic extends BaseLogic {
   }
 
   var obscureText = true.obs;
+
+  @override
+  void onClose() {
+    accountController.dispose();
+    passwordController.dispose();
+    super.onClose();
+  }
 }

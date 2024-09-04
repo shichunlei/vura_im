@@ -5,7 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:vura/utils/log_utils.dart';
 
 class DeviceUtils {
@@ -49,8 +48,8 @@ class DeviceUtils {
 
   /// 隐藏键盘
   ///
-  static void hideKeyboard() {
-    FocusScope.of(Get.context!).requestFocus(FocusNode());
+  static void hideKeyboard(BuildContext context) {
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   /// 隐藏状态栏
