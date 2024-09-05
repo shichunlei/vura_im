@@ -14,6 +14,7 @@ class ItemReceiveEmoji extends StatelessWidget {
     return GestureDetector(
         behavior: HitTestBehavior.translucent,
         onDoubleTap: () {},
-        child: Image.asset("assets/images/emoji_${emoji.type}/${emoji.path}", width: 100.r, height: 100.r));
+        child: Image.asset("assets/emoji_${emoji.type}/${emoji.path}",
+            width: 100.r, height: 100.r, package: "emoji_picker"));
   }
 }

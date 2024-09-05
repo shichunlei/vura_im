@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:emoji_picker/emoji_picker.dart';
 import 'package:extended_list/extended_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ import 'package:vura/global/config.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
-import 'package:vura/modules/im/emoji/dialog.dart';
 import 'package:vura/modules/im/widgets/item_receive_message.dart';
 import 'package:vura/modules/im/widgets/item_send_message.dart';
 import 'package:vura/modules/im/widgets/item_system_message.dart';
@@ -215,7 +215,7 @@ class ChatPage extends StatelessWidget {
                                           CustomIconButton(
                                               icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
                                               onPressed: () {
-                                                Get.bottomSheet(const EmojiDialog()).then((value) {
+                                                Get.bottomSheet(const EmojiPickerDialog()).then((value) {
                                                   if (value != null) {
                                                     Log.d(value.toJson());
                                                     logic.sendMessage(json.encode(value.toJson()), MessageType.EMOJI);
