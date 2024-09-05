@@ -35,20 +35,19 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: const Color(0xffE4E8FA),
         child: Stack(children: [
           logic.selectedBgIndex == 0
               ? const SizedBox()
               : Image.asset("assets/images/chat_bg_${logic.selectedBgIndex}.png",
                   width: double.infinity, height: double.infinity, fit: BoxFit.fill),
           Scaffold(
-              backgroundColor:
-                  logic.selectedBgIndex == 0 ? Theme.of(context).scaffoldBackgroundColor : Colors.transparent,
+              backgroundColor: logic.selectedBgIndex == 0 ? const Color(0xffE4E8FA) : Colors.transparent,
               appBar: AppBar(
                   title: Obx(() {
                     return Text(logic.session.value?.name ?? "聊天");
                   }),
-                  backgroundColor: logic.selectedBgIndex == 0 ? Colors.white : Colors.transparent,
+                  backgroundColor: logic.selectedBgIndex == 0 ? const Color(0xffE4E8FA) : Colors.transparent,
                   centerTitle: true,
                   actions: [
                     CustomIconButton(

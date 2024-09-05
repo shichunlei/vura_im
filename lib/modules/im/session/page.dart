@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/im/widgets/item_session.dart';
@@ -13,6 +12,7 @@ import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 import 'package:vura/widgets/state_view/empty_page.dart';
+import 'package:vura/widgets/text_marquee.dart';
 
 import 'logic.dart';
 
@@ -54,11 +54,13 @@ class SessionPage extends StatelessWidget {
                     child: Row(children: [
                       SizedBox(width: 22.w),
                       Icon(IconFont.notice2, color: ColorUtil.color_666666, size: 18.sp),
+                      SizedBox(width: 11.w),
                       Expanded(
-                          child: Text("祝大家生活愉快,前程似锦！欢迎大家得到来,祝大家身体健康!",
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp))),
+                          child: TextMarquee("欢迎来到vura，祝大家生活愉快，前程似锦！欢迎来到vura，祝大家生活愉快，前程似锦！",
+                              style: TextStyle(color: ColorUtil.color_666666, fontSize: 13.sp),
+                              delay: Duration.zero,
+                              duration: const Duration(seconds: 10),
+                              spaceSize: 0)),
                       SizedBox(width: 22.w)
                     ])),
                 const Divider(height: 0),
