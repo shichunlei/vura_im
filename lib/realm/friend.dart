@@ -100,7 +100,7 @@ UserEntity friendRealmToEntity(Friend user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
-      friendship: EnumToString.fromString(YorNType.values, user.friendship),
+      friendship: EnumToString.fromString(YorNType.values, user.friendship, defaultValue: YorNType.Y)!,
       tagIndex: user.indexTag);
 }
 

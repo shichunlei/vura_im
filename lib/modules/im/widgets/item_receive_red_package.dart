@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/package_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/modules/im/chat/logic.dart';
+import 'package:vura/utils/enum_to_string.dart';
 
 class ItemReceiveRedPackage extends StatelessWidget {
   final MessageEntity message;
@@ -19,14 +21,21 @@ class ItemReceiveRedPackage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          logic.openRedPackage(context, message, redPackage.id);
+          logic.openRedPackage(context, message, redPackage.id,redPackage.cover);
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xffF0924A)),
             width: 272.w,
             child: Stack(children: [
-              Positioned(right: 0, top: 0, child: Image.asset("assets/images/item_red_package_image.png", width: 99.w)),
+              Positioned(
+                  right: 0,
+                  top: 0,
+                  child: Image.asset(
+                      EnumToString.fromString(RedPackageCoverType.values, redPackage.cover,
+                              defaultValue: RedPackageCoverType.cover_0)!
+                          .itemPath,
+                      width: 99.w)),
               Column(mainAxisSize: MainAxisSize.min, children: [
                 SizedBox(height: 13.h),
                 redPackage.type == 3

@@ -21,6 +21,7 @@ import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/route/route_path.dart';
+import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -149,7 +150,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     }
   }
 
-  Future openRedPackage(context, MessageEntity message, String? redPackageId) async {
+  Future openRedPackage(BuildContext context, MessageEntity message, String? redPackageId, String? cover) async {
     if (type == SessionType.group &&
         session.value?.configObj?.vura == YorNType.N &&
         session.value?.isAdmin == YorNType.N &&
@@ -163,9 +164,17 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       if (result == "Y") {
         Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       } else if (result == "N") {
-        showRedPacket(context, () {
-          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        }, message.sendNickName, message.sendHeadImage, redPackageId);
+        if (context.mounted) {
+          showRedPacket(context, () {
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+          },
+              nickName: message.sendNickName,
+              headImage: message.sendHeadImage,
+              redPackageId: redPackageId,
+              coverImage:
+                  EnumToString.fromString(RedPackageCoverType.values, cover, defaultValue: RedPackageCoverType.cover_0)!
+                      .itemPath);
+        }
       } else if (result == "F") {
         showToast(text: "红包已抢完");
         Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
@@ -205,9 +214,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     });
   }
 
-  Future sendEmoji(EmojiEntity emoji)async{
-
-  }
+  Future sendEmoji(EmojiEntity emoji) async {}
 
   @override
   void onClose() {

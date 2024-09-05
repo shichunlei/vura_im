@@ -7,6 +7,7 @@ class LanguageLogic extends BaseLogic {
   late LocalType localType;
 
   LanguageLogic() {
-    localType = EnumToString.fromString(LocalType.values, SpUtil.getString("language", defValue: LocalType.zh_CN.name));
+    localType = EnumToString.fromString(LocalType.values, SpUtil.getString("language", defValue: LocalType.zh_CN.name),
+        defaultValue: LocalType.zh_CN)!;
   }
 }

@@ -7,14 +7,16 @@ import 'red_packet_painter.dart';
 
 OverlayEntry? entry;
 
-void showRedPacket(BuildContext context, Function? onOpen, String? nickName, String? headImage, String? redPackageId) {
+void showRedPacket(BuildContext context, Function? onOpen,
+    {String? nickName, String? headImage, String? redPackageId, String? coverImage}) {
   entry = OverlayEntry(
       builder: (_) => RedPacket(
           onFinish: _removeRedPacket,
           onOpen: onOpen,
           nickName: nickName,
           headImage: headImage,
-          redPackageId: redPackageId));
+          redPackageId: redPackageId,
+          coverImage: coverImage));
   Overlay.of(context).insert(entry!);
 }
 
@@ -29,8 +31,10 @@ class RedPacket extends StatefulWidget {
   final String? nickName;
   final String? headImage;
   final String? redPackageId;
+  final String? coverImage;
 
-  const RedPacket({super.key, this.onFinish, this.onOpen, this.nickName, this.headImage, this.redPackageId});
+  const RedPacket(
+      {super.key, this.onFinish, this.onOpen, this.nickName, this.headImage, this.redPackageId, this.coverImage});
 
   @override
   createState() => _RedPacketState();
@@ -67,7 +71,7 @@ class _RedPacketState extends State<RedPacket> with TickerProviderStateMixin {
   Widget buildRedPacket() {
     return GestureDetector(
         onTapUp: (TapUpDetails details) {
-          controller.clickGold(details,widget.redPackageId);
+          controller.clickGold(details, widget.redPackageId);
         },
         child: CustomPaint(
             size: Size(1.sw, 1.sh), painter: RedPacketPainter(controller: controller), child: buildChild()));
@@ -76,9 +80,8 @@ class _RedPacketState extends State<RedPacket> with TickerProviderStateMixin {
   Widget buildChild() {
     return AnimatedBuilder(
         animation: controller.translateController,
-        builder: (context, child) => Container(
-            padding: EdgeInsets.only(top: 0.3.sh * (1 - controller.translateCtrl.value)),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+        builder: (context, child) => Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              SizedBox(height: 0.3.sh * (1 - controller.translateCtrl.value)),
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                 AvatarRoundImage("${widget.headImage}", radius: 3.r, height: 24.w, width: 24.w, name: widget.nickName),
                 SizedBox(width: 5.w),
@@ -86,7 +89,8 @@ class _RedPacketState extends State<RedPacket> with TickerProviderStateMixin {
                     style: TextStyle(fontSize: 16.sp, color: const Color(0xFFF8E7CB), fontWeight: FontWeight.w500))
               ]),
               SizedBox(height: 15.w),
-              Text("恭喜发财", style: TextStyle(fontSize: 18.sp, color: const Color(0xFFF8E7CB)))
-            ])));
+              Text("恭喜发财", style: TextStyle(fontSize: 18.sp, color: const Color(0xFFF8E7CB))),
+              Image.asset("${widget.coverImage}")
+            ]));
   }
 }

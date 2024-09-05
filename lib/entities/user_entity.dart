@@ -65,16 +65,16 @@ class UserEntity extends ISuspensionBean {
         money: (json['money'] as num?)?.toDouble() ?? .0,
         signature: json['signature'] as String?,
         headImage: json['headImage'] as String?,
-        friendship: EnumToString.fromString(YorNType.values, json['friendship'] as String? ?? "M"),
+        friendship: EnumToString.fromString(YorNType.values, json['friendship'], defaultValue: YorNType.M)!,
         headImageThumb: json['headImageThumb'] as String?,
         online: json['online'] as bool? ?? false,
         walletCard: json['walletCard'] as String?,
         walletRemark: json['walletRemark'] as String?,
-        addFriend: EnumToString.fromString(YorNType.values, json['addFriend'] as String? ?? "N"),
-        protect: EnumToString.fromString(YorNType.values, json['protect'] as String? ?? "N"),
-        search: EnumToString.fromString(YorNType.values, json['search'] as String? ?? "N"),
-        setGroup: EnumToString.fromString(YorNType.values, json['setGroup'] as String? ?? "N"),
-        vura: EnumToString.fromString(YorNType.values, json['vura'] as String? ?? "N"),
+        addFriend: EnumToString.fromString(YorNType.values, json['addFriend'], defaultValue: YorNType.N)!,
+        protect: EnumToString.fromString(YorNType.values, json['protect'], defaultValue: YorNType.N)!,
+        search: EnumToString.fromString(YorNType.values, json['search'], defaultValue: YorNType.N)!,
+        setGroup: EnumToString.fromString(YorNType.values, json['setGroup'], defaultValue: YorNType.N)!,
+        vura: EnumToString.fromString(YorNType.values, json['vura'], defaultValue: YorNType.N)!,
         tagIndex: tag);
   }
 

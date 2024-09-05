@@ -119,3 +119,16 @@ enum FeeType {
 
   const FeeType(this.label);
 }
+
+enum RedPackageCoverType {
+  cover_0(label: "默认", coverPath: "assets/images/default_cover.webp", itemPath: "assets/images/item_cover_default.png"),
+  cover_1(label: "年年有余", coverPath: "assets/images/cover-1.webp", itemPath: "assets/images/item_cover-1.png"),
+  cover_2(label: "红包拿来", coverPath: "assets/images/cover-2.webp", itemPath: "assets/images/item_cover-2.png"),
+  cover_3(label: "招财进宝", coverPath: "assets/images/cover-3.webp", itemPath: "assets/images/item_cover-3.png");
+
+  final String label;
+  final String coverPath;
+  final String itemPath;
+
+  const RedPackageCoverType({required this.label, required this.coverPath, required this.itemPath});
+}

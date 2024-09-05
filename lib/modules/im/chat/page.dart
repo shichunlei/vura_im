@@ -159,7 +159,9 @@ class ChatPage extends StatelessWidget {
                                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
                                           CustomIconButton(
                                               icon: const Icon(IconFont.voice, color: Color(0xffbbbbbb)),
-                                              onPressed: () {}),
+                                              onPressed: () {
+                                                // todo
+                                              }),
                                           CustomIconButton(
                                               icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
                                               onPressed: () {

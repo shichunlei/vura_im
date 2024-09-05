@@ -20,8 +20,8 @@ class RedPacketPainter extends CustomPainter {
   Offset goldCenter = Offset.zero;
   final double centerWidth = 0.5.sw;
 
-  late double left = 0.1.sw;
-  late double right = 0.9.sw;
+  late double left = .1.sw;
+  late double right = .9.sw;
   late double top = (1.sh - height) / 2;
   late double bottom = (1.sh - height) / 2 + height;
 
@@ -38,9 +38,7 @@ class RedPacketPainter extends CustomPainter {
   void drawBg(ui.Canvas canvas) {
     _paint.color = controller.colorCtrl.value ?? Colors.redAccent;
     _paint.style = PaintingStyle.fill;
-
     drawBottom(canvas);
-
     drawTop(canvas);
   }
 

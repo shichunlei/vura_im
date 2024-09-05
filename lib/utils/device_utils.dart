@@ -5,7 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:vura/utils/log_utils.dart';
+
+import 'log_utils.dart';
 
 class DeviceUtils {
   static bool get isDesktop => !isWeb && (isWindows || isLinux || isMacOS);

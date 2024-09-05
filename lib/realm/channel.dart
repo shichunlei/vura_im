@@ -274,7 +274,7 @@ SessionEntity sessionRealmToEntity(Channel session) {
   return SessionEntity(
       id: session.id,
       name: session.name,
-      type: EnumToString.fromString(SessionType.values, session.type),
+      type: EnumToString.fromString(SessionType.values, session.type, defaultValue: SessionType.group)!,
       ownerId: session.ownerId,
       headImage: session.headImage,
       headImageThumb: session.headImageThumb,
@@ -288,13 +288,13 @@ SessionEntity sessionRealmToEntity(Channel session) {
       lastMessage: session.lastMessage == null ? null : MessageEntity.fromJson(json.decode(session.lastMessage!)),
       lastMessageTime: session.lastMessageTime,
       isDisturb: session.isDisturb,
-      isAdmin: EnumToString.fromString(YorNType.values, session.isAdmin),
+      isAdmin: EnumToString.fromString(YorNType.values, session.isAdmin, defaultValue: YorNType.N)!,
       config: session.config,
       configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
-      isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
+      isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin, defaultValue: YorNType.N)!,
       moveTop: session.moveTop,
       unReadCount: session.unReadCount,
-      friendship: EnumToString.fromString(YorNType.values, session.friendship));
+      friendship: EnumToString.fromString(YorNType.values, session.friendship, defaultValue: YorNType.N)!);
 }
 
 Channel sessionEntityToRealm(SessionEntity session) {

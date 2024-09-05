@@ -22,19 +22,14 @@ class PackagePublishLogic extends BaseLogic {
 
     amountController.addListener(update);
 
+    packageCovers = RedPackageCoverType.values.map((item) => PackageCoverEntity(item.name, item.coverPath)).toList();
     packageCovers2.value = packageCovers.where((item) => item.id != selectCover.value.id).toList();
   }
 
-  var selectCover = PackageCoverEntity("default", "assets/images/default_cover.webp").obs;
+  var selectCover = PackageCoverEntity(RedPackageCoverType.cover_0.name, RedPackageCoverType.cover_0.coverPath).obs;
 
   RxList<PackageCoverEntity> packageCovers2 = RxList<PackageCoverEntity>([]);
-
-  List<PackageCoverEntity> packageCovers = [
-    PackageCoverEntity("default", "assets/images/default_cover.webp"),
-    PackageCoverEntity("cover-1", "assets/images/cover-1.webp"),
-    PackageCoverEntity("cover-2", "assets/images/cover-2.webp"),
-    PackageCoverEntity("cover-3", "assets/images/cover-3.webp"),
-  ];
+  late List<PackageCoverEntity> packageCovers;
 
   void selectCoverFun(PackageCoverEntity cover) {
     selectCover.value = cover;
