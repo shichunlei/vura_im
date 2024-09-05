@@ -19,6 +19,8 @@ import 'package:vura/modules/dashboard/language/page.dart';
 import 'package:vura/modules/dashboard/notice_setting/binding.dart';
 import 'package:vura/modules/dashboard/notice_setting/page.dart';
 import 'package:vura/modules/dashboard/privacy/binding.dart';
+import 'package:vura/modules/dashboard/privacy/gesture/binding.dart';
+import 'package:vura/modules/dashboard/privacy/gesture/page.dart';
 import 'package:vura/modules/dashboard/privacy/gesture_password/binding.dart';
 import 'package:vura/modules/dashboard/privacy/gesture_password/page.dart';
 import 'package:vura/modules/dashboard/privacy/lock_screen_password/binding.dart';
@@ -127,6 +129,7 @@ abstract class AppPages {
         name: RoutePath.GESTURE_PASSWORD_PAGE,
         page: () => const GesturePasswordPage(),
         binding: GesturePasswordBinding()),
+    GetPage(name: RoutePath.GESTURE_PAGE, page: () => const GesturePage(), binding: GestureBinding()),
     GetPage(name: RoutePath.FONT_SIZE_PAGE, page: () => const FontSizeSettingPage(), binding: FontSizeSettingBinding()),
     GetPage(name: RoutePath.CHARGE_PAGE, page: () => const ChargePage(), binding: ChargeBinding()),
     GetPage(name: RoutePath.CHARGE_WAY_PAGE, page: () => const ChargeWayPage(), binding: ChargeWayBinding()),

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
 import 'logic.dart';
@@ -17,7 +18,7 @@ class LockScreenPasswordPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("锁屏密码")),
+        appBar: AppBar(title: const Text("锁屏密码"), centerTitle: true),
         body: Column(children: [
           Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
@@ -35,6 +36,8 @@ class LockScreenPasswordPage extends StatelessWidget {
                         child: Row(children: [
                           Text("锁屏手势", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
+                          Text(StringUtil.isEmpty(logic.gesturePassword) ? "" : "已设置",
+                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ]))),
                 Divider(height: 0, indent: 22.w, endIndent: 22.w),

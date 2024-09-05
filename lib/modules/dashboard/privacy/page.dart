@@ -124,9 +124,7 @@ class PrivacyPage extends StatelessWidget {
                         Text("登录保护", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                         const Spacer(),
                         Obx(() {
-                          return CupertinoSwitch(
-                              value: Get.find<RootLogic>().user.value?.protect == YorNType.Y,
-                              onChanged: logic.setProtect);
+                          return CupertinoSwitch(value: logic.loginProtect.value, onChanged: logic.setProtect);
                         })
                       ])),
                   Container(

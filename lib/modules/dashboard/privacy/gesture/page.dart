@@ -8,10 +8,10 @@ import 'package:vura/utils/log_utils.dart';
 
 import 'logic.dart';
 
-class GesturePasswordPage extends StatelessWidget {
-  const GesturePasswordPage({super.key});
+class GesturePage extends StatelessWidget {
+  const GesturePage({super.key});
 
-  GesturePasswordLogic get logic => Get.find<GesturePasswordLogic>();
+  GestureLogic get logic => Get.find<GestureLogic>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class GesturePasswordPage extends StatelessWidget {
               margin: EdgeInsets.only(top: 13.h, left: 44.w, bottom: 35.h),
               alignment: Alignment.centerLeft,
               child: Obx(() {
-                return Text(logic.tip.value, style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp));
+                return Text("", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp));
               })),
           Expanded(
               child: Container(
@@ -77,9 +77,9 @@ class GesturePasswordPage extends StatelessWidget {
                       color: Colors.white,
                       completeWaitMilliseconds: 1000,
                       onComplete: logic.onComplete,
+                      answer: logic.data,
                       onHitPoint: () {
                         Log.d("ssssssssssssssssssssssssss");
-                        logic.tip.value = "完成后松开手指";
                       })))
         ]));
   }
