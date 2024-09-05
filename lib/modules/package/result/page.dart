@@ -22,7 +22,7 @@ class PackageResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(color: const Color(0xfffafafa), width: double.infinity, height: double.infinity),
-      Image.asset("assets/images/package_top_bg.png", width: double.infinity, fit: BoxFit.fitWidth),
+      Image.asset("assets/images/package_top_bg.webp", width: double.infinity, fit: BoxFit.fitWidth),
       Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(

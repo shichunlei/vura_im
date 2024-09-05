@@ -7,4 +7,5 @@ class WithdrawLogic extends BaseLogic {
 
   var selectIndex = 0.obs;
 
+  Future withdraw(String? password) async {}
 }

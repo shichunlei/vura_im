@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:vura/global/enum.dart';
 
 part 'message_entity.g.dart';
 
@@ -30,6 +31,8 @@ class MessageEntity {
   List<String?> atUserIds;
   int status;
   int sendTime;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  SessionType sessionType;
 
   MessageEntity({
     this.id,
@@ -49,6 +52,7 @@ class MessageEntity {
     this.atUserIds = const [],
     this.status = 0,
     this.sendTime = 0,
+    this.sessionType = SessionType.group,
   });
 
   factory MessageEntity.fromJson(Map<String, dynamic> json) => _$MessageEntityFromJson(json);

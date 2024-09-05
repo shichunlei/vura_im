@@ -40,7 +40,7 @@ class WalletPage extends StatelessWidget {
                       Center(
                           child: SizedBox(
                               width: 265.w,
-                              child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/jinbi.png")))),
+                              child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/jinbi.webp")))),
                       Row(children: [
                         SizedBox(width: 22.w),
                         Column(mainAxisSize: MainAxisSize.min, children: [

@@ -21,7 +21,7 @@ class RegisterPage extends StatelessWidget {
     return Stack(children: [
       Scaffold(
           resizeToAvoidBottomInset: false,
-          body: Hero(tag: "bg", child: Image.asset("assets/images/register_bg.png", fit: BoxFit.cover))),
+          body: Hero(tag: "bg", child: Image.asset("assets/images/register_bg.webp", fit: BoxFit.cover))),
       Scaffold(
           backgroundColor: Colors.transparent,
           body: SingleChildScrollView(

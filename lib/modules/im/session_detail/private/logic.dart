@@ -6,13 +6,16 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
+import 'package:vura/modules/im/chat/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/channel.dart';
 import 'package:vura/realm/friend.dart';
+import 'package:vura/realm/message.dart';
 import 'package:vura/repository/contacts_repository.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/toast_util.dart';
 
 class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
   String? id;
@@ -111,5 +114,15 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     // BaseBean result = await ContactsRepository.updateFriend(id, nickName: remark);
     // hiddenLoading();
     // if (result.code == 200) {}
+  }
+
+  Future clearMessage() async {
+    await MessageRealm(realm: Get.find<RootLogic>().realm).deleteBySessionId(id);
+    showToast(text: "聊天记录已清空");
+    try {
+      Get.find<ChatLogic>(tag: "$id").refreshData();
+    } catch (e) {
+      Log.e(e.toString());
+    }
   }
 }

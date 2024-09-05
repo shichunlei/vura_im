@@ -61,6 +61,7 @@ mixin ReceiveMessageMixin on BaseLogic {
             }
           }
           message.sessionId = sessionId;
+          message.sessionType = SessionType.private;
 
           /// 存储消息
           await MessageRealm(realm: rootLogic.realm).upsert(messageEntityToRealm(message));
@@ -102,6 +103,7 @@ mixin ReceiveMessageMixin on BaseLogic {
             data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
             data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
           MessageEntity message = MessageEntity.fromJson(data);
+          message.sessionType = SessionType.group;
 
           /// 存储消息
           MessageRealm(realm: rootLogic.realm).upsert(messageEntityToRealm(message));

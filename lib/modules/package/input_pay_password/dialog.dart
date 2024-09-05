@@ -13,8 +13,10 @@ import 'logic.dart';
 
 class InputPayPasswordDialog extends StatelessWidget {
   final double? amount;
+  final String? title;
+  final String? tip;
 
-  const InputPayPasswordDialog({super.key, this.amount});
+  const InputPayPasswordDialog({super.key, this.amount, this.title, this.tip});
 
   InputPayPasswordLogic get logic => Get.put(InputPayPasswordLogic());
 
@@ -36,7 +38,7 @@ class InputPayPasswordDialog extends StatelessWidget {
                 Container(
                     padding: EdgeInsets.only(left: 11.w), alignment: Alignment.centerLeft, child: const CloseButton()),
                 SizedBox(height: 22.h),
-                Text("红包金额", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp)),
+                Text("$title", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp)),
                 SizedBox(height: 4.h),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -52,7 +54,7 @@ class InputPayPasswordDialog extends StatelessWidget {
                 Container(
                     padding: EdgeInsets.only(left: 22.w),
                     alignment: Alignment.centerLeft,
-                    child: Text("支付账户", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp))),
+                    child: Text("$tip", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp))),
                 Container(
                     margin: EdgeInsets.symmetric(vertical: 22.h, horizontal: 22.w),
                     padding: EdgeInsets.symmetric(horizontal: 13.w),

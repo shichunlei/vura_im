@@ -16,13 +16,8 @@ import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
-import 'package:vura/widgets/dialog/alert_dialog.dart';
-import 'package:vura/widgets/dialog/bottom_dialog.dart';
-import 'package:vura/widgets/dialog/tip_dialog.dart';
-import 'package:vura/widgets/dialog/update_text_dialog.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
-import 'package:vura/widgets/round_image.dart';
+
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -345,7 +340,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                             color: Colors.transparent,
                             onPressed: () {
                               show(builder: (_) {
-                                return CustomAlertDialog(title: "温馨提示", content: "您确定要清空该群聊的聊天记录吗？", onConfirm: () {});
+                                return CustomAlertDialog(
+                                    title: "温馨提示", content: "您确定要清空该群聊的聊天记录吗？", onConfirm: logic.clearMessage);
                               });
                             },
                             borderRadius: BorderRadius.only(

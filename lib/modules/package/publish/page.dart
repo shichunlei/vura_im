@@ -23,7 +23,7 @@ class PackagePublishPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(color: const Color(0xfffafafa), width: double.infinity, height: double.infinity),
-      Image.asset("assets/images/red_package_publish_bg.png", width: double.infinity, fit: BoxFit.fitWidth),
+      Image.asset("assets/images/red_package_publish_bg.webp", width: double.infinity, fit: BoxFit.fitWidth),
       Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -229,7 +229,9 @@ class PackagePublishPage extends StatelessWidget {
                             return;
                           }
 
-                          Get.bottomSheet(InputPayPasswordDialog(amount: double.tryParse(logic.amountController.text)),
+                          Get.bottomSheet(
+                                  InputPayPasswordDialog(
+                                      amount: double.tryParse(logic.amountController.text), title: "红包金额", tip: "支付账户"),
                                   isScrollControlled: true)
                               .then((value) {
                             if (value != null) logic.sendRedPackage(value);

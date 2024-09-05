@@ -6,4 +6,6 @@ class RechargeLogic extends BaseLogic {
   TextEditingController controller = TextEditingController();
 
   var selectIndex = 0.obs;
+
+  Future recharge(String? password) async {}
 }

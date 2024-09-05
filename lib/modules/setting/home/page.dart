@@ -24,7 +24,7 @@ class SettingPage extends StatelessWidget {
         appBar: AppBar(title: const Text("通用设置"), centerTitle: true),
         body: Column(children: [
           SizedBox(height: 30.h),
-          Image.asset("assets/images/logo.png", width: 88.r, height: 88.r),
+          Image.asset("assets/images/logo.webp", width: 88.r, height: 88.r),
           SizedBox(height: 10.h),
           Text("版本号：${AppConfig.version?.version}"),
           Container(

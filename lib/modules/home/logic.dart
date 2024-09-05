@@ -6,6 +6,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/realm/message.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
@@ -50,11 +51,19 @@ class HomeLogic extends BaseLogic {
         default:
           break;
       }
-    }, connectCallBack: () {
+    }, connectCallBack: () async {
       Log.d("WebSocket 连接成功");
+      String? groupLastMessageId, privateLastMessageId;
+      try {
+        groupLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryGroupLastMessageTime();
+        privateLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryPrivateLastMessageTime();
+      } catch (e) {
+        Log.e(e.toString());
+      }
 
       /// 拉取离线消息
-      SessionRepository.getOfflineMessages("all", groupMinId: "0", privateMinId: "0");
+      SessionRepository.getOfflineMessages("all",
+          groupMinId: groupLastMessageId ?? "0", privateMinId: privateLastMessageId ?? "0");
     });
   }
 

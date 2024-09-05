@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -18,7 +19,7 @@ class RechargePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(color: const Color(0xff83C240), width: double.infinity, height: double.infinity),
-      Image.asset("assets/images/recharge_top_bg.png", width: double.infinity, fit: BoxFit.fitWidth),
+      Image.asset("assets/images/recharge_top_bg.webp", width: double.infinity, fit: BoxFit.fitWidth),
       Scaffold(
           backgroundColor: Colors.transparent,
           appBar: AppBar(
@@ -151,7 +152,20 @@ class RechargePage extends StatelessWidget {
                         Center(
                             child: RadiusInkWellWidget(
                                 radius: 40,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Get.bottomSheet(
+                                          InputPayPasswordDialog(
+                                              amount: double.tryParse(logic.controller.text),
+                                              title: "购买金额",
+                                              tip: "支付账户"),
+                                          isScrollControlled: true)
+                                      .then((value) {
+                                    if (value != null) {
+                                      // todo
+                                      logic.recharge(value);
+                                    }
+                                  });
+                                },
                                 margin: EdgeInsets.only(top: 44.h),
                                 child: Container(
                                     height: 53.h,

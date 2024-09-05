@@ -3,11 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/entities/emoji.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/modules/im/widgets/item_receive_emoji.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -55,6 +57,9 @@ class ItemReceiveMessage extends StatelessWidget {
     }
     if (type == MessageType.ID_CARD.code && StringUtil.isNotEmpty(message.content)) {
       return ItemReceiveCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
+    }
+    if (type == MessageType.EMOJI.code && message.content != null) {
+      return ItemReceiveEmoji(message: message, emoji: EmojiEntity.fromJson(json.decode(message.content!)));
     }
     if ((type == MessageType.RED_PACKAGE.code || type == MessageType.GROUP_RED_PACKAGE.code) &&
         message.content != null) {

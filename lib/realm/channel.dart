@@ -39,6 +39,7 @@ class _Channel {
   String isSupAdmin = "N";
   String? config;
   String friendship = "Y";
+  int unReadCount = 0;
 }
 
 class SessionRealm {
@@ -152,10 +153,17 @@ class SessionRealm {
         _session.lastMessageTime = message.sendTime;
         if (StringUtil.isNotEmpty(session.name)) _session.name = session.name;
         if (StringUtil.isNotEmpty(session.headImage)) _session.headImage = session.headImage;
+        if (message.sendId == AppConfig.userId) {
+          _session.unReadCount = 0;
+        } else {
+          _session.unReadCount = _session.unReadCount + 1;
+        }
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {
-      await upsert(sessionEntityToRealm(session));
+      Channel channel = sessionEntityToRealm(session);
+      channel.unReadCount = 1;
+      await upsert(channel);
     }
   }
 
@@ -239,6 +247,24 @@ class SessionRealm {
     }
   }
 
+  /// 更新会话纬度消息数
+  Future updateUnreadCount(String? sessionId, SessionType type) async {
+    Channel? _session = findOne("${AppConfig.userId}-$sessionId-${type.name}");
+    if (_session != null) {
+      Log.d("----------------->$sessionId");
+      await _realm.writeAsync(() {
+        _session.unReadCount = 0;
+      });
+      Log.d("updateUnreadCount===${_session.id}================>${_session.toEJson()}");
+
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
+
   Channel? findOne(String? id) {
     return _realm.find<Channel>(id);
   }
@@ -267,6 +293,7 @@ SessionEntity sessionRealmToEntity(Channel session) {
       configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
       isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin),
       moveTop: session.moveTop,
+      unReadCount: session.unReadCount,
       friendship: EnumToString.fromString(YorNType.values, session.friendship));
 }
 
@@ -292,6 +319,7 @@ Channel sessionEntityToRealm(SessionEntity session) {
       isAdmin: session.isAdmin.name,
       isSupAdmin: session.isSupAdmin.name,
       friendship: session.friendship.name,
+      unReadCount: session.unReadCount,
       config: session.configObj == null ? null : json.encode(session.configObj!.toJson()),
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

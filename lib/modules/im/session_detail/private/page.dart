@@ -5,11 +5,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/dialog/bottom_dialog.dart';
-import 'package:vura/widgets/dialog/update_text_dialog.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:vura/utils/dialog_util.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -145,7 +142,12 @@ class PrivateSessionDetailPage extends StatelessWidget {
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
                             color: Colors.transparent,
-                            onPressed: () {},
+                            onPressed: () {
+                              show(builder: (_) {
+                                return CustomAlertDialog(
+                                    title: "温馨提示", content: "您确定要清空该群聊的聊天记录吗？", onConfirm: logic.clearMessage);
+                              });
+                            },
                             borderRadius: BorderRadius.only(
                                 bottomRight: Radius.circular(11.r), bottomLeft: Radius.circular(11.r)),
                             child: Container(

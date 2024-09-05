@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
+import 'package:vura/entities/emoji.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/session_entity.dart';
@@ -73,7 +74,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
   @override
   Future<List<MessageEntity>> loadData() async {
-    return SessionRepository.getMessages(id, type, page: pageNumber.value, size: pageSize.value);
+    return await MessageRealm(realm: Get.find<RootLogic>().realm).queryAllMessageBySessionId(id);
+    // return SessionRepository.getMessages(id, type, page: pageNumber.value, size: pageSize.value);
   }
 
   /// 发送消息
@@ -92,6 +94,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       list.insert(0, message);
       list.refresh();
       message.sessionId = id;
+      message.sessionType = type;
       MessageRealm(realm: Get.find<RootLogic>().realm).upsert(messageEntityToRealm(message));
       SessionRealm(realm: Get.find<RootLogic>().realm)
           .updateLastMessage(
@@ -181,6 +184,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       message.receiveHeadImage = session.value?.headImage;
       message.receiveNickName = session.value?.name;
     }
+    message.sessionType = type;
     MessageRealm(realm: Get.find<RootLogic>().realm).upsert(messageEntityToRealm(message));
     SessionRealm(realm: Get.find<RootLogic>().realm)
         .updateLastMessage(
@@ -201,8 +205,13 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     });
   }
 
+  Future sendEmoji(EmojiEntity emoji)async{
+
+  }
+
   @override
   void onClose() {
+    SessionRealm(realm: Get.find<RootLogic>().realm).updateUnreadCount(id, type);
     webSocketManager.removeCallbacks("ChatLogic-$id-$type");
     SessionRepository.readMessage(id, type);
     super.onClose();

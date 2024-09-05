@@ -35,7 +35,7 @@ class TransferPage extends StatelessWidget {
                       Center(
                           child: SizedBox(
                               width: 265.w,
-                              child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/jinbi.png")))),
+                              child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/jinbi.webp")))),
                       Container(
                           height: 266.h,
                           width: double.infinity,
