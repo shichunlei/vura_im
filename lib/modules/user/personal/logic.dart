@@ -42,7 +42,7 @@ class PersonalLogic extends BaseObjectLogic<UserEntity?> {
   /// 修改头像
   Future updateAvatar(String path) async {
     showLoading();
-    FileEntity? file = await CommonRepository.uploadImage(path);
+    ImageEntity? file = await CommonRepository.uploadImage(path);
     if (file != null) {
       BaseBean result = await UserRepository.updateUser(bean.value?.id,
           userName: bean.value?.userName,

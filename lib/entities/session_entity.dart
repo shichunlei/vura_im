@@ -80,10 +80,10 @@ class SessionEntity {
 
 @JsonSerializable()
 class SessionConfigEntity {
-  YorNType addFriend;
-  YorNType allMute;
-  YorNType vura;
-  YorNType invite;
+  YorNType addFriend; // 禁止群成员加好友
+  YorNType allMute; // 全体禁言
+  YorNType vura; // 禁止领红包
+  YorNType invite; // 邀请确认
   String? id;
 
   SessionConfigEntity(

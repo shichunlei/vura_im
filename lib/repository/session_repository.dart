@@ -116,7 +116,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 群成员列表
+  /// 群成员列表 TODO
   ///
   /// [id] 群ID
   ///
@@ -144,6 +144,18 @@ class SessionRepository {
     } else {
       return null;
     }
+  }
+
+  /// 设置群成员是否可以抢红包 todo
+  ///
+  /// [groupId] 群ID
+  /// [userId] 成员ID
+  ///
+  static Future<BaseBean> setSessionMemberVura(String? groupId, String? userId, bool isVura) async {
+    // var data = await HttpUtils.getInstance()
+    //     .request('group/members/detail', params: {Keys.USER_ID: userId, Keys.GROUP_ID: groupId}, showErrorToast: true);
+    // return BaseBean.fromJson(data);
+    return BaseBean(code: 200);
   }
 
   /// 群管理员列表

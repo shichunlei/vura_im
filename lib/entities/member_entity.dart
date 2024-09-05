@@ -1,5 +1,5 @@
-import 'package:vura/global/enum.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:vura/global/enum.dart';
 
 part 'member_entity.g.dart';
 
@@ -25,6 +25,7 @@ class MemberEntity {
   YorNType isSupAdmin;
   YorNType friendship;
   YorNType isMute;
+  YorNType isVure; // 可以抢红包
 
   MemberEntity({
     this.userId,
@@ -39,6 +40,7 @@ class MemberEntity {
     this.isSupAdmin = YorNType.N,
     this.friendship = YorNType.M,
     this.isMute = YorNType.N,
+    this.isVure = YorNType.Y,
   });
 
   factory MemberEntity.fromJson(Map<String, dynamic> json) => _$MemberEntityFromJson(json);

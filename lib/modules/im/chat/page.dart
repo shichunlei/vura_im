@@ -22,6 +22,7 @@ import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
+import 'package:vura/widgets/voice_record_view.dart';
 
 import 'logic.dart';
 
@@ -102,11 +103,10 @@ class ChatPage extends StatelessWidget {
                           child: logic.type == SessionType.group &&
                                   logic.session.value?.configObj?.allMute == YorNType.Y
                               ? Container(
+                                  margin: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
                                   height: 50.h,
                                   decoration: BoxDecoration(
-                                      color: const Color(0xfff5f5f5),
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+                                      color: const Color(0xfff5f5f5), borderRadius: BorderRadius.circular(20.r)),
                                   alignment: Alignment.center,
                                   child: Text("禁言中...",
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)))
@@ -116,59 +116,83 @@ class ChatPage extends StatelessWidget {
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
                                   child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                    Container(
-                                        margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                        height: 50.h,
-                                        child: Row(children: [
-                                          Expanded(
-                                              child: Container(
-                                                  height: 50.h,
-                                                  alignment: Alignment.centerLeft,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius: BorderRadius.circular(11.r),
-                                                      color: const Color(0xfff5f5f5)),
-                                                  child: TextField(
-                                                      controller: logic.controller,
-                                                      maxLines: 1,
-                                                      textInputAction: TextInputAction.send,
-                                                      style: GoogleFonts.roboto(
-                                                          fontSize: 15.sp, color: ColorUtil.color_333333),
-                                                      onSubmitted: (v) {
-                                                        DeviceUtils.hideKeyboard(context);
-                                                        logic.sendMessage(v, MessageType.TEXT);
-                                                      },
-                                                      decoration: InputDecoration(
-                                                          contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                                                          hintText: "请输入您想说的话",
-                                                          border: InputBorder.none,
-                                                          hintStyle: GoogleFonts.roboto(
-                                                              fontSize: 15.sp, color: ColorUtil.color_999999))))),
-                                          SizedBox(width: 10.w),
-                                          CustomIconButton(
-                                              bgColor: const Color(0xff2ECC72),
-                                              icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
-                                              radius: 25.h,
-                                              onPressed: () {
-                                                logic.sendMessage(logic.controller.text, MessageType.TEXT);
-                                              })
-                                        ])),
+                                    logic.isVoice.value
+                                        ? Container(
+                                            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                            height: 50.h,
+                                            child: VoiceRecordWidget(
+                                                height: 42.w,
+                                                decoration: BoxDecoration(
+                                                    borderRadius: BorderRadius.circular(21.w),
+                                                    color: Theme.of(context).cardColor),
+                                                margin: EdgeInsets.symmetric(horizontal: 7.w),
+                                                startRecord: () {
+                                                  Log.d('开始录制');
+                                                },
+                                                stopRecord: (String? path, double? audioTimeLength, bool isCancel) {
+                                                  Log.d('结束录制 ====》 $isCancel');
+                                                  Log.d('路径 ====》 $path');
+                                                  Log.d('时长 ====》 $audioTimeLength');
+                                                  if (!isCancel) logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
+                                                }))
+                                        : Container(
+                                            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                            height: 50.h,
+                                            child: Row(children: [
+                                              Expanded(
+                                                  child: Container(
+                                                      height: 50.h,
+                                                      alignment: Alignment.centerLeft,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(11.r),
+                                                          color: const Color(0xfff5f5f5)),
+                                                      child: TextField(
+                                                          controller: logic.controller,
+                                                          maxLines: 1,
+                                                          textInputAction: TextInputAction.send,
+                                                          style: GoogleFonts.roboto(
+                                                              fontSize: 15.sp, color: ColorUtil.color_333333),
+                                                          onSubmitted: (v) {
+                                                            DeviceUtils.hideKeyboard(context);
+                                                            logic.sendMessage(v, MessageType.TEXT);
+                                                          },
+                                                          decoration: InputDecoration(
+                                                              contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
+                                                              hintText: "请输入您想说的话",
+                                                              border: InputBorder.none,
+                                                              hintStyle: GoogleFonts.roboto(
+                                                                  fontSize: 15.sp, color: ColorUtil.color_999999))))),
+                                              SizedBox(width: 10.w),
+                                              CustomIconButton(
+                                                  bgColor: const Color(0xff2ECC72),
+                                                  icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
+                                                  radius: 25.h,
+                                                  onPressed: () {
+                                                    logic.sendMessage(logic.controller.text, MessageType.TEXT);
+                                                  })
+                                            ])),
                                     Divider(height: 0, color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
                                     Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 22.w),
                                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.voice, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
-                                                // todo
-                                              }),
+                                          CustomIconButton(icon: Obx(() {
+                                            return Icon(IconFont.voice,
+                                                color: logic.isVoice.value
+                                                    ? Theme.of(context).primaryColor
+                                                    : const Color(0xffbbbbbb));
+                                          }), onPressed: () {
+                                            logic.isVoice.toggle();
+                                          }),
                                           CustomIconButton(
                                               icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
                                               onPressed: () {
+                                                logic.isVoice.value = false;
                                                 logic.getImage(ImageSource.camera);
                                               }),
                                           CustomIconButton(
                                               icon: const Icon(IconFont.name_card, color: Color(0xffbbbbbb)),
                                               onPressed: () {
+                                                logic.isVoice.value = false;
                                                 showCupertinoModalPopup(
                                                     context: Get.context!,
                                                     builder: (_) {
@@ -202,11 +226,13 @@ class ChatPage extends StatelessWidget {
                                           CustomIconButton(
                                               icon: const Icon(IconFont.gallery, color: Color(0xffbbbbbb)),
                                               onPressed: () {
+                                                logic.isVoice.value = false;
                                                 logic.getImage(ImageSource.gallery);
                                               }),
                                           CustomIconButton(
                                               icon: const Icon(IconFont.red_package, color: Color(0xffbbbbbb)),
                                               onPressed: () {
+                                                logic.isVoice.value = false;
                                                 Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
                                                         arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})
                                                     ?.then((value) {
@@ -216,6 +242,7 @@ class ChatPage extends StatelessWidget {
                                           CustomIconButton(
                                               icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
                                               onPressed: () {
+                                                logic.isVoice.value = false;
                                                 Get.bottomSheet(const EmojiPickerDialog()).then((value) {
                                                   if (value != null) {
                                                     Log.d(value.toJson());

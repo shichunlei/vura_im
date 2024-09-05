@@ -17,6 +17,7 @@ import 'item_send_card.dart';
 import 'item_send_image.dart';
 import 'item_send_red_package.dart';
 import 'item_send_text.dart';
+import 'item_send_voice.dart';
 
 class ItemSendMessage extends StatelessWidget {
   final MessageEntity message;
@@ -49,13 +50,16 @@ class ItemSendMessage extends StatelessWidget {
   Widget buildMessageView(int type) {
     if (type == MessageType.TEXT.code) return ItemSendText(message: message);
     if (type == MessageType.IMAGE.code && message.content != null) {
-      return ItemSendImage(message: message, file: FileEntity.fromJson(json.decode(message.content!)));
+      return ItemSendImage(message: message, file: ImageEntity.fromJson(json.decode(message.content!)));
     }
     if (type == MessageType.ID_CARD.code && message.content != null) {
       return ItemSendCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
     }
     if (type == MessageType.EMOJI.code && message.content != null) {
       return ItemSendEmoji(message: message, emoji: EmojiEntity.fromJson(json.decode(message.content!)));
+    }
+    if (type == MessageType.AUDIO.code && message.content != null) {
+      return ItemSendVoice(message: message, tag: tag, file: AudioEntity.fromJson(json.decode(message.content!)));
     }
     if ((type == MessageType.RED_PACKAGE.code || type == MessageType.GROUP_RED_PACKAGE.code) &&
         message.content != null) {

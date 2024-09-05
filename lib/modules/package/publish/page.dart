@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/package/input_pay_password/dialog.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
@@ -129,7 +130,7 @@ class PackagePublishPage extends StatelessWidget {
                                 style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
                                 inputFormatters: [
                                   FilteringTextInputFormatter.allow(RegExp(r'[0-9,]')), // 只允许输入数字和逗号
-                                  LengthLimitingTextInputFormatter(5) //限制长度
+                                  LengthLimitingTextInputFormatter(17) //限制长度
                                 ],
                                 onChanged: logic.validateInput,
                                 keyboardType: TextInputType.number,
@@ -219,6 +220,7 @@ class PackagePublishPage extends StatelessWidget {
                     RadiusInkWellWidget(
                         color: const Color(0xffDB5549),
                         onPressed: () {
+                          DeviceUtils.hideKeyboard(context);
                           if (StringUtil.isEmpty(logic.amountController.text)) {
                             showToast(text: "请输入总金额");
                             return;
@@ -234,7 +236,13 @@ class PackagePublishPage extends StatelessWidget {
                                       amount: double.tryParse(logic.amountController.text), title: "红包金额", tip: "支付账户"),
                                   isScrollControlled: true)
                               .then((value) {
-                            if (value != null) logic.sendRedPackage(value);
+                            if (value != null) {
+                              if (StringUtil.isNotEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
+                                logic.sendRedPackage(value);
+                              } else {
+                                showToast(text: "未设置付款账号");
+                              }
+                            }
                           });
                         },
                         radius: 40,

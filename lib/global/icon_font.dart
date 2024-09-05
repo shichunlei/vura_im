@@ -15,7 +15,7 @@ class IconFont {
 
   static const IconData google = IconData(0xe7c6, fontFamily: "iconFontCai");
   static const IconData idcard = IconData(0xe7bb, fontFamily: "iconFontCai");
-
+  static const IconData mine = IconData(0xe7c9, fontFamily: "iconFontCai");
   static const IconData usdt = IconData(0xe7c1, fontFamily: "iconFontCai");
   static const IconData add_round = IconData(0xe7b2, fontFamily: "iconFontCai");
   static const IconData question_mark = IconData(0xe7b8, fontFamily: "iconFontCai");

@@ -16,7 +16,7 @@ class CommonRepository {
   ///
   /// [path] 图片路径
   ///
-  static Future<FileEntity?> uploadImage(String path) async {
+  static Future<ImageEntity?> uploadImage(String path) async {
     String localFileName = getFileNameByPath(path);
     Log.d("---@@@@@@@@@@@@@@----------实际的图片文件名-----------$localFileName");
     Log.d("---@@@@@@@@@@@@@@----------图片路径-----------$path");
@@ -25,7 +25,7 @@ class CommonRepository {
     FormData formData = FormData.fromMap({'file': multipartFile});
     BaseBean result = await HttpUtils.getInstance().uploadFile("image/upload", formData);
     if (result.code == 200) {
-      return FileEntity.fromJson(result.data);
+      return ImageEntity.fromJson(result.data);
     } else {
       return null;
     }
@@ -35,7 +35,7 @@ class CommonRepository {
   ///
   /// [path] 文件路径
   ///
-  static Future<FileEntity?> uploadFile(String path) async {
+  static Future<String?> uploadFile(String path) async {
     String localFileName = getFileNameByPath(path);
     Log.d("---@@@@@@@@@@@@@@----------实际的文件名-----------$localFileName");
 
@@ -44,7 +44,7 @@ class CommonRepository {
     FormData formData = FormData.fromMap({'file': multipartFile});
     BaseBean result = await HttpUtils.getInstance().uploadFile("file/upload", formData);
     if (result.code == 200) {
-      return FileEntity.fromJson(result.data);
+      return result.data as String;
     } else {
       return null;
     }

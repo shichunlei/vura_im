@@ -38,6 +38,7 @@ class CustomAlertDialog extends Dialog {
                   Container(
                       alignment: Alignment.center,
                       constraints: BoxConstraints(minHeight: 82.h),
+                      padding: EdgeInsets.symmetric(horizontal: 22.w),
                       child: Text(content, style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333))),
                   const Divider(height: 0),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [

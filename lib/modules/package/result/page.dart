@@ -108,7 +108,10 @@ class PackageResultPage extends StatelessWidget {
                                                       color: const Color(0xffFFAE58),
                                                       fontWeight: FontWeight.w600,
                                                       fontSize: 13.sp))
-                                            ]))
+                                            ])),
+                                        Visibility(
+                                            visible: logic.bean.value!.detailList[index].isMine == YorNType.Y,
+                                            child: Icon(IconFont.mine, size: 22.sp))
                                       ])
                                     ]),
                                   )

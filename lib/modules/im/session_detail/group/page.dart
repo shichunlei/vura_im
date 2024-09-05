@@ -16,7 +16,6 @@ import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
-
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -121,7 +120,11 @@ class GroupSessionDetailPage extends StatelessWidget {
                                           Text("邀请",
                                               style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                         ])
-                                      : ItemSessionUser(member: logic.members[index], groupId: logic.id));
+                                      : ItemSessionUser(
+                                          member: logic.members[index],
+                                          groupId: logic.id,
+                                          addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N,
+                                          isAdmin: logic.bean.value?.isAdmin == YorNType.Y));
                             },
                             itemCount: min(
                                 10,

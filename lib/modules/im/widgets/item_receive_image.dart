@@ -6,7 +6,7 @@ import 'package:vura/entities/message_entity.dart';
 
 class ItemReceiveImage extends StatelessWidget {
   final MessageEntity message;
-  final FileEntity file;
+  final ImageEntity file;
 
   const ItemReceiveImage({super.key, required this.message, required this.file});
 

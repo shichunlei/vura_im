@@ -1,11 +1,11 @@
 import 'dart:convert';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
-import 'package:vura/entities/emoji.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/session_entity.dart';
@@ -36,6 +36,14 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
 
   int selectedBgIndex = 0;
 
+  var isVoice = false.obs;
+
+  var messagePlayingId = Rx<String?>(null);
+
+  final _audioPlayer = AudioPlayer();
+
+  var curState = PlayerState.stopped.obs;
+
   ChatLogic() {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
@@ -64,6 +72,22 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
       }
       list.refresh();
     });
+
+    _audioPlayer
+      ..onDurationChanged.listen((Duration duration) {
+        Log.d("onDurationChanged========>${duration.toString()}");
+      })
+      ..onPlayerStateChanged.listen((PlayerState state) {
+        Log.d("onPlayerStateChanged========>${state.toString()}");
+        curState.value = state;
+      })
+      ..onPlayerComplete.listen((event) {
+        Log.d("onPlayerComplete========>");
+        messagePlayingId.value = null;
+      })
+      ..onPositionChanged.listen((Duration position) {
+        Log.d("onPositionChanged========>${position.toString()}");
+      });
   }
 
   @override
@@ -121,7 +145,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     String? imagePath = await pickerImage(source, cropImage: false);
     if (StringUtil.isNotEmpty(imagePath)) {
       showLoading();
-      FileEntity? file = await CommonRepository.uploadImage(imagePath!);
+      ImageEntity? file = await CommonRepository.uploadImage(imagePath!);
       if (file != null) {
         hiddenLoading();
         await sendImage(file);
@@ -132,7 +156,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     } else {}
   }
 
-  Future sendImage(FileEntity file) async {
+  Future sendImage(ImageEntity file) async {
     try {
       String content = json.encode(file.toJson());
       sendMessage(content, MessageType.IMAGE);
@@ -151,37 +175,37 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   }
 
   Future openRedPackage(BuildContext context, MessageEntity message, String? redPackageId, String? cover) async {
-    if (type == SessionType.group &&
-        session.value?.configObj?.vura == YorNType.N &&
-        session.value?.isAdmin == YorNType.N &&
-        session.value?.isSupAdmin == YorNType.N) {
-      showToast(text: "群主设置了禁止领取VURA");
-      return;
-    }
-
-    String? result = await SessionRepository.checkRedPackage(redPackageId);
-    if (result != null) {
-      if (result == "Y") {
-        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-      } else if (result == "N") {
-        if (context.mounted) {
-          showRedPacket(context, () {
-            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-          },
-              nickName: message.sendNickName,
-              headImage: message.sendHeadImage,
-              redPackageId: redPackageId,
-              coverImage:
-                  EnumToString.fromString(RedPackageCoverType.values, cover, defaultValue: RedPackageCoverType.cover_0)!
-                      .itemPath);
+    /// 单聊，群主，群管理，开启抢红包的个人
+    if (type == SessionType.private ||
+        session.value?.isAdmin == YorNType.Y ||
+        session.value?.isSupAdmin == YorNType.Y ||
+        members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isVure == YorNType.Y) {
+      String? result = await SessionRepository.checkRedPackage(redPackageId);
+      if (result != null) {
+        if (result == "Y") {
+          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+        } else if (result == "N") {
+          if (context.mounted) {
+            showRedPacket(context, () {
+              Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+            },
+                nickName: message.sendNickName,
+                headImage: message.sendHeadImage,
+                redPackageId: redPackageId,
+                coverImage: EnumToString.fromString(RedPackageCoverType.values, cover,
+                        defaultValue: RedPackageCoverType.cover_0)!
+                    .itemPath);
+          }
+        } else if (result == "F") {
+          showToast(text: "红包已抢完");
+          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
+        } else {
+          showToast(text: "红包已过期");
+          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
         }
-      } else if (result == "F") {
-        showToast(text: "红包已抢完");
-        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-      } else {
-        showToast(text: "红包已过期");
-        Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
       }
+    } else {
+      showToast(text: "群主设置了禁止领取VURA");
     }
   }
 
@@ -214,10 +238,53 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     });
   }
 
-  Future sendEmoji(EmojiEntity emoji) async {}
+  Future uploadAudio(String? path, int duration) async {
+    if (path != null) {
+      showLoading();
+      String? fileUrl = await CommonRepository.uploadFile(path);
+      if (fileUrl != null) {
+        hiddenLoading();
+        await sendVoice(fileUrl, duration);
+      } else {
+        showToast(text: "语音上传失败");
+        hiddenLoading();
+      }
+    }
+  }
+
+  Future sendVoice(String fileUrl, int duration) async {
+    try {
+      String content = json.encode({"fileUrl": fileUrl, "duration": duration});
+      sendMessage(content, MessageType.AUDIO);
+    } catch (e) {
+      Log.e(e.toString());
+    }
+  }
+
+  /// 播放
+  void play(String? url, String? messageId) async {
+    Log.d("==============================>$url----------------$messageId");
+    if (StringUtil.isEmpty(url) || StringUtil.isEmpty(messageId)) return;
+    if (messagePlayingId.value == messageId) {
+      if (curState.value == PlayerState.playing) await _audioPlayer.pause();
+      if (curState.value == PlayerState.paused) await _audioPlayer.resume();
+    } else {
+      Log.d("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+      messagePlayingId.value = messageId;
+      try {
+        if (curState.value == PlayerState.playing) await _audioPlayer.stop();
+        await _audioPlayer.play(UrlSource(url!)).then((value) {
+          Log.d("开始播放");
+        });
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
 
   @override
   void onClose() {
+    _audioPlayer.dispose();
     SessionRealm(realm: Get.find<RootLogic>().realm).updateUnreadCount(id, type);
     webSocketManager.removeCallbacks("ChatLogic-$id-$type");
     SessionRepository.readMessage(id, type);

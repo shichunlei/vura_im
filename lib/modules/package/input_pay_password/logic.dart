@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
+import 'package:vura/utils/device_utils.dart';
 
 class InputPayPasswordLogic extends BaseLogic {
   int maxCount = 6;
@@ -24,6 +25,7 @@ class InputPayPasswordLogic extends BaseLogic {
     codeList.refresh();
 
     if (value.length == maxCount) {
+      DeviceUtils.hideKeyboard(context);
       Get.back(result: value);
     }
   }

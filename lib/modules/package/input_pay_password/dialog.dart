@@ -45,7 +45,9 @@ class InputPayPasswordDialog extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Text("￥", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp)),
+                      Text("u",
+                          style: GoogleFonts.roboto(
+                              color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold)),
                       Text("$amount",
                           style: GoogleFonts.roboto(
                               color: const Color(0xffDB5549), fontSize: 44.sp, fontWeight: FontWeight.bold))
@@ -66,7 +68,7 @@ class InputPayPasswordDialog extends StatelessWidget {
                       Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
                       SizedBox(width: 13.w),
                       Expanded(
-                          child: Text("${Get.find<RootLogic>().user.value?.walletCard}",
+                          child: Text(Get.find<RootLogic>().user.value?.walletCard ?? "未设置$tip",
                               style: GoogleFonts.dmSans(
                                   color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold))),
                       Icon(IconFont.check, size: 15.sp)

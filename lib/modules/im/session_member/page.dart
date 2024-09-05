@@ -1,8 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/widgets/avatar_image.dart';
@@ -73,39 +75,53 @@ class SessionMemberPage extends StatelessWidget {
                             const Spacer(),
                             Text("${logic.bean.value?.showNickName}",
                                 style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))
-                          ]))
+                          ])),
+                      Visibility(visible: logic.isAdmin, child: const Divider(height: 0)),
+                      Visibility(
+                          visible: logic.isAdmin,
+                          child: SizedBox(
+                              height: 60.h,
+                              child: Row(children: [
+                                Text("禁止抢红包",
+                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                const Spacer(),
+                                CupertinoSwitch(
+                                    value: logic.bean.value?.isVure == YorNType.N, onChanged: logic.setProhibitVure),
+                              ])))
                     ])),
                 const Spacer(),
-                logic.bean.value?.friendship == YorNType.Y
-                    ? RadiusInkWellWidget(
-                        onPressed: () => logic.goChatPageByMember(logic.bean.value!),
-                        child: Container(
-                            height: 44.h,
-                            width: 177.w,
-                            alignment: Alignment.center,
-                            child: Text("发消息",
-                                style: GoogleFonts.roboto(
-                                    fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
-                    : logic.bean.value?.friendship == YorNType.N
+                Get.find<RootLogic>().user.value?.id == logic.userId
+                    ? const SizedBox()
+                    : logic.bean.value?.friendship == YorNType.Y
                         ? RadiusInkWellWidget(
-                            onPressed: () => logic.applyFriend(logic.userId),
+                            onPressed: () => logic.goChatPageByMember(logic.bean.value!),
                             child: Container(
                                 height: 44.h,
                                 width: 177.w,
                                 alignment: Alignment.center,
-                                child: Text("添加好友",
+                                child: Text("发消息",
                                     style: GoogleFonts.roboto(
                                         fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
-                        : RadiusInkWellWidget(
-                            color: Colors.redAccent,
-                            onPressed: logic.removeFromBlacklist,
-                            child: Container(
-                                height: 44.h,
-                                width: 177.w,
-                                alignment: Alignment.center,
-                                child: Text("移除黑名单",
-                                    style: GoogleFonts.roboto(
-                                        fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white)))),
+                        : logic.bean.value?.friendship == YorNType.N
+                            ? RadiusInkWellWidget(
+                                onPressed: () => logic.applyFriend(logic.userId),
+                                child: Container(
+                                    height: 44.h,
+                                    width: 177.w,
+                                    alignment: Alignment.center,
+                                    child: Text("添加好友",
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white))))
+                            : RadiusInkWellWidget(
+                                color: Colors.redAccent,
+                                onPressed: logic.removeFromBlacklist,
+                                child: Container(
+                                    height: 44.h,
+                                    width: 177.w,
+                                    alignment: Alignment.center,
+                                    child: Text("移除黑名单",
+                                        style: GoogleFonts.roboto(
+                                            fontSize: 18.sp, fontWeight: FontWeight.w600, color: Colors.white)))),
                 SizedBox(height: DeviceUtils.setBottomMargin(20.h))
               ]);
             }));

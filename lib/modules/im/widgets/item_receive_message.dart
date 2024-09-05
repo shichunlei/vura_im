@@ -10,6 +10,7 @@ import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/modules/im/widgets/item_receive_emoji.dart';
+import 'package:vura/modules/im/widgets/item_receive_voice.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -53,13 +54,16 @@ class ItemReceiveMessage extends StatelessWidget {
   Widget buildMessageView(int type) {
     if (type == MessageType.TEXT.code) return ItemReceiveText(message: message);
     if (type == MessageType.IMAGE.code && StringUtil.isNotEmpty(message.content)) {
-      return ItemReceiveImage(message: message, file: FileEntity.fromJson(json.decode(message.content!)));
+      return ItemReceiveImage(message: message, file: ImageEntity.fromJson(json.decode(message.content!)));
     }
     if (type == MessageType.ID_CARD.code && StringUtil.isNotEmpty(message.content)) {
       return ItemReceiveCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
     }
     if (type == MessageType.EMOJI.code && message.content != null) {
       return ItemReceiveEmoji(message: message, emoji: EmojiEntity.fromJson(json.decode(message.content!)));
+    }
+    if (type == MessageType.AUDIO.code && message.content != null) {
+      return ItemReceiveVoice(message: message, tag: tag, file: AudioEntity.fromJson(json.decode(message.content!)));
     }
     if ((type == MessageType.RED_PACKAGE.code || type == MessageType.GROUP_RED_PACKAGE.code) &&
         message.content != null) {

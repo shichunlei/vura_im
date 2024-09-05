@@ -7,9 +7,12 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/dialog_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
+import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
@@ -162,6 +165,19 @@ class MinePage extends StatelessWidget {
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [
                       RadiusInkWellWidget(
                           onPressed: () {
+                            if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
+                              show(builder: (_) {
+                                return CustomAlertDialog(
+                                    title: "温馨提示",
+                                    content: "您还没有设置收款方式，请先设置收款方式，去设置收款方式？",
+                                    confirmText: "立刻去",
+                                    cancelText: "稍等会儿",
+                                    onConfirm: () {
+                                      Get.toNamed(RoutePath.CHARGE_WAY_PAGE);
+                                    });
+                              });
+                              return;
+                            }
                             Get.toNamed(RoutePath.CHARGE_PAGE);
                           },
                           radius: 18.r,

@@ -157,7 +157,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
 
   Future updateAvatar(String path) async {
     showLoading();
-    FileEntity? file = await CommonRepository.uploadImage(path);
+    ImageEntity? file = await CommonRepository.uploadImage(path);
     if (file != null) {
       BaseBean result = await SessionRepository.updateSession(id,
           headImage: file.originUrl, headImageThumb: file.thumbUrl, name: bean.value?.name);
