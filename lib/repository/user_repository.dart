@@ -1,8 +1,10 @@
+import 'package:get/get.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/login_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/http_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 
@@ -109,6 +111,7 @@ class UserRepository {
       String? nickName,
       int? sex,
       String? signature,
+      String? no,
       String? headImage,
       String? headImageThumb}) async {
     var data = await HttpUtils.getInstance().request('user/update',
@@ -116,6 +119,7 @@ class UserRepository {
           Keys.ID: id,
           "userName": userName,
           "nickName": nickName,
+          if (no != null) "no": no,
           if (sex != null) "sex": sex,
           if (signature != null) "signature": signature,
           if (headImage != null) "headImage": headImage,
@@ -242,6 +246,30 @@ class UserRepository {
   static Future<BaseBean> updateWallet(String? walletCard, String? walletRemark) async {
     var data = await HttpUtils.getInstance().request('user/updateWallet',
         params: {"walletCard": walletCard, "walletRemark": walletRemark}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 设置支付密码
+  ///
+  /// [password] 支付密码
+  ///
+  static Future<BaseBean> setPayPassword(String? password) async {
+    var data = await HttpUtils.getInstance().request('user/setPayPassword',
+        params: {"payPassword": password, "id": Get.find<RootLogic>().user.value?.id},
+        method: HttpUtils.PUT,
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 设置支付密码
+  ///
+  /// [password] 支付密码
+  ///
+  static Future<BaseBean> checkPayPassword(String? password) async {
+    var data = await HttpUtils.getInstance().request('user/checkPayPassword',
+        params: {"payPassword": password, "id": Get.find<RootLogic>().user.value?.id},
+        method: HttpUtils.GET,
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 }

@@ -68,6 +68,8 @@ class WebSocketManager {
       // 心跳
       _heartbeatTimer?.cancel();
       _startHeartbeat();
+    } else if (json[Keys.CMD] == WebSocketCode.LOGOFF.code) {
+      Log.d("logoff");
     } else {
       // 其他消息处理
       _messageCallbacks.forEach((pageId, callback) {

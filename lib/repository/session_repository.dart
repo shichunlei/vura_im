@@ -151,11 +151,11 @@ class SessionRepository {
   /// [groupId] 群ID
   /// [userId] 成员ID
   ///
-  static Future<BaseBean> setSessionMemberVura(String? groupId, String? userId, bool isVura) async {
-    // var data = await HttpUtils.getInstance()
-    //     .request('group/members/detail', params: {Keys.USER_ID: userId, Keys.GROUP_ID: groupId}, showErrorToast: true);
-    // return BaseBean.fromJson(data);
-    return BaseBean(code: 200);
+  static Future<BaseBean> setSessionMemberVura(String? groupId, String? userId, bool isReceiveRedPacket) async {
+    var data = await HttpUtils.getInstance().request('group/setIsReceiveRedPacket',
+        params: {Keys.USER_ID: userId, Keys.GROUP_ID: groupId, "isReceiveRedPacket": isReceiveRedPacket ? 1:0},
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
   }
 
   /// 群管理员列表

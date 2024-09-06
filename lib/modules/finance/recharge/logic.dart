@@ -41,7 +41,7 @@ class RechargeLogic extends BaseListLogic<WithdrawEntity> {
     if (data.isNotEmpty) controller.text = "${data[selectIndex.value].usdt}";
   }
 
-  Future recharge(String? password) async {
+  Future recharge() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
         type: 2,

@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
+import 'package:vura/entities/base_bean.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/account.dart';
+import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
@@ -45,13 +46,7 @@ class PayPasswordLogic extends BaseLogic {
 
         if (password == rePassword) {
           DeviceUtils.hideKeyboard(context);
-          showToast(text: "设置成功");
-          try {
-            AccountRealm(realm: Get.find<RootLogic>().realm).updatePayPassword(password);
-          } catch (e) {
-            Log.e(e.toString());
-          }
-          Get.back();
+          setPayPassword(rePassword);
         } else {
           showToast(text: "两次密码不一致");
           codeList.value = ['', '', '', '', "", ""];
@@ -59,6 +54,21 @@ class PayPasswordLogic extends BaseLogic {
           controller.text = "";
         }
       }
+    }
+  }
+
+  Future setPayPassword(String password) async {
+    showLoading();
+    BaseBean result = await UserRepository.setPayPassword(password);
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "设置成功");
+      try {
+        Get.find<RootLogic>().updatePayPassword(password);
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      Get.back();
     }
   }
 }

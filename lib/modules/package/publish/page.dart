@@ -238,7 +238,7 @@ class PackagePublishPage extends StatelessWidget {
                               .then((value) {
                             if (value != null) {
                               if (StringUtil.isNotEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
-                                logic.sendRedPackage(value);
+                                logic.sendRedPackage();
                               } else {
                                 showToast(text: "未设置付款账号");
                               }

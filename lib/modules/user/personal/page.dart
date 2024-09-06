@@ -88,7 +88,12 @@ class PersonalPage extends StatelessWidget {
                       RadiusInkWellWidget(
                           radius: 0,
                           color: Colors.transparent,
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.dialog(UpdateTextDialog(title: "请输入新的ID号", value: logic.bean.value?.cardId ?? ""))
+                                .then((value) {
+                              if (value != null) logic.updateNo(value);
+                            });
+                          },
                           child: Container(
                               height: 66.h,
                               padding: EdgeInsets.only(left: 22.w, right: 10.w),
@@ -97,7 +102,7 @@ class PersonalPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                Text("${logic.bean.value?.id}",
+                                Text("${logic.bean.value?.cardId}",
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                                 const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                               ]))),

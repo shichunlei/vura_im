@@ -200,10 +200,7 @@ class RechargePage extends StatelessWidget {
                                                     tip: "支付账户"),
                                                 isScrollControlled: true)
                                             .then((value) {
-                                          if (value != null) {
-                                            // todo
-                                            logic.recharge(value);
-                                          }
+                                          if (value != null) logic.recharge();
                                         });
                                       },
                                       margin: EdgeInsets.only(top: 44.h),

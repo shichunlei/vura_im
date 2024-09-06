@@ -62,13 +62,13 @@ class MinePage extends StatelessWidget {
                                 style: GoogleFonts.dmSans(
                                     fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                             Row(children: [
-                              Text("id".trParams({"number": "${Get.find<RootLogic>().user.value?.id}"}),
+                              Text("id".trParams({"number": "${Get.find<RootLogic>().user.value?.cardId}"}),
                                   style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                               SizedBox(width: 22.w),
                               GestureDetector(
                                   onTap: () {
                                     /// 复制ID号
-                                    copyToClipboard("${Get.find<RootLogic>().user.value?.id}");
+                                    copyToClipboard("${Get.find<RootLogic>().user.value?.cardId}");
                                   },
                                   child: Icon(IconFont.copy, size: 15.sp, color: ColorUtil.color_999999))
                             ]),

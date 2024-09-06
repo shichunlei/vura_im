@@ -54,6 +54,8 @@ class HomeLogic extends BaseLogic {
             }
           }
           break;
+        case 2: // {"cmd":2,"data":"您已在其他地方登陆，将被强制下线"}
+          break;
         default:
           break;
       }

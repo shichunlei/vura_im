@@ -65,4 +65,22 @@ class PersonalLogic extends BaseObjectLogic<UserEntity?> {
       hiddenLoading();
     }
   }
+
+  /// 修改用户NO
+  Future updateNo(String no) async {
+    showLoading();
+    BaseBean result = await UserRepository.updateUser(bean.value?.id,
+        userName: bean.value?.userName, no: no, nickName: bean.value?.nickName);
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "修改成功");
+      bean.value?.cardId = no;
+      bean.refresh();
+      try {
+        Get.find<RootLogic>().updateCardId(no);
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
 }

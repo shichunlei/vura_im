@@ -200,10 +200,7 @@ class WithdrawPage extends StatelessWidget {
                                                     tip: "收款账户"),
                                                 isScrollControlled: true)
                                             .then((value) {
-                                          if (value != null) {
-                                            // todo
-                                            logic.withdraw(value);
-                                          }
+                                          if (value != null) logic.withdraw();
                                         });
                                       },
                                       margin: EdgeInsets.only(top: 44.h),

@@ -41,7 +41,7 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
     if (data.isNotEmpty) controller.text = "${data[selectIndex.value].usdt}";
   }
 
-  Future withdraw(String? password) async {
+  Future withdraw() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
         type: 1,

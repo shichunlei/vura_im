@@ -109,7 +109,7 @@ class AddFriendPage extends StatelessWidget {
                                                         fontSize: 14.sp, color: ColorUtil.color_666666)))
                                           ]),
                                           SizedBox(height: 5.r),
-                                          Text("ID:${logic.list[index].id}",
+                                          Text("ID:${logic.list[index].cardId}",
                                               style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                         ])),
                                     Visibility(

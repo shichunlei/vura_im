@@ -25,7 +25,8 @@ class MemberEntity {
   YorNType isSupAdmin;
   YorNType friendship;
   YorNType isMute;
-  YorNType isVure; // 可以抢红包
+  int isReceiveRedPacket; // 可以抢红包 0可以  1不可以
+  String? userNo;
 
   MemberEntity({
     this.userId,
@@ -40,7 +41,8 @@ class MemberEntity {
     this.isSupAdmin = YorNType.N,
     this.friendship = YorNType.M,
     this.isMute = YorNType.N,
-    this.isVure = YorNType.Y,
+    this.isReceiveRedPacket = 0,
+    this.userNo,
   });
 
   factory MemberEntity.fromJson(Map<String, dynamic> json) => _$MemberEntityFromJson(json);

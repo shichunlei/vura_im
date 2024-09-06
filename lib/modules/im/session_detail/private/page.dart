@@ -43,7 +43,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                   style: GoogleFonts.roboto(
                                       fontSize: 18.sp, color: Colors.black, fontWeight: FontWeight.w600)),
                               SizedBox(height: 13.r),
-                              Text("ID:${logic.id}",
+                              Text("ID:${logic.id}", // todo
                                   style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999))
                             ]))
                       ])),

@@ -82,6 +82,16 @@ class RootLogic extends BaseLogic {
         headImage: user.value?.headImage));
   }
 
+  void updateCardId(String? cardId) {
+    user.value?.cardId = cardId;
+    user.refresh();
+  }
+
+  void updatePayPassword(String? password) {
+    user.value?.payPassword = password;
+    user.refresh();
+  }
+
   void updateWallet(String? walletCard, String? walletRemark) {
     user.value?.walletCard = walletCard;
     user.value?.walletRemark = walletRemark;

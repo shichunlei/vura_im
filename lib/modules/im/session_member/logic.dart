@@ -54,7 +54,7 @@ class SessionMemberLogic extends BaseObjectLogic<MemberEntity?> with FriendMixin
     BaseBean result = await SessionRepository.setSessionMemberVura(groupId, userId, value);
     hiddenLoading();
     if (result.code == 200) {
-      bean.value?.isVure = value ? YorNType.N : YorNType.Y;
+      bean.value?.isReceiveRedPacket = value ? 0 : 1;
       try {
         Get.find<ChatLogic>(tag: groupId).getMembers(groupId);
       } catch (e) {

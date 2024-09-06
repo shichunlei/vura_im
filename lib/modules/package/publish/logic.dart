@@ -78,7 +78,7 @@ class PackagePublishLogic extends BaseLogic {
 
   List<int?> mines = [];
 
-  Future sendRedPackage(String? password) async {
+  Future sendRedPackage() async {
     if (StringUtil.isEmpty(amountController.text)) {
       showToast(text: "请输入总金额");
       return;
@@ -106,7 +106,6 @@ class PackagePublishLogic extends BaseLogic {
         : mines.isNotEmpty
             ? 3
             : 2; // 红包类型 1 单人红包 2 普通群红包 3 拼手气红包(红包雷)
-    params["password"] = password; // 支付密码
     Log.json(params);
 
     showLoading();

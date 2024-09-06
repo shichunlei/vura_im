@@ -118,14 +118,6 @@ class CommonRepository {
   //   return BaseBean.fromJson(data);
   // }
 
-  /// 设置支付密码 TODO
-  ///
-  static Future<BaseBean> setPayPassword({String? password}) async {
-    var data =
-        await HttpUtils.getInstance().request("withdraw/apply", params: {"password": password}, showErrorToast: true);
-    return BaseBean.fromJson(data);
-  }
-
   /// 设置锁屏密码 TODO
   ///
   static Future<BaseBean> setLockScreenPassword({String? password}) async {

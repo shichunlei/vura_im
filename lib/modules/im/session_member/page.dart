@@ -86,7 +86,7 @@ class SessionMemberPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
                                 CupertinoSwitch(
-                                    value: logic.bean.value?.isVure == YorNType.N, onChanged: logic.setProhibitVure),
+                                    value: logic.bean.value?.isReceiveRedPacket == 0, onChanged: logic.setProhibitVure),
                               ])))
                     ])),
                 const Spacer(),

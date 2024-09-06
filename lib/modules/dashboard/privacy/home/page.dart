@@ -7,6 +7,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 
 import 'logic.dart';
@@ -76,7 +77,9 @@ class PrivacyPage extends StatelessWidget {
                           child: Row(children: [
                             Text("支付密码", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                             const Spacer(),
-                            Text("设置支付密码", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                            Text(
+                                StringUtil.isEmpty(Get.find<RootLogic>().user.value?.payPassword) ? "设置支付密码" : "修改支付密码",
+                                style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                             const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                           ]))),
                   Divider(height: 0, indent: 22.w, endIndent: 22.w),
