@@ -8,6 +8,7 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -43,16 +44,16 @@ class WalletPage extends StatelessWidget {
                               child: AspectRatio(aspectRatio: 1, child: Image.asset("assets/images/jinbi.webp")))),
                       Row(children: [
                         SizedBox(width: 22.w),
-                        Column(mainAxisSize: MainAxisSize.min, children: [
+                        Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Text("USDT数量:", style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                           SizedBox(height: 13.h),
                           Text("${Get.find<RootLogic>().user.value?.money}",
-                              style: GoogleFonts.roboto(
+                              style: GoogleFonts.bebasNeue(
                                   color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold))
                         ]),
                         const Spacer(),
-                        Text("≈￥${Get.find<RootLogic>().user.value?.money}", // TODO  人民币
-                            style: GoogleFonts.roboto(
+                        Text("≈￥${Get.find<RootLogic>().user.value!.money * 7.15}", // TODO  人民币
+                            style: GoogleFonts.bebasNeue(
                                 color: ColorUtil.color_333333, fontSize: 26.sp, fontWeight: FontWeight.bold)),
                         SizedBox(width: 22.w)
                       ]),
@@ -105,40 +106,44 @@ class WalletPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                Text("类型:", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
                                 GestureDetector(
                                     onTap: () {
                                       morePicker(context);
                                     },
-                                    child: Text(logic.type.value.label,
-                                        style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp))),
-                                Icon(Icons.keyboard_arrow_down, size: 15.sp),
-                                SizedBox(width: 5.w),
-                                GestureDetector(
-                                    onTap: () {
-                                      Get.bottomSheet(
-                                          Theme(
-                                              data: Get.theme.copyWith(appBarTheme: const AppBarTheme(elevation: 0)),
-                                              child: DateRangePickerDialog(
-                                                  initialDateRange:
-                                                      logic.startTime.value == null || logic.endTime.value == null
-                                                          ? null
-                                                          : DateTimeRange(
-                                                              start: logic.startTime.value!, end: logic.endTime.value!),
-                                                  firstDate: DateTime(2020),
-                                                  lastDate: DateTime.now(),
-                                                  helpText: "请选择日期区间",
-                                                  cancelText: "取消",
-                                                  confirmText: "确定",
-                                                  saveText: "完成",
-                                                  initialEntryMode: DatePickerEntryMode.calendarOnly)),
-                                          enableDrag: false,
-                                          clipBehavior: Clip.antiAlias,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))));
-                                    },
-                                    child: Icon(IconFont.time, color: ColorUtil.color_333333, size: 22.sp))
+                                    behavior: HitTestBehavior.translucent,
+                                    child: Row(children: [
+                                      Text("类型：",
+                                          style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                                      Text(logic.type.value.label,
+                                          style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                                      Icon(Icons.keyboard_arrow_down, size: 15.sp)
+                                    ])),
+                                // SizedBox(width: 5.w),
+                                // GestureDetector(
+                                //     onTap: () {
+                                //       Get.bottomSheet(
+                                //           Theme(
+                                //               data: Get.theme.copyWith(appBarTheme: const AppBarTheme(elevation: 0)),
+                                //               child: DateRangePickerDialog(
+                                //                   initialDateRange:
+                                //                       logic.startTime.value == null || logic.endTime.value == null
+                                //                           ? null
+                                //                           : DateTimeRange(
+                                //                               start: logic.startTime.value!, end: logic.endTime.value!),
+                                //                   firstDate: DateTime(2020),
+                                //                   lastDate: DateTime.now(),
+                                //                   helpText: "请选择日期区间",
+                                //                   cancelText: "取消",
+                                //                   confirmText: "确定",
+                                //                   saveText: "完成",
+                                //                   initialEntryMode: DatePickerEntryMode.calendarOnly)),
+                                //           enableDrag: false,
+                                //           clipBehavior: Clip.antiAlias,
+                                //           shape: RoundedRectangleBorder(
+                                //               borderRadius: BorderRadius.only(
+                                //                   topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))));
+                                //     },
+                                //     child: Icon(IconFont.time, color: ColorUtil.color_333333, size: 22.sp))
                               ])))),
                   SliverToBoxAdapter(child: SizedBox(height: 11.h)),
                   SliverList(
@@ -170,12 +175,13 @@ class WalletPage extends StatelessWidget {
                             Text("${logic.list[index].detailDesc}",
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                             const Spacer(),
-                            Text("≈￥${logic.list[index].money}", // TODO  人民币
+                            Text("≈￥${logic.list[index].money * 7.15}", // TODO  人民币
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                           ]),
                           SizedBox(height: 3.h),
-                          Text("${logic.list[index].updateTime}",
-                              style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
+                          Text(
+                              "${DateUtil.getDateStrByTimeStr(logic.list[index].updateTime!, format: DateFormat.YEAR_MONTH_DAY_HOUR_MINUTE)}",
+                              style: GoogleFonts.ptSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                         ]));
                   }, childCount: logic.list.length))
                 ]);

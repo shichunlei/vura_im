@@ -36,8 +36,10 @@ class LockScreenPasswordPage extends StatelessWidget {
                         child: Row(children: [
                           Text("锁屏手势", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
-                          Text(StringUtil.isEmpty(logic.gesturePassword) ? "" : "已设置",
-                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                          Obx(() {
+                            return Text(StringUtil.isEmpty(logic.gesturePassword.value) ? "" : "已设置",
+                                style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999));
+                          }),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ]))),
                 Divider(height: 0, indent: 22.w, endIndent: 22.w),
@@ -45,13 +47,19 @@ class LockScreenPasswordPage extends StatelessWidget {
                     color: Colors.transparent,
                     borderRadius:
                         BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(RoutePath.NUMBER_PASSWORD_PAGE);
+                    },
                     child: Container(
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
                         child: Row(children: [
                           Text("锁屏密码", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
+                          Obx(() {
+                            return Text(StringUtil.isEmpty(logic.numberPassword.value) ? "" : "已设置",
+                                style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999));
+                          }),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ])))
               ])),
@@ -72,7 +80,7 @@ class LockScreenPasswordPage extends StatelessWidget {
                             borderRadius:
                                 BorderRadius.only(topLeft: Radius.circular(15.r), topRight: Radius.circular(15.r))))
                     .then((value) {
-                  if (value != null) logic.time.value = value;
+                  if (value != null) logic.setTime(value);
                 });
               },
               child: Container(

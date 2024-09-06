@@ -28,6 +28,7 @@ class TransferPage extends StatelessWidget {
           appBar: AppBar(title: const Text("转账"), backgroundColor: Colors.transparent, centerTitle: true),
           body: BaseWidget(
               logic: logic,
+              bgColor: Colors.transparent,
               builder: (logic) {
                 return SingleChildScrollView(
                     padding: EdgeInsets.symmetric(horizontal: 22.w),

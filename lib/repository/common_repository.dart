@@ -87,6 +87,53 @@ class CommonRepository {
     return (result.data["records"] as List).map((item) => BillRecordEntity.fromJson(item)).toList();
   }
 
+  /// 申请转账 TODO
+  ///
+  /// [account] 账户
+  /// [money] 转账金额
+  /// [type] 类型 1-提现 2-充值
+  /// [remarks] 转账备注
+  ///
+  static Future<BaseBean> withdraw({required double money, required int type, String? remarks, String? account}) async {
+    var data = await HttpUtils.getInstance().request("withdraw/apply",
+        params: {"money": money, "type": type, "remarks": remarks, "account": account}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 账号信息（含汇率）TODO
+  ///
+  static Future<BaseBean> accountWithRate(
+      {required double money, required int type, String? remarks, String? account}) async {
+    var data = await HttpUtils.getInstance().request("withdraw/apply",
+        params: {"money": money, Keys.TYPE: type, "remarks": remarks, "account": account}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 转账列表 TODO
+  ///
+  // static Future<BaseBean> accountWithRate(
+  //     {required double money, required int type, String? remarks, String? account}) async {
+  //   var data = await HttpUtils.getInstance().request("withdraw/apply",
+  //       params: {"money": money, "type": type, "remarks": remarks, "account": account}, showErrorToast: true);
+  //   return BaseBean.fromJson(data);
+  // }
+
+  /// 设置支付密码 TODO
+  ///
+  static Future<BaseBean> setPayPassword({String? password}) async {
+    var data =
+        await HttpUtils.getInstance().request("withdraw/apply", params: {"password": password}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 设置锁屏密码 TODO
+  ///
+  static Future<BaseBean> setLockScreenPassword({String? password}) async {
+    var data =
+        await HttpUtils.getInstance().request("withdraw/apply", params: {"password": password}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
   /// 版本检查
   static Future<VersionEntity?> checkVersion() async {
     var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);

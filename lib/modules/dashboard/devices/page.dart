@@ -26,7 +26,7 @@ class DevicesPage extends StatelessWidget {
                   end: Alignment.bottomCenter))),
       Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(title: const Text("设备"), backgroundColor: Colors.transparent, centerTitle: true, actions: [
+          appBar: AppBar(title: Text("device".tr), backgroundColor: Colors.transparent, centerTitle: true, actions: [
             CustomIconButton(icon: Icon(IconFont.minus_user, size: 26.r), onPressed: () {}),
             CustomIconButton(icon: Icon(IconFont.edit, size: 26.r), onPressed: () {}),
           ]),

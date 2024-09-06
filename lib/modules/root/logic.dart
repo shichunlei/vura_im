@@ -20,6 +20,7 @@ import 'package:vura/realm/friend.dart';
 import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -29,10 +30,16 @@ import 'package:vura/widgets/dialog/version_upgrade_dialog.dart';
 class RootLogic extends BaseLogic {
   late Realm realm;
 
+  var textSizeType = TextSizeType.one.obs;
+
   RootLogic() {
     var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema],
         schemaVersion: 1, shouldDeleteIfMigrationNeeded: true);
     realm = Realm(config);
+
+    textSizeType.value = EnumToString.fromString(
+        TextSizeType.values, SpUtil.getString(Keys.TEXT_SIZE, defValue: TextSizeType.one.name),
+        defaultValue: TextSizeType.one)!;
   }
 
   @override
@@ -110,6 +117,10 @@ class RootLogic extends BaseLogic {
 
   void getUserInfo() async {
     if (isLogin && null == user.value) user.value = await UserRepository.getUserInfo();
+  }
+
+  void updateFontSize(TextSizeType value) {
+    textSizeType.value = value;
   }
 
   VersionEntity? version;

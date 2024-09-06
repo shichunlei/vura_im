@@ -42,8 +42,9 @@ abstract class RoutePath {
   static const String CHAT_BACKGROUND_PAGE = "/chat_background"; // 聊天背景
   static const String FONT_SIZE_PAGE = "/font_size"; // 字体大小
   static const String PAY_PASSWORD_PAGE = "/pay_password"; // 支付密码
-  static const String GESTURE_PASSWORD_PAGE = "/gesture_password"; // 手势密码
-  static const String GESTURE_PAGE = "/gesture"; // 手势密码
+  static const String GESTURE_PASSWORD_PAGE = "/set_gesture_password"; // 设置手势密码
+  static const String LOCK_SCREEN_PAGE = "/lock_screen"; // 手势密码
+  static const String NUMBER_PASSWORD_PAGE = "/set_number_password"; // 设置数字密码
   static const String LOCK_SCREEN_PASSWORD_PAGE = "/lock_screen_password"; // 锁屏密码
   static const String RECHARGE_PAGE = "/recharge"; // 充值
   static const String WITHDRAW_PAGE = "/withdraw"; // 提现

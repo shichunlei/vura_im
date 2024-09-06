@@ -34,6 +34,7 @@ class ChargeWayPage extends StatelessWidget {
                 logic: logic,
                 showEmpty: false,
                 showError: false,
+                bgColor: Colors.transparent,
                 builder: (logic) {
                   return Column(children: [
                     Expanded(

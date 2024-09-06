@@ -1,14 +1,14 @@
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:vura/entities/base_bean.dart';
-import 'package:vura/entities/user_entity.dart';
-import 'package:vura/utils/websocket.dart';
 
+import 'entities/base_bean.dart';
+import 'entities/user_entity.dart';
 import 'global/config.dart';
 import 'global/keys.dart';
 import 'repository/user_repository.dart';
 import 'route/route_path.dart';
 import 'utils/sp_util.dart';
 import 'utils/string_util.dart';
+import 'utils/websocket.dart';
 
 String initialRoute = RoutePath.LOGIN_PAGE;
 
@@ -39,9 +39,9 @@ class Application {
       } else {
         UserEntity? user = await UserRepository.getUserInfo();
         if (user?.id != null) AppConfig.setUserId(user!.id!);
-        String gesturePassword = SpUtil.getString("_GesturePassword_", defValue: "");
-        if (StringUtil.isNotEmpty(gesturePassword)) {
-          initialRoute = RoutePath.GESTURE_PAGE;
+        bool loginProtect = SpUtil.getBool(Keys.LOGIN_PROTECT, defValue: false);
+        if (loginProtect) {
+          initialRoute = RoutePath.LOCK_SCREEN_PAGE;
         } else {
           initialRoute = RoutePath.HOME_PAGE;
         }

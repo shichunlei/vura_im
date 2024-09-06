@@ -8,10 +8,10 @@ import 'package:vura/utils/log_utils.dart';
 
 import 'logic.dart';
 
-class GesturePasswordPage extends StatelessWidget {
-  const GesturePasswordPage({super.key});
+class SetGesturePasswordPage extends StatelessWidget {
+  const SetGesturePasswordPage({super.key});
 
-  GesturePasswordLogic get logic => Get.find<GesturePasswordLogic>();
+  SetGesturePasswordLogic get logic => Get.find<SetGesturePasswordLogic>();
 
   @override
   Widget build(BuildContext context) {

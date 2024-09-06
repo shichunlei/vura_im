@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/obx_widget.dart';
@@ -29,8 +30,7 @@ class LanguagePage extends StatelessWidget {
                       RadiusInkWellWidget(
                           color: Colors.transparent,
                           onPressed: () {
-                            var locale = const Locale('zh', 'CN');
-                            Get.updateLocale(locale);
+                            logic.setLanguage(LocalType.zh_CN);
                           },
                           borderRadius:
                               BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
@@ -40,15 +40,16 @@ class LanguagePage extends StatelessWidget {
                               child: Row(children: [
                                 Text("简体中文", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Icon(IconFont.check, size: 15.r)
+                                Visibility(
+                                    visible: logic.localType.value == LocalType.zh_CN,
+                                    child: Icon(IconFont.check, size: 15.r))
                               ]))),
                       Divider(height: 0, indent: 22.w, endIndent: 22.w),
                       RadiusInkWellWidget(
                           color: Colors.transparent,
                           radius: 0,
                           onPressed: () {
-                            var locale = const Locale('zh', 'HK');
-                            Get.updateLocale(locale);
+                            logic.setLanguage(LocalType.zh_HK);
                           },
                           child: Container(
                               height: 60.h,
@@ -56,7 +57,9 @@ class LanguagePage extends StatelessWidget {
                               child: Row(children: [
                                 Text("繁体中文", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Icon(IconFont.check, size: 15.r)
+                                Visibility(
+                                    visible: logic.localType.value == LocalType.zh_HK,
+                                    child: Icon(IconFont.check, size: 15.r))
                               ]))),
                       Divider(height: 0, indent: 22.w, endIndent: 22.w),
                       RadiusInkWellWidget(
@@ -64,8 +67,7 @@ class LanguagePage extends StatelessWidget {
                           borderRadius:
                               BorderRadius.only(bottomLeft: Radius.circular(11.r), bottomRight: Radius.circular(11.r)),
                           onPressed: () {
-                            var locale = const Locale('en', 'US');
-                            Get.updateLocale(locale);
+                            logic.setLanguage(LocalType.en_US);
                           },
                           child: Container(
                               height: 60.h,
@@ -74,7 +76,9 @@ class LanguagePage extends StatelessWidget {
                                 Text("English",
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Icon(IconFont.check, size: 15.r)
+                                Visibility(
+                                    visible: logic.localType.value == LocalType.en_US,
+                                    child: Icon(IconFont.check, size: 15.r))
                               ])))
                     ]))
               ]);

@@ -4,7 +4,6 @@ part 'version_entity.g.dart';
 
 @JsonSerializable()
 class VersionEntity {
-  @JsonKey(name: '_id')
   String? id;
   String? version;
   String? download;

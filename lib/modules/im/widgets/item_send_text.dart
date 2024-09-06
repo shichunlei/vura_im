@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/modules/root/logic.dart';
 
 class ItemSendText extends StatelessWidget {
   final MessageEntity message;
@@ -10,9 +12,7 @@ class ItemSendText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onDoubleTap: () {
-
-        },
+        onDoubleTap: () {},
         behavior: HitTestBehavior.translucent,
         child: Container(
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
@@ -23,8 +23,14 @@ class ItemSendText extends StatelessWidget {
                     bottomRight: Radius.circular(15.r),
                     bottomLeft: Radius.circular(15.r)),
                 color: const Color(0xff2ECC72)),
-            constraints: BoxConstraints(maxWidth: .7.sw, minWidth: 0),
-            child: Text('${message.content}',
-                style: TextStyle(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.w600))));
+            constraints: BoxConstraints(maxWidth: 266.w, minWidth: 0, minHeight: 44.r),
+            child: Obx(() {
+              return Text('${message.content}',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      fontSize: Get.find<RootLogic>().textSizeType.value.fontSize.sp,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600));
+            })));
   }
 }

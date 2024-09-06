@@ -29,7 +29,7 @@ class ContactsPage extends StatelessWidget {
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            title: const Text("通讯录"),
+            title: Text("contacts".tr),
             actions: [
               CustomIconButton(
                   icon: const Icon(IconFont.search),
@@ -68,7 +68,8 @@ class ContactsPage extends StatelessWidget {
                                 width: 66.r,
                                 alignment: Alignment.center,
                                 child: Icon(IconFont.add_friend, color: Colors.white, size: 35.r))),
-                        Text("添加好友", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
+                        Text("Add friends".tr,
+                            style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
                       ]),
                       const Spacer(),
                       Column(mainAxisSize: MainAxisSize.min, children: [
@@ -86,7 +87,7 @@ class ContactsPage extends StatelessWidget {
                                 width: 66.r,
                                 alignment: Alignment.center,
                                 child: Icon(IconFont.black_list, color: Colors.white, size: 35.r))),
-                        Text("黑名单", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
+                        Text('blacklist'.tr, style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
                       ]),
                       const Spacer(),
                       Column(mainAxisSize: MainAxisSize.min, children: [
@@ -104,7 +105,8 @@ class ContactsPage extends StatelessWidget {
                                 width: 66.r,
                                 alignment: Alignment.center,
                                 child: Icon(IconFont.new_friend, color: Colors.white, size: 35.r))),
-                        Text("新的好友", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
+                        Text("New friends".tr,
+                            style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp))
                       ])
                     ])),
                 Expanded(

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/application.dart';
 import 'package:vura/global/config.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
@@ -21,7 +22,7 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("通用设置"), centerTitle: true),
+        appBar: AppBar(title: Text('setting'.tr), centerTitle: true),
         body: Column(children: [
           SizedBox(height: 30.h),
           Image.asset("assets/images/logo.webp", width: 88.r, height: 88.r),
@@ -132,7 +133,8 @@ class SettingPage extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 44.h),
               color: Colors.white,
               onPressed: () {
-                SpUtil.clear();
+                SpUtil.remove(Keys.ACCESS_TOKEN);
+                SpUtil.remove(Keys.REFRESH_TOKEN);
                 webSocketManager.close();
                 Get.offAllNamed(RoutePath.LOGIN_PAGE);
               },

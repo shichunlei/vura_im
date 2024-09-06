@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:vura/global/enum.dart';
 
 part 'package_entity.g.dart';
 

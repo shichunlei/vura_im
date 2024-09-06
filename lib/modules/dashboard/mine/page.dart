@@ -79,64 +79,71 @@ class MinePage extends StatelessWidget {
                         SizedBox(width: 18.w)
                       ])),
                   SizedBox(height: 22.h),
-                  Container(
-                      decoration:
-                          BoxDecoration(color: const Color(0xff83C240), borderRadius: BorderRadius.circular(20.r)),
-                      margin: EdgeInsets.symmetric(horizontal: 22.w),
-                      padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
-                      child: Column(mainAxisSize: MainAxisSize.min, children: [
-                        Row(children: [
-                          Text("总资产", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white)),
-                          SizedBox(width: 20.w),
-                          GestureDetector(
-                              onTap: logic.showMoney.toggle,
-                              behavior: HitTestBehavior.translucent,
-                              child: Icon(logic.showMoney.value ? IconFont.eye_open_fill : IconFont.eye_close_fill,
-                                  color: Colors.white, size: 15.sp)),
-                          const Spacer(),
-                          GestureDetector(
-                              onTap: () {
-                                Get.toNamed(RoutePath.WALLET_PAGE);
-                              },
-                              behavior: HitTestBehavior.translucent,
-                              child: const Icon(IconFont.idcard)),
-                          SizedBox(width: 10.w)
-                        ]),
-                        SizedBox(height: 20.h),
-                        Row(children: [
-                          Container(
-                              decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(9.r)),
-                              alignment: Alignment.center,
-                              width: 35.r,
-                              height: 35.r,
-                              child: Icon(IconFont.usdt, size: 22.sp)),
-                          SizedBox(width: 13.w),
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Text("USDT",
-                                    style: GoogleFonts.dmSans(
-                                        fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                                SizedBox(height: 5.h),
-                                SizedBox(
-                                    height: 15.h,
-                                    child: Text(logic.showMoney.value ? "0.00 RMB" : "****",
-                                        style: GoogleFonts.dmSans(fontSize: 11.sp, color: Colors.white)))
-                              ]),
-                          const Spacer(),
-                          Column(children: [
-                            Text(logic.showMoney.value ? "${Get.find<RootLogic>().user.value?.money}" : "****",
-                                style: GoogleFonts.daiBannaSil(
-                                    fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                            SizedBox(height: 5.h),
-                            SizedBox(
-                                height: 15.h,
-                                child: Text(logic.showMoney.value ? "≈￥0.00" : "****",
-                                    style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white)))
+                  GestureDetector(
+                    onTap: () {
+                      Get.toNamed(RoutePath.WALLET_PAGE);
+                    },
+                    behavior: HitTestBehavior.translucent,
+                    child: Container(
+                        decoration:
+                            BoxDecoration(color: const Color(0xff83C240), borderRadius: BorderRadius.circular(20.r)),
+                        margin: EdgeInsets.symmetric(horizontal: 22.w),
+                        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
+                        child: Column(mainAxisSize: MainAxisSize.min, children: [
+                          Row(children: [
+                            GestureDetector(
+                                onTap: logic.showMoney.toggle,
+                                behavior: HitTestBehavior.translucent,
+                                child: Row(mainAxisSize: MainAxisSize.min, children: [
+                                  Text("总资产", style: GoogleFonts.dmSans(fontSize: 13.sp, color: Colors.white)),
+                                  SizedBox(width: 20.w),
+                                  Icon(logic.showMoney.value ? IconFont.eye_open_fill : IconFont.eye_close_fill,
+                                      color: Colors.white, size: 15.sp)
+                                ])),
+                            const Spacer(),
+                            const Icon(IconFont.idcard),
+                            SizedBox(width: 10.w)
+                          ]),
+                          SizedBox(height: 20.h),
+                          Row(children: [
+                            Container(
+                                decoration:
+                                    BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(9.r)),
+                                alignment: Alignment.center,
+                                width: 35.r,
+                                height: 35.r,
+                                child: Icon(IconFont.usdt, size: 22.sp)),
+                            SizedBox(width: 13.w),
+                            Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text("USDT",
+                                      style: GoogleFonts.dmSans(
+                                          fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 5.h),
+                                  SizedBox(
+                                      height: 15.h,
+                                      child: Text(logic.showMoney.value ? "7.15 RMB" : "****", // todo 汇率
+                                          style: GoogleFonts.dmSans(fontSize: 11.sp, color: Colors.white)))
+                                ]),
+                            const Spacer(),
+                            Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                              Text(logic.showMoney.value ? "${Get.find<RootLogic>().user.value?.money}" : "****",
+                                  style: GoogleFonts.daiBannaSil(
+                                      fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 5.h),
+                              SizedBox(
+                                  height: 15.h,
+                                  child: Text(
+                                      logic.showMoney.value
+                                          ? "≈￥${7.15 * Get.find<RootLogic>().user.value!.money}"
+                                          : "****",
+                                      style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white)))
+                            ])
                           ])
-                        ])
-                      ])),
+                        ])),
+                  ),
                   Container(
                       height: 66.h,
                       padding: EdgeInsets.only(top: 22.h, left: 22.w),
@@ -307,7 +314,7 @@ class MinePage extends StatelessWidget {
                           child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                                Text("通用设置",
+                                Text('setting'.tr,
                                     style: GoogleFonts.dmSans(
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 SizedBox(height: 15.h),

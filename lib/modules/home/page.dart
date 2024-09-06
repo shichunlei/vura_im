@@ -8,16 +8,62 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/contacts/home/page.dart';
 import 'package:vura/modules/dashboard/mine/page.dart';
 import 'package:vura/modules/im/session/page.dart';
+import 'package:vura/modules/user/lock_screen_dialog/dialog.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/widgets/frame_stack.dart';
 import 'package:vura/widgets/keep_alive_view.dart';
 
 import 'logic.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  @override
+  createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   HomeLogic get logic => Get.find<HomeLogic>();
+
+  @override
+  void initState() {
+    super.initState();
+    // 注册监听
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  // 监听生命周期变化
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.paused) {
+      // 应用进入后台
+      Log.d("App进入后台====>${DateTime.now().toIso8601String()}");
+      if (logic.loginProtect.value) logic.startTime.value ??= DateTime.now().millisecondsSinceEpoch;
+    } else if (state == AppLifecycleState.resumed) {
+      // 应用回到前台
+      Log.d("App回到前台${DateTime.now().toIso8601String()}");
+      if (!logic.loginProtect.value) return;
+      if (logic.startTime.value != null && DateTime.now().millisecondsSinceEpoch - logic.startTime.value! > 0) {
+        Log.d(
+            "在后台待了这么长时间=====================>${DateTime.now().millisecondsSinceEpoch - logic.startTime.value!}---------------------${logic.lockScreenTime.value}");
+        if ((DateTime.now().millisecondsSinceEpoch - logic.startTime.value!) > logic.lockScreenTime.value) {
+          Get.dialog(const LockScreenDialog(),
+                  barrierDismissible: false, useSafeArea: false, barrierColor: Colors.white)
+              .then((value) {
+            if (value != null && value) logic.startTime.value = null;
+          });
+        } else {
+          logic.startTime.value = null;
+        }
+      } else {
+        logic.startTime.value = null;
+      }
+    } else if (state == AppLifecycleState.inactive) {
+      Log.d("应用处于非活动状态");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +109,7 @@ class HomePage extends StatelessWidget {
                         ? Column(mainAxisSize: MainAxisSize.min, children: [
                             SizedBox(height: 5.h),
                             Icon(isActive ? IconFont.tab_message_selected : IconFont.tab_message, size: 22),
-                            Text("消息",
+                            Text("message".tr,
                                 style: GoogleFonts.roboto(
                                     fontSize: 11.sp,
                                     color: !isActive ? ColorUtil.color_999999 : const Color(0xff83C240)))
@@ -71,12 +117,19 @@ class HomePage extends StatelessWidget {
                         : Column(mainAxisSize: MainAxisSize.min, children: [
                             SizedBox(height: 5.h),
                             Icon(isActive ? IconFont.tab_mine_selected : IconFont.tab_mine, size: 22),
-                            Text("我的",
+                            Text("mine".tr,
                                 style: GoogleFonts.roboto(
                                     fontSize: 11.sp,
                                     color: !isActive ? ColorUtil.color_999999 : const Color(0xff83C240)))
                           ]);
                   });
             })));
+  }
+
+  @override
+  void dispose() {
+    // 移除监听
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 }

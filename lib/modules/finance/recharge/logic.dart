@@ -1,11 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:vura/base/base_logic.dart';
+import 'package:vura/base/base_list_logic.dart';
+import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/withdraw_entity.dart';
+import 'package:vura/modules/root/logic.dart';
+import 'package:vura/repository/common_repository.dart';
+import 'package:vura/utils/toast_util.dart';
 
-class RechargeLogic extends BaseLogic {
+class RechargeLogic extends BaseListLogic<WithdrawEntity> {
   TextEditingController controller = TextEditingController();
+
+  RechargeLogic() {
+    controller.addListener(() {
+      if (list.every((item) => item.usdt != num.parse(controller.text))) {
+        selectIndex.value = -1;
+      } else {
+        selectIndex.value = list.indexWhere((item) => item.usdt == num.parse(controller.text));
+      }
+      update();
+    });
+  }
+
+  double exchangeRate = 7.15;
+
+  @override
+  void onInit() {
+    initData();
+    super.onInit();
+  }
 
   var selectIndex = 0.obs;
 
-  Future recharge(String? password) async {}
+  @override
+  Future<List<WithdrawEntity>> loadData() async {
+    return WithdrawEntity.getWithdraw();
+  }
+
+  @override
+  void onCompleted(List<WithdrawEntity> data) {
+    if (data.isNotEmpty) controller.text = "${data[selectIndex.value].usdt}";
+  }
+
+  Future recharge(String? password) async {
+    showLoading();
+    BaseBean result = await CommonRepository.withdraw(
+        type: 2,
+        money: double.parse(controller.text),
+        account: Get.find<RootLogic>().user.value?.walletCard,
+        remarks: "充值");
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "充值申请已提交");
+    }
+  }
 }

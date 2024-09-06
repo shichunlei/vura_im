@@ -12,6 +12,7 @@ import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/frame_stack.dart';
@@ -20,6 +21,11 @@ class HomeLogic extends BaseLogic {
   var selectedIndex = 0.obs;
 
   IndexController indexController = IndexController();
+
+  var lockScreenTime = (60 * 1000).obs;
+  var loginProtect = false.obs;
+
+  Rx<int?> startTime = Rx<int?>(null);
 
   HomeLogic() {
     webSocketManager.listen("HomeLogic", (int cmd, Map<String, dynamic> data) {
@@ -65,6 +71,9 @@ class HomeLogic extends BaseLogic {
       SessionRepository.getOfflineMessages("all",
           groupMinId: groupLastMessageId ?? "0", privateMinId: privateLastMessageId ?? "0");
     });
+
+    lockScreenTime.value = SpUtil.getInt(Keys.LOCK_SCREEN_TIME, defValue: 60 * 1000); // 设定的锁屏间隔时间，默认为1分钟
+    loginProtect.value = SpUtil.getBool(Keys.LOGIN_PROTECT, defValue: false); // 是否设置了登录保护
   }
 
   @override
@@ -119,6 +128,14 @@ class HomeLogic extends BaseLogic {
     } else {
       webSocketManager.connect();
     }
+  }
+
+  void updateLoginProtect(bool value) {
+    loginProtect.value = value; // 是否设置了登录保护
+  }
+
+  void updateLockScreenTime(int time) {
+    lockScreenTime.value = time; // 设定的锁屏间隔时间，默认为1分钟
   }
 
   @override

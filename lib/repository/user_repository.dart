@@ -21,8 +21,6 @@ class UserRepository {
 
       SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
       SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
-      SpUtil.setString("accessTokenExpiresIn", "${login.accessTokenExpiresIn}");
-      SpUtil.setString("refreshTokenExpiresIn", "${login.refreshTokenExpiresIn}");
 
       return await getUserInfo();
     } else {
@@ -96,8 +94,6 @@ class UserRepository {
       LoginEntity? login = LoginEntity.fromJson(result.data);
       SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
       SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
-      SpUtil.setString("accessTokenExpiresIn", "${login.accessTokenExpiresIn}");
-      SpUtil.setString("refreshTokenExpiresIn", "${login.refreshTokenExpiresIn}");
     }
     return result;
   }

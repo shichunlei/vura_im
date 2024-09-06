@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:ansicolor/ansicolor.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
+import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/toast_util.dart';
-import 'package:talker_dio_logger/talker_dio_logger_interceptor.dart';
-import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 
 import 'log_utils.dart';
 
@@ -234,8 +234,8 @@ class HeaderInterceptor extends Interceptor {
   Future onRequest(RequestOptions options, handler) async {
     String accessToken = SpUtil.getString(Keys.ACCESS_TOKEN);
     options.headers[Keys.ACCESS_TOKEN] = accessToken;
-    String refreshToken = SpUtil.getString("refreshToken");
-    options.headers["refreshToken"] = refreshToken;
+    String refreshToken = SpUtil.getString(Keys.REFRESH_TOKEN);
+    options.headers[Keys.REFRESH_TOKEN] = refreshToken;
     return handler.next(options);
   }
 }

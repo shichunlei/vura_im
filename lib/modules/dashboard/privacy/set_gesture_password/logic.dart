@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/utils/sp_util.dart';
 
-class GesturePasswordLogic extends BaseLogic {
+class SetGesturePasswordLogic extends BaseLogic {
   var isFirst = true.obs;
 
   String firstData = "";
@@ -27,7 +28,7 @@ class GesturePasswordLogic extends BaseLogic {
         // 设置成功
         tip.value = "已完成绘制";
         Future.delayed(const Duration(seconds: 1), () {
-          SpUtil.setString("_GesturePassword_", firstData);
+          SpUtil.setString(Keys.GESTURE_PASSWORD, firstData);
           Get.back();
         });
       } else {

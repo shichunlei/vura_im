@@ -39,4 +39,15 @@ class Keys {
 
   static const String ACCESS_TOKEN = "accessToken";
   static const String REFRESH_TOKEN = "refreshToken";
+
+  static const String NUMBER_PASSWORD = "_NumberPassword_";
+  static const String GESTURE_PASSWORD = "_GesturePassword_";
+
+  static const String LOGIN_PROTECT = "_login_protect_";
+
+  static const String LOCK_SCREEN_TIME = "_lock_screen_";
+
+  static const String TEXT_SIZE = "_TEXT_SIZE_";
+
+  static const String LANGUAGE = "language";
 }

@@ -10,7 +10,7 @@ class BillRecordEntity {
   String? categoryName;
   String? userId;
   String? avatarUrl;
-  double? money;
+  double money;
   String? remark;
   String? walletRemark;
   String? nickName;
@@ -25,7 +25,7 @@ class BillRecordEntity {
     this.categoryName,
     this.userId,
     this.avatarUrl,
-    this.money,
+    this.money = .0,
     this.remark,
     this.walletRemark,
     this.nickName,

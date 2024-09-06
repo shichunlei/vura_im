@@ -10,9 +10,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/route/app_pages.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/sp_util.dart';
 
 import 'application.dart';
+import 'global/enum.dart';
+import 'global/keys.dart';
 import 'global/messages.dart';
 import 'modules/root/binding.dart';
 
@@ -40,8 +44,23 @@ Future launchApp() async {
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
+
+  @override
+  createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  late LocalType localType;
+
+  @override
+  void initState() {
+    localType = EnumToString.fromString(
+        LocalType.values, SpUtil.getString(Keys.LANGUAGE, defValue: LocalType.zh_CN.name),
+        defaultValue: LocalType.zh_CN)!;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +86,7 @@ class MyApp extends StatelessWidget {
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate
                   ],
-                  locale: const Locale("zh", "CN"),
+                  locale: localType.locale,
                   translations: AppTranslations(),
                   fallbackLocale: const Locale('zh', 'CN'),
                   debugShowCheckedModeBanner: false,

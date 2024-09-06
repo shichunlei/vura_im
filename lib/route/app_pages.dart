@@ -18,20 +18,22 @@ import 'package:vura/modules/dashboard/language/binding.dart';
 import 'package:vura/modules/dashboard/language/page.dart';
 import 'package:vura/modules/dashboard/notice_setting/binding.dart';
 import 'package:vura/modules/dashboard/notice_setting/page.dart';
-import 'package:vura/modules/dashboard/privacy/binding.dart';
-import 'package:vura/modules/dashboard/privacy/gesture_password/binding.dart';
-import 'package:vura/modules/dashboard/privacy/gesture_password/page.dart';
+import 'package:vura/modules/dashboard/privacy/home/binding.dart';
+import 'package:vura/modules/dashboard/privacy/home/page.dart';
 import 'package:vura/modules/dashboard/privacy/lock_screen_password/binding.dart';
 import 'package:vura/modules/dashboard/privacy/lock_screen_password/page.dart';
-import 'package:vura/modules/dashboard/privacy/page.dart';
 import 'package:vura/modules/dashboard/privacy/pay_password/binding.dart';
 import 'package:vura/modules/dashboard/privacy/pay_password/page.dart';
-import 'package:vura/modules/dashboard/windows/binding.dart';
+import 'package:vura/modules/dashboard/privacy/set_gesture_password/binding.dart';
+import 'package:vura/modules/dashboard/privacy/set_gesture_password/page.dart';
+import 'package:vura/modules/dashboard/privacy/set_number_password/binding.dart';
+import 'package:vura/modules/dashboard/privacy/set_number_password/page.dart';
 import 'package:vura/modules/dashboard/windows/chat_background/binding.dart';
 import 'package:vura/modules/dashboard/windows/chat_background/page.dart';
 import 'package:vura/modules/dashboard/windows/font_size_setting/binding.dart';
 import 'package:vura/modules/dashboard/windows/font_size_setting/page.dart';
-import 'package:vura/modules/dashboard/windows/page.dart';
+import 'package:vura/modules/dashboard/windows/home/binding.dart';
+import 'package:vura/modules/dashboard/windows/home/page.dart';
 import 'package:vura/modules/finance/add_way/binding.dart';
 import 'package:vura/modules/finance/add_way/page.dart';
 import 'package:vura/modules/finance/charge/binding.dart';
@@ -76,10 +78,10 @@ import 'package:vura/modules/setting/home/binding.dart';
 import 'package:vura/modules/setting/home/page.dart';
 import 'package:vura/modules/setting/line/binding.dart';
 import 'package:vura/modules/setting/line/page.dart';
-import 'package:vura/modules/user/gesture/binding.dart';
-import 'package:vura/modules/user/gesture/page.dart';
 import 'package:vura/modules/user/info/binding.dart';
 import 'package:vura/modules/user/info/page.dart';
+import 'package:vura/modules/user/lock_screen/binding.dart';
+import 'package:vura/modules/user/lock_screen/page.dart';
 import 'package:vura/modules/user/login/binding.dart';
 import 'package:vura/modules/user/login/page.dart';
 import 'package:vura/modules/user/my_qr_code/binding.dart';
@@ -127,9 +129,13 @@ abstract class AppPages {
         binding: LockScreenPasswordBinding()),
     GetPage(
         name: RoutePath.GESTURE_PASSWORD_PAGE,
-        page: () => const GesturePasswordPage(),
-        binding: GesturePasswordBinding()),
-    GetPage(name: RoutePath.GESTURE_PAGE, page: () => const GesturePage(), binding: GestureBinding()),
+        page: () => const SetGesturePasswordPage(),
+        binding: SetGesturePasswordBinding()),
+    GetPage(
+        name: RoutePath.NUMBER_PASSWORD_PAGE,
+        page: () => const SetNumberPasswordPage(),
+        binding: SetNumberPasswordBinding()),
+    GetPage(name: RoutePath.LOCK_SCREEN_PAGE, page: () => const LockScreenPage(), binding: LockScreenBinding()),
     GetPage(name: RoutePath.FONT_SIZE_PAGE, page: () => const FontSizeSettingPage(), binding: FontSizeSettingBinding()),
     GetPage(name: RoutePath.CHARGE_PAGE, page: () => const ChargePage(), binding: ChargeBinding()),
     GetPage(name: RoutePath.CHARGE_WAY_PAGE, page: () => const ChargeWayPage(), binding: ChargeWayBinding()),

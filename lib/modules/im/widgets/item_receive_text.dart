@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 
 class ItemReceiveText extends StatelessWidget {
@@ -23,8 +25,14 @@ class ItemReceiveText extends StatelessWidget {
                     bottomRight: Radius.circular(15.r),
                     bottomLeft: Radius.circular(15.r)),
                 color: Colors.white),
-            constraints: BoxConstraints(maxWidth: .6.sw, minWidth: 0),
-            child: Text('${message.content}',
-                style: TextStyle(color: ColorUtil.color_333333, fontSize: 15.sp, fontWeight: FontWeight.w600))));
+            constraints: BoxConstraints(maxWidth: 266.w, minWidth: 0, minHeight: 44.r),
+            child: Obx(() {
+              return Text('${message.content}',
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                      color: ColorUtil.color_333333,
+                      fontSize: Get.find<RootLogic>().textSizeType.value.fontSize.sp,
+                      fontWeight: FontWeight.w600));
+            })));
   }
 }

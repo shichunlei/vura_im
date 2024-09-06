@@ -1,5 +1,4 @@
 import 'package:vura/utils/log_utils.dart';
-import 'package:vura/utils/sp_util.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 class AppConfig {
@@ -42,6 +41,5 @@ class AppConfig {
   static void setUserId(String id) {
     Log.d("@@@@@@@@@@@@@@@@@@@===================>$id");
     userId = id;
-    SpUtil.setString("_USER_ID_", id);
   }
 }

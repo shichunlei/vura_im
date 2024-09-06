@@ -132,3 +132,29 @@ enum RedPackageCoverType {
 
   const RedPackageCoverType({required this.label, required this.coverPath, required this.itemPath});
 }
+
+enum CheckPasswordType {
+  gesturePassword(label: "图案密码"),
+  numberPassword(label: "数字密码");
+
+  final String label;
+
+  const CheckPasswordType({required this.label});
+}
+
+enum TextSizeType {
+  zero(label: "A", fontSize: 13, stepValue: .0),
+  one(label: "标准", fontSize: 15, stepValue: 1.0),
+  two(label: "", fontSize: 17, stepValue: 2.0),
+  three(label: "", fontSize: 19, stepValue: 3.0),
+  four(label: "", fontSize: 21, stepValue: 4.0),
+  five(label: "", fontSize: 23, stepValue: 5.0),
+  six(label: "", fontSize: 25, stepValue: 6.0),
+  seven(label: "A", fontSize: 27, stepValue: 7.0);
+
+  final String label;
+  final double fontSize;
+  final double stepValue;
+
+  const TextSizeType({required this.label, required this.fontSize, required this.stepValue});
+}

@@ -108,7 +108,7 @@ class DeviceUtils {
     if (isAndroid) {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       Log.json(androidInfo.data);
-      return '${androidInfo.brand} ${androidInfo.model} Android ${androidInfo.version.release}';
+      return '${androidInfo.brand} ${androidInfo.model}';
     }
 
     if (isIOS) {
