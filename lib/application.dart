@@ -1,7 +1,7 @@
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/utils/websocket.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 import 'global/config.dart';
 import 'global/keys.dart';
@@ -39,7 +39,12 @@ class Application {
       } else {
         UserEntity? user = await UserRepository.getUserInfo();
         if (user?.id != null) AppConfig.setUserId(user!.id!);
-        initialRoute = RoutePath.HOME_PAGE;
+        String gesturePassword = SpUtil.getString("_GesturePassword_", defValue: "");
+        if (StringUtil.isNotEmpty(gesturePassword)) {
+          initialRoute = RoutePath.GESTURE_PAGE;
+        } else {
+          initialRoute = RoutePath.HOME_PAGE;
+        }
       }
     } else {
       /// 未登录

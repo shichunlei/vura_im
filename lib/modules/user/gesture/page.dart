@@ -4,7 +4,6 @@ import 'package:gesture_password_widget/widget/gesture_password_widget.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/utils/log_utils.dart';
 
 import 'logic.dart';
 
@@ -20,20 +19,13 @@ class GesturePage extends StatelessWidget {
         appBar: AppBar(),
         body: Column(children: [
           Container(
-              margin: EdgeInsets.only(top: 22.h, left: 44.w),
-              alignment: Alignment.centerLeft,
+              alignment: Alignment.center,
               child: Text("手势密码",
                   style:
                       GoogleFonts.dmSans(color: ColorUtil.color_333333, fontWeight: FontWeight.bold, fontSize: 22.sp))),
-          Container(
-              margin: EdgeInsets.only(top: 13.h, left: 44.w, bottom: 35.h),
-              alignment: Alignment.centerLeft,
-              child: Obx(() {
-                return Text("", style: GoogleFonts.dmSans(color: ColorUtil.color_333333, fontSize: 13.sp));
-              })),
           Expanded(
               child: Container(
-                  padding: EdgeInsets.only(top: 22.h),
+                  padding: EdgeInsets.only(top: 50.h),
                   alignment: Alignment.topCenter,
                   child: GesturePasswordWidget(
                       loose: false,
@@ -77,10 +69,7 @@ class GesturePage extends StatelessWidget {
                       color: Colors.white,
                       completeWaitMilliseconds: 1000,
                       onComplete: logic.onComplete,
-                      answer: logic.data,
-                      onHitPoint: () {
-                        Log.d("ssssssssssssssssssssssssss");
-                      })))
+                      answer: logic.data)))
         ]));
   }
 }
