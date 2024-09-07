@@ -40,6 +40,7 @@ class _Channel {
   String? config;
   String friendship = "Y";
   int unReadCount = 0;
+  String? no;
 }
 
 class SessionRealm {
@@ -93,6 +94,7 @@ class SessionRealm {
         _session.deleted = session.deleted;
         _session.ownerId = session.ownerId;
         _session.quit = session.quit;
+        _session.no = session.no;
         _session.remarkGroupName = session.remarkGroupName;
         _session.remarkNickName = session.remarkNickName;
         _session.showGroupName = session.showGroupName;
@@ -121,6 +123,7 @@ class SessionRealm {
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
         _session.deleted = session.deleted;
+        _session.no = session.no;
         if (session.type == SessionType.group) {
           if (session.notice != null) _session.notice = session.notice;
           _session.isAdmin = session.isAdmin.name;
@@ -289,11 +292,12 @@ SessionEntity sessionRealmToEntity(Channel session) {
       lastMessageTime: session.lastMessageTime,
       isDisturb: session.isDisturb,
       isAdmin: EnumToString.fromString(YorNType.values, session.isAdmin, defaultValue: YorNType.N)!,
-      config: session.config,
+      // config: session.config,
       configObj: session.config != null ? SessionConfigEntity.fromJson(json.decode(session.config!)) : null,
       isSupAdmin: EnumToString.fromString(YorNType.values, session.isSupAdmin, defaultValue: YorNType.N)!,
       moveTop: session.moveTop,
       unReadCount: session.unReadCount,
+      no: session.no,
       friendship: EnumToString.fromString(YorNType.values, session.friendship, defaultValue: YorNType.N)!);
 }
 
@@ -320,6 +324,7 @@ Channel sessionEntityToRealm(SessionEntity session) {
       isSupAdmin: session.isSupAdmin.name,
       friendship: session.friendship.name,
       unReadCount: session.unReadCount,
+      no: session.no,
       config: session.configObj == null ? null : json.encode(session.configObj!.toJson()),
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

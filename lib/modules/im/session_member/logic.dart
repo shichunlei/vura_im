@@ -51,15 +51,16 @@ class SessionMemberLogic extends BaseObjectLogic<MemberEntity?> with FriendMixin
   /// 禁止抢红包 TODO
   Future setProhibitVure(bool value) async {
     showLoading();
-    BaseBean result = await SessionRepository.setSessionMemberVura(groupId, userId, value);
+    BaseBean result = await SessionRepository.setSessionMemberVura("${bean.value?.id}", value);
     hiddenLoading();
     if (result.code == 200) {
-      bean.value?.isReceiveRedPacket = value ? 0 : 1;
+      bean.value?.isReceiveRedPacket = value ? 1 : 0;
+      bean.refresh();
       try {
         Get.find<ChatLogic>(tag: groupId).getMembers(groupId);
       } catch (e) {
         Log.e(e.toString());
       }
-    } else {}
+    }
   }
 }

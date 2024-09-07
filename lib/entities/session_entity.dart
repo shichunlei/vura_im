@@ -42,8 +42,8 @@ class SessionEntity {
   int lastMessageTime;
   List<String> friendIds;
   SessionConfigEntity? configObj;
-  String? config;
   YorNType friendship;
+  String? no;
   @JsonKey(includeFromJson: false, includeToJson: false)
   int unReadCount = 0;
 
@@ -69,7 +69,7 @@ class SessionEntity {
       this.lastMessageTime = 0,
       this.friendIds = const [],
       this.configObj,
-      this.config,
+      this.no,
       this.friendship = YorNType.Y,
       this.unReadCount = 0});
 

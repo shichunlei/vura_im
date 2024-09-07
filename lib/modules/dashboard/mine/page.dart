@@ -62,13 +62,13 @@ class MinePage extends StatelessWidget {
                                 style: GoogleFonts.dmSans(
                                     fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                             Row(children: [
-                              Text("id".trParams({"number": "${Get.find<RootLogic>().user.value?.cardId}"}),
+                              Text("id".trParams({"number": "${Get.find<RootLogic>().user.value?.no}"}),
                                   style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                               SizedBox(width: 22.w),
                               GestureDetector(
                                   onTap: () {
                                     /// 复制ID号
-                                    copyToClipboard("${Get.find<RootLogic>().user.value?.cardId}");
+                                    copyToClipboard("${Get.find<RootLogic>().user.value?.no}");
                                   },
                                   child: Icon(IconFont.copy, size: 15.sp, color: ColorUtil.color_999999))
                             ]),
@@ -124,7 +124,10 @@ class MinePage extends StatelessWidget {
                                   SizedBox(height: 5.h),
                                   SizedBox(
                                       height: 15.h,
-                                      child: Text(logic.showMoney.value ? "7.15 RMB" : "****", // todo 汇率
+                                      child: Text(
+                                          logic.showMoney.value
+                                              ? "${Get.find<RootLogic>().exchangeRate.value} RMB"
+                                              : "****", // todo 汇率
                                           style: GoogleFonts.dmSans(fontSize: 11.sp, color: Colors.white)))
                                 ]),
                             const Spacer(),
@@ -137,7 +140,7 @@ class MinePage extends StatelessWidget {
                                   height: 15.h,
                                   child: Text(
                                       logic.showMoney.value
-                                          ? "≈￥${7.15 * Get.find<RootLogic>().user.value!.money}"
+                                          ? "≈￥${Get.find<RootLogic>().exchangeRate.value * Get.find<RootLogic>().user.value!.money}"
                                           : "****",
                                       style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white)))
                             ])

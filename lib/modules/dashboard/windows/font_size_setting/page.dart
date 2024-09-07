@@ -122,11 +122,18 @@ class FontSizeSettingPage extends StatelessWidget {
                       return Expanded(
                           child: Center(
                               child: Text(TextSizeType.values[index].label,
-                                  style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333))));
+                                  style: GoogleFonts.roboto(
+                                      fontSize: TextSizeType.values[index].fontSize.sp,
+                                      color: ColorUtil.color_333333))));
                     }).toList()),
                 Obx(() {
                   return Slider(
-                      value: logic.textSizeType.value.stepValue, onChanged: logic.updateFontSize, max: 7, divisions: 7);
+                      activeColor: const Color(0xfff4f4f4),
+                      thumbColor: Colors.white,
+                      value: logic.textSizeType.value.stepValue,
+                      onChanged: logic.updateFontSize,
+                      max: 7,
+                      divisions: 7);
                 }),
                 SizedBox(height: 33.h)
               ]))

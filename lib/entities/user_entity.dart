@@ -24,7 +24,7 @@ class UserEntity extends ISuspensionBean {
   String? walletCard; // 钱包地址
   String? walletRemark; // 钱包备注
   String? payPassword;
-  String? cardId;
+  String? no;
 
   UserEntity(
       {this.id,
@@ -47,7 +47,7 @@ class UserEntity extends ISuspensionBean {
       this.walletCard,
       this.walletRemark,
       this.payPassword,
-      this.cardId});
+      this.no});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
     String nickName = json['nickName'] ?? "";
@@ -80,7 +80,7 @@ class UserEntity extends ISuspensionBean {
         setGroup: EnumToString.fromString(YorNType.values, json['setGroup'], defaultValue: YorNType.N)!,
         vura: EnumToString.fromString(YorNType.values, json['vura'], defaultValue: YorNType.N)!,
         payPassword: json['payPassword'] as String?,
-        cardId: json['no'] as String?,
+        no: json['no'] as String?,
         tagIndex: tag);
   }
 

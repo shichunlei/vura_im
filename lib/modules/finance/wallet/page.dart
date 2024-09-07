@@ -52,7 +52,8 @@ class WalletPage extends StatelessWidget {
                                   color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold))
                         ]),
                         const Spacer(),
-                        Text("≈￥${Get.find<RootLogic>().user.value!.money * 7.15}", // TODO  人民币
+                        Text(
+                            "≈￥${Get.find<RootLogic>().user.value!.money * Get.find<RootLogic>().exchangeRate.value}", // TODO  人民币
                             style: GoogleFonts.bebasNeue(
                                 color: ColorUtil.color_333333, fontSize: 26.sp, fontWeight: FontWeight.bold)),
                         SizedBox(width: 22.w)
@@ -175,7 +176,7 @@ class WalletPage extends StatelessWidget {
                             Text("${logic.list[index].detailDesc}",
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                             const Spacer(),
-                            Text("≈￥${logic.list[index].money * 7.15}", // TODO  人民币
+                            Text("≈￥${logic.list[index].money * Get.find<RootLogic>().exchangeRate.value}", // TODO  人民币
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                           ]),
                           SizedBox(height: 3.h),

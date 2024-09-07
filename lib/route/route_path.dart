@@ -8,7 +8,6 @@ abstract class RoutePath {
   static const String MY_INFO_PAGE = "/my_info"; // 用户信息
   static const String SEARCH_PAGE = "/search"; //
   static const String PHONE_CONTACTS_PAGE = "/phone_contacts"; //
-  static const String WEBVIEW_PAGE = "/webview"; // WEB页面
   static const String LANGUAGE_PAGE = "/language"; // 语言页面
   static const String ACCOUNT_PAGE = "/account"; // 账号管理
   static const String LINE_PAGE = "/line"; // 线路管理

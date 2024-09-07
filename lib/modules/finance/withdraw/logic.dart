@@ -21,8 +21,6 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
     });
   }
 
-  double exchangeRate = 7.15;
-
   @override
   void onInit() {
     initData();
@@ -33,7 +31,7 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
 
   @override
   Future<List<WithdrawEntity>> loadData() async {
-    return WithdrawEntity.getWithdraw();
+    return WithdrawEntity.getWithdraw(Get.find<RootLogic>().exchangeRate.value);
   }
 
   @override

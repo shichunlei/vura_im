@@ -4,7 +4,13 @@ class AccountEntity {
   String? headImage;
   String? nickName;
   String? headImageThumb;
-  String? payPassword;
+  String? userNo;
 
-  AccountEntity({this.userName, this.password, this.headImage, this.nickName, this.headImageThumb, this.payPassword});
+  AccountEntity(
+      {this.userName,
+      this.password,
+      this.headImage,
+      this.nickName,
+      this.headImageThumb,
+      this.userNo});
 }

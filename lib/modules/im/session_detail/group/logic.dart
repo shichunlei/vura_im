@@ -114,6 +114,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     }
   }
 
+  /// 修改群名
   Future updateName(String name) async {
     showLoading();
     BaseBean result = await SessionRepository.updateSession(id, name: name);
@@ -130,10 +131,34 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
           headImage: bean.value?.headImage,
           headImageThumb: bean.value?.headImageThumb,
           isAdmin: bean.value!.isAdmin,
+          no: bean.value?.no,
           isSupAdmin: bean.value!.isSupAdmin));
     }
   }
 
+  /// 修改群编号
+  Future updateNo(String no) async {
+    showLoading();
+    BaseBean result = await SessionRepository.updateSessionNo(id, no: no);
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "修改成功");
+      bean.value?.no = no;
+      bean.refresh();
+
+      await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
+          id: id,
+          type: SessionType.group,
+          name: bean.value?.name,
+          headImage: bean.value?.headImage,
+          headImageThumb: bean.value?.headImageThumb,
+          isAdmin: bean.value!.isAdmin,
+          no: no,
+          isSupAdmin: bean.value!.isSupAdmin));
+    }
+  }
+
+  /// 修改群公告
   Future updateNotice(String notice) async {
     showLoading();
     BaseBean result = await SessionRepository.updateSession(id, notice: notice, name: bean.value?.name);
@@ -151,10 +176,12 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
           headImage: bean.value?.headImage,
           headImageThumb: bean.value?.headImageThumb,
           isAdmin: bean.value!.isAdmin,
+          no: bean.value?.no,
           isSupAdmin: bean.value!.isSupAdmin));
     }
   }
 
+  /// 修改群头像
   Future updateAvatar(String path) async {
     showLoading();
     ImageEntity? file = await CommonRepository.uploadImage(path);
@@ -174,6 +201,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
             headImage: file.originUrl,
             headImageThumb: file.thumbUrl,
             isAdmin: bean.value!.isAdmin,
+            no: bean.value?.no,
             isSupAdmin: bean.value!.isSupAdmin));
       }
     } else {
@@ -181,6 +209,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     }
   }
 
+  /// 群主转让
   Future updateAdmin() async {
     bean.value?.isAdmin = YorNType.N;
     bean.refresh();
@@ -190,7 +219,8 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
         name: bean.value?.name,
         headImage: bean.value?.headImage,
         headImageThumb: bean.value?.headImageThumb,
-        isAdmin: bean.value!.isAdmin,
+        isAdmin: YorNType.N,
+        no: bean.value?.no,
         isSupAdmin: bean.value!.isSupAdmin));
   }
 

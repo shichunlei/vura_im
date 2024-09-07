@@ -64,27 +64,27 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                   style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
                             ])),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
-                        RadiusInkWellWidget(
-                            color: Colors.transparent,
-                            onPressed: () {
-                              Get.dialog(UpdateTextDialog(title: "请输入备注", value: logic.bean.value?.name ?? ""))
-                                  .then((value) {
-                                if (value != null) logic.updateRemarkName(value);
-                              });
-                            },
-                            radius: 0,
-                            child: Container(
-                                height: 60.h,
-                                padding: EdgeInsets.only(left: 22.w, right: 10.w),
-                                child: Row(children: [
-                                  Text("设置备注",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
-                                  const Spacer(),
-                                  Text(logic.bean.value?.remarkNickName ?? "前往设置",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
-                                  const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                                ]))),
-                        Divider(height: 0, indent: 22.w, endIndent: 22.w),
+                        // RadiusInkWellWidget(
+                        //     color: Colors.transparent,
+                        //     onPressed: () {
+                        //       Get.dialog(UpdateTextDialog(title: "请输入备注", value: logic.bean.value?.name ?? ""))
+                        //           .then((value) {
+                        //         if (value != null) logic.updateRemarkName(value);
+                        //       });
+                        //     },
+                        //     radius: 0,
+                        //     child: Container(
+                        //         height: 60.h,
+                        //         padding: EdgeInsets.only(left: 22.w, right: 10.w),
+                        //         child: Row(children: [
+                        //           Text("设置备注",
+                        //               style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                        //           const Spacer(),
+                        //           Text(logic.bean.value?.remarkNickName ?? "前往设置",
+                        //               style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
+                        //           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                        //         ]))),
+                        // Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         Container(
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),

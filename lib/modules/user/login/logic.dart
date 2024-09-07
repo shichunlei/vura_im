@@ -39,8 +39,12 @@ class LoginLogic extends BaseLogic {
 
     if (result != null) {
       try {
-        await AccountRealm(realm: Get.find<RootLogic>().realm)
-            .upsert(Account(accountController.text, password: passwordController.text));
+        await AccountRealm(realm: Get.find<RootLogic>().realm).upsert(Account(accountController.text,
+            password: passwordController.text,
+            userNo: result.no,
+            nickName: result.nickName,
+            headImageThumb: result.headImageThumb,
+            headImage: result.headImage));
         Get.find<RootLogic>().setUserInfo(result);
       } catch (e) {
         Log.e(e.toString());

@@ -67,17 +67,16 @@ class PersonalLogic extends BaseObjectLogic<UserEntity?> {
   }
 
   /// 修改用户NO
-  Future updateNo(String no) async {
+  Future updateNo(String userNo) async {
     showLoading();
-    BaseBean result = await UserRepository.updateUser(bean.value?.id,
-        userName: bean.value?.userName, no: no, nickName: bean.value?.nickName);
+    BaseBean result = await UserRepository.updateUserNo(bean.value?.id, userNo);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "修改成功");
-      bean.value?.cardId = no;
+      bean.value?.no = userNo;
       bean.refresh();
       try {
-        Get.find<RootLogic>().updateCardId(no);
+        Get.find<RootLogic>().updateCardId(userNo);
       } catch (e) {
         Log.e(e.toString());
       }

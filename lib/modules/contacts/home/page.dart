@@ -179,7 +179,7 @@ class ContactsPage extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                       SizedBox(height: 5.r),
-                      Text("ID:${user.cardId}", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                      Text("一天前在线", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                     ],
                   ),
                 )

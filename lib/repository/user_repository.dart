@@ -107,26 +107,28 @@ class UserRepository {
   /// [nickName] 昵称
   ///
   static Future<BaseBean> updateUser(String? id,
-      {String? userName,
-      String? nickName,
-      int? sex,
-      String? signature,
-      String? no,
-      String? headImage,
-      String? headImageThumb}) async {
+      {String? userName, String? nickName, String? headImage, String? headImageThumb}) async {
     var data = await HttpUtils.getInstance().request('user/update',
         params: {
           Keys.ID: id,
           "userName": userName,
           "nickName": nickName,
-          if (no != null) "no": no,
-          if (sex != null) "sex": sex,
-          if (signature != null) "signature": signature,
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb
         },
         method: HttpUtils.PUT,
         showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 修改用户编号
+  ///
+  /// [id] ID
+  /// [no] 用户编号
+  ///
+  static Future<BaseBean> updateUserNo(String? id, String? no) async {
+    var data =
+        await HttpUtils.getInstance().request('user/setUserNo', params: {Keys.ID: id, "no": no}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

@@ -8,7 +8,6 @@ export 'custom_refresh_widget.dart';
 export 'custom_sticky_header_delegate.dart';
 export 'dialog/alert_dialog.dart';
 export 'dialog/bottom_dialog.dart';
-export 'dialog/policy_dialog.dart';
 export 'dialog/tip_dialog.dart';
 export 'dialog/update_text_dialog.dart';
 export 'frame_stack.dart';

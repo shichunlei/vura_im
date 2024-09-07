@@ -179,7 +179,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     if (type == SessionType.private ||
         session.value?.isAdmin == YorNType.Y ||
         session.value?.isSupAdmin == YorNType.Y ||
-        members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isReceiveRedPacket == 1) {
+        members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isReceiveRedPacket ==
+            0) {
       String? result = await SessionRepository.checkRedPackage(redPackageId);
       if (result != null) {
         if (result == "Y") {

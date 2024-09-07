@@ -153,7 +153,7 @@ class RechargePage extends StatelessWidget {
                               Row(children: [
                                 Text("参考单价", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Text("${logic.exchangeRate}CNY",
+                                Text("${Get.find<RootLogic>().exchangeRate.value}CNY",
                                     style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333))
                                 // TODO 汇率
                               ]),
@@ -165,7 +165,7 @@ class RechargePage extends StatelessWidget {
                                     init: logic,
                                     builder: (logic) {
                                       return Text(
-                                          "≈￥${StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * logic.exchangeRate).floor()}",
+                                          "≈￥${StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * Get.find<RootLogic>().exchangeRate.value).floor()}",
                                           // TODO  人民币
                                           style: GoogleFonts.roboto(
                                               color: const Color(0xffFF4255),

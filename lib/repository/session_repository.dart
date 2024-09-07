@@ -19,7 +19,6 @@ class SessionRepository {
   /// 修改会话 TODO
   ///
   /// [id] 群ID
-  /// [ownerId] 群主ID
   /// [headImage] 群头像
   /// [headImageThumb] 群头像缩略图
   /// [notice] 公告
@@ -30,7 +29,6 @@ class SessionRepository {
   ///
   static Future<BaseBean> updateSession(String? id,
       {required String? name,
-      String? ownerId,
       String? headImage,
       String? headImageThumb,
       String? notice,
@@ -42,7 +40,6 @@ class SessionRepository {
         params: {
           Keys.ID: id,
           Keys.NAME: name,
-          if (ownerId != null) "ownerId": ownerId,
           if (headImage != null) "headImage": headImage,
           if (headImageThumb != null) "headImageThumb": headImageThumb,
           if (notice != null) "notice": notice,
@@ -51,7 +48,19 @@ class SessionRepository {
           if (showGroupName != null) "showGroupName": showGroupName,
           if (remarkGroupName != null) "remarkGroupName": remarkGroupName
         },
-        method: HttpUtils.PUT);
+        method: HttpUtils.PUT,
+        showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
+  /// 修改会话编号 TODO
+  ///
+  /// [id] 群ID
+  /// [no] 群编号
+  ///
+  static Future<BaseBean> updateSessionNo(String? id, {String? no}) async {
+    var data =
+        await HttpUtils.getInstance().request('group/setGroupNo', params: {Keys.ID: id, "no": no}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -148,13 +157,12 @@ class SessionRepository {
 
   /// 设置群成员是否可以抢红包 todo
   ///
-  /// [groupId] 群ID
-  /// [userId] 成员ID
+  /// [id] ID
+  /// [isProhibitRedPacket] 是否禁止抢红包
   ///
-  static Future<BaseBean> setSessionMemberVura(String? groupId, String? userId, bool isReceiveRedPacket) async {
+  static Future<BaseBean> setSessionMemberVura(String? id, bool isProhibitRedPacket) async {
     var data = await HttpUtils.getInstance().request('group/setIsReceiveRedPacket',
-        params: {Keys.USER_ID: userId, Keys.GROUP_ID: groupId, "isReceiveRedPacket": isReceiveRedPacket ? 1:0},
-        showErrorToast: true);
+        params: {Keys.ID: id, "isReceiveRedPacket": isProhibitRedPacket ? 1 : 0}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

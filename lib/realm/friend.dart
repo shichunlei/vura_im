@@ -24,6 +24,7 @@ class _Friend {
   String? indexTag;
   bool isDeleted = false;
   String? friendship;
+  String? userNo;
 }
 
 class FriendRealm {
@@ -100,6 +101,7 @@ UserEntity friendRealmToEntity(Friend user) {
       headImage: user.headImage,
       headImageThumb: user.headImageThumb,
       signature: user.signature,
+      no: user.userNo,
       friendship: EnumToString.fromString(YorNType.values, user.friendship, defaultValue: YorNType.Y)!,
       tagIndex: user.indexTag);
 }
@@ -116,5 +118,6 @@ Friend friendEntityToRealm(UserEntity user) {
       signature: user.signature,
       friendship: user.friendship.name,
       indexTag: user.tagIndex,
+      userNo: user.no,
       isDeleted: false);
 }

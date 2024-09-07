@@ -89,7 +89,7 @@ class PersonalPage extends StatelessWidget {
                           radius: 0,
                           color: Colors.transparent,
                           onPressed: () {
-                            Get.dialog(UpdateTextDialog(title: "请输入新的ID号", value: logic.bean.value?.cardId ?? ""))
+                            Get.dialog(UpdateTextDialog(title: "请输入新的ID号", value: logic.bean.value?.no ?? ""))
                                 .then((value) {
                               if (value != null) logic.updateNo(value);
                             });
@@ -102,7 +102,7 @@ class PersonalPage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
-                                Text("${logic.bean.value?.cardId}",
+                                Text("${logic.bean.value?.no}",
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)),
                                 const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                               ]))),

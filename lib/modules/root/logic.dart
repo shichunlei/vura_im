@@ -30,11 +30,13 @@ import 'package:vura/widgets/dialog/version_upgrade_dialog.dart';
 class RootLogic extends BaseLogic {
   late Realm realm;
 
+  var exchangeRate = 7.15.obs;
+
   var textSizeType = TextSizeType.one.obs;
 
   RootLogic() {
     var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema],
-        schemaVersion: 1, shouldDeleteIfMigrationNeeded: true);
+        schemaVersion: 2, shouldDeleteIfMigrationNeeded: true);
     realm = Realm(config);
 
     textSizeType.value = EnumToString.fromString(
@@ -46,6 +48,7 @@ class RootLogic extends BaseLogic {
   void onInit() {
     getUserInfo();
     super.onInit();
+    getRate();
   }
 
   var token = Rx<LoginEntity?>(null);
@@ -58,7 +61,8 @@ class RootLogic extends BaseLogic {
         userName: user?.userName,
         nickName: user?.nickName,
         headImageThumb: user?.headImageThumb,
-        headImage: user?.headImage));
+        headImage: user?.headImage,
+        userNo: user?.no));
   }
 
   void updateUserAvatar({String? headImage, String? headImageThumb}) {
@@ -69,7 +73,8 @@ class RootLogic extends BaseLogic {
         userName: user.value?.userName,
         nickName: user.value?.nickName,
         headImageThumb: user.value?.headImageThumb,
-        headImage: user.value?.headImage));
+        headImage: user.value?.headImage,
+        userNo: user.value?.no));
   }
 
   void updateNickName(String? nickName) {
@@ -79,12 +84,19 @@ class RootLogic extends BaseLogic {
         userName: user.value?.userName,
         nickName: user.value?.nickName,
         headImageThumb: user.value?.headImageThumb,
-        headImage: user.value?.headImage));
+        headImage: user.value?.headImage,
+        userNo: user.value?.no));
   }
 
   void updateCardId(String? cardId) {
-    user.value?.cardId = cardId;
+    user.value?.no = cardId;
     user.refresh();
+    AccountRealm(realm: Get.find<RootLogic>().realm).update(AccountEntity(
+        userName: user.value?.userName,
+        nickName: user.value?.nickName,
+        headImageThumb: user.value?.headImageThumb,
+        headImage: user.value?.headImage,
+        userNo: cardId));
   }
 
   void updatePayPassword(String? password) {
@@ -131,6 +143,11 @@ class RootLogic extends BaseLogic {
 
   void updateFontSize(TextSizeType value) {
     textSizeType.value = value;
+  }
+
+  /// 获取汇率
+  void getRate() async {
+    exchangeRate.value = await CommonRepository.getRate();
   }
 
   VersionEntity? version;

@@ -61,6 +61,17 @@ class CommonRepository {
     }
   }
 
+  /// 获取汇率
+  static Future<double> getRate() async {
+    var data = await HttpUtils.getInstance().request('rate/config/get', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return result.data?["value"] ?? 7.15;
+    } else {
+      return 7.15;
+    }
+  }
+
   /// 收支记录
   ///
   /// [startDate] 开始时间 yyyy-MM-dd
@@ -69,15 +80,15 @@ class CommonRepository {
   /// [userId] 用户Id 查询自己的 不用给
   ///
   static Future<List<BillRecordEntity>> bookMoneyList(
-      {int page = 0,
+      {int page = 1,
       int size = 20,
       required FeeType type,
       DateTime? startDate,
       DateTime? endDate,
       String? userId}) async {
     var data = await HttpUtils.getInstance().request("bookMoney/myListByPage", params: {
-      Keys.CURRENT_PAGE: page,
-      Keys.PAGE_SIZE: size,
+      "current": page,
+      Keys.SIZE: size,
       if (endDate != null) "endDate": DateUtil.getDateStrByDateTime(endDate, format: DateFormat.YEAR_MONTH_DAY),
       if (startDate != null) "startDate": DateUtil.getDateStrByDateTime(startDate, format: DateFormat.YEAR_MONTH_DAY),
       if (type != FeeType.ALL) Keys.TYPE: type.name,
