@@ -9,10 +9,7 @@ import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/tool_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/dialog/update_text_dialog.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -76,7 +73,7 @@ class PersonalPage extends StatelessWidget {
                               height: 66.h,
                               padding: EdgeInsets.only(left: 22.w, right: 10.w),
                               child: Row(children: [
-                                Text("昵称",
+                                Text("Nickname".tr,
                                     style: GoogleFonts.roboto(
                                         fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),
@@ -119,7 +116,7 @@ class PersonalPage extends StatelessWidget {
                               height: 66.h,
                               padding: EdgeInsets.only(left: 22.w, right: 10.w),
                               child: Row(children: [
-                                Text("我的二维码",
+                                Text("My QR Code".tr,
                                     style: GoogleFonts.roboto(
                                         fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                                 const Spacer(),

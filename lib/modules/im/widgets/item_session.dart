@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
+import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
@@ -78,21 +80,21 @@ class ItemSession extends StatelessWidget {
                     Expanded(
                         child: Text(
                             session.lastMessage?.type == MessageType.IMAGE.code
-                                ? "[图片]"
+                                ? "${getUserName(session.lastMessage)}[图片]"
                                 : session.lastMessage?.type == MessageType.AUDIO.code
-                                    ? "[语音]"
+                                    ? "${getUserName(session.lastMessage)}[语音]"
                                     : session.lastMessage?.type == MessageType.EMOJI.code
-                                        ? "[表情]"
+                                        ? "${getUserName(session.lastMessage)}[表情]"
                                         : session.lastMessage?.type == MessageType.VIDEO.code
-                                            ? "[视频]"
+                                            ? "${getUserName(session.lastMessage)}[视频]"
                                             : session.lastMessage?.type == MessageType.FILE.code
-                                                ? "[文件]"
+                                                ? "${getUserName(session.lastMessage)}[文件]"
                                                 : session.lastMessage?.type == MessageType.RED_PACKAGE.code ||
                                                         session.lastMessage?.type == MessageType.GROUP_RED_PACKAGE.code
-                                                    ? "[红包]"
+                                                    ? "${getUserName(session.lastMessage)}[红包]"
                                                     : session.lastMessage?.type == MessageType.ID_CARD.code
-                                                        ? "[个人名片]"
-                                                        : session.lastMessage?.content ?? "",
+                                                        ? "${getUserName(session.lastMessage)}[个人名片]"
+                                                        : "${getUserName(session.lastMessage)}${session.lastMessage?.content}",
                             style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),
@@ -110,5 +112,17 @@ class ItemSession extends StatelessWidget {
                 ]),
               )
             ])));
+  }
+
+  String getUserName(MessageEntity? lastMessage) {
+    if (lastMessage?.type == MessageType.TIP_TEXT.code) return "";
+    if (lastMessage?.sessionType == SessionType.group) {
+      return lastMessage?.sendId == Get.find<RootLogic>().user.value?.id
+          ? ""
+          : StringUtil.isNotEmpty(lastMessage?.sendNickName)
+              ? "${lastMessage?.sendNickName}:"
+              : "";
+    }
+    return "";
   }
 }

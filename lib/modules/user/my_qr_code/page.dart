@@ -5,8 +5,7 @@ import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/obx_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

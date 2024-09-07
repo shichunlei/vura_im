@@ -7,6 +7,7 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/obx_widget.dart';
@@ -110,13 +111,26 @@ class RechargePage extends StatelessWidget {
                                                           : const Color(0xffF1F6F7),
                                                       width: 1)),
                                               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                                Text("${logic.list[index].usdt}",
-                                                    style: GoogleFonts.roboto(
-                                                        color: logic.selectIndex.value == index
-                                                            ? const Color(0xff83C240)
-                                                            : ColorUtil.color_333333,
-                                                        fontSize: 22.sp,
-                                                        fontWeight: FontWeight.bold)),
+                                                Row(
+                                                    mainAxisSize: MainAxisSize.min,
+                                                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                                                    textBaseline: TextBaseline.alphabetic,
+                                                    children: [
+                                                      Text("${logic.list[index].usdt}",
+                                                          style: GoogleFonts.roboto(
+                                                              color: logic.selectIndex.value == index
+                                                                  ? const Color(0xff83C240)
+                                                                  : ColorUtil.color_333333,
+                                                              fontSize: 22.sp,
+                                                              fontWeight: FontWeight.bold)),
+                                                      Text("u",
+                                                          style: GoogleFonts.roboto(
+                                                              color: logic.selectIndex.value == index
+                                                                  ? const Color(0xff83C240)
+                                                                  : ColorUtil.color_333333,
+                                                              fontSize: 12.sp,
+                                                              fontWeight: FontWeight.w600))
+                                                    ]),
                                                 Text("≈￥${logic.list[index].money.floor()}", // TODO  人民币
                                                     style: GoogleFonts.roboto(
                                                         color: logic.selectIndex.value == index
@@ -143,7 +157,7 @@ class RechargePage extends StatelessWidget {
                                     Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
                                     SizedBox(width: 13.w),
                                     Expanded(
-                                        child: Text("${Get.find<RootLogic>().user.value?.walletCard}",
+                                        child: Text("USDT",
                                             style: GoogleFonts.dmSans(
                                                 color: ColorUtil.color_333333,
                                                 fontSize: 18.sp,
@@ -177,6 +191,12 @@ class RechargePage extends StatelessWidget {
                                   child: RadiusInkWellWidget(
                                       radius: 40,
                                       onPressed: () {
+                                        DeviceUtils.hideKeyboard(context);
+                                        if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.payPassword)) {
+                                          showToast(text: "请先设置支付密码");
+                                          return;
+                                        }
+
                                         if (StringUtil.isEmpty(logic.controller.text)) {
                                           showToast(text: "请输入提现金额");
                                           return;
@@ -188,16 +208,12 @@ class RechargePage extends StatelessWidget {
                                           return;
                                         }
 
-                                        if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
-                                          showToast(text: "请设置收款账号");
-                                          return;
-                                        }
-
                                         Get.bottomSheet(
                                                 InputPayPasswordDialog(
                                                     amount: double.tryParse(logic.controller.text),
                                                     title: "购买金额",
-                                                    tip: "支付账户"),
+                                                    tip: "支付账户",
+                                                    isUsdt: true),
                                                 isScrollControlled: true)
                                             .then((value) {
                                           if (value != null) logic.recharge();

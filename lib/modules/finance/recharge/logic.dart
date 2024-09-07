@@ -49,6 +49,7 @@ class RechargeLogic extends BaseListLogic<WithdrawEntity> {
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "充值申请已提交");
+      Get.back();
     }
   }
 }

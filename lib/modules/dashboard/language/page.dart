@@ -5,8 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

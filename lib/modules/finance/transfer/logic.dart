@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_object_logic.dart';
+import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/toast_util.dart';
 
 class TransferLogic extends BaseObjectLogic<UserEntity?> {
   TextEditingController addressController = TextEditingController();
@@ -55,5 +58,16 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
 
     // 更新 previousText 为当前文本
     previousText.value = amountController.text;
+  }
+
+  Future transfer() async {
+    showLoading();
+    BaseBean result = await CommonRepository.withdraw(
+        type: 3, money: double.parse(amountController.text), account: addressController.text, remarks: "充值");
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "转账成功");
+      Get.back();
+    }
   }
 }

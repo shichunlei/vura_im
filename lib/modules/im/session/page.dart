@@ -43,7 +43,7 @@ class SessionPage extends StatelessWidget {
                   })
             ],
             centerTitle: false,
-            bottom: AppBarBottomSearchView(onSubmitted: (String value) {}, hintText: "搜索")),
+            bottom: AppBarBottomSearchView(onSubmitted: (String value) {}, hintText: "Search".tr)),
         body: BaseWidget(
             logic: logic,
             showEmpty: false,

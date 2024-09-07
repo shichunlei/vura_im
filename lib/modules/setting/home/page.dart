@@ -27,7 +27,7 @@ class SettingPage extends StatelessWidget {
           SizedBox(height: 30.h),
           Image.asset("assets/images/logo.webp", width: 88.r, height: 88.r),
           SizedBox(height: 10.h),
-          Text("版本号：${AppConfig.version?.version}"),
+          Text("Version Code".trParams({"number": "${AppConfig.version?.version}"})),
           Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
               margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
@@ -102,7 +102,7 @@ class SettingPage extends StatelessWidget {
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
                         child: Row(children: [
-                          Text("版本号",
+                          Text("Version".tr,
                               style: GoogleFonts.roboto(
                                   fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                           const Spacer(),
@@ -122,7 +122,7 @@ class SettingPage extends StatelessWidget {
                   height: 60.h,
                   padding: EdgeInsets.only(left: 22.w, right: 10.w),
                   child: Row(children: [
-                    Text("账号管理",
+                    Text("Account Manager".tr,
                         style: GoogleFonts.roboto(
                             fontSize: 15.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
                     const Spacer(),
@@ -143,7 +143,7 @@ class SettingPage extends StatelessWidget {
                   height: 60.h,
                   padding: EdgeInsets.only(left: 22.w, right: 10.w),
                   alignment: Alignment.centerLeft,
-                  child: Text("退出账号",
+                  child: Text("Quit".tr,
                       style: GoogleFonts.roboto(
                           fontSize: 15.sp, color: const Color(0xffDB5549), fontWeight: FontWeight.bold))))
         ]));

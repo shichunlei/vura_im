@@ -102,7 +102,7 @@ class CommonRepository {
   ///
   /// [account] 账户
   /// [money] 转账金额
-  /// [type] 类型 1-提现 2-充值
+  /// [type] 类型 1-提现 2-充值 3-转账
   /// [remarks] 转账备注
   ///
   static Future<BaseBean> withdraw({required double money, required int type, String? remarks, String? account}) async {

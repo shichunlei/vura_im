@@ -10,11 +10,7 @@ import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/custom_icon_button.dart';
-import 'package:vura/widgets/dialog/alert_dialog.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -250,7 +246,7 @@ class MinePage extends StatelessWidget {
                               width: 62.r,
                               child: Icon(IconFont.notice, size: 26.r))),
                       SizedBox(height: 13.h),
-                      Text("通知", style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
+                      Text("Notice".tr, style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
                     ]),
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [

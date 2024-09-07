@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
-import 'package:vura/utils/string_util.dart';
-import 'package:vura/utils/toast_util.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+import 'package:vura/utils/string_util.dart';
+import 'package:vura/utils/toast_util.dart';
 
 import 'log_utils.dart';
 
@@ -118,75 +117,6 @@ Future<String?> _cropImage(String imagePath) async {
   Log.d('cropImage=============${croppedFile?.path}');
 
   return croppedFile?.path;
-}
-
-Future<List<AssetEntity>> pickerImages(BuildContext context,
-    {int maxImages = 9, List<AssetEntity> resultList = const []}) async {
-  List<AssetEntity> _resultList = [];
-
-  List<AssetEntity> _initResultList = [];
-  _initResultList.addAll(resultList);
-
-  try {
-    await AssetPicker.pickAssets(context,
-            pickerConfig: AssetPickerConfig(
-                themeColor: Get.theme.primaryColor,
-                maxAssets: maxImages,
-                selectedAssets: resultList,
-                requestType: RequestType.image))
-        .then((value) {
-      if (value != null) {
-        _resultList = value;
-      } else {
-        _resultList = _initResultList;
-      }
-    });
-  } on Exception catch (e) {
-    Log.e(e.toString());
-    _resultList = _initResultList;
-  }
-
-  return _resultList;
-}
-
-TextInputFormatter phoneInputFormatter() {
-  return TextInputFormatter.withFunction((oldValue, newValue) {
-    String text = newValue.text;
-    //获取光标左边的文本
-    final positionStr = (text.substring(0, newValue.selection.baseOffset)).replaceAll(RegExp(r"\s+\b|\b\s"), "");
-    //计算格式化后的光标位置
-    int length = positionStr.length;
-    var position = 0;
-    if (length <= 3) {
-      position = length;
-    } else if (length <= 7) {
-      // 因为前面的字符串里面加了一个空格
-      position = length + 1;
-    } else if (length <= 11) {
-      // 因为前面的字符串里面加了两个空格
-      position = length + 2;
-    } else {
-      // 号码本身为 11 位数字，因多了两个空格，故为 13
-      position = 13;
-    }
-
-    //这里格式化整个输入文本
-    text = text.replaceAll(RegExp(r"\s+\b|\b\s"), "");
-    var string = "";
-    for (int i = 0; i < text.length; i++) {
-      // 这里第 4 位，与第 8 位，我们用空格填充
-      if (i == 3 || i == 7) {
-        if (text[i] != " ") {
-          string = "$string ";
-        }
-      }
-      string += text[i];
-    }
-
-    return TextEditingValue(
-        text: string.length > 13 ? string.substring(0, 13) : string,
-        selection: TextSelection.fromPosition(TextPosition(offset: position, affinity: TextAffinity.upstream)));
-  });
 }
 
 Future goScan() async {

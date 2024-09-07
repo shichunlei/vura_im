@@ -9,6 +9,7 @@ import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
+import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
@@ -85,6 +86,19 @@ class WalletPage extends StatelessWidget {
                             Expanded(
                                 child: GestureDetector(
                                     onTap: () {
+                                      if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
+                                        show(builder: (_) {
+                                          return CustomAlertDialog(
+                                              title: "温馨提示",
+                                              content: "您还没有设置收款方式，请先设置收款方式，去设置收款方式？",
+                                              confirmText: "立刻去",
+                                              cancelText: "稍等会儿",
+                                              onConfirm: () {
+                                                Get.toNamed(RoutePath.CHARGE_WAY_PAGE);
+                                              });
+                                        });
+                                        return;
+                                      }
                                       Get.toNamed(RoutePath.WITHDRAW_PAGE);
                                     },
                                     behavior: HitTestBehavior.translucent,

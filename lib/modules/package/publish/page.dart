@@ -91,9 +91,9 @@ class PackagePublishPage extends StatelessWidget {
                                       isCollapsed: true,
                                       border: InputBorder.none,
                                       contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                                      hintText: "0.00",
+                                      hintText: "￥0.00",
                                       hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                          Text("幸运值", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
+                          Text("元", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
                         ])),
                     logic.type == SessionType.private
                         ? Container(
@@ -203,7 +203,7 @@ class PackagePublishPage extends StatelessWidget {
                         textBaseline: TextBaseline.alphabetic,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("u",
+                          Text("￥",
                               style: GoogleFonts.roboto(
                                   color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold)),
                           GetBuilder<PackagePublishLogic>(
@@ -221,6 +221,11 @@ class PackagePublishPage extends StatelessWidget {
                         color: const Color(0xffDB5549),
                         onPressed: () {
                           DeviceUtils.hideKeyboard(context);
+                          if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.payPassword)) {
+                            showToast(text: "请先设置支付密码");
+                            return;
+                          }
+
                           if (StringUtil.isEmpty(logic.amountController.text)) {
                             showToast(text: "请输入总金额");
                             return;
@@ -233,16 +238,10 @@ class PackagePublishPage extends StatelessWidget {
 
                           Get.bottomSheet(
                                   InputPayPasswordDialog(
-                                      amount: double.tryParse(logic.amountController.text), title: "红包金额", tip: "支付账户"),
+                                      amount: double.tryParse(logic.amountController.text), title: "红包金额"),
                                   isScrollControlled: true)
                               .then((value) {
-                            if (value != null) {
-                              if (StringUtil.isNotEmpty(Get.find<RootLogic>().user.value?.walletCard)) {
-                                logic.sendRedPackage();
-                              } else {
-                                showToast(text: "未设置付款账号");
-                              }
-                            }
+                            if (value != null) logic.sendRedPackage();
                           });
                         },
                         radius: 40,

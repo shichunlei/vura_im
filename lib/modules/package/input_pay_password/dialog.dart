@@ -15,8 +15,11 @@ class InputPayPasswordDialog extends StatelessWidget {
   final double? amount;
   final String? title;
   final String? tip;
+  final bool isUsdt;
+  final bool showAccount;
 
-  const InputPayPasswordDialog({super.key, this.amount, this.title, this.tip});
+  const InputPayPasswordDialog(
+      {super.key, this.amount, this.title, this.tip, this.isUsdt = false, this.showAccount = false});
 
   InputPayPasswordLogic get logic => Get.put(InputPayPasswordLogic());
 
@@ -45,34 +48,48 @@ class InputPayPasswordDialog extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     textBaseline: TextBaseline.alphabetic,
                     children: [
-                      Text("u",
-                          style: GoogleFonts.roboto(
-                              color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold)),
+                      Visibility(
+                          visible: !isUsdt,
+                          child: Text("￥",
+                              style: GoogleFonts.roboto(
+                                  color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold))),
                       Text("$amount",
                           style: GoogleFonts.roboto(
-                              color: const Color(0xffDB5549), fontSize: 44.sp, fontWeight: FontWeight.bold))
+                              color: const Color(0xffDB5549), fontSize: 44.sp, fontWeight: FontWeight.bold)),
+                      Visibility(
+                          visible: isUsdt,
+                          child: Text("u",
+                              style: GoogleFonts.roboto(
+                                  color: const Color(0xffDB5549), fontSize: 22.sp, fontWeight: FontWeight.bold)))
                     ]),
-                SizedBox(height: 11.h),
-                Container(
-                    padding: EdgeInsets.only(left: 22.w),
-                    alignment: Alignment.centerLeft,
-                    child: Text("$tip", style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp))),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 22.h, horizontal: 22.w),
-                    padding: EdgeInsets.symmetric(horizontal: 13.w),
-                    height: 62.h,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(11.r),
-                        border: Border.all(width: 1, color: const Color(0xffF1F6F7))),
-                    child: Row(children: [
-                      Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
-                      SizedBox(width: 13.w),
-                      Expanded(
-                          child: Text(Get.find<RootLogic>().user.value?.walletCard ?? "未设置$tip",
-                              style: GoogleFonts.dmSans(
-                                  color: ColorUtil.color_333333, fontSize: 18.sp, fontWeight: FontWeight.bold))),
-                      Icon(IconFont.check, size: 15.sp)
-                    ])),
+                ...showAccount
+                    ? [
+                        SizedBox(height: 11.h),
+                        Container(
+                            padding: EdgeInsets.only(left: 22.w),
+                            alignment: Alignment.centerLeft,
+                            child: Text("$tip",
+                                style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 14.sp))),
+                        Container(
+                            margin: EdgeInsets.symmetric(vertical: 22.h, horizontal: 22.w),
+                            padding: EdgeInsets.symmetric(horizontal: 13.w),
+                            height: 62.h,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(11.r),
+                                border: Border.all(width: 1, color: const Color(0xffF1F6F7))),
+                            child: Row(children: [
+                              Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
+                              SizedBox(width: 13.w),
+                              Expanded(
+                                  child: Text(Get.find<RootLogic>().user.value?.walletCard ?? "未设置$tip",
+                                      style: GoogleFonts.dmSans(
+                                          color: ColorUtil.color_333333,
+                                          fontSize: 18.sp,
+                                          fontWeight: FontWeight.bold))),
+                              Icon(IconFont.check, size: 15.sp)
+                            ]))
+                      ]
+                    : [],
                 SizedBox(height: 11.h),
                 SizedBox(
                     height: 53.h,

@@ -6,9 +6,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
-import 'package:vura/widgets/round_image.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

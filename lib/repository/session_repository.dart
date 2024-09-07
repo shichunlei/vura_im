@@ -53,14 +53,14 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 修改会话编号 TODO
+  /// 修改会话编号
   ///
   /// [id] 群ID
   /// [no] 群编号
   ///
   static Future<BaseBean> updateSessionNo(String? id, {String? no}) async {
-    var data =
-        await HttpUtils.getInstance().request('group/setGroupNo', params: {Keys.ID: id, "no": no}, showErrorToast: true);
+    var data = await HttpUtils.getInstance()
+        .request('group/setGroupNo', params: {Keys.ID: id, "no": no}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

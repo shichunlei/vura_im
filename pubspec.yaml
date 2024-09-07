@@ -49,9 +49,10 @@ dependencies:
   # Emoji表情
   emoji_picker:
     path: ../emoji_picker
+  extended_image: ^8.2.1
   extended_list: ^3.0.2
   # 获取通讯录联系人
-  fast_contacts: ^3.1.4
+  fast_contacts: ^4.0.0
   flutter_cache_manager: ^3.4.1
   # 刷新，加载组件
   flutter_easyrefresh_strong: ^2.2.1
@@ -85,23 +86,16 @@ dependencies:
   screenshot: ^3.0.0
   # 本地化存储
   shared_preferences: ^2.3.1
-  synchronized: ^3.1.0+1
+  synchronized: ^3.2.0
   # DIO LOG拦截器
   talker_dio_logger: ^4.4.1
   # 时间线
   timelines_plus: ^1.0.3
 
   url_launcher: ^6.3.0
-  # 仿微信选择图片
-  wechat_assets_picker: ^9.2.0
-  # 仿微信录制视频
-  wechat_camera_picker: ^4.3.2
   # 仿微信录制音频
   xbr_plugin_record:
     path: ../../cses/flutter_third_plugins/xbr_plugin_record
-
-dependency_overrides:
-  video_player_android: 2.6.0
 
 dev_dependencies:
   flutter_test:
@@ -116,7 +110,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  build_runner: ^2.4.11
+  build_runner: ^2.4.12
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:

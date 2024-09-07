@@ -4,7 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/package/input_pay_password/dialog.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/string_util.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -130,7 +135,34 @@ class TransferPage extends StatelessWidget {
                       Center(
                           child: RadiusInkWellWidget(
                               radius: 40,
-                              onPressed: () {},
+                              onPressed: () {
+                                DeviceUtils.hideKeyboard(context);
+
+                                if (StringUtil.isEmpty(Get.find<RootLogic>().user.value?.payPassword)) {
+                                  showToast(text: "请先设置支付密码");
+                                  return;
+                                }
+
+                                if (StringUtil.isEmpty(logic.amountController.text)) {
+                                  showToast(text: "请输入转账数量");
+                                  return;
+                                }
+
+                                if (StringUtil.isEmpty(logic.addressController.text)) {
+                                  showToast(text: "请输入收款者账号地址");
+                                  return;
+                                }
+
+                                Get.bottomSheet(
+                                        InputPayPasswordDialog(
+                                            amount: double.tryParse(logic.amountController.text),
+                                            title: "转账金额",
+                                            isUsdt: true),
+                                        isScrollControlled: true)
+                                    .then((value) {
+                                  if (value != null) logic.transfer();
+                                });
+                              },
                               margin: EdgeInsets.only(top: 8.h, bottom: 22.h),
                               child: Container(
                                   height: 44.h,
