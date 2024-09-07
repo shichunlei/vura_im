@@ -79,16 +79,6 @@ class PackagePublishLogic extends BaseLogic {
   List<int?> mines = [];
 
   Future sendRedPackage() async {
-    if (StringUtil.isEmpty(amountController.text)) {
-      showToast(text: "请输入总金额");
-      return;
-    }
-
-    if (type == SessionType.group && StringUtil.isEmpty(countController.text)) {
-      showToast(text: "请输入幸运值个数");
-      return;
-    }
-
     if (type == SessionType.group && StringUtil.isNotEmpty(valueController.text)) {
       mines = valueController.text.split(",").map((e) => int.tryParse(e)).toList();
     }

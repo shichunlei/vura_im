@@ -35,7 +35,7 @@ class InputPayPasswordLogic extends BaseLogic {
     hiddenLoading();
     if (result.code == 200) {
       if (context.mounted) DeviceUtils.hideKeyboard(context);
-      Get.back();
+      Get.back(result: true);
     } else {
       controller.clear();
       codeList.value = ['', '', '', '', "", ""];

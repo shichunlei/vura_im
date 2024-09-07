@@ -9,6 +9,7 @@ import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -53,7 +54,7 @@ class WalletPage extends StatelessWidget {
                         ]),
                         const Spacer(),
                         Text(
-                            "≈￥${Get.find<RootLogic>().user.value!.money * Get.find<RootLogic>().exchangeRate.value}", // TODO  人民币
+                            "≈￥${StringUtil.formatPrice(Get.find<RootLogic>().user.value!.money * Get.find<RootLogic>().exchangeRate.value)}", // TODO  人民币
                             style: GoogleFonts.bebasNeue(
                                 color: ColorUtil.color_333333, fontSize: 26.sp, fontWeight: FontWeight.bold)),
                         SizedBox(width: 22.w)
@@ -176,7 +177,8 @@ class WalletPage extends StatelessWidget {
                             Text("${logic.list[index].detailDesc}",
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                             const Spacer(),
-                            Text("≈￥${logic.list[index].money * Get.find<RootLogic>().exchangeRate.value}", // TODO  人民币
+                            Text(
+                                "≈￥${StringUtil.formatPrice(logic.list[index].money * Get.find<RootLogic>().exchangeRate.value)}", // TODO  人民币
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                           ]),
                           SizedBox(height: 3.h),

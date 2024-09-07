@@ -61,6 +61,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
           (data[Keys.TYPE] < MessageType.RECALL.code ||
               data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
               data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
+        if (data["sendId"] == Get.find<RootLogic>().user.value?.id) return;
         list.insert(0, MessageEntity.fromJson(data));
       }
       if (cmd == WebSocketCode.GROUP_MESSAGE.code &&
@@ -68,6 +69,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
           (data[Keys.TYPE] < MessageType.RECALL.code ||
               data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
               data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
+        if (data["sendId"] == Get.find<RootLogic>().user.value?.id) return;
         list.insert(0, MessageEntity.fromJson(data));
       }
       list.refresh();

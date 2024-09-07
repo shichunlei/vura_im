@@ -13,7 +13,7 @@ abstract class BaseLogic extends GetxController {
   Map<String, dynamic> params = {};
 
   var pageNumber = 1.obs;
-  var pageSize = 20.obs;
+  var pageSize = 50.obs;
   var offset = 0.obs;
 
   var keywords = ''.obs;

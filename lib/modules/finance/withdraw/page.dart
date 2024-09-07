@@ -165,7 +165,7 @@ class WithdrawPage extends StatelessWidget {
                                     init: logic,
                                     builder: (logic) {
                                       return Text(
-                                          "≈￥${StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * Get.find<RootLogic>().exchangeRate.value).floor()}",
+                                          "≈￥${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * Get.find<RootLogic>().exchangeRate.value))}",
                                           // TODO  人民币
                                           style: GoogleFonts.roboto(
                                               color: const Color(0xffFF4255),

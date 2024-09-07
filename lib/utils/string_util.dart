@@ -79,6 +79,10 @@ class StringUtil {
     return mobile.replaceAllMapped(regex, (match) => '${match[1]}****${match[3]}');
   }
 
+  static String formatPrice(double price) {
+    return price.toStringAsFixed(4).replaceAll(RegExp(r'0*$'), '').replaceAll(RegExp(r'\.$'), '');
+  }
+
   static String truncateString(String input) {
     if (input.length <= 20) {
       return input;

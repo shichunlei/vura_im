@@ -140,7 +140,7 @@ class MinePage extends StatelessWidget {
                                   height: 15.h,
                                   child: Text(
                                       logic.showMoney.value
-                                          ? "≈￥${Get.find<RootLogic>().exchangeRate.value * Get.find<RootLogic>().user.value!.money}"
+                                          ? "≈￥${StringUtil.formatPrice(Get.find<RootLogic>().exchangeRate.value * Get.find<RootLogic>().user.value!.money)}"
                                           : "****",
                                       style: GoogleFonts.daiBannaSil(fontSize: 11.sp, color: Colors.white)))
                             ])
