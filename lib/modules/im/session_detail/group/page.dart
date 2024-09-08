@@ -30,7 +30,7 @@ class GroupSessionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("聊天信息"), centerTitle: true),
+        appBar: AppBar(title: Text("Group Info".tr), centerTitle: true),
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
@@ -85,7 +85,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                                   child: Icon(IconFont.minus,
                                                       size: 26.r, color: const Color(0xffdddddd))))),
                                       SizedBox(height: 10.h),
-                                      Text("移除",
+                                      Text("Remove".tr,
                                           style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                     ])
                                   : index ==
@@ -117,7 +117,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                                       child: Icon(IconFont.add,
                                                           size: 26.r, color: const Color(0xffdddddd))))),
                                           SizedBox(height: 10.h),
-                                          Text("邀请",
+                                          Text("invite".tr,
                                               style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                         ])
                                       : ItemSessionUser(
@@ -144,7 +144,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                  Text("查看更多群成员",
+                                  Text("View More Members".tr,
                                       style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999)),
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                                 ])))
@@ -161,7 +161,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                               padding: EdgeInsets.only(left: 22.w, right: 10.w),
                               height: 60.h,
                               child: Row(children: [
-                                Text("群管理", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                                Text("Manage Group".tr,
+                                    style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
                                 const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                               ])))
@@ -191,7 +192,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 11.w),
                                 child: Row(children: [
-                                  Text("群聊名称",
+                                  Text("Group Name".tr,
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
                                   Text("${logic.bean.value?.name}",
@@ -222,7 +223,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 10.w),
                                 child: Row(children: [
-                                  Text("群聊头像",
+                                  Text("Group Image".tr,
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
                                   RoundImage("${logic.bean.value?.headImage}",
@@ -253,7 +254,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 11.w),
                                 child: Row(children: [
-                                  Text("群聊编号",
+                                  Text("Group NO".tr,
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
                                   Text("${logic.bean.value?.no}",
@@ -285,7 +286,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w, right: 10.w),
                                 child: Row(children: [
-                                  Text("群公告",
+                                  Text("Group Notice".tr,
                                       style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                                   const Spacer(),
                                   const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
@@ -301,7 +302,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),
                             child: Row(children: [
-                              Text("置顶聊天", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              Text("Sticky on Top".tr,
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
                               CupertinoSwitch(value: logic.bean.value!.moveTop, onChanged: logic.setTop),
                             ])),
@@ -310,7 +312,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),
                             child: Row(children: [
-                              Text("免打扰", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              Text("Mute Notifications".tr,
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
                               CupertinoSwitch(value: logic.bean.value!.isDisturb, onChanged: logic.setDisturb),
                             ]))
@@ -324,8 +327,8 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 color: Colors.transparent,
                                 onPressed: () {
                                   Get.bottomSheet(BottomDialog(
-                                      content: "解散群聊后，群成员和群主都将被移除群聊",
-                                      confirmText: "解散",
+                                      content: "Disband Tip".tr,
+                                      confirmText: "Disband".tr,
                                       onConfirm: () {
                                         logic.deleteSession();
                                       }));
@@ -336,14 +339,14 @@ class GroupSessionDetailPage extends StatelessWidget {
                                     height: 60.h,
                                     padding: EdgeInsets.only(left: 22.w),
                                     alignment: Alignment.centerLeft,
-                                    child: Text("解散群聊",
+                                    child: Text("Disband Group".tr,
                                         style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549)))))
                             : RadiusInkWellWidget(
                                 color: Colors.transparent,
                                 onPressed: () {
                                   Get.bottomSheet(BottomDialog(
-                                      content: "即将退出群聊“${logic.bean.value?.name}”",
-                                      confirmText: "退出群聊",
+                                      content: "LeaveGroupTip".trParams({"groupName": "${logic.bean.value?.name}"}),
+                                      confirmText: "EXIT".tr,
                                       onConfirm: () {
                                         logic.quitSession();
                                       }));
@@ -354,7 +357,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                     height: 60.h,
                                     padding: EdgeInsets.only(left: 22.w),
                                     alignment: Alignment.centerLeft,
-                                    child: Text("退出群聊",
+                                    child: Text("Leave Group".tr,
                                         style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
@@ -371,7 +374,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w),
                                 alignment: Alignment.centerLeft,
-                                child: Text("清空聊天记录",
+                                child: Text("Clear Chat History".tr,
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                       ]))
                 ]),

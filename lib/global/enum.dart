@@ -93,7 +93,7 @@ enum WebSocketCode {
 
 enum SessionType { group, private }
 
-enum YorNType { Y, N, B, M, EXPIRE }
+enum YorNType { Y, N, B, M, F, EXPIRE }
 
 enum FriendSourceType { SCAN, CARD, CHAT_NO, PHONE, SHAKE, SYS, GROUP, NEAR }
 
@@ -157,4 +157,16 @@ enum TextSizeType {
   final double stepValue;
 
   const TextSizeType({required this.label, required this.fontSize, required this.stepValue});
+}
+
+enum BookType {
+  RED(label: "红包"),
+  WIDTH_DRAW(label: "提现"),
+  RECHARGE(label: "充值"),
+  TRANSFER(label: "转账"),
+  INCOME(label: "到账");
+
+  final String label;
+
+  const BookType({required this.label});
 }

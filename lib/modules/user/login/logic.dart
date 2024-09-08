@@ -8,16 +8,31 @@ import 'package:vura/realm/account.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
+import 'package:vura/widgets/widgets.dart';
 
 class LoginLogic extends BaseLogic {
   TextEditingController accountController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isIllegalLogin = false;
+
   LoginLogic() {
+    isIllegalLogin = Get.arguments?["isIllegalLogin"] ?? false;
     accountController.addListener(update);
     passwordController.addListener(update);
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    if (isIllegalLogin) {
+      show(builder: (_) {
+        return const CustomTipDialog(title: "温馨提示", content: "您的账号已在其他设备登录，此次登陆如非本人操作，请立即修改密码，以保护账户财产安全。");
+      });
+    }
   }
 
   Future login(BuildContext context) async {

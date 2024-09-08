@@ -34,6 +34,7 @@ class CustomTipDialog extends Dialog {
                                   GoogleFonts.roboto(
                                       fontSize: 16.sp, fontWeight: FontWeight.bold, color: ColorUtil.color_333333))),
                   Container(
+                      constraints: BoxConstraints(minHeight: 80.h),
                       alignment: Alignment.center,
                       margin: EdgeInsets.symmetric(vertical: 25.h, horizontal: 20.w),
                       child: Text(content,

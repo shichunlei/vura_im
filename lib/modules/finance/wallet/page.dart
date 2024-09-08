@@ -171,14 +171,18 @@ class WalletPage extends StatelessWidget {
                             BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xfff5f5f5)),
                         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                           Row(children: [
-                            Text("${logic.list[index].walletCard}",
-                                style: GoogleFonts.dmSans(
-                                    fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold)),
-                            const Spacer(),
+                            Expanded(
+                                child: Text(
+                                    logic.list[index].categoryCode == BookType.RED ||
+                                            logic.list[index].categoryCode == BookType.RECHARGE
+                                        ? "USDT钱包"
+                                        : StringUtil.truncateString2(logic.list[index].walletCard),
+                                    style: GoogleFonts.dmSans(
+                                        fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.bold))),
                             Text(
                                 logic.list[index].type == FeeType.INCOME
-                                    ? "+${logic.list[index].money} USDT"
-                                    : "-${logic.list[index].money} USDT",
+                                    ? "+${StringUtil.formatPrice(logic.list[index].money)} USDT"
+                                    : "-${StringUtil.formatPrice(logic.list[index].money)} USDT",
                                 style: GoogleFonts.dmSans(
                                     fontSize: 18.sp,
                                     color: logic.list[index].type == FeeType.INCOME
@@ -188,16 +192,15 @@ class WalletPage extends StatelessWidget {
                           ]),
                           SizedBox(height: 3.h),
                           Row(children: [
-                            Text("${logic.list[index].detailDesc}",
+                            Text("${logic.list[index].categoryName}",
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999)),
                             const Spacer(),
-                            Text(
-                                "≈￥${StringUtil.formatPrice(logic.list[index].money * Get.find<RootLogic>().exchangeRate.value)}", // TODO  人民币
+                            Text("≈￥${StringUtil.formatPrice(logic.list[index].rmb)}", // TODO  人民币
                                 style: GoogleFonts.dmSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                           ]),
                           SizedBox(height: 3.h),
                           Text(
-                              "${DateUtil.getDateStrByTimeStr(logic.list[index].updateTime!, format: DateFormat.YEAR_MONTH_DAY_HOUR_MINUTE)}",
+                              "${DateUtil.getDateStrByMs(logic.list[index].updateTimeStamp, format: DateFormat.YEAR_MONTH_DAY_HOUR_MINUTE)}",
                               style: GoogleFonts.ptSans(fontSize: 13.sp, color: ColorUtil.color_999999))
                         ]));
                   }, childCount: logic.list.length))

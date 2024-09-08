@@ -40,15 +40,6 @@ String getFileNameByPath(String filePath) {
   return filePath.lastIndexOf('/') > -1 ? filePath.substring(filePath.lastIndexOf('/') + 1) : filePath;
 }
 
-/// 获取文件唯一名称
-///
-/// [filePath] 文件路径
-///
-String getFileNameByMicroseconds(String filePath) {
-  if (StringUtil.isEmpty(filePath)) return '';
-  return DateTime.now().microsecondsSinceEpoch.toString() + filePath.substring(filePath.lastIndexOf('.'));
-}
-
 /// 选择图片
 ///
 /// [source] 来源

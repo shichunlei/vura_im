@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:get/get.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
@@ -16,7 +18,7 @@ typedef OnWebSocketConnect = void Function();
 typedef OnWebSocketClose = void Function();
 
 class WebSocketManager {
-  late WebSocketChannel _channel;
+  WebSocketChannel? _channel;
   late String _accessToken;
   bool _isConnected = false;
   Timer? _heartbeatTimer;
@@ -44,8 +46,8 @@ class WebSocketManager {
 
   void init() async {
     // 初始化 WebSocket 连接
-    _channel = WebSocketChannel.connect(Uri.parse(AppConfig.wsUrl));
-    await _channel.ready;
+    _channel ??= WebSocketChannel.connect(Uri.parse(AppConfig.wsUrl));
+    await _channel!.ready;
     _accessToken = SpUtil.getString(Keys.ACCESS_TOKEN);
     Log.d("@@@@@@@@@@@@@@@@@@@@@@@@=>>>>$_accessToken");
     _isConnected = true;
@@ -53,24 +55,37 @@ class WebSocketManager {
       _loginWebsocket(_accessToken);
       _startHeartbeat();
     }
-    _channel.stream.listen(_onMessage, onError: _onError, onDone: _onDone);
+    _channel!.stream.listen(_onMessage, onError: _onError, onDone: _onDone);
   }
 
   void _onMessage(message) {
     Map<String, dynamic> json = jsonDecode(message);
-    Log.json(json);
     if (json[Keys.CMD] == WebSocketCode.LOGIN.code) {
+      Log.d("🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝🤝");
       // 登录成功
       _connectCallbacks.forEach((pageId, callback) {
         callback();
       });
     } else if (json[Keys.CMD] == WebSocketCode.HEARTBEAT.code) {
+      Log.d("💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓💓");
       // 心跳
       _heartbeatTimer?.cancel();
+      _heartbeatTimer = null;
       _startHeartbeat();
     } else if (json[Keys.CMD] == WebSocketCode.LOGOFF.code) {
-      Log.d("logoff");
+      Log.d("👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻👋🏻");
+      SpUtil.remove(Keys.ACCESS_TOKEN);
+      SpUtil.remove(Keys.REFRESH_TOKEN);
+      close();
+      Get.offAllNamed(RoutePath.LOGIN_PAGE, arguments: {"isIllegalLogin": true});
     } else {
+      Log.json(json);
+      if (json[Keys.CMD] == WebSocketCode.FRIEND_APPLY.code) {
+        Log.d("👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻👬🏻");
+      }
+      if (json[Keys.CMD] == WebSocketCode.SYSTEM_MESSAGE.code) {
+        Log.d("👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙👙");
+      }
       // 其他消息处理
       _messageCallbacks.forEach((pageId, callback) {
         callback(json[Keys.CMD], json[Keys.DATA]);
@@ -95,7 +110,7 @@ class WebSocketManager {
   }
 
   void _startHeartbeat() {
-    _heartbeatTimer = Timer.periodic(_heartbeatInterval, (timer) {
+    _heartbeatTimer ??= Timer.periodic(_heartbeatInterval, (timer) {
       if (_isConnected) {
         sendMessage(jsonEncode({Keys.CMD: WebSocketCode.HEARTBEAT.code, Keys.DATA: {}}));
       }
@@ -110,7 +125,7 @@ class WebSocketManager {
   }
 
   void sendMessage(String message) {
-    _channel.sink.add(message);
+    _channel?.sink.add(message);
   }
 
   void connect() {
@@ -129,7 +144,10 @@ class WebSocketManager {
 
   void close() {
     // 关闭 WebSocket 连接
-    _channel.sink.close();
+    _channel?.sink.close();
+    _channel = null;
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
     _isConnected = false;
   }
 }

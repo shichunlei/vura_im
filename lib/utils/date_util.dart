@@ -724,43 +724,6 @@ class DateUtil {
     ];
   }
 
-  /// 友好式时间展示
-  /// [duration] 待转换的时间戳
-  ///
-  static String friendlyDateTime(int duration) {
-    String friendly = '';
-
-    int now = DateTime.now().millisecondsSinceEpoch;
-
-    int elapsed = (now - duration).abs();
-
-    final int seconds = elapsed ~/ 1000;
-    final int minutes = seconds ~/ 60;
-    final int hours = minutes ~/ 60;
-    final int days = hours ~/ 24;
-    final int mounts = days ~/ 30;
-
-    if (seconds < 60) {
-      friendly = '刚刚';
-    } else if (seconds >= 60 && seconds < 60 * 60) {
-      friendly = '$minutes分钟前';
-    } else if (seconds >= 60 * 60 && seconds < 60 * 60 * 24) {
-      friendly = '$hours小时前';
-    } else if (seconds >= 60 * 60 * 24 && seconds < 60 * 60 * 24 * 2) {
-      friendly = "昨天 ${getDateStrByMs(duration, format: DateFormat.HOUR_MINUTE)}";
-    } else if (seconds >= 60 * 60 * 24 * 2 && seconds < 60 * 60 * 24 * 3) {
-      friendly = "前天 ${getDateStrByMs(duration, format: DateFormat.HOUR_MINUTE)}";
-    } else if (seconds >= 60 * 60 * 24 * 3 && seconds < 60 * 60 * 24 * 30) {
-      friendly = '$days天前';
-    } else if (seconds >= 60 * 60 * 24 * 30 && seconds < 60 * 60 * 24 * 30 * 12) {
-      friendly = '$mounts个月前';
-    } else {
-      friendly = getDateStrByMs(duration, format: DateFormat.YEAR_MONTH_DAY)!;
-    }
-
-    return friendly;
-  }
-
   static String getWechatTime(int duration) {
     if (isToday(duration)) {
       return getDateStrByMs(duration, format: DateFormat.HOUR_MINUTE)!;

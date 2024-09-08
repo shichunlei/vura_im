@@ -2,13 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/withdraw_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/common_repository.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
   TextEditingController controller = TextEditingController();
+
+  var fee = .0.obs;
+  var exchangeRate = .0.obs;
 
   WithdrawLogic() {
     controller.addListener(() {
@@ -24,6 +30,7 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
   @override
   void onInit() {
     initData();
+    getFee();
     super.onInit();
   }
 
@@ -31,7 +38,8 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
 
   @override
   Future<List<WithdrawEntity>> loadData() async {
-    return WithdrawEntity.getWithdraw(Get.find<RootLogic>().exchangeRate.value);
+    await getRate();
+    return WithdrawEntity.getWithdraw(exchangeRate.value);
   }
 
   @override
@@ -39,16 +47,42 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
     if (data.isNotEmpty) controller.text = "${data[selectIndex.value].usdt}";
   }
 
+  /// 获取汇率
+  Future getFee() async {
+    RateEntity? result = await CommonRepository.getFee();
+    if (result != null) {
+      fee.value = result.value ?? 0;
+    } else {
+      fee.value = 0;
+    }
+  }
+
+  /// 获取汇率
+  Future getRate() async {
+    RateEntity? result = await CommonRepository.getRate();
+    if (result != null) {
+      exchangeRate.value = result.value ?? 7.15;
+    } else {
+      exchangeRate.value = 7.15;
+    }
+  }
+
   Future withdraw() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
-        type: 1,
+        type: BookType.WIDTH_DRAW,
         money: double.parse(controller.text),
         account: Get.find<RootLogic>().user.value?.walletCard,
         remarks: "提现");
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "提现申请已提交");
+      try {
+        Get.find<RootLogic>().refreshUserInfo();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      Get.back();
     }
   }
 }

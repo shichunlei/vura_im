@@ -3,6 +3,7 @@ import 'package:vura/entities/base64.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/bill_record_entity.dart';
 import 'package:vura/entities/file_entity.dart';
+import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/version_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
@@ -62,13 +63,24 @@ class CommonRepository {
   }
 
   /// 获取汇率
-  static Future<double> getRate() async {
+  static Future<RateEntity?> getRate() async {
     var data = await HttpUtils.getInstance().request('rate/config/get', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
-      return result.data?["value"] ?? 7.15;
+      return RateEntity.fromJson(result.data);
     } else {
-      return 7.15;
+      return null;
+    }
+  }
+
+  /// 获取服务费配置
+  static Future<RateEntity?> getFee() async {
+    var data = await HttpUtils.getInstance().request('rate/config/getFee', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return RateEntity.fromJson(result.data);
+    } else {
+      return null;
     }
   }
 
@@ -105,9 +117,10 @@ class CommonRepository {
   /// [type] 类型 1-提现 2-充值 3-转账
   /// [remarks] 转账备注
   ///
-  static Future<BaseBean> withdraw({required double money, required int type, String? remarks, String? account}) async {
+  static Future<BaseBean> withdraw(
+      {required double money, required BookType type, String? remarks, String? account}) async {
     var data = await HttpUtils.getInstance().request("withdraw/apply",
-        params: {"money": money, "type": type, "remarks": remarks, "account": account}, showErrorToast: true);
+        params: {"money": money, "type": type.index, "remarks": remarks, "account": account}, showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

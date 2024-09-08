@@ -27,7 +27,7 @@ class SettingPage extends StatelessWidget {
           SizedBox(height: 30.h),
           Image.asset("assets/images/logo.webp", width: 88.r, height: 88.r),
           SizedBox(height: 10.h),
-          Text("Version Code".trParams({"number": "${AppConfig.version?.version}"})),
+          Text("Version Code".trParams({"code": "${AppConfig.version?.version}"})),
           Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
               margin: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),

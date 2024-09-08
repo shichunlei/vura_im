@@ -92,7 +92,7 @@ class _MyAppState extends State<MyApp> {
                   debugShowCheckedModeBanner: false,
                   themeMode: ThemeMode.light,
                   theme: ThemeData(
-                      primaryColor: const Color(0xff83C240),
+                      primaryColor: ColorUtil.mainColor,
                       brightness: Brightness.light,
                       colorScheme: ColorScheme.fromSeed(
                           seedColor: const Color(0xff83C240),

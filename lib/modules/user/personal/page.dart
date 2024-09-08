@@ -21,7 +21,7 @@ class PersonalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("个人信息"), centerTitle: true),
+        appBar: AppBar(title: Text("personal information".tr), centerTitle: true),
         body: BaseWidget(
             logic: logic,
             builder: (logic) {

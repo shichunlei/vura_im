@@ -13,7 +13,7 @@ class BottomDialog extends StatelessWidget {
   final String? confirmText;
   final Color? confirmTextColor;
 
-  const BottomDialog({super.key, this.content, this.onConfirm, this.confirmText = "确定", this.confirmTextColor});
+  const BottomDialog({super.key, this.content, this.onConfirm, this.confirmText, this.confirmTextColor});
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +42,7 @@ class BottomDialog extends StatelessWidget {
                   child: Container(
                       height: 60.h,
                       alignment: Alignment.center,
-                      child: Text("$confirmText",
+                      child: Text(confirmText ?? "Confirm".tr,
                           style: GoogleFonts.roboto(
                               fontSize: 15.sp,
                               color: confirmTextColor ?? Colors.redAccent,
@@ -56,7 +56,8 @@ class BottomDialog extends StatelessWidget {
                       height: 60.h + DeviceUtils.bottomSafeHeight,
                       padding: EdgeInsets.only(bottom: DeviceUtils.bottomSafeHeight),
                       alignment: Alignment.center,
-                      child: Text("取消", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))))
+                      child:
+                          Text("Cancel".tr, style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))))
             ])));
   }
 }

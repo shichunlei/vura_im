@@ -37,6 +37,7 @@ class WithdrawPage extends StatelessWidget {
               logic: logic,
               bgColor: Colors.transparent,
               showEmpty: false,
+              showLoading: false,
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 30.h),
@@ -60,8 +61,8 @@ class WithdrawPage extends StatelessWidget {
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
                               color: Colors.white),
-                          padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                           child: SingleChildScrollView(
+                            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Text("输入提现数量",
                                   style: GoogleFonts.roboto(
@@ -82,9 +83,15 @@ class WithdrawPage extends StatelessWidget {
                                           hintText: "限额300~30000",
                                           hintStyle:
                                               GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
-                              Text(
-                                  "提现手续费率：1%；扣除手续费：${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (double.parse(logic.controller.text) * .01))}u", // todo
-                                  style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)),
+                              GetBuilder<WithdrawLogic>(
+                                  init: logic,
+                                  builder: (logic) {
+                                    return Obx(() {
+                                      return Text(
+                                          "提现手续费率：${StringUtil.formatPrice(logic.fee.value * 100)}%；扣除手续费：${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (double.parse(logic.controller.text) * logic.fee.value))}u", // todo
+                                          style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999));
+                                    });
+                                  }),
                               GridView.builder(
                                   padding: EdgeInsets.symmetric(vertical: 22.h),
                                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -134,7 +141,7 @@ class WithdrawPage extends StatelessWidget {
                                                               fontSize: 12.sp,
                                                               fontWeight: FontWeight.w600))
                                                     ]),
-                                                Text("≈￥${logic.list[index].money.floor()}", // TODO  人民币
+                                                Text("≈￥${StringUtil.formatPrice(logic.list[index].money)}",
                                                     style: GoogleFonts.roboto(
                                                         color: logic.selectIndex.value == index
                                                             ? const Color(0xff83C240)
@@ -160,7 +167,8 @@ class WithdrawPage extends StatelessWidget {
                                     Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
                                     SizedBox(width: 13.w),
                                     Expanded(
-                                        child: Text("${Get.find<RootLogic>().user.value?.walletCard}",
+                                        child: Text(
+                                            StringUtil.truncateString2(Get.find<RootLogic>().user.value?.walletCard),
                                             style: GoogleFonts.dmSans(
                                                 color: ColorUtil.color_333333,
                                                 fontSize: 18.sp,
@@ -170,9 +178,8 @@ class WithdrawPage extends StatelessWidget {
                               Row(children: [
                                 Text("参考单价", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Text("${Get.find<RootLogic>().exchangeRate.value}CNY",
+                                Text("${StringUtil.formatPrice(logic.exchangeRate.value)}CNY",
                                     style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333))
-                                // TODO 汇率
                               ]),
                               SizedBox(height: 22.h),
                               Row(children: [
@@ -182,8 +189,7 @@ class WithdrawPage extends StatelessWidget {
                                     init: logic,
                                     builder: (logic) {
                                       return Text(
-                                          "≈￥${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * Get.find<RootLogic>().exchangeRate.value))}",
-                                          // TODO  人民币
+                                          "≈￥${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (double.parse(logic.controller.text) * logic.exchangeRate.value))}",
                                           style: GoogleFonts.roboto(
                                               color: const Color(0xffFF4255),
                                               fontWeight: FontWeight.bold,
@@ -215,7 +221,7 @@ class WithdrawPage extends StatelessWidget {
                                         Get.bottomSheet(
                                                 InputPayPasswordDialog(
                                                     amount: double.tryParse(logic.controller.text),
-                                                    title: "出售金额",
+                                                    title: "提现金额",
                                                     tip: "收款方式",
                                                     isUsdt: true,
                                                     showAccount: true),

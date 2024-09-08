@@ -20,7 +20,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("聊天信息"), centerTitle: true),
+        appBar: AppBar(title: Text("Chat Info".tr), centerTitle: true),
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
@@ -58,7 +58,8 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 22.w),
                             child: Row(children: [
-                              Text("昵称", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              Text("Nickname".tr,
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
                               Text("${logic.bean.value?.name}",
                                   style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))
@@ -89,7 +90,8 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),
                             child: Row(children: [
-                              Text("置顶聊天", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              Text("Sticky on Top".tr,
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
                               CupertinoSwitch(value: logic.bean.value!.moveTop, onChanged: logic.setTop),
                             ])),
@@ -98,7 +100,8 @@ class PrivateSessionDetailPage extends StatelessWidget {
                             height: 60.h,
                             padding: EdgeInsets.only(left: 22.w, right: 15.w),
                             child: Row(children: [
-                              Text("免打扰", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                              Text("Mute Notifications".tr,
+                                  style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                               const Spacer(),
                               CupertinoSwitch(value: logic.bean.value!.isDisturb, onChanged: logic.setDisturb),
                             ])),
@@ -137,7 +140,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w),
                                 alignment: Alignment.centerLeft,
-                                child: Text("删除好友",
+                                child: Text("Delete Friend".tr,
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                         Divider(height: 0, indent: 22.w, endIndent: 22.w),
                         RadiusInkWellWidget(
@@ -154,7 +157,7 @@ class PrivateSessionDetailPage extends StatelessWidget {
                                 height: 60.h,
                                 padding: EdgeInsets.only(left: 22.w),
                                 alignment: Alignment.centerLeft,
-                                child: Text("清空聊天记录",
+                                child: Text("Clear Chat History".tr,
                                     style: GoogleFonts.roboto(fontSize: 15.sp, color: const Color(0xffDB5549))))),
                       ]))
                 ]),

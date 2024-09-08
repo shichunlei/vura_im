@@ -8,11 +8,11 @@ import 'package:talker_dio_logger/talker_dio_logger_settings.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/keys.dart';
-import 'package:vura/utils/device_utils.dart';
-import 'package:vura/utils/sp_util.dart';
-import 'package:vura/utils/toast_util.dart';
 
+import 'device_utils.dart';
 import 'log_utils.dart';
+import 'sp_util.dart';
+import 'toast_util.dart';
 
 class HttpUtils {
   /// http request methods

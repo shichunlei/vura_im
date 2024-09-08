@@ -9,8 +9,8 @@ class CustomAlertDialog extends Dialog {
   final String title;
   final String content;
   final VoidCallback? onConfirm;
-  final String confirmText;
-  final String cancelText;
+  final String? confirmText;
+  final String? cancelText;
   final VoidCallback? onCancel;
 
   const CustomAlertDialog(
@@ -18,8 +18,8 @@ class CustomAlertDialog extends Dialog {
       this.title = "提示",
       this.onConfirm,
       this.content = "",
-      this.confirmText = "确定",
-      this.cancelText = "取消",
+      this.confirmText,
+      this.cancelText,
       this.onCancel});
 
   @override
@@ -38,7 +38,7 @@ class CustomAlertDialog extends Dialog {
                   Container(
                       alignment: Alignment.center,
                       constraints: BoxConstraints(minHeight: 82.h),
-                      padding: EdgeInsets.symmetric(horizontal: 22.w),
+                      padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 25.h),
                       child: Text(content, style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333))),
                   const Divider(height: 0),
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -53,7 +53,7 @@ class CustomAlertDialog extends Dialog {
                             child: Container(
                                 alignment: Alignment.center,
                                 height: 52.h,
-                                child: Text(cancelText,
+                                child: Text(cancelText ?? "Cancel".tr,
                                     style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 15.sp))))),
                     Container(height: 52.h, width: .5, color: Theme.of(context).dividerColor),
                     Expanded(
@@ -67,7 +67,7 @@ class CustomAlertDialog extends Dialog {
                             child: Container(
                                 alignment: Alignment.center,
                                 height: 52.h,
-                                child: Text(confirmText,
+                                child: Text(confirmText ?? "Confirm".tr,
                                     style: GoogleFonts.roboto(color: const Color(0xff2ECC72), fontSize: 15.sp)))))
                   ])
                 ]))));

@@ -185,9 +185,9 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
             0) {
       String? result = await SessionRepository.checkRedPackage(redPackageId);
       if (result != null) {
-        if (result == "Y") {
+        if (result == YorNType.Y.name) {
           Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        } else if (result == "N") {
+        } else if (result == YorNType.N.name) {
           if (context.mounted) {
             showRedPacket(context, () {
               Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
@@ -199,13 +199,13 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
                         defaultValue: RedPackageCoverType.cover_0)!
                     .itemPath);
           }
-        } else if (result == "F") {
+        } else if (result == YorNType.F.name) {
           showToast(text: "红包已抢完");
           Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        } else {
+        } else if (result == YorNType.EXPIRE.name) {
           showToast(text: "红包已过期");
           Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        }
+        } else {}
       }
     } else {
       showToast(text: "群主设置了禁止领取VURA");

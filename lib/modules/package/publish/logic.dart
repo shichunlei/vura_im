@@ -5,6 +5,7 @@ import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/red_package.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
@@ -102,6 +103,11 @@ class PackagePublishLogic extends BaseLogic {
     MessageEntity? message = await SessionRepository.sendRedPackage(params, type);
     hiddenLoading();
     if (message != null) {
+      try {
+        Get.find<RootLogic>().refreshUserInfo();
+      } catch (e) {
+        Log.e(e.toString());
+      }
       showToast(text: "已发送");
       Get.back(result: message);
     }

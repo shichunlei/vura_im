@@ -12,12 +12,12 @@ class ChatBackgroundPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("聊天背景"), actions: [
+        appBar: AppBar(title: Text("Chat Background".tr), centerTitle: true, actions: [
           TextButton(
               onPressed: () {
                 logic.selectBackground(0);
               },
-              child: const Text("默认"))
+              child: Text("Default".tr))
         ]),
         body: GridView.builder(
             padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),

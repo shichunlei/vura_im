@@ -6,11 +6,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'log_utils.dart';
-import 'toast_util.dart';
 
 class FileUtil {
   static Uint8List convert(ByteData data) {
@@ -169,15 +167,6 @@ class FileUtil {
     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     return byteData?.buffer.asUint8List();
-  }
-
-  static Future saveScreen(Uint8List imageBytes) async {
-    final result = await ImageGallerySaver.saveImage(imageBytes, quality: 100);
-    if (result != null) {
-      showToast(text: "保存成功");
-    } else {
-      showToast(text: "保存失败");
-    }
   }
 
   static Future<double> loadCache() async {

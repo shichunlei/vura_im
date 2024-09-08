@@ -9,6 +9,7 @@ import 'package:realm/realm.dart' hide Session;
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/account_entity.dart';
 import 'package:vura/entities/login_entity.dart';
+import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/entities/version_entity.dart';
 import 'package:vura/global/config.dart';
@@ -141,13 +142,22 @@ class RootLogic extends BaseLogic {
     if (isLogin && null == user.value) user.value = await UserRepository.getUserInfo();
   }
 
+  void refreshUserInfo() async {
+    user.value = await UserRepository.getUserInfo();
+  }
+
   void updateFontSize(TextSizeType value) {
     textSizeType.value = value;
   }
 
-  /// 获取汇率
+  /// 获取手续费率
   void getRate() async {
-    exchangeRate.value = await CommonRepository.getRate();
+    RateEntity? result = await CommonRepository.getRate();
+    if (result != null) {
+      exchangeRate.value = result.value ?? 7.15;
+    } else {
+      exchangeRate.value = 7.15;
+    }
   }
 
   VersionEntity? version;

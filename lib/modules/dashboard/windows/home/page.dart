@@ -16,7 +16,7 @@ class WindowsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("界面"), centerTitle: true),
+        appBar: AppBar(title: Text("Interface".tr), centerTitle: true),
         body: Column(children: [
           Container(
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: Colors.white),
@@ -32,7 +32,8 @@ class WindowsPage extends StatelessWidget {
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
                         child: Row(children: [
-                          Text("聊天背景", style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                          Text("Chat Background".tr,
+                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ]))),
@@ -48,7 +49,8 @@ class WindowsPage extends StatelessWidget {
                         height: 60.h,
                         padding: EdgeInsets.only(left: 22.w, right: 10.w),
                         child: Row(children: [
-                          Text("Text Size".tr, style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
+                          Text("Text Size".tr,
+                              style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)),
                           const Spacer(),
                           const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
                         ])))

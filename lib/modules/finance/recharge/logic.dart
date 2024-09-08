@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/withdraw_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/utils/toast_util.dart';
@@ -31,7 +33,8 @@ class RechargeLogic extends BaseListLogic<WithdrawEntity> {
 
   @override
   Future<List<WithdrawEntity>> loadData() async {
-    return WithdrawEntity.getWithdraw(Get.find<RootLogic>().exchangeRate.value);
+    await getRate();
+    return WithdrawEntity.getWithdraw(exchangeRate.value);
   }
 
   @override
@@ -39,10 +42,22 @@ class RechargeLogic extends BaseListLogic<WithdrawEntity> {
     if (data.isNotEmpty) controller.text = "${data[selectIndex.value].usdt}";
   }
 
+  var exchangeRate = 7.15.obs;
+
+  /// 获取汇率
+  Future getRate() async {
+    RateEntity? result = await CommonRepository.getRate();
+    if (result != null) {
+      exchangeRate.value = result.value ?? 7.15;
+    } else {
+      exchangeRate.value = 7.15;
+    }
+  }
+
   Future recharge() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
-        type: 2,
+        type: BookType.RECHARGE,
         money: double.parse(controller.text),
         account: Get.find<RootLogic>().user.value?.walletCard,
         remarks: "充值");

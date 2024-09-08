@@ -81,7 +81,10 @@ class InputPayPasswordDialog extends StatelessWidget {
                               Image.asset("assets/images/USDT.png", width: 44.r, height: 44.r),
                               SizedBox(width: 13.w),
                               Expanded(
-                                  child: Text(Get.find<RootLogic>().user.value?.walletCard ?? "未设置$tip",
+                                  child: Text(
+                                      StringUtil.isEmpty(Get.find<RootLogic>().user.value?.walletCard)
+                                          ? "未设置$tip"
+                                          : StringUtil.truncateString2(Get.find<RootLogic>().user.value?.walletCard),
                                       style: GoogleFonts.dmSans(
                                           color: ColorUtil.color_333333,
                                           fontSize: 18.sp,

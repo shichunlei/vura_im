@@ -278,7 +278,7 @@ class MinePage extends StatelessWidget {
                               width: 62.r,
                               child: Icon(IconFont.windows, size: 26.r))),
                       SizedBox(height: 13.h),
-                      Text("界面", style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
+                      Text("Interface".tr, style: GoogleFonts.dmSans(fontSize: 13.sp, color: const Color(0xff030319)))
                     ]),
                     const Spacer(),
                     Column(mainAxisSize: MainAxisSize.min, crossAxisAlignment: CrossAxisAlignment.center, children: [

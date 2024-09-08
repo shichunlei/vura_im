@@ -107,7 +107,7 @@ class ItemSession extends StatelessWidget {
                             decoration:
                                 BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color(0xffFF4255)),
                             child: Text("${session.unReadCount}",
-                                style: GoogleFonts.roboto(color: Colors.white, fontSize: 11.sp))))
+                                style: GoogleFonts.roboto(color: Colors.white, fontSize: 11.sp, height: 1))))
                   ])
                 ]),
               )

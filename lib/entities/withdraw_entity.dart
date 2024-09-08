@@ -5,10 +5,10 @@ part 'withdraw_entity.g.dart';
 @JsonSerializable()
 class WithdrawEntity {
   String? id;
-  num money; // 人民币
-  num usdt; //
+  double money; // 人民币
+  int usdt; //
 
-  WithdrawEntity({this.id, this.money = 0, this.usdt = 0});
+  WithdrawEntity({this.id, this.money = .0, this.usdt = 0});
 
   factory WithdrawEntity.fromJson(Map<String, dynamic> json) => _$WithdrawEntityFromJson(json);
 

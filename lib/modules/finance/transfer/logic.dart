@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vura/base/base_object_logic.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/user_repository.dart';
@@ -63,10 +64,15 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
   Future transfer() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
-        type: 3, money: double.parse(amountController.text), account: addressController.text, remarks: "充值");
+        type: BookType.TRANSFER, money: double.parse(amountController.text), account: addressController.text, remarks: "转账");
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "转账成功");
+      try {
+        Get.find<RootLogic>().refreshUserInfo();
+      } catch (e) {
+        Log.e(e.toString());
+      }
       Get.back();
     }
   }

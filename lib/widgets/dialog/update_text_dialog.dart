@@ -47,12 +47,13 @@ class _UpdateTextDialogState extends State<UpdateTextDialog> {
                 SizedBox(height: 10.w),
                 Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   TextButton(
-                      onPressed: Get.back, child: const Text("取消", style: TextStyle(color: ColorUtil.color_999999))),
+                      onPressed: Get.back,
+                      child: Text("Cancel".tr, style: const TextStyle(color: ColorUtil.color_999999))),
                   TextButton(
                       onPressed: () {
                         Get.back(result: controller.text);
                       },
-                      child: const Text("确定"))
+                      child: Text("Confirm".tr))
                 ])
               ]))
         ]));

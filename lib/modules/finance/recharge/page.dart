@@ -37,6 +37,7 @@ class RechargePage extends StatelessWidget {
               logic: logic,
               bgColor: Colors.transparent,
               showEmpty: false,
+              showLoading: false,
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 30.h),
@@ -60,8 +61,8 @@ class RechargePage extends StatelessWidget {
                               borderRadius:
                                   BorderRadius.only(topLeft: Radius.circular(16.r), topRight: Radius.circular(16.r)),
                               color: Colors.white),
-                          padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                           child: SingleChildScrollView(
+                            padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                               Text("输入充值数量",
                                   style: GoogleFonts.roboto(
@@ -131,7 +132,8 @@ class RechargePage extends StatelessWidget {
                                                               fontSize: 12.sp,
                                                               fontWeight: FontWeight.w600))
                                                     ]),
-                                                Text("≈￥${logic.list[index].money.floor()}", // TODO  人民币
+                                                Text(
+                                                    "≈￥${StringUtil.formatPrice(logic.list[index].money)}", // TODO  人民币
                                                     style: GoogleFonts.roboto(
                                                         color: logic.selectIndex.value == index
                                                             ? const Color(0xff83C240)
@@ -167,9 +169,8 @@ class RechargePage extends StatelessWidget {
                               Row(children: [
                                 Text("参考单价", style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333)),
                                 const Spacer(),
-                                Text("${Get.find<RootLogic>().exchangeRate.value}CNY",
+                                Text("${StringUtil.formatPrice(logic.exchangeRate.value)}CNY",
                                     style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333))
-                                // TODO 汇率
                               ]),
                               SizedBox(height: 22.h),
                               Row(children: [
@@ -179,7 +180,7 @@ class RechargePage extends StatelessWidget {
                                     init: logic,
                                     builder: (logic) {
                                       return Text(
-                                          "≈￥${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (int.parse(logic.controller.text) * Get.find<RootLogic>().exchangeRate.value))}",
+                                          "≈￥${StringUtil.formatPrice(StringUtil.isEmpty(logic.controller.text) ? 0 : (double.parse(logic.controller.text) * logic.exchangeRate.value))}",
                                           // TODO  人民币
                                           style: GoogleFonts.roboto(
                                               color: const Color(0xffFF4255),
