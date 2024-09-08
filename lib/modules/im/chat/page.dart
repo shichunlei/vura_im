@@ -101,7 +101,9 @@ class ChatPage extends StatelessWidget {
                       SafeArea(
                           top: false,
                           child: logic.type == SessionType.group &&
-                                  logic.session.value?.configObj?.allMute == YorNType.Y
+                                  logic.session.value?.configObj?.allMute == YorNType.Y &&
+                                  logic.session.value?.isAdmin == YorNType.N &&
+                                  logic.session.value?.isSupAdmin == YorNType.N // 全体禁言后，只有群主和群管理员可以发言
                               ? Container(
                                   margin: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
                                   height: 50.h,
@@ -133,7 +135,8 @@ class ChatPage extends StatelessWidget {
                                                   Log.d('结束录制 ====》 $isCancel');
                                                   Log.d('路径 ====》 $path');
                                                   Log.d('时长 ====》 $audioTimeLength');
-                                                  if (!isCancel) logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
+                                                  if (!isCancel)
+                                                    logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
                                                 }))
                                         : Container(
                                             margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),

@@ -78,6 +78,10 @@ class WebSocketManager {
       SpUtil.remove(Keys.REFRESH_TOKEN);
       close();
       Get.offAllNamed(RoutePath.LOGIN_PAGE, arguments: {"isIllegalLogin": true});
+    } else if (json[Keys.CMD] == WebSocketCode.GROUP_CONFIG_UPDATE.code) {
+      Log.e("----------------------------------------------------------");
+      Log.json(json);
+      Log.e("----------------------------------------------------------");
     } else {
       Log.json(json);
       if (json[Keys.CMD] == WebSocketCode.FRIEND_APPLY.code) {

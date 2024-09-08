@@ -48,31 +48,36 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
 
-    selectedBgIndex = SpUtil.getInt("_chat_bg_image_index_", defValue: 0);
-
-    setPageSize(200);
+    selectedBgIndex = SpUtil.getInt(Keys.CHAT_BG_IMAGE_INDEX, defValue: 0);
 
     controller.addListener(update);
 
     webSocketManager.listen("ChatLogic-$id-$type", (int cmd, Map<String, dynamic> data) {
       Log.d("ChatLogic == 》接收到消息: $cmd, 数据: $data");
-      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code &&
-          id == data["sendId"] &&
-          (data[Keys.TYPE] < MessageType.RECALL.code ||
-              data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
-              data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
-        if (data["sendId"] == Get.find<RootLogic>().user.value?.id) return;
-        list.insert(0, MessageEntity.fromJson(data));
+      if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
+        if (id == data["sendId"] &&
+            (data[Keys.TYPE] < MessageType.RECALL.code ||
+                data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+                data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
+          list.insert(0, MessageEntity.fromJson(data));
+          list.refresh();
+        }
       }
-      if (cmd == WebSocketCode.GROUP_MESSAGE.code &&
-          id == data[Keys.GROUP_ID] &&
-          (data[Keys.TYPE] < MessageType.RECALL.code ||
-              data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
-              data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
-        if (data["sendId"] == Get.find<RootLogic>().user.value?.id) return;
-        list.insert(0, MessageEntity.fromJson(data));
+      if (cmd == WebSocketCode.GROUP_MESSAGE.code && id == data[Keys.GROUP_ID]) {
+        if (data[Keys.TYPE] < MessageType.RECALL.code || data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
+          if (data["sendId"] == Get.find<RootLogic>().user.value?.id) return;
+          list.insert(0, MessageEntity.fromJson(data));
+          list.refresh();
+        }
+        if (data[Keys.TYPE] == MessageType.TIP_TEXT.code) {
+          list.insert(0, MessageEntity.fromJson(data));
+          list.refresh();
+        }
       }
-      list.refresh();
+
+      if (cmd == WebSocketCode.GROUP_CONFIG_UPDATE.code) {
+        /// 群配置修改了
+      }
     });
 
     _audioPlayer

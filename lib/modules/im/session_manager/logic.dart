@@ -34,6 +34,7 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     if (data != null) bean.value!.id = id;
   }
 
+  /// 全体禁言
   Future updateAllMuteConfig(bool value) async {
     bean.value!.allMute = value ? YorNType.Y : YorNType.N;
     showLoading();
@@ -46,6 +47,7 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     }
   }
 
+  ///
   Future updateAddFriendConfig(bool value) async {
     bean.value!.addFriend = value ? YorNType.Y : YorNType.N;
     showLoading();
@@ -58,6 +60,7 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     }
   }
 
+  /// 全体不让抢红包
   Future updateVuraConfig(bool value) async {
     bean.value!.vura = value ? YorNType.Y : YorNType.N;
     showLoading();

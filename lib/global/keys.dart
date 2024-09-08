@@ -50,4 +50,6 @@ class Keys {
   static const String TEXT_SIZE = "_TEXT_SIZE_";
 
   static const String LANGUAGE = "language";
+
+  static const String CHAT_BG_IMAGE_INDEX = "_chat_bg_image_index_";
 }

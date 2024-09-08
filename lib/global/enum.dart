@@ -83,7 +83,8 @@ enum WebSocketCode {
   PRIVATE_MESSAGE(3, "私聊消息"),
   GROUP_MESSAGE(4, "群聊消息"),
   SYSTEM_MESSAGE(5, "系统消息"),
-  FRIEND_APPLY(6, "好友申请");
+  FRIEND_APPLY(6, "好友申请"),
+  GROUP_CONFIG_UPDATE(7, "群聊配置修改");
 
   final int code;
   final String label;

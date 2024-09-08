@@ -49,105 +49,115 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 crossAxisSpacing: 13.r,
                                 mainAxisSpacing: 13.r),
                             itemBuilder: (_, index) {
-                              return Obx(() => index == logic.members.length &&
-                                      (logic.bean.value!.isAdmin == YorNType.Y ||
-                                          logic.bean.value!.isSupAdmin == YorNType.Y)
-                                  ? Column(mainAxisSize: MainAxisSize.min, children: [
-                                      AspectRatio(
-                                          aspectRatio: 1,
-                                          child: RadiusInkWellWidget(
-                                              color: Colors.transparent,
-                                              onPressed: () {
-                                                Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
-                                                  Keys.ID: logic.id,
-                                                  Keys.TITLE: "移除人员",
-                                                  "selectType": SelectType.checkbox,
-                                                  "includeMe": false
-                                                })?.then((value) {
-                                                  if (value != null) {
-                                                    show(builder: (_) {
-                                                      return CustomAlertDialog(
-                                                          title: "提示",
-                                                          content:
-                                                              "您确认要将${(value as List<MemberEntity>).map((item) => item.showNickName).toList().join(",")}从该群移除吗？",
-                                                          confirmText: "移除",
-                                                          onConfirm: () {
-                                                            logic.deleteMembers(value);
-                                                          });
-                                                    });
-                                                  }
+                              if (index ==
+                                  min(
+                                      logic.members.length,
+                                      logic.bean.value?.isAdmin == YorNType.Y ||
+                                              logic.bean.value?.isSupAdmin == YorNType.Y
+                                          ? 8
+                                          : 9)) {
+                                return Column(mainAxisSize: MainAxisSize.min, children: [
+                                  AspectRatio(
+                                      aspectRatio: 1,
+                                      child: RadiusInkWellWidget(
+                                          color: Colors.transparent,
+                                          onPressed: () {
+                                            Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {
+                                              "selectUserIds": logic.members.map((item) => item.userId).toList(),
+                                              "isCheckBox": true
+                                            })?.then((value) {
+                                              if (value != null && value is List<UserEntity>) {
+                                                logic.inviteMembers(value);
+                                              }
+                                            });
+                                          },
+                                          radius: 5.r,
+                                          border: Border.all(color: const Color(0xfff5f5f5), width: 1),
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              child: Icon(IconFont.add, size: 26.r, color: const Color(0xffdddddd))))),
+                                  SizedBox(height: 10.h),
+                                  Text("invite".tr,
+                                      style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                ]);
+                              }
+
+                              if ((logic.bean.value?.isAdmin == YorNType.Y ||
+                                      logic.bean.value?.isSupAdmin == YorNType.Y) &&
+                                  index == min(logic.members.length, 8) + 1) {
+                                return Column(mainAxisSize: MainAxisSize.min, children: [
+                                  AspectRatio(
+                                      aspectRatio: 1,
+                                      child: RadiusInkWellWidget(
+                                          color: Colors.transparent,
+                                          onPressed: () {
+                                            Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
+                                              Keys.ID: logic.id,
+                                              Keys.TITLE: "移除人员",
+                                              "selectType": SelectType.checkbox,
+                                              "includeMe": false
+                                            })?.then((value) {
+                                              if (value != null) {
+                                                show(builder: (_) {
+                                                  return CustomAlertDialog(
+                                                      title: "提示",
+                                                      content:
+                                                          "您确认要将${(value as List<MemberEntity>).map((item) => item.showNickName).toList().join(",")}从该群移除吗？",
+                                                      confirmText: "移除",
+                                                      onConfirm: () {
+                                                        logic.deleteMembers(value);
+                                                      });
                                                 });
-                                              },
-                                              radius: 5.r,
-                                              border: Border.all(color: const Color(0xfff5f5f5), width: 1),
-                                              child: Container(
-                                                  alignment: Alignment.center,
-                                                  child: Icon(IconFont.minus,
-                                                      size: 26.r, color: const Color(0xffdddddd))))),
-                                      SizedBox(height: 10.h),
-                                      Text("Remove".tr,
-                                          style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
-                                    ])
-                                  : index ==
-                                          logic.members.length +
-                                              (logic.bean.value!.isAdmin == YorNType.Y ||
-                                                      logic.bean.value!.isSupAdmin == YorNType.Y
-                                                  ? 1
-                                                  : 0)
-                                      ? Column(mainAxisSize: MainAxisSize.min, children: [
-                                          AspectRatio(
-                                              aspectRatio: 1,
-                                              child: RadiusInkWellWidget(
-                                                  color: Colors.transparent,
-                                                  onPressed: () {
-                                                    Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {
-                                                      "selectUserIds":
-                                                          logic.members.map((item) => item.userId).toList(),
-                                                      "isCheckBox": true
-                                                    })?.then((value) {
-                                                      if (value != null && value is List<UserEntity>) {
-                                                        logic.inviteMembers(value);
-                                                      }
-                                                    });
-                                                  },
-                                                  radius: 5.r,
-                                                  border: Border.all(color: const Color(0xfff5f5f5), width: 1),
-                                                  child: Container(
-                                                      alignment: Alignment.center,
-                                                      child: Icon(IconFont.add,
-                                                          size: 26.r, color: const Color(0xffdddddd))))),
-                                          SizedBox(height: 10.h),
-                                          Text("invite".tr,
-                                              style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
-                                        ])
-                                      : ItemSessionUser(
-                                          member: logic.members[index],
-                                          groupId: logic.id,
-                                          addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N,
-                                          isAdmin: logic.bean.value?.isAdmin == YorNType.Y));
+                                              }
+                                            });
+                                          },
+                                          radius: 5.r,
+                                          border: Border.all(color: const Color(0xfff5f5f5), width: 1),
+                                          child: Container(
+                                              alignment: Alignment.center,
+                                              child:
+                                                  Icon(IconFont.minus, size: 26.r, color: const Color(0xffdddddd))))),
+                                  SizedBox(height: 10.h),
+                                  Text("Remove".tr,
+                                      style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                                ]);
+                              }
+
+                              return ItemSessionUser(
+                                  member: logic.members[index],
+                                  groupId: logic.id,
+                                  addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N,
+                                  isAdmin: logic.bean.value?.isAdmin == YorNType.Y);
                             },
                             itemCount: min(
-                                10,
-                                logic.members.length +
-                                    (logic.bean.value!.isAdmin == YorNType.Y ||
-                                            logic.bean.value!.isSupAdmin == YorNType.Y
-                                        ? 2
-                                        : 1)),
+                                    logic.members.length,
+                                    (logic.bean.value?.isAdmin == YorNType.Y ||
+                                            logic.bean.value?.isSupAdmin == YorNType.Y
+                                        ? 8
+                                        : 9)) +
+                                (logic.bean.value!.isAdmin == YorNType.Y || logic.bean.value!.isSupAdmin == YorNType.Y
+                                    ? 2
+                                    : 1),
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true),
                         Visibility(
-                            visible: logic.members.length > 10,
+                            visible: logic.members.length >
+                                (logic.bean.value!.isAdmin == YorNType.Y || logic.bean.value!.isSupAdmin == YorNType.Y
+                                    ? 8
+                                    : 9),
                             child: GestureDetector(
                                 onTap: () {
                                   Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE,
                                       arguments: {Keys.ID: logic.id, Keys.TITLE: "群成员"});
                                 },
                                 behavior: HitTestBehavior.translucent,
-                                child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                                  Text("View More Members".tr,
-                                      style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999)),
-                                  const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
-                                ])))
+                                child: Padding(
+                                    padding: EdgeInsets.only(bottom: 11.h),
+                                    child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                                      Text("View More Members".tr,
+                                          style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999)),
+                                      const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                                    ]))))
                       ])),
                   logic.bean.value!.isAdmin == YorNType.Y
                       ? RadiusInkWellWidget(

@@ -63,7 +63,7 @@ class AddWayPage extends StatelessWidget {
                                 style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
                                 decoration: InputDecoration(
                                     border: InputBorder.none,
-                                    hintText: "请输入k豆钱包账户备注",
+                                    hintText: "请输入USDT钱包账户备注",
                                     contentPadding: EdgeInsets.symmetric(horizontal: 13.w),
                                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))))
                       ])),
@@ -96,7 +96,7 @@ class AddWayPage extends StatelessWidget {
                                 decoration: InputDecoration(
                                     contentPadding: EdgeInsets.symmetric(horizontal: 13.w),
                                     border: InputBorder.none,
-                                    hintText: "请输入k豆钱包收款地址",
+                                    hintText: "请输入USDT钱包收款地址",
                                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999))))
                       ])),
                   Center(
@@ -108,7 +108,7 @@ class AddWayPage extends StatelessWidget {
                               height: 53.h,
                               width: 180.w,
                               alignment: Alignment.center,
-                              child: Text("保存",
+                              child: Text("Save".tr,
                                   style: GoogleFonts.roboto(
                                       color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.sp)))))
                 ]))

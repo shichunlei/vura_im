@@ -150,7 +150,7 @@ class RootLogic extends BaseLogic {
     textSizeType.value = value;
   }
 
-  /// 获取手续费率
+  /// 获取汇率
   void getRate() async {
     RateEntity? result = await CommonRepository.getRate();
     if (result != null) {
@@ -169,7 +169,7 @@ class RootLogic extends BaseLogic {
     if (version != null && version!.versionCode > int.parse(AppConfig.version!.buildNumber)) {
       Get.dialog(const VersionUpgradeDialog(), barrierDismissible: false);
     } else {
-      if (!isAuto) showToast(text: "已是最新版本");
+      if (!isAuto) showToast(text: "No Updates".tr);
     }
   }
 
@@ -187,7 +187,7 @@ class RootLogic extends BaseLogic {
     isDownloading.value = true;
     progress.value = .0;
     Directory? storageDir = await getExternalStorageDirectory();
-    String saveName = '${storageDir?.path}/球掌门v${version!.version}.apk';
+    String saveName = '${storageDir?.path}/VURA v${version!.version}.apk';
     file = File(saveName);
     if (file.existsSync()) file.deleteSync();
     file.createSync();

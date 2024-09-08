@@ -52,6 +52,7 @@ class CommonRepository {
   }
 
   /// 验证码
+  ///
   static Future<Base64Entity?> getAuthCode() async {
     var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
@@ -110,7 +111,7 @@ class CommonRepository {
     return (result.data["records"] as List).map((item) => BillRecordEntity.fromJson(item)).toList();
   }
 
-  /// 申请转账 TODO
+  /// 申请转账
   ///
   /// [account] 账户
   /// [money] 转账金额
@@ -124,24 +125,6 @@ class CommonRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 账号信息（含汇率）TODO
-  ///
-  static Future<BaseBean> accountWithRate(
-      {required double money, required int type, String? remarks, String? account}) async {
-    var data = await HttpUtils.getInstance().request("withdraw/apply",
-        params: {"money": money, Keys.TYPE: type, "remarks": remarks, "account": account}, showErrorToast: true);
-    return BaseBean.fromJson(data);
-  }
-
-  /// 转账列表 TODO
-  ///
-  // static Future<BaseBean> accountWithRate(
-  //     {required double money, required int type, String? remarks, String? account}) async {
-  //   var data = await HttpUtils.getInstance().request("withdraw/apply",
-  //       params: {"money": money, "type": type, "remarks": remarks, "account": account}, showErrorToast: true);
-  //   return BaseBean.fromJson(data);
-  // }
-
   /// 设置锁屏密码 TODO
   ///
   static Future<BaseBean> setLockScreenPassword({String? password}) async {
@@ -150,9 +133,10 @@ class CommonRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 版本检查
+  /// 版本检查 TODO
+  ///
   static Future<VersionEntity?> checkVersion() async {
-    var data = await HttpUtils.getInstance().request('captchaImage', method: HttpUtils.GET, showErrorToast: true);
+    var data = await HttpUtils.getInstance().request('version', method: HttpUtils.GET, showErrorToast: true);
     BaseBean result = BaseBean.fromJsonToObject(data);
     if (result.code == 200) {
       return VersionEntity.fromJson(result.data);
