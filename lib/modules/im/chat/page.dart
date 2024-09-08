@@ -5,6 +5,7 @@ import 'package:extended_list/extended_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -135,8 +136,9 @@ class ChatPage extends StatelessWidget {
                                                   Log.d('结束录制 ====》 $isCancel');
                                                   Log.d('路径 ====》 $path');
                                                   Log.d('时长 ====》 $audioTimeLength');
-                                                  if (!isCancel)
+                                                  if (!isCancel) {
                                                     logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
+                                                  }
                                                 }))
                                         : Container(
                                             margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
@@ -175,26 +177,25 @@ class ChatPage extends StatelessWidget {
                                                   })
                                             ])),
                                     Divider(height: 0, color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
+                                    SizedBox(height: 11.h),
                                     Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 22.w),
+                                        padding: EdgeInsets.symmetric(horizontal: 11.w),
                                         child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                          CustomIconButton(icon: Obx(() {
-                                            return Icon(IconFont.voice,
-                                                color: logic.isVoice.value
-                                                    ? Theme.of(context).primaryColor
-                                                    : const Color(0xffbbbbbb));
-                                          }), onPressed: () {
-                                            logic.isVoice.toggle();
-                                          }),
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.camera, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              onTap: logic.isVoice.toggle,
+                                              child: SvgPicture.asset("assets/svg/voice.svg")),
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              onTap: () {
                                                 logic.isVoice.value = false;
                                                 logic.getImage(ImageSource.camera);
-                                              }),
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.name_card, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
+                                              },
+                                              child: SvgPicture.asset("assets/svg/camera.svg")),
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              child: SvgPicture.asset("assets/svg/id_card.svg"),
+                                              onTap: () {
                                                 logic.isVoice.value = false;
                                                 showCupertinoModalPopup(
                                                     context: Get.context!,
@@ -226,15 +227,17 @@ class ChatPage extends StatelessWidget {
                                                               child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
                                                     });
                                               }),
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.gallery, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              child: SvgPicture.asset("assets/svg/gallery.svg"),
+                                              onTap: () {
                                                 logic.isVoice.value = false;
                                                 logic.getImage(ImageSource.gallery);
                                               }),
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.red_package, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              child: SvgPicture.asset("assets/svg/red_package.svg"),
+                                              onTap: () {
                                                 logic.isVoice.value = false;
                                                 Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
                                                         arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})
@@ -242,9 +245,10 @@ class ChatPage extends StatelessWidget {
                                                   if (value != null) logic.sendRedPackage(value);
                                                 });
                                               }),
-                                          CustomIconButton(
-                                              icon: const Icon(IconFont.expression, color: Color(0xffbbbbbb)),
-                                              onPressed: () {
+                                          GestureDetector(
+                                              behavior: HitTestBehavior.translucent,
+                                              child: SvgPicture.asset("assets/svg/emoji.svg"),
+                                              onTap: () {
                                                 logic.isVoice.value = false;
                                                 Get.bottomSheet(const EmojiPickerDialog()).then((value) {
                                                   if (value != null) {
