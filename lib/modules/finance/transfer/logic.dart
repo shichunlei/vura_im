@@ -14,6 +14,8 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
   TextEditingController addressController = TextEditingController();
   TextEditingController amountController = TextEditingController();
 
+  var user = Rx<UserEntity?>(null);
+
   TransferLogic() {
     addressController.addListener(update);
     amountController.addListener(update);
@@ -64,7 +66,10 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
   Future transfer() async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
-        type: BookType.TRANSFER, money: double.parse(amountController.text), account: addressController.text, remarks: "转账");
+        type: BookType.TRANSFER,
+        money: double.parse(amountController.text),
+        account: addressController.text,
+        remarks: "转账");
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "转账成功");
@@ -75,5 +80,25 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
       }
       Get.back();
     }
+  }
+
+  Future transferToMember() async {
+    showLoading();
+    BaseBean result = await CommonRepository.transferToMember(
+        userId: user.value?.id, money: double.parse(amountController.text), remarks: "转账");
+    hiddenLoading();
+    if (result.code == 200) {
+      showToast(text: "转账成功");
+      try {
+        Get.find<RootLogic>().refreshUserInfo();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      Get.back();
+    }
+  }
+
+  void selectUser(UserEntity user) {
+    this.user.value = user;
   }
 }

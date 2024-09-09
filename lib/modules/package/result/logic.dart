@@ -21,4 +21,9 @@ class PackageResultLogic extends BaseObjectLogic<RedPackageResultEntity?> {
   Future<RedPackageResultEntity?> loadData() async {
     return await SessionRepository.getRedPackageResult(id);
   }
+
+  @override
+  void onCompleted(RedPackageResultEntity? data) {
+    if (data != null) {}
+  }
 }

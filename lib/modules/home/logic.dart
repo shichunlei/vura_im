@@ -6,12 +6,12 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/message.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/message_db_util.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
@@ -61,17 +61,7 @@ class HomeLogic extends BaseLogic {
       }
     }, connectCallBack: () async {
       Log.d("WebSocket 连接成功");
-      String? groupLastMessageId, privateLastMessageId;
-      try {
-        groupLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryGroupLastMessageTime();
-        privateLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryPrivateLastMessageTime();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-
-      /// 拉取离线消息
-      SessionRepository.getOfflineMessages("all",
-          groupMinId: groupLastMessageId ?? "0", privateMinId: privateLastMessageId ?? "0");
+      loadOfflineMessage();
     });
 
     lockScreenTime.value = SpUtil.getInt(Keys.LOCK_SCREEN_TIME, defValue: 60 * 1000); // 设定的锁屏间隔时间，默认为1分钟
@@ -90,6 +80,20 @@ class HomeLogic extends BaseLogic {
 
     /// todo
     // Future.delayed(const Duration(seconds: 2), Get.find<RootLogic>().checkVersion);
+  }
+
+  Future loadOfflineMessage() async {
+    String? groupLastMessageId, privateLastMessageId;
+    try {
+      groupLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryGroupLastMessageTime();
+      privateLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryPrivateLastMessageTime();
+    } catch (e) {
+      Log.e(e.toString());
+    }
+
+    /// 拉取离线消息
+    SessionRepository.getOfflineMessages("all",
+        groupMinId: groupLastMessageId ?? "0", privateMinId: privateLastMessageId ?? "0");
   }
 
   void onItemTapped(int index) {

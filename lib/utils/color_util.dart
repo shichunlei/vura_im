@@ -10,6 +10,8 @@ class ColorUtil {
   static const Color lineColor = Color(0xfff5f5f5);
   static const Color grayColor = Color(0xffC1C1C1);
 
+  static const Color secondBgColor = Color(0xffF3FFF8);
+
   /// 字符串转颜色
   ///
   /// [string] 字符串

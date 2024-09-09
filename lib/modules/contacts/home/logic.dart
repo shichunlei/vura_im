@@ -5,8 +5,8 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/mixin/friend_mixin.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/friend.dart';
 import 'package:vura/repository/contacts_repository.dart';
+import 'package:vura/utils/friend_db_util.dart';
 
 class ContactsLogic extends BaseListLogic<UserEntity> with FriendMixin {
   @override

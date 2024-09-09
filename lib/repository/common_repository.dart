@@ -125,6 +125,18 @@ class CommonRepository {
     return BaseBean.fromJson(data);
   }
 
+  /// 转账
+  ///
+  /// [userId] 用户ID
+  /// [money] 转账金额
+  /// [remarks] 转账备注
+  ///
+  static Future<BaseBean> transferToMember({required double money, String? remarks, String? userId}) async {
+    var data = await HttpUtils.getInstance().request("withdraw/redPacketApply",
+        params: {"money": money, "remarks": remarks, "userId": userId}, showErrorToast: true);
+    return BaseBean.fromJson(data);
+  }
+
   /// 设置锁屏密码 TODO
   ///
   static Future<BaseBean> setLockScreenPassword({String? password}) async {

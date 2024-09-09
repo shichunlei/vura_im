@@ -5,8 +5,8 @@ import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/mixin/receive_message_mixin.dart';
-import 'package:vura/realm/channel.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/utils/session_db_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 

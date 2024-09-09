@@ -67,7 +67,7 @@ class PackageResultPage extends StatelessWidget {
                       child: Text(
                           logic.bean.value!.totalTime > 0
                               ? "${logic.bean.value!.totalPacket}个幸运值,${logic.bean.value!.totalTime}秒被抢光"
-                              : "${logic.bean.value!.totalPacket}个幸运值",
+                              : "${logic.bean.value!.totalPacket}个幸运值，余${logic.bean.value!.totalAmount- }/${logic.bean.value!.totalAmount}",
                           style: GoogleFonts.roboto(
                               fontSize: 15.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333))),
                   Expanded(

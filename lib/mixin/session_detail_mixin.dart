@@ -1,29 +1,17 @@
 import 'package:get/get.dart';
-import 'package:vura/entities/member_entity.dart';
+import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/channel.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/repository/user_repository.dart';
-import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/session_db_util.dart';
 
-mixin SessionDetailMixin on GetxController {
+mixin SessionDetailMixin on BaseLogic {
   Rx<SessionEntity?> session = Rx<SessionEntity?>(null);
 
   void getSessionDetail(String? id, SessionType type, {UserEntity? user}) async {
-    SessionEntity? session = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, type);
-    if (session == null && type == SessionType.private) {
-      this.session.value = SessionEntity(id: id, type: type, name: "", headImage: "", headImageThumb: "");
-    } else {
-      this.session.value = session;
-    }
-
-    Log.d("@@@@@@@@@@@@@@@@@${session?.name}-----------${session?.headImage}");
-    if (type == SessionType.group) {
-      getMembers(id);
-    }
     if (type == SessionType.private) {
       UserEntity? user = await UserRepository.getUserInfoById(id);
       if (user != null) {
@@ -34,14 +22,15 @@ mixin SessionDetailMixin on GetxController {
             headImage: user.headImage,
             headImageThumb: user.headImageThumb));
 
-        this.session.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, type);
+        session.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, type);
       }
     }
-  }
 
-  RxList<MemberEntity> members = RxList<MemberEntity>([]);
-
-  Future getMembers(String? id) async {
-    members.value = await SessionRepository.getSessionMembers(id);
+    if (type == SessionType.group) {
+      session.value = await SessionRepository.getSessionInfo(id);
+      if (session.value != null) {
+        SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session.value!);
+      }
+    }
   }
 }

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/utils/file_util.dart';
@@ -34,14 +33,5 @@ class SettingLogic extends BaseLogic {
         return CustomTipDialog(title: "版本更新", content: "已是最新版本", btnText: "我知道了", onConfirm: () {});
       });
     });
-  }
-
-  /// todo
-  void launchURL() async {
-    if (await canLaunchUrl(Uri(scheme: 'http', host: 'home.lgerapp.com', path: ''))) {
-      await launchUrl(Uri(scheme: 'http', host: 'home.lgerapp.com', path: ''));
-    } else {
-      throw 'Could not launch';
-    }
   }
 }

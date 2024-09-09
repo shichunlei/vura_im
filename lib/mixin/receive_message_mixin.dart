@@ -8,10 +8,10 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/channel.dart';
-import 'package:vura/realm/friend.dart';
-import 'package:vura/realm/message.dart';
+import 'package:vura/utils/friend_db_util.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/message_db_util.dart';
+import 'package:vura/utils/session_db_util.dart';
 import 'package:vura/utils/string_util.dart';
 
 mixin ReceiveMessageMixin on BaseLogic {

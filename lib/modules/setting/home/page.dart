@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:vura/application.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/widgets/dialog/alert_dialog.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -76,7 +78,10 @@ class SettingPage extends StatelessWidget {
               child: Column(children: [
                 RadiusInkWellWidget(
                     color: Colors.transparent,
-                    onPressed: logic.launchURL,
+                    onPressed: () async {
+                      final result = await Share.share('http://home.lgerapp.com');
+                      if (result.status == ShareResultStatus.success) Log.d('Thank you for sharing my website!');
+                    },
                     borderRadius: BorderRadius.only(topLeft: Radius.circular(11.r), topRight: Radius.circular(11.r)),
                     child: Container(
                         height: 60.h,

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/emoji.dart';
 import 'package:vura/entities/file_entity.dart';
@@ -9,17 +10,21 @@ import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
-import 'package:vura/modules/im/widgets/item_receive_emoji.dart';
-import 'package:vura/modules/im/widgets/item_receive_voice.dart';
+import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/im/chat/logic.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
+import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'item_receive_card.dart';
+import 'item_receive_emoji.dart';
 import 'item_receive_image.dart';
 import 'item_receive_red_package.dart';
 import 'item_receive_text.dart';
+import 'item_receive_voice.dart';
 
 class ItemReceiveMessage extends StatelessWidget {
   final MessageEntity message;
@@ -27,6 +32,8 @@ class ItemReceiveMessage extends StatelessWidget {
   final String? tag;
 
   const ItemReceiveMessage({super.key, required this.message, this.showTime = false, this.tag});
+
+  ChatLogic get logic => Get.find<ChatLogic>(tag: tag);
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +47,18 @@ class ItemReceiveMessage extends StatelessWidget {
                   style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
       SizedBox(height: 5.h),
       Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-        AvatarImageView("${message.sendHeadImage}", radius: 22.r, name: "${message.sendNickName}"),
+        AvatarImageView("${message.sendHeadImage}",
+            radius: 22.r,
+            name: "${message.sendNickName}",
+            onTap: logic.type == SessionType.group && logic.members.any((item) => item.userId == message.sendId)
+                ? () {
+                    DeviceUtils.hideKeyboard(context);
+                    Get.dialog(customDialog(
+                        logic.session.value?.isAdmin == YorNType.Y || logic.session.value?.isSupAdmin == YorNType.Y,
+                        message.sendId,
+                        message.sendNickName));
+                  }
+                : null),
         SizedBox(width: 10.w),
         GestureDetector(
             onLongPress: () {
@@ -71,5 +89,115 @@ class ItemReceiveMessage extends StatelessWidget {
           message: message, tag: tag, redPackage: RedPackageEntity.fromJson(json.decode(message.content!)));
     }
     return Text("暂未适配的消息类型${message.content}");
+  }
+
+  Widget customDialog(bool isManager, String? userId, String? userName) {
+    return Material(
+        type: MaterialType.transparency,
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(8.r), color: Get.theme.cardColor),
+              width: 250.w,
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.only(topRight: Radius.circular(8.r), topLeft: Radius.circular(8.r))),
+                    height: 40.h,
+                    alignment: Alignment.centerLeft,
+                    padding: EdgeInsets.symmetric(horizontal: 22.w),
+                    child: Text("$userName")),
+                RadiusInkWellWidget(
+                    radius: 0,
+                    color: Colors.transparent,
+                    onPressed: () {
+                      Get.back();
+                      logic.sendMessage("@${message.sendNickName}", MessageType.TEXT, ids: [message.sendId]);
+                    },
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 22.w),
+                        height: 50.h,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Row(children: [
+                          Text("@TA",
+                              style: TextStyle(
+                                  fontSize: 16.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333)),
+                          const Spacer(),
+                          const Icon(IconFont.at, color: ColorUtil.color_333333)
+                        ]))),
+                const Divider(height: .5),
+                RadiusInkWellWidget(
+                    radius: 0,
+                    borderRadius: isManager
+                        ? null
+                        : BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                    color: Colors.transparent,
+                    child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 22.w),
+                        height: 50.h,
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        child: Row(children: [
+                          Text("向TA转账", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                          const Spacer(),
+                          const Icon(IconFont.transfer_to_member, color: ColorUtil.color_333333)
+                        ])),
+                    onPressed: () {
+                      Get.offNamed(RoutePath.TRANSFER_TO_MEMBER_PAGE, arguments: {
+                        "user": UserEntity(
+                            nickName: message.sendNickName, id: message.sendId, headImageThumb: message.sendHeadImage)
+                      });
+                    }),
+                ...isManager
+                    ? [
+                        const Divider(height: .5),
+                        RadiusInkWellWidget(
+                            radius: 0,
+                            color: Colors.transparent,
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 22.w),
+                                height: 50.h,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Row(children: [
+                                  Text(
+                                      logic.members.firstWhere((item) => item.userId == userId).isMute == YorNType.Y
+                                          ? "解除禁言TA"
+                                          : "禁言TA",
+                                      style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                                  const Spacer(),
+                                  const Icon(IconFont.mute, color: ColorUtil.color_333333)
+                                ])),
+                            onPressed: () {
+                              Get.back();
+                              if (logic.members.firstWhere((item) => item.userId == userId).isMute == YorNType.Y) {
+                                logic.resetMute(logic.id, userId);
+                              } else {
+                                logic.setMute(logic.id, userId);
+                              }
+                            }),
+                        const Divider(height: .5),
+                        RadiusInkWellWidget(
+                            borderRadius:
+                                BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                            color: Colors.transparent,
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 22.w),
+                                height: 50.h,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Row(children: [
+                                  Text("移除TA", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                                  const Spacer(),
+                                  const Icon(IconFont.remove_member, color: ColorUtil.color_333333)
+                                ])),
+                            onPressed: () {
+                              Get.back();
+                              logic.removeMemberFromGroup(logic.id, userId);
+                            })
+                      ]
+                    : []
+              ]))
+        ]));
   }
 }

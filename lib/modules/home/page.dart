@@ -43,6 +43,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
     } else if (state == AppLifecycleState.resumed) {
       // 应用回到前台
       Log.d("App回到前台${DateTime.now().toIso8601String()}");
+
+      logic.loadOfflineMessage();
+
       if (!logic.loginProtect.value) return;
       if (logic.startTime.value != null && DateTime.now().millisecondsSinceEpoch - logic.startTime.value! > 0) {
         Log.d(
@@ -74,7 +77,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         canPop: false, // 是否允许返回
         child: Scaffold(
             resizeToAvoidBottomInset: false,
-            backgroundColor: Colors.white,
+            backgroundColor: ColorUtil.secondBgColor,
             body: FrameStack(controller: logic.indexController, initIndex: 0, children: const [
               KeepAliveView(child: SessionPage()),
               KeepAliveView(child: MinePage()),

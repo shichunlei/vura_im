@@ -63,7 +63,8 @@ class _AppBarBottomSearchViewState extends State<AppBarBottomSearchView> {
     return Container(
         margin: EdgeInsets.only(left: 22.w, bottom: 5.h, right: 22.w),
         height: 45.h,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xfff5f5f5)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(9.r), color: widget.searchBgColor ?? const Color(0xfff5f5f5)),
         alignment: Alignment.center,
         child: Row(children: [
           CustomIconButton(radius: 22.r, icon: Icon(IconFont.search, color: ColorUtil.color_999999, size: 18.sp)),

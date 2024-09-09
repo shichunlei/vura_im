@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
@@ -30,7 +31,7 @@ class TransferPage extends StatelessWidget {
                   end: Alignment.bottomCenter))),
       Scaffold(
           backgroundColor: Colors.transparent,
-          appBar: AppBar(title: const Text("转账"), backgroundColor: Colors.transparent, centerTitle: true),
+          appBar: AppBar(title: Text("Transfer".tr), backgroundColor: Colors.transparent, centerTitle: true),
           body: BaseWidget(
               logic: logic,
               bgColor: Colors.transparent,
@@ -105,31 +106,78 @@ class TransferPage extends StatelessWidget {
                               ]),
                             ),
                             const Divider(height: 0),
+                            // Expanded(
+                            //     child: Column(
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         crossAxisAlignment: CrossAxisAlignment.start,
+                            //         children: [
+                            //       Text("地址",
+                            //           style: GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
+                            //       SizedBox(height: 10.h),
+                            //       Row(children: [
+                            //         Expanded(
+                            //             child: TextField(
+                            //                 controller: logic.addressController,
+                            //                 style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
+                            //                 decoration: InputDecoration(
+                            //                     border: InputBorder.none,
+                            //                     hintText: "请输入接收者地址",
+                            //                     hintStyle: GoogleFonts.roboto(
+                            //                         fontSize: 15.sp, color: ColorUtil.color_999999)))),
+                            //         Text("粘贴",
+                            //             style: GoogleFonts.poppins(
+                            //                 color: const Color(0xff2ECC72),
+                            //                 fontSize: 13.sp,
+                            //                 decoration: TextDecoration.underline,
+                            //                 decorationColor: const Color(0xff2ECC72)))
+                            //       ])
+                            //     ])),
                             Expanded(
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                  Text("地址",
+                                  Text("用户",
                                       style: GoogleFonts.poppins(color: ColorUtil.color_333333, fontSize: 13.sp)),
                                   SizedBox(height: 10.h),
-                                  Row(children: [
-                                    Expanded(
-                                        child: TextField(
-                                            controller: logic.addressController,
-                                            style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333),
-                                            decoration: InputDecoration(
-                                                border: InputBorder.none,
-                                                hintText: "请输入接收者地址",
-                                                hintStyle: GoogleFonts.roboto(
-                                                    fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                                    Text("粘贴",
-                                        style: GoogleFonts.poppins(
-                                            color: const Color(0xff2ECC72),
-                                            fontSize: 13.sp,
-                                            decoration: TextDecoration.underline,
-                                            decorationColor: const Color(0xff2ECC72)))
-                                  ])
+                                  GestureDetector(
+                                      onTap: () {
+                                        Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {"isCheckBox": false})
+                                            ?.then((value) {
+                                          if (value != null) logic.selectUser(value);
+                                        });
+                                      },
+                                      behavior: HitTestBehavior.translucent,
+                                      child: SizedBox(
+                                          height: 50.h,
+                                          width: double.infinity,
+                                          child: Obx(() {
+                                            return Row(children: [
+                                              Text("发给谁",
+                                                  style: GoogleFonts.roboto(
+                                                      color: ColorUtil.color_333333, fontSize: 15.sp)),
+                                              const Spacer(),
+                                              ...logic.user.value == null
+                                                  ? [
+                                                      Text("请选择联系人",
+                                                          style: GoogleFonts.roboto(
+                                                              color: ColorUtil.color_999999, fontSize: 15.sp))
+                                                    ]
+                                                  : [
+                                                      AvatarRoundImage("${logic.user.value?.headImage}",
+                                                          height: 36.r,
+                                                          width: 36.r,
+                                                          radius: 4.r,
+                                                          name: logic.user.value?.nickName),
+                                                      SizedBox(width: 11.w),
+                                                      Text("${logic.user.value?.nickName}",
+                                                          style: GoogleFonts.roboto(
+                                                              color: ColorUtil.color_333333, fontSize: 15.sp))
+                                                    ],
+                                              Icon(Icons.keyboard_arrow_right,
+                                                  size: 18.sp, color: ColorUtil.color_999999)
+                                            ]);
+                                          })))
                                 ]))
                           ])),
                       Center(
@@ -148,10 +196,10 @@ class TransferPage extends StatelessWidget {
                                   return;
                                 }
 
-                                if (StringUtil.isEmpty(logic.addressController.text)) {
-                                  showToast(text: "请输入收款者账号地址");
-                                  return;
-                                }
+                                // if (StringUtil.isEmpty(logic.addressController.text)) {
+                                //   showToast(text: "请输入收款者账号地址");
+                                //   return;
+                                // }
 
                                 Get.bottomSheet(
                                         InputPayPasswordDialog(
@@ -160,7 +208,7 @@ class TransferPage extends StatelessWidget {
                                             isUsdt: true),
                                         isScrollControlled: true)
                                     .then((value) {
-                                  if (value != null) logic.transfer();
+                                  if (value != null) logic.transferToMember();
                                 });
                               },
                               margin: EdgeInsets.only(top: 8.h, bottom: 22.h),

@@ -28,7 +28,7 @@ class ItemSession extends StatelessWidget {
             ? RotatedCornerDecoration.withColor(
                 color: const Color(0xff5F6FFF).withOpacity(.3), badgeSize: const Size(16, 16))
             : null,
-        color: Colors.white,
+        color: Colors.transparent,
         onPressed: () {
           Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: session.id, Keys.TYPE: session.type});
         },
@@ -94,7 +94,7 @@ class ItemSession extends StatelessWidget {
                                                     ? "${getUserName(session.lastMessage)}[红包]"
                                                     : session.lastMessage?.type == MessageType.ID_CARD.code
                                                         ? "${getUserName(session.lastMessage)}[个人名片]"
-                                                        : "${getUserName(session.lastMessage)}${session.lastMessage?.content}",
+                                                        : "${getUserName(session.lastMessage)}${session.lastMessage?.content ?? ""}",
                             style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),

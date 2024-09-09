@@ -96,8 +96,17 @@ class AvatarRoundImage extends StatelessWidget {
 
   final String? name;
 
+  final Decoration? foregroundDecoration;
+
   const AvatarRoundImage(this.path,
-      {super.key, required this.radius, this.onTap, this.border, this.height, this.width, this.name});
+      {super.key,
+      required this.radius,
+      this.onTap,
+      this.border,
+      this.height,
+      this.width,
+      this.name,
+      this.foregroundDecoration});
 
   @override
   Widget build(BuildContext context) {
@@ -105,6 +114,7 @@ class AvatarRoundImage extends StatelessWidget {
         behavior: HitTestBehavior.opaque,
         onTap: onTap?.call,
         child: Container(
+            foregroundDecoration: foregroundDecoration,
             decoration: BoxDecoration(border: border, borderRadius: BorderRadius.circular(radius)),
             height: height,
             width: width,
@@ -119,18 +129,15 @@ class AvatarRoundImage extends StatelessWidget {
                     },
                     width: width,
                     height: height,
-                    fadeInDuration: const Duration(milliseconds: 100),
-                    fadeOutDuration: const Duration(milliseconds: 100),
-                    placeholderFadeInDuration: const Duration(milliseconds: 100),
                     imageUrl: path,
                     placeholder: (context, url) => Image.asset("assets/images/default_face.webp", fit: BoxFit.cover),
                     errorWidget: (context, url, error) => StringUtil.isNotEmpty(name)
                         ? Container(
-                            width: 66.r,
-                            height: 66.r,
+                            height: height,
+                            width: width,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(7.r),
-                                border: Border.all(color: Colors.white, width: 1),
+                                borderRadius: BorderRadius.circular(radius),
+                                border: border,
                                 color: ColorUtil.strToColor(name!)),
                             alignment: Alignment.center,
                             child: FittedBox(
@@ -138,7 +145,7 @@ class AvatarRoundImage extends StatelessWidget {
                                 child: Padding(
                                     padding: const EdgeInsets.all(2),
                                     child: Text(name![0], style: TextStyle(fontSize: 40.sp, color: Colors.white)))))
-                        : Image.asset("assets/images/default_face.webp", width: 66.r, height: 66.r),
+                        : Image.asset("assets/images/default_face.webp", height: height, width: width),
                     fit: BoxFit.cover,
                     cacheManager: cacheManager))));
   }

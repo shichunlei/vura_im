@@ -78,6 +78,6 @@ Future showImagePickerDialog(BuildContext context) async {
                   })
             ],
             cancelButton: CupertinoActionSheetAction(
-                onPressed: Get.back, child: const Text("取消", style: TextStyle(color: ColorUtil.color_666666))));
+                onPressed: Get.back, child: Text("Cancel".tr, style: const TextStyle(color: ColorUtil.color_666666))));
       });
 }

@@ -99,8 +99,8 @@ Future<String?> _cropImage(String imagePath) async {
             aspectRatioPresets: [CropAspectRatioPreset.square]),
         IOSUiSettings(
             title: "裁剪",
-            doneButtonTitle: "确定",
-            cancelButtonTitle: "取消",
+            doneButtonTitle: "Done".tr,
+            cancelButtonTitle: "Cancel".tr,
             cropStyle: CropStyle.circle,
             aspectRatioPresets: [CropAspectRatioPreset.square])
       ]);

@@ -225,7 +225,7 @@ class RechargePage extends StatelessWidget {
                                           height: 53.h,
                                           width: 180.w,
                                           alignment: Alignment.center,
-                                          child: Text("购买USDT",
+                                          child: Text("充值USDT",
                                               style: GoogleFonts.roboto(
                                                   color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18.sp)))))
                             ]),

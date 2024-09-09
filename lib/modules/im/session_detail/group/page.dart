@@ -126,8 +126,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                               return ItemSessionUser(
                                   member: logic.members[index],
                                   groupId: logic.id,
-                                  addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N,
-                                  isAdmin: logic.bean.value?.isAdmin == YorNType.Y);
+                                  addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N);
                             },
                             itemCount: min(
                                     logic.members.length,
@@ -156,7 +155,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                     child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
                                       Text("View More Members".tr,
                                           style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999)),
-                                      const Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999)
+                                      Icon(Icons.keyboard_arrow_right, color: ColorUtil.color_999999, size: 15.sp)
                                     ]))))
                       ])),
                   logic.bean.value!.isAdmin == YorNType.Y

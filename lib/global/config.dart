@@ -1,5 +1,5 @@
-import 'package:vura/utils/log_utils.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:vura/utils/log_utils.dart';
 
 class AppConfig {
   /// base_url
@@ -21,4 +21,6 @@ class AppConfig {
     Log.d("@@@@@@@@@@@@@@@@@@@===================>$id");
     userId = id;
   }
+
+  static const int DEFAULT_TOP_TIME = 2524579200000;
 }

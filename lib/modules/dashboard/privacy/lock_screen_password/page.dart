@@ -162,7 +162,7 @@ class LockScreenTimeDialog extends StatelessWidget {
               child: Container(
                   height: 60.h,
                   alignment: Alignment.center,
-                  child: Text("取消", style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 18.sp)))),
+                  child: Text("Cancel".tr, style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 18.sp)))),
           SizedBox(height: DeviceUtils.bottomSafeHeight)
         ]));
   }

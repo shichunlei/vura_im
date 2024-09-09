@@ -26,6 +26,7 @@ class ContactsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorUtil.secondBgColor,
         appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -47,6 +48,7 @@ class ContactsPage extends StatelessWidget {
             showLoading: false,
             showEmpty: false,
             showError: false,
+            bgColor: Colors.transparent,
             builder: (logic) {
               return Column(children: [
                 Container(

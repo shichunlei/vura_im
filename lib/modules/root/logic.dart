@@ -21,6 +21,7 @@ import 'package:vura/realm/friend.dart';
 import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/user_repository.dart';
+import 'package:vura/utils/account_db_util.dart';
 import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
@@ -37,7 +38,7 @@ class RootLogic extends BaseLogic {
 
   RootLogic() {
     var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema],
-        schemaVersion: 2, shouldDeleteIfMigrationNeeded: true);
+        schemaVersion: 3, shouldDeleteIfMigrationNeeded: false);
     realm = Realm(config);
 
     textSizeType.value = EnumToString.fromString(

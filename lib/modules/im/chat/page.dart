@@ -37,31 +37,38 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        color: const Color(0xffE4E8FA),
+        color: ColorUtil.secondBgColor,
         child: Stack(children: [
           logic.selectedBgIndex == 0
               ? const SizedBox()
               : Image.asset("assets/images/chat_bg_${logic.selectedBgIndex}.png",
                   width: double.infinity, height: double.infinity, fit: BoxFit.fill),
           Scaffold(
-              backgroundColor: logic.selectedBgIndex == 0 ? const Color(0xffE4E8FA) : Colors.transparent,
+              backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
               appBar: AppBar(
                   title: Obx(() {
                     return Text(logic.session.value?.name ?? "聊天");
                   }),
-                  backgroundColor: logic.selectedBgIndex == 0 ? const Color(0xffE4E8FA) : Colors.transparent,
+                  backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
                   centerTitle: true,
                   actions: [
-                    CustomIconButton(
-                        icon: const Icon(Icons.more_vert),
-                        onPressed: () {
-                          if (logic.type == SessionType.private) {
-                            Get.toNamed(RoutePath.PRIVATE_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
-                          }
-                          if (logic.type == SessionType.group) {
-                            Get.toNamed(RoutePath.GROUP_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
-                          }
-                        })
+                    Obx(() {
+                      return Visibility(
+                          visible:
+                              !(logic.members.every((item) => item.userId != Get.find<RootLogic>().user.value?.id) &&
+                                      logic.type == SessionType.group) ||
+                                  logic.type == SessionType.private,
+                          child: CustomIconButton(
+                              icon: const Icon(Icons.more_vert),
+                              onPressed: () {
+                                if (logic.type == SessionType.private) {
+                                  Get.toNamed(RoutePath.PRIVATE_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
+                                }
+                                if (logic.type == SessionType.group) {
+                                  Get.toNamed(RoutePath.GROUP_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
+                                }
+                              }));
+                    })
                   ]),
               body: BaseWidget(
                   logic: logic,
@@ -99,166 +106,206 @@ class ChatPage extends StatelessWidget {
                               separatorBuilder: (_, index) => SizedBox(height: 10.h),
                               itemCount: logic.list.length,
                               extendedListDelegate: const ExtendedListDelegate(closeToTrailing: true))),
-                      SafeArea(
-                          top: false,
-                          child: logic.type == SessionType.group &&
-                                  logic.session.value?.configObj?.allMute == YorNType.Y &&
-                                  logic.session.value?.isAdmin == YorNType.N &&
-                                  logic.session.value?.isSupAdmin == YorNType.N // 全体禁言后，只有群主和群管理员可以发言
-                              ? Container(
-                                  margin: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
-                                  height: 50.h,
-                                  decoration: BoxDecoration(
-                                      color: const Color(0xfff5f5f5), borderRadius: BorderRadius.circular(20.r)),
-                                  alignment: Alignment.center,
-                                  child: Text("禁言中...",
-                                      style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)))
-                              : Container(
-                                  decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
-                                  child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                    logic.isVoice.value
-                                        ? Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                            height: 50.h,
-                                            child: VoiceRecordWidget(
-                                                height: 42.w,
-                                                decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.circular(21.w),
-                                                    color: Theme.of(context).cardColor),
-                                                margin: EdgeInsets.symmetric(horizontal: 7.w),
-                                                startRecord: () {
-                                                  Log.d('开始录制');
-                                                },
-                                                stopRecord: (String? path, double? audioTimeLength, bool isCancel) {
-                                                  Log.d('结束录制 ====》 $isCancel');
-                                                  Log.d('路径 ====》 $path');
-                                                  Log.d('时长 ====》 $audioTimeLength');
-                                                  if (!isCancel) {
-                                                    logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
-                                                  }
-                                                }))
-                                        : Container(
-                                            margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                            height: 50.h,
-                                            child: Row(children: [
-                                              Expanded(
-                                                  child: Container(
-                                                      height: 50.h,
-                                                      alignment: Alignment.centerLeft,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius: BorderRadius.circular(11.r),
-                                                          color: const Color(0xfff5f5f5)),
-                                                      child: TextField(
-                                                          controller: logic.controller,
-                                                          maxLines: 1,
-                                                          textInputAction: TextInputAction.send,
-                                                          style: GoogleFonts.roboto(
-                                                              fontSize: 15.sp, color: ColorUtil.color_333333),
-                                                          onSubmitted: (v) {
-                                                            DeviceUtils.hideKeyboard(context);
-                                                            logic.sendMessage(v, MessageType.TEXT);
-                                                          },
-                                                          decoration: InputDecoration(
-                                                              contentPadding: EdgeInsets.symmetric(horizontal: 10.w),
-                                                              hintText: "请输入您想说的话",
-                                                              border: InputBorder.none,
-                                                              hintStyle: GoogleFonts.roboto(
-                                                                  fontSize: 15.sp, color: ColorUtil.color_999999))))),
-                                              SizedBox(width: 10.w),
-                                              CustomIconButton(
-                                                  bgColor: const Color(0xff2ECC72),
-                                                  icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
-                                                  radius: 25.h,
-                                                  onPressed: () {
-                                                    logic.sendMessage(logic.controller.text, MessageType.TEXT);
-                                                  })
-                                            ])),
-                                    Divider(height: 0, color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
-                                    SizedBox(height: 11.h),
-                                    Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 11.w),
-                                        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              onTap: logic.isVoice.toggle,
-                                              child: SvgPicture.asset("assets/svg/voice.svg")),
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              onTap: () {
-                                                logic.isVoice.value = false;
-                                                logic.getImage(ImageSource.camera);
-                                              },
-                                              child: SvgPicture.asset("assets/svg/camera.svg")),
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              child: SvgPicture.asset("assets/svg/id_card.svg"),
-                                              onTap: () {
-                                                logic.isVoice.value = false;
-                                                showCupertinoModalPopup(
-                                                    context: Get.context!,
-                                                    builder: (_) {
-                                                      return CupertinoActionSheet(
-                                                          actions: [
-                                                            CupertinoActionSheetAction(
-                                                                child: Text("我自己",
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
-                                                                onPressed: () {
-                                                                  Get.back();
-                                                                  logic.sendIdCard(Get.find<RootLogic>().user.value);
-                                                                }),
-                                                            CupertinoActionSheetAction(
-                                                                child: Text("我的好友",
-                                                                    style: TextStyle(
-                                                                        fontWeight: FontWeight.w400, fontSize: 16.sp)),
-                                                                onPressed: () {
-                                                                  Get.offNamed(RoutePath.SELECT_CONTACTS_PAGE,
-                                                                      arguments: {"isCheckBox": false})?.then((value) {
-                                                                    if (value != null) logic.sendIdCard(value);
-                                                                  });
-                                                                }),
-                                                          ],
-                                                          cancelButton: CupertinoActionSheetAction(
-                                                              isDefaultAction: true,
-                                                              onPressed: Get.back,
-                                                              child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
-                                                    });
-                                              }),
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              child: SvgPicture.asset("assets/svg/gallery.svg"),
-                                              onTap: () {
-                                                logic.isVoice.value = false;
-                                                logic.getImage(ImageSource.gallery);
-                                              }),
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              child: SvgPicture.asset("assets/svg/red_package.svg"),
-                                              onTap: () {
-                                                logic.isVoice.value = false;
-                                                Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
-                                                        arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})
-                                                    ?.then((value) {
-                                                  if (value != null) logic.sendRedPackage(value);
-                                                });
-                                              }),
-                                          GestureDetector(
-                                              behavior: HitTestBehavior.translucent,
-                                              child: SvgPicture.asset("assets/svg/emoji.svg"),
-                                              onTap: () {
-                                                logic.isVoice.value = false;
-                                                Get.bottomSheet(const EmojiPickerDialog()).then((value) {
-                                                  if (value != null) {
-                                                    Log.d(value.toJson());
-                                                    logic.sendMessage(json.encode(value.toJson()), MessageType.EMOJI);
-                                                  }
-                                                });
-                                              })
-                                        ]))
-                                  ])))
+                      logic.session.value != null
+                          ? SafeArea(
+                              top: false,
+                              child: logic.type == SessionType.group &&
+                                      logic.members.isNotEmpty &&
+                                      logic.members.every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
+                                  ? Container(
+                                      margin: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
+                                      height: 50.h,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xfff5f5f5), borderRadius: BorderRadius.circular(20.r)),
+                                      alignment: Alignment.center,
+                                      child: Text("已经被移除出群聊...",
+                                          style: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)))
+                                  : logic.type == SessionType.group &&
+                                          logic.members.isNotEmpty &&
+                                          (logic.session.value?.configObj?.allMute == YorNType.Y &&
+                                                  logic.session.value?.isAdmin == YorNType.N &&
+                                                  logic.session.value?.isSupAdmin == YorNType.N // 全体禁言后，只有群主和群管理员可以发言
+                                              ||
+                                              logic.members
+                                                      .firstWhere(
+                                                          (item) => item.userId == Get.find<RootLogic>().user.value?.id)
+                                                      .isMute ==
+                                                  YorNType.Y // 被单独设置为禁言
+                                          )
+                                      ? Container(
+                                          margin: EdgeInsets.only(bottom: 11.h, left: 22.w, right: 22.w),
+                                          height: 50.h,
+                                          decoration: BoxDecoration(
+                                              color: const Color(0xfff5f5f5),
+                                              borderRadius: BorderRadius.circular(20.r)),
+                                          alignment: Alignment.center,
+                                          child: Text("禁言中...",
+                                              style:
+                                                  GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_333333)))
+                                      : Container(
+                                          decoration: BoxDecoration(
+                                              color: Colors.transparent,
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20.r), topRight: Radius.circular(20.r))),
+                                          child: Column(mainAxisSize: MainAxisSize.min, children: [
+                                            logic.isVoice.value
+                                                ? Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                                    height: 50.h,
+                                                    child: VoiceRecordWidget(
+                                                        height: 42.w,
+                                                        decoration: BoxDecoration(
+                                                            borderRadius: BorderRadius.circular(21.w),
+                                                            color: Colors.white),
+                                                        margin: EdgeInsets.symmetric(horizontal: 7.w),
+                                                        startRecord: () {
+                                                          Log.d('开始录制');
+                                                        },
+                                                        stopRecord:
+                                                            (String? path, double? audioTimeLength, bool isCancel) {
+                                                          Log.d('结束录制 ====》 $isCancel');
+                                                          Log.d('路径 ====》 $path');
+                                                          Log.d('时长 ====》 $audioTimeLength');
+                                                          if (!isCancel) {
+                                                            logic.uploadAudio(path, (audioTimeLength! * 1000).toInt());
+                                                          }
+                                                        }))
+                                                : Container(
+                                                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                                                    height: 50.h,
+                                                    child: Row(children: [
+                                                      Expanded(
+                                                          child: Container(
+                                                              height: 50.h,
+                                                              alignment: Alignment.centerLeft,
+                                                              decoration: BoxDecoration(
+                                                                  borderRadius: BorderRadius.circular(11.r),
+                                                                  color: Colors.white),
+                                                              child: TextField(
+                                                                  controller: logic.controller,
+                                                                  maxLines: 1,
+                                                                  textInputAction: TextInputAction.send,
+                                                                  style: GoogleFonts.roboto(
+                                                                      fontSize: 15.sp, color: ColorUtil.color_333333),
+                                                                  onSubmitted: (v) {
+                                                                    DeviceUtils.hideKeyboard(context);
+                                                                    logic.sendMessage(v, MessageType.TEXT);
+                                                                  },
+                                                                  decoration: InputDecoration(
+                                                                      contentPadding:
+                                                                          EdgeInsets.symmetric(horizontal: 10.w),
+                                                                      hintText: "请输入您想说的话",
+                                                                      border: InputBorder.none,
+                                                                      hintStyle: GoogleFonts.roboto(
+                                                                          fontSize: 15.sp,
+                                                                          color: ColorUtil.color_999999))))),
+                                                      SizedBox(width: 10.w),
+                                                      CustomIconButton(
+                                                          bgColor: const Color(0xff2ECC72),
+                                                          icon: Icon(IconFont.send, color: Colors.white, size: 20.sp),
+                                                          radius: 25.h,
+                                                          onPressed: () {
+                                                            logic.sendMessage(logic.controller.text, MessageType.TEXT);
+                                                          })
+                                                    ])),
+                                            Divider(
+                                                height: 0,
+                                                color: logic.selectedBgIndex == 0 ? null : Colors.transparent),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 18.w,
+                                                  top: 11.h,
+                                                  right: 18.w,
+                                                  bottom: DeviceUtils.bottomSafeHeight > 0
+                                                      ? 11.h
+                                                      : DeviceUtils.bottomSafeHeight + 22.h),
+                                              child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    onTap: logic.isVoice.toggle,
+                                                    child: SvgPicture.asset("assets/svg/voice.svg")),
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    onTap: () {
+                                                      logic.isVoice.value = false;
+                                                      logic.getImage(ImageSource.camera);
+                                                    },
+                                                    child: SvgPicture.asset("assets/svg/camera.svg")),
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    child: SvgPicture.asset("assets/svg/id_card.svg"),
+                                                    onTap: () {
+                                                      logic.isVoice.value = false;
+                                                      showCupertinoModalPopup(
+                                                          context: Get.context!,
+                                                          builder: (_) {
+                                                            return CupertinoActionSheet(
+                                                                actions: [
+                                                                  CupertinoActionSheetAction(
+                                                                      child: Text("我自己",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 16.sp)),
+                                                                      onPressed: () {
+                                                                        Get.back();
+                                                                        logic.sendIdCard(
+                                                                            Get.find<RootLogic>().user.value);
+                                                                      }),
+                                                                  CupertinoActionSheetAction(
+                                                                      child: Text("我的好友",
+                                                                          style: TextStyle(
+                                                                              fontWeight: FontWeight.w400,
+                                                                              fontSize: 16.sp)),
+                                                                      onPressed: () {
+                                                                        Get.offNamed(RoutePath.SELECT_CONTACTS_PAGE,
+                                                                                arguments: {"isCheckBox": false})
+                                                                            ?.then((value) {
+                                                                          if (value != null) logic.sendIdCard(value);
+                                                                        });
+                                                                      }),
+                                                                ],
+                                                                cancelButton: CupertinoActionSheetAction(
+                                                                    isDefaultAction: true,
+                                                                    onPressed: Get.back,
+                                                                    child: Text("Cancel".tr,
+                                                                        style: Get.theme.textTheme.bodyLarge)));
+                                                          });
+                                                    }),
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    child: SvgPicture.asset("assets/svg/gallery.svg"),
+                                                    onTap: () {
+                                                      logic.isVoice.value = false;
+                                                      logic.getImage(ImageSource.gallery);
+                                                    }),
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    child: SvgPicture.asset("assets/svg/red_package.svg"),
+                                                    onTap: () {
+                                                      logic.isVoice.value = false;
+                                                      Get.toNamed(RoutePath.PACKAGE_PUBLISH_PAGE,
+                                                              arguments: {Keys.ID: logic.id, Keys.TYPE: logic.type})
+                                                          ?.then((value) {
+                                                        if (value != null) logic.sendRedPackage(value);
+                                                      });
+                                                    }),
+                                                GestureDetector(
+                                                    behavior: HitTestBehavior.translucent,
+                                                    child: SvgPicture.asset("assets/svg/emoji.svg"),
+                                                    onTap: () {
+                                                      logic.isVoice.value = false;
+                                                      Get.bottomSheet(const EmojiPickerDialog()).then((value) {
+                                                        if (value != null) {
+                                                          Log.d(value.toJson());
+                                                          logic.sendMessage(
+                                                              json.encode(value.toJson()), MessageType.EMOJI);
+                                                        }
+                                                      });
+                                                    })
+                                              ]),
+                                            )
+                                          ])))
+                          : const SizedBox()
                     ]);
                   }))
         ]));

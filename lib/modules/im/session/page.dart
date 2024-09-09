@@ -24,9 +24,10 @@ class SessionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorUtil.secondBgColor,
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-            backgroundColor: Colors.white,
+            backgroundColor: ColorUtil.secondBgColor,
             title: Text("message".tr),
             actions: [
               CustomIconButton(
@@ -43,10 +44,12 @@ class SessionPage extends StatelessWidget {
                   })
             ],
             centerTitle: false,
-            bottom: AppBarBottomSearchView(onSubmitted: (String value) {}, hintText: "Search".tr)),
+            bottom: AppBarBottomSearchView(
+                searchBgColor: Colors.white, onSubmitted: (String value) {}, hintText: "Search".tr)),
         body: BaseWidget(
             logic: logic,
             showEmpty: false,
+            bgColor: Colors.transparent,
             builder: (logic) {
               return Column(children: [
                 SizedBox(
@@ -77,7 +80,7 @@ class SessionPage extends StatelessWidget {
                             },
                             itemCount: logic.list.length,
                             separatorBuilder: (BuildContext context, int index) =>
-                                Divider(height: 0, indent: 18.w, endIndent: 18.w)))
+                                Divider(height: 0, indent: 18.w, endIndent: 18.w, color: Colors.transparent)))
               ]);
             }));
   }

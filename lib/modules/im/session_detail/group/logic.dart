@@ -9,12 +9,12 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/chat/logic.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/channel.dart';
-import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/message_db_util.dart';
+import 'package:vura/utils/session_db_util.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
@@ -51,6 +51,12 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
         members.removeWhere((item) => item.userId == user.userId);
       }
       members.refresh();
+
+      try {
+        Get.find<ChatLogic>(tag: id).removeMembers(users.map((item) => item.userId).toList());
+      } catch (e) {
+        Log.e(e.toString());
+      }
     }
   }
 

@@ -12,23 +12,24 @@ import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/mixin/mute_mixin.dart';
 import 'package:vura/mixin/session_detail_mixin.dart';
 import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/modules/package/widgets/red_package.dart';
 import 'package:vura/modules/root/logic.dart';
-import 'package:vura/realm/channel.dart';
-import 'package:vura/realm/message.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/session_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/enum_to_string.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/message_db_util.dart';
+import 'package:vura/utils/session_db_util.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/utils/tool_util.dart';
 
-class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
+class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, SessionMembersMixin {
   String? id;
   late SessionType type;
 
@@ -102,6 +103,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
     getSessionDetail(id, type);
     initData();
     super.onInit();
+    if (type == SessionType.group) getMembers(id);
   }
 
   @override
@@ -111,7 +113,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
   }
 
   /// 发送消息
-  Future sendMessage(String content, MessageType messageType) async {
+  Future sendMessage(String content, MessageType messageType, {List<String?> ids = const []}) async {
     if (StringUtil.isEmpty(content)) {
       showToast(text: "消息不能为空");
       return;
@@ -120,7 +122,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin {
         content: content,
         type: messageType,
         receiveHeadImage: session.value?.headImage,
-        receiveNickName: session.value?.name);
+        receiveNickName: session.value?.name,
+        atUserIds: ids);
     if (message != null) {
       controller.clear();
       list.insert(0, message);

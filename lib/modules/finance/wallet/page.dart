@@ -232,7 +232,7 @@ class WalletPage extends StatelessWidget {
                     })
               ],
               cancelButton: CupertinoActionSheetAction(
-                  isDefaultAction: true, onPressed: Get.back, child: Text("取消", style: Get.theme.textTheme.bodyLarge)));
+                  isDefaultAction: true, onPressed: Get.back, child: Text("Cancel".tr, style: Get.theme.textTheme.bodyLarge)));
         }).then((value) {
       if (value != null && logic.type.value != value) {
         logic.type.value = value;

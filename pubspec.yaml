@@ -83,6 +83,8 @@ dependencies:
   # 本地数据库
   realm: ^3.4.1
   rotated_corner_decoration: ^2.1.0+1
+  # 分享
+  share_plus: ^10.0.2
   # 本地化存储
   shared_preferences: ^2.3.1
   synchronized: ^3.1.0+1
@@ -90,8 +92,6 @@ dependencies:
   talker_dio_logger: ^4.4.1
   # 时间线
   timelines_plus: ^1.0.3
-
-  url_launcher: ^6.3.0
   # 仿微信录制音频
   xbr_plugin_record:
     path: ../../cses/flutter_third_plugins/xbr_plugin_record

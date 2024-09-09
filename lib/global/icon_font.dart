@@ -75,4 +75,9 @@ class IconFont {
   static const IconData name_card = IconData(0xe7ca, fontFamily: "iconFont");
   static const IconData red_package = IconData(0xe7c9, fontFamily: "iconFont");
   static const IconData expression = IconData(0xe7cb, fontFamily: "iconFont");
+
+  static const IconData at = IconData(0xe7d9, fontFamily: "iconFont");
+  static const IconData mute = IconData(0xe7d6, fontFamily: "iconFont");
+  static const IconData transfer_to_member = IconData(0xe7d7, fontFamily: "iconFont");
+  static const IconData remove_member = IconData(0xe7d8, fontFamily: "iconFont");
 }

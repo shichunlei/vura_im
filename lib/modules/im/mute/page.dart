@@ -40,7 +40,7 @@ class MutePage extends StatelessWidget {
                                     style: GoogleFonts.roboto(
                                         fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                                 SizedBox(height: 5.r),
-                                Text("ID:${logic.list[index].userId}",
+                                Text("ID:${logic.list[index].userNo}",
                                     style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                               ])),
                           RadiusInkWellWidget(
