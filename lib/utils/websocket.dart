@@ -111,6 +111,10 @@ class WebSocketManager {
     _closeCallbacks.forEach((pageId, callback) {
       callback();
     });
+    _channel?.sink.close();
+    _channel = null;
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
   }
 
   void _startHeartbeat() {
@@ -137,13 +141,15 @@ class WebSocketManager {
     init();
   }
 
+  // 重连逻辑
   void reconnect() {
-    // 重连逻辑
-    if (!_isConnected) {
-      Timer(const Duration(seconds: 10), () {
-        connect();
-      });
-    }
+    if (!_isConnected) connect();
+  }
+
+  // 重连检查
+  void check() {
+    Log.d("_isConnected = $_isConnected");
+    if (!_isConnected) reconnect();
   }
 
   void close() {

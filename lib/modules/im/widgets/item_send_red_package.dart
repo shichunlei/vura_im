@@ -25,7 +25,7 @@ class ItemSendRedPackage extends StatelessWidget {
         onTap: () {
           if (logic.type == SessionType.private) {
             // 单聊自己发的红包不能打开，可以直接查看结果
-            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id, "myRedPackage": true});
           } else {
             logic.openRedPackage(context, message, redPackage.id, redPackage.cover);
           }

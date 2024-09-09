@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/obx_widget.dart';
 
@@ -48,26 +50,52 @@ class PackageResultPage extends StatelessWidget {
                       style: GoogleFonts.roboto(
                           fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
                   SizedBox(height: 44.h),
-                  Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("${logic.bean.value?.amount}",
-                            style: GoogleFonts.roboto(
-                                fontSize: 44.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
-                        Text("幸运值",
-                            style: GoogleFonts.roboto(
-                                fontSize: 15.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
-                      ]),
-                  SizedBox(height: 22.h),
+                  ...logic.myRedPackage
+                      ? []
+                      : [
+                          Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: logic.myRedPackage
+                                  ? [
+                                      Text(logic.bean.value!.totalTime > 0 ? "已领取" : "未领取",
+                                          style: GoogleFonts.roboto(
+                                              fontSize: 44.sp,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xffDB5549)))
+                                    ]
+                                  : logic.bean.value!.totalTime > 0 &&
+                                          logic.bean.value!.detailList
+                                              .every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
+                                      ? [
+                                          Text("手慢了，已领完",
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 44.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xffDB5549)))
+                                        ]
+                                      : [
+                                          Text("${logic.bean.value?.amount}",
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 44.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xffDB5549))),
+                                          Text("幸运值",
+                                              style: GoogleFonts.roboto(
+                                                  fontSize: 15.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: const Color(0xffDB5549)))
+                                        ]),
+                          SizedBox(height: 22.h)
+                        ],
                   Container(
                       margin: EdgeInsets.only(bottom: 11.h, left: 22.w),
                       alignment: Alignment.centerLeft,
                       child: Text(
                           logic.bean.value!.totalTime > 0
-                              ? "${logic.bean.value!.totalPacket}个幸运值,${logic.bean.value!.totalTime}秒被抢光"
-                              : "${logic.bean.value!.totalPacket}个幸运值，余${logic.bean.value!.totalAmount- }/${logic.bean.value!.totalAmount}",
+                              ? "${logic.bean.value!.totalPacket}个幸运值,${DateUtil.formatDuration(logic.bean.value!.totalTime)}被抢光"
+                              : "${logic.bean.value!.totalPacket}个幸运值，余${logic.balance.value}/${logic.bean.value!.totalAmount}",
                           style: GoogleFonts.roboto(
                               fontSize: 15.sp, fontWeight: FontWeight.w600, color: ColorUtil.color_333333))),
                   Expanded(

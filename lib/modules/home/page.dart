@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/application.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/contacts/home/page.dart';
 import 'package:vura/modules/dashboard/mine/page.dart';
@@ -44,7 +45,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
       // 应用回到前台
       Log.d("App回到前台${DateTime.now().toIso8601String()}");
 
-      logic.loadOfflineMessage();
+      webSocketManager.check();
 
       if (!logic.loginProtect.value) return;
       if (logic.startTime.value != null && DateTime.now().millisecondsSinceEpoch - logic.startTime.value! > 0) {

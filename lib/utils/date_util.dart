@@ -740,4 +740,18 @@ class DateUtil {
 
     return getDateStrByMs(duration, format: DateFormat.YEAR_MONTH_DAY_HOUR_MINUTE)!;
   }
+
+  static String formatDuration(int totalSeconds) {
+    int hours = totalSeconds ~/ 3600;
+    int minutes = (totalSeconds % 3600) ~/ 60;
+    int seconds = totalSeconds % 60;
+
+    if (hours > 0) {
+      return '$hours时$minutes分$seconds秒';
+    }
+    if (minutes > 0) {
+      return '$hours时$minutes分$seconds秒';
+    }
+    return '$seconds秒';
+  }
 }
