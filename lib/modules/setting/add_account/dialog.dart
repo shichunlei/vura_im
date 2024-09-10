@@ -66,17 +66,18 @@ class AddAccountDialog extends StatelessWidget {
                         style: GoogleFonts.roboto(
                             fontSize: 13.sp, fontWeight: FontWeight.w500, color: ColorUtil.color_333333)),
                     SizedBox(width: 22.w),
-                    Expanded(
-                        child: TextField(
-                            controller: logic.passwordController,
-                            maxLines: 1,
-                            obscureText: logic.obscureText.value,
-                            style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
-                            decoration: InputDecoration(
-                                border: InputBorder.none,
-                                contentPadding: EdgeInsets.only(right: 18.w),
-                                hintText: "请输入登录密码",
-                                hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
+                    Expanded(child: Obx(() {
+                      return TextField(
+                          controller: logic.passwordController,
+                          maxLines: 1,
+                          obscureText: logic.obscureText.value,
+                          style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_333333),
+                          decoration: InputDecoration(
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.only(right: 18.w),
+                              hintText: "请输入登录密码",
+                              hintStyle: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)));
+                    })),
                     CustomIconButton(
                         icon: Obx(() {
                           return Icon(logic.obscureText.value ? IconFont.eye_close_line : IconFont.eye_open_line,

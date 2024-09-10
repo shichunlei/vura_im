@@ -117,7 +117,7 @@ class ChatPage extends StatelessWidget {
                               separatorBuilder: (_, index) => SizedBox(height: 10.h),
                               itemCount: logic.list.length,
                               extendedListDelegate: const ExtendedListDelegate(closeToTrailing: true))),
-                      logic.session.value != null
+                      Obx(() => logic.session.value != null
                           ? SafeArea(
                               top: false,
                               child: logic.type == SessionType.group &&
@@ -316,7 +316,7 @@ class ChatPage extends StatelessWidget {
                                               ]),
                                             )
                                           ])))
-                          : const SizedBox()
+                          : const SizedBox())
                     ]);
                   }))
         ]));

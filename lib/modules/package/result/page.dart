@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vura/entities/red_package_result.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/root/logic.dart';
@@ -92,48 +94,7 @@ class PackageResultPage extends StatelessWidget {
                       child: ListView.separated(
                           padding: EdgeInsets.symmetric(horizontal: 22.w),
                           itemBuilder: (_, index) {
-                            return Container(
-                                padding: EdgeInsets.symmetric(vertical: 11.h),
-                                child: Row(children: [
-                                  AvatarRoundImage("${logic.bean.value!.detailList[index].headImage}",
-                                      width: 66.r,
-                                      height: 66.r,
-                                      radius: 7.r,
-                                      name: logic.bean.value!.detailList[index].nickName),
-                                  SizedBox(width: 22.w),
-                                  Expanded(
-                                    child: Column(mainAxisSize: MainAxisSize.min, children: [
-                                      Row(children: [
-                                        Text("${logic.bean.value!.detailList[index].nickName}",
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp)),
-                                        const Spacer(),
-                                        Text("${logic.bean.value!.detailList[index].amount}幸运值",
-                                            style: GoogleFonts.roboto(
-                                                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp))
-                                      ]),
-                                      SizedBox(height: 5.h),
-                                      Row(children: [
-                                        Text("${logic.bean.value!.detailList[index].createDate}",
-                                            style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp)),
-                                        const Spacer(),
-                                        Visibility(
-                                            visible: logic.bean.value!.detailList[index].isGreat == YorNType.Y,
-                                            child: Row(mainAxisSize: MainAxisSize.min, children: [
-                                              Icon(IconFont.like, size: 22.sp),
-                                              Text("手气最佳",
-                                                  style: GoogleFonts.roboto(
-                                                      color: const Color(0xffFFAE58),
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 13.sp))
-                                            ])),
-                                        Visibility(
-                                            visible: logic.bean.value!.detailList[index].isMine == YorNType.Y,
-                                            child: Icon(IconFont.mine, size: 22.sp))
-                                      ])
-                                    ]),
-                                  )
-                                ]));
+                            return ItemRedPackage(redPackageResult: logic.bean.value!.detailList[index]);
                           },
                           separatorBuilder: (_, index) {
                             return const Divider(height: 0);
@@ -142,5 +103,50 @@ class PackageResultPage extends StatelessWidget {
                 ]);
               }))
     ]);
+  }
+}
+
+class ItemRedPackage extends StatelessWidget {
+  final RedPackageResultEntity redPackageResult;
+
+  const ItemRedPackage({super.key, required this.redPackageResult});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 11.h),
+        child: Row(children: [
+          AvatarRoundImage("${redPackageResult.headImage}",
+              width: 66.r, height: 66.r, radius: 7.r, name: redPackageResult.nickName),
+          SizedBox(width: 22.w),
+          Expanded(
+            child: Column(mainAxisSize: MainAxisSize.min, children: [
+              Row(children: [
+                Text("${redPackageResult.nickName}",
+                    style: GoogleFonts.roboto(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp)),
+                const Spacer(),
+                Text("${redPackageResult.amount}幸运值",
+                    style: GoogleFonts.roboto(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18.sp))
+              ]),
+              SizedBox(height: 5.h),
+              Row(children: [
+                Text("${redPackageResult.createDate}",
+                    style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp)),
+                const Spacer(),
+                Visibility(
+                    visible: redPackageResult.isGreat == YorNType.Y,
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      Icon(IconFont.like, size: 22.sp),
+                      Text("手气最佳",
+                          style: GoogleFonts.roboto(
+                              color: const Color(0xffFFAE58), fontWeight: FontWeight.w600, fontSize: 13.sp))
+                    ])),
+                Visibility(
+                    visible: redPackageResult.isMine == YorNType.Y,
+                    child: SvgPicture.asset("assets/svg/mine.svg", width: 25.r, height: 25.r))
+              ])
+            ]),
+          )
+        ]));
   }
 }

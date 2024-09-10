@@ -122,41 +122,47 @@ class ItemReceiveMessage extends StatelessWidget {
                           const Spacer(),
                           const Icon(IconFont.at, color: ColorUtil.color_333333)
                         ]))),
-                const Divider(height: .5),
-                RadiusInkWellWidget(
-                    radius: 0,
-                    borderRadius: isManager
-                        ? null
-                        : BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
-                    color: Colors.transparent,
-                    child: Container(
-                        padding: EdgeInsets.symmetric(horizontal: 22.w),
-                        height: 50.h,
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        child: Row(children: [
-                          Text("向TA转账", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
-                          const Spacer(),
-                          const Icon(IconFont.transfer_to_member, color: ColorUtil.color_333333)
-                        ])),
-                    onPressed: () {
-                      UserEntity toUser = UserEntity(
-                          nickName: message.sendNickName,
-                          id: message.sendId,
-                          headImageThumb: message.sendHeadImage,
-                          headImage: message.sendHeadImage);
+                ...logic.members.any((item) => item.userId == message.sendId) &&
+                        logic.members.firstWhere((item) => item.userId == message.sendId).friendship == YorNType.Y
+                    ? [
+                        const Divider(height: .5),
+                        RadiusInkWellWidget(
+                            radius: 0,
+                            borderRadius: isManager
+                                ? null
+                                : BorderRadius.only(
+                                    bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                            color: Colors.transparent,
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 22.w),
+                                height: 50.h,
+                                width: double.infinity,
+                                alignment: Alignment.center,
+                                child: Row(children: [
+                                  Text("向TA转账", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)),
+                                  const Spacer(),
+                                  const Icon(IconFont.transfer_to_member, color: ColorUtil.color_333333)
+                                ])),
+                            onPressed: () {
+                              UserEntity toUser = UserEntity(
+                                  nickName: message.sendNickName,
+                                  id: message.sendId,
+                                  headImageThumb: message.sendHeadImage,
+                                  headImage: message.sendHeadImage);
 
-                      Get.offNamed(RoutePath.PACKAGE_PUBLISH_PAGE, arguments: {
-                        Keys.ID: toUser.id,
-                        Keys.TYPE: SessionType.private,
-                        "user": toUser,
-                        "isTransfer": true
-                      })?.then((value) {
-                        if (value != null) {
-                          logic.transferToMember(value, toUser);
-                        }
-                      });
-                    }),
+                              Get.offNamed(RoutePath.PACKAGE_PUBLISH_PAGE, arguments: {
+                                Keys.ID: toUser.id,
+                                Keys.TYPE: SessionType.private,
+                                "user": toUser,
+                                "isTransfer": true
+                              })?.then((value) {
+                                if (value != null) {
+                                  logic.transferToMember(value, toUser);
+                                }
+                              });
+                            })
+                      ]
+                    : [],
                 ...isManager
                     ? [
                         const Divider(height: .5),
