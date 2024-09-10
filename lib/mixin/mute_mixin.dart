@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/base_bean.dart';
@@ -17,7 +19,11 @@ mixin SessionMembersMixin on BaseLogic {
     showLoading();
     BaseBean result = await SessionRepository.resetMute(id, [userId]);
     hiddenLoading();
-    if (result.code == 200) noMute(userId);
+    if (result.code == 200) {
+      noMute(userId);
+      SessionRepository.sendMessage(id, SessionType.group,
+          content: json.encode({"userId": userId}), type: MessageType.UPDATE_MEMBER_UN_MUTE);
+    }
   }
 
   /// 禁言某人
@@ -28,6 +34,9 @@ mixin SessionMembersMixin on BaseLogic {
     if (result.code == 200) {
       members.firstWhere((item) => item.userId == userId).isMute = YorNType.Y;
       members.refresh();
+
+      SessionRepository.sendMessage(id, SessionType.group,
+          content: json.encode({"userId": userId}), type: MessageType.UPDATE_MEMBER_MUTE);
     }
   }
 
@@ -53,6 +62,11 @@ mixin SessionMembersMixin on BaseLogic {
 
   void noMute(String? userId) {
     members.firstWhere((item) => item.userId == userId).isMute = YorNType.N;
+    members.refresh();
+  }
+
+  void mute(String? userId) {
+    members.firstWhere((item) => item.userId == userId).isMute = YorNType.Y;
     members.refresh();
   }
 }

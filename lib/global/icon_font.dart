@@ -69,6 +69,8 @@ class IconFont {
   static const IconData send = IconData(0xe7d4, fontFamily: "iconFont");
   static const IconData star = IconData(0xe7d5, fontFamily: "iconFont");
 
+  static const IconData unDisturb = IconData(0xe7da, fontFamily: "iconFont");
+
   static const IconData voice = IconData(0xe7d2, fontFamily: "iconFont");
   static const IconData camera = IconData(0xe7d3, fontFamily: "iconFont");
   static const IconData gallery = IconData(0xe7c8, fontFamily: "iconFont");

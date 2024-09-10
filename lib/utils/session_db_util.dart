@@ -21,6 +21,7 @@ class SessionRealm {
   /// 查询所有会话
   Future<List<SessionEntity>> queryAllSessions() async {
     Log.d("queryAllSessions=====================${AppConfig.userId}");
+
     /// 客户要求置顶的始终按照设置置顶的时间排序置顶，所以多维护了一个置顶时间，按照置顶时间由小到大排序，然后没有置顶的设置了一个很大的时间戳
     return _realm
         .all<Channel>()
@@ -222,7 +223,23 @@ class SessionRealm {
     }
   }
 
-  /// 更新会话纬度消息数
+  /// 更新草稿
+  Future updateDraft(String? id, SessionType type, String? content) async {
+    Channel? session = findOne("${AppConfig.userId}-$id-${type.name}");
+    if (session != null) {
+      await _realm.writeAsync(() {
+        session.draft = content;
+      });
+      Log.d("updateDraft===${session.id}================>${session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
+
+  /// 更新会话未读消息数
   Future updateUnreadCount(String? sessionId, SessionType type) async {
     Channel? _session = findOne("${AppConfig.userId}-$sessionId-${type.name}");
     if (_session != null) {
@@ -270,6 +287,7 @@ SessionEntity sessionRealmToEntity(Channel session) {
       moveTop: session.moveTop,
       unReadCount: session.unReadCount,
       no: session.no,
+      draft: session.draft,
       friendship: EnumToString.fromString(YorNType.values, session.friendship, defaultValue: YorNType.N)!);
 }
 
@@ -297,6 +315,7 @@ Channel sessionEntityToRealm(SessionEntity session) {
       friendship: session.friendship.name,
       unReadCount: session.unReadCount,
       no: session.no,
+      draft: session.draft,
       config: session.configObj == null ? null : json.encode(session.configObj!.toJson()),
       lastMessage: session.lastMessage == null ? null : json.encode(session.lastMessage!.toJson()));
 }

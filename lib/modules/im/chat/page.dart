@@ -21,6 +21,7 @@ import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/voice_record_view.dart';
@@ -47,7 +48,17 @@ class ChatPage extends StatelessWidget {
               backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
               appBar: AppBar(
                   title: Obx(() {
-                    return Text(logic.session.value?.name ?? "聊天");
+                    return Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(logic.session.value?.name ?? "聊天"),
+                          Visibility(
+                              visible:
+                                  logic.type == SessionType.private && StringUtil.isNotEmpty(logic.session.value?.name),
+                              child: Text("一分钟前在线",
+                                  style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 10.sp)))
+                        ]);
                   }),
                   backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
                   centerTitle: true,

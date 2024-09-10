@@ -46,6 +46,8 @@ class SessionEntity {
   String? no;
   @JsonKey(includeFromJson: false, includeToJson: false)
   int unReadCount = 0;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? draft;
 
   SessionEntity(
       {this.id,
@@ -71,7 +73,8 @@ class SessionEntity {
       this.configObj,
       this.no,
       this.friendship = YorNType.Y,
-      this.unReadCount = 0});
+      this.unReadCount = 0,
+      this.draft});
 
   factory SessionEntity.fromJson(Map<String, dynamic> json) => _$SessionEntityFromJson(json);
 

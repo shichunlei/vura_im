@@ -24,4 +24,7 @@ class _Message {
   int sendTime = 0; // 发送时间
   int status = 0; // 消息状态
   List<String?> atUserIds = [];
+  int readTime = 0; // 阅读时间
+  bool openRedPackage = false; // 红包是否打开
+  bool deleted = false; // 是否删除
 }

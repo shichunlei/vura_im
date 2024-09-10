@@ -75,10 +75,22 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
           list.insert(0, MessageEntity.fromJson(data));
           list.refresh();
         }
-      }
 
-      if (cmd == WebSocketCode.GROUP_CONFIG_UPDATE.code) {
-        /// 群配置修改了
+        /// 修改群配置  {"cmd":4,"data":{"addFriend":"N" ,"allMute":"" ,"vura":"N","id":"1829665405703159809","invite":"N","type":300}}
+        if (data[Keys.TYPE] == MessageType.UPDATE_GROUP_CONFIG && data[Keys.ID] == id) {
+          session.value?.configObj = SessionConfigEntity.fromJson(data);
+          session.refresh();
+        }
+
+        /// 禁言某人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":301}}
+        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_MUTE && data[Keys.GROUP_ID] == id) {
+          mute(data[Keys.USER_ID]);
+        }
+
+        /// 解除禁言某人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":302}}
+        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_UN_MUTE && data[Keys.GROUP_ID] == id) {
+          noMute(data[Keys.USER_ID]);
+        }
       }
     });
 
@@ -187,6 +199,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
 
   Future openRedPackage(BuildContext context, MessageEntity message, RedPackageEntity redPackage) async {
     if (type == SessionType.private && redPackage.type == RedPackageType.SPECIAL.code) {
+      updateRedPackageState(message.id);
       Get.toNamed(RoutePath.TRANSFER_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
     } else {
       /// 单聊，群主，群管理，开启抢红包的个人
@@ -198,10 +211,12 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         String? result = await SessionRepository.checkRedPackage(redPackage.id);
         if (result != null) {
           if (result == YorNType.Y.name) {
+            updateRedPackageState(message.id);
             Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
           } else if (result == YorNType.N.name) {
             if (context.mounted) {
               showRedPacket(context, () {
+                updateRedPackageState(message.id);
                 Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
               },
                   nickName: message.sendNickName,
@@ -212,8 +227,10 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
                       .itemPath);
             }
           } else if (result == YorNType.F.name) {
+            updateRedPackageState(message.id);
             Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
           } else if (result == YorNType.EXPIRE.name) {
+            updateRedPackageState(message.id);
             showToast(text: "红包已过期");
             Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
           } else {}
@@ -222,6 +239,12 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         showToast(text: "群主设置了禁止领取VURA");
       }
     }
+  }
+
+  void updateRedPackageState(String? id) {
+    list.firstWhere((item) => item.id == id).openRedPackage = true;
+    list.refresh();
+    MessageRealm(realm: Get.find<RootLogic>().realm).updateRedPackageState(id);
   }
 
   /// 转账给他人

@@ -50,6 +50,9 @@ enum MessageType {
   RTC_GROUP_ANSWER(209, "推送answer信息"),
   RTC_GROUP_CANDIDATE(210, "同步candidate"),
   RTC_GROUP_DEVICE(211, "设备操作"),
+  UPDATE_GROUP_CONFIG(300, "群配置修改"),
+  UPDATE_MEMBER_MUTE(301, "群禁言某人"),
+  UPDATE_MEMBER_UN_MUTE(302, "群解除某人禁言"),
   APPLY_ADD_FRIEND(900, "申请添加好友通知"),
   APPLY_ADD_GROUP(901, "申请添加群聊通知"),
   APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知"),
@@ -83,8 +86,7 @@ enum WebSocketCode {
   PRIVATE_MESSAGE(3, "私聊消息"),
   GROUP_MESSAGE(4, "群聊消息"),
   SYSTEM_MESSAGE(5, "系统消息"),
-  FRIEND_APPLY(6, "好友申请"),
-  GROUP_CONFIG_UPDATE(7, "群聊配置修改");
+  FRIEND_APPLY(6, "好友申请");
 
   final int code;
   final String label;

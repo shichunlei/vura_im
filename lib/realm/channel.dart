@@ -23,13 +23,14 @@ class _Channel {
   bool quit = false;
   String? lastMessage;
   int lastMessageTime = 0;
-  bool moveTop = false;
-  int moveTopTime = AppConfig.DEFAULT_TOP_TIME;
-  bool isDisturb = false;
-  String isAdmin = "N";
-  String isSupAdmin = "N";
-  String? config;
+  bool moveTop = false; // 置顶
+  int moveTopTime = AppConfig.DEFAULT_TOP_TIME; // 置顶时间
+  bool isDisturb = false; // 免打扰
+  String isAdmin = "N"; // 是否为群主
+  String isSupAdmin = "N"; // 是为群管理
+  String? config; // 群配置
   String friendship = "Y";
-  int unReadCount = 0;
-  String? no;
+  int unReadCount = 0; // 未读数
+  String? no; // 群编码
+  String? draft; // 草稿
 }

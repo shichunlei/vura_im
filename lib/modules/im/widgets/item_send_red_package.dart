@@ -26,8 +26,10 @@ class ItemSendRedPackage extends StatelessWidget {
           if (logic.type == SessionType.private) {
             // 单聊自己发的红包不能打开，可以直接查看结果
             if (redPackage.type == RedPackageType.SPECIAL.code) {
+              logic.updateRedPackageState(message.id);
               Get.toNamed(RoutePath.TRANSFER_RESULT_PAGE, arguments: {Keys.ID: redPackage.id, "myRedPackage": true});
             } else {
+              logic.updateRedPackageState(message.id);
               Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id, "myRedPackage": true});
             }
           } else {
@@ -36,7 +38,12 @@ class ItemSendRedPackage extends StatelessWidget {
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
-            decoration: BoxDecoration(borderRadius: BorderRadius.circular(9.r), color: const Color(0xffF0924A)),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(9.r),
+                gradient: LinearGradient(colors: [
+                  const Color(0xffF28542).withOpacity(message.openRedPackage ? .6 : 1),
+                  const Color(0xffF25542).withOpacity(message.openRedPackage ? .6 : 1)
+                ], begin: Alignment.centerLeft, end: Alignment.centerRight)),
             width: 272.w,
             child: Stack(children: [
               Positioned(

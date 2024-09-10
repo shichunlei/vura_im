@@ -16,7 +16,7 @@ class MessageRealm {
     Log.d("queryAllMessageBySessionId=====================$sessionId");
     return _realm
         .all<Message>()
-        .query(r"sessionId == $0 AND userId == $1 AND TRUEPREDICATE SORT(sendTime DESC)",
+        .query(r"sessionId == $0 AND userId == $1 AND deleted == false AND TRUEPREDICATE SORT(sendTime DESC)",
             ["$sessionId", "${AppConfig.userId}"])
         .map((item) => messageRealmToEntity(item))
         .toList();
@@ -25,7 +25,7 @@ class MessageRealm {
   /// 获取群聊消息最后一条消息的ID
   Future<String?> queryGroupLastMessageTime() async {
     RealmResults<Message> list = _realm.all<Message>().query(
-        r"sessionType == $0 AND userId == $1 AND TRUEPREDICATE SORT(sendTime DESC)",
+        r"sessionType == $0 AND userId == $1 AND deleted == false AND TRUEPREDICATE SORT(sendTime DESC)",
         [SessionType.group.name, "${AppConfig.userId}"]);
 
     Log.d("queryGroupLastMessageTime=========================>${list.length}");
@@ -40,7 +40,7 @@ class MessageRealm {
   /// 获取单聊消息最后一条消息的ID
   Future<String?> queryPrivateLastMessageTime() async {
     RealmResults<Message> list = _realm.all<Message>().query(
-        r"sessionType == $0 AND userId == $1 AND TRUEPREDICATE SORT(sendTime DESC)",
+        r"sessionType == $0 AND userId == $1 AND deleted == false AND TRUEPREDICATE SORT(sendTime DESC)",
         [SessionType.private.name, "${AppConfig.userId}"]);
 
     Log.d("queryPrivateLastMessageTime=========================>${list.length}");
@@ -49,6 +49,17 @@ class MessageRealm {
       return null;
     } else {
       return list.first.id;
+    }
+  }
+
+  /// 打开红包
+  Future updateRedPackageState(String? id) async {
+    Message? message = findOne(id);
+    if (message != null) {
+      await _realm.writeAsync(() {
+        message.openRedPackage = true;
+      });
+      Log.d("updateRedPackageState===${message.id}================>${message.toEJson()}");
     }
   }
 
@@ -93,7 +104,9 @@ MessageEntity messageRealmToEntity(Message message) {
       type: message.type,
       receipt: message.receipt,
       receiptOk: message.receiptOk,
-      atUserIds: message.atUserIds.toList());
+      atUserIds: message.atUserIds.toList(),
+      readTime: message.readTime,
+      openRedPackage: message.openRedPackage);
 }
 
 Message messageEntityToRealm(MessageEntity message) {
@@ -115,5 +128,7 @@ Message messageEntityToRealm(MessageEntity message) {
       sessionType: message.sessionType.name,
       receipt: message.receipt,
       receiptOk: message.receiptOk,
-      atUserIds: message.atUserIds.toList());
+      atUserIds: message.atUserIds.toList(),
+      readTime: message.readTime,
+      openRedPackage: message.openRedPackage);
 }

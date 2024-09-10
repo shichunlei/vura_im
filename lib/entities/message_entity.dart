@@ -33,6 +33,10 @@ class MessageEntity {
   int sendTime;
   @JsonKey(includeFromJson: false, includeToJson: false)
   SessionType sessionType;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  int readTime; // 阅读时间
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool openRedPackage; // 红包是否打开
 
   MessageEntity({
     this.id,
@@ -53,6 +57,8 @@ class MessageEntity {
     this.status = 0,
     this.sendTime = 0,
     this.sessionType = SessionType.group,
+    this.openRedPackage = false,
+    this.readTime = 0,
   });
 
   factory MessageEntity.fromJson(Map<String, dynamic> json) => _$MessageEntityFromJson(json);

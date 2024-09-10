@@ -6,6 +6,7 @@ import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
@@ -38,32 +39,47 @@ class ItemSession extends StatelessWidget {
         child: SizedBox(
             height: 88.r,
             child: Row(children: [
-              RoundImage("${session.headImage}",
-                  width: 44.r,
-                  height: 44.r,
-                  radius: 9.r,
-                  errorWidget: session.type == SessionType.private
-                      ? StringUtil.isNotEmpty(session.name)
-                          ? Container(
-                              width: 44.r,
-                              height: 44.r,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5.r),
-                                  border: Border.all(color: Colors.white, width: 1),
-                                  color: ColorUtil.strToColor(session.name!)),
+              SizedBox(
+                child: Stack(clipBehavior: Clip.none, children: [
+                  RoundImage("${session.headImage}",
+                      width: 44.r,
+                      height: 44.r,
+                      radius: 9.r,
+                      errorWidget: session.type == SessionType.private
+                          ? StringUtil.isNotEmpty(session.name)
+                              ? Container(
+                                  width: 44.r,
+                                  height: 44.r,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5.r),
+                                      border: Border.all(color: Colors.white, width: 1),
+                                      color: ColorUtil.strToColor(session.name!)),
+                                  alignment: Alignment.center,
+                                  child: FittedBox(
+                                      fit: BoxFit.contain,
+                                      child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(session.name![0],
+                                              style: TextStyle(fontSize: 40.sp, color: Colors.white)))))
+                              : Image.asset("assets/images/default_face.webp", width: 44.r, height: 44.r)
+                          : null,
+                      errorImage: session.type == SessionType.private ? null : "assets/images/default_group_head.webp",
+                      placeholderImage: session.type == SessionType.private
+                          ? "assets/images/default_face.webp"
+                          : "assets/images/default_group_head.webp"),
+                  Positioned(
+                      top: -3,
+                      right: -3,
+                      child: Visibility(
+                          visible: session.isDisturb,
+                          child: Container(
+                              height: 10,
+                              width: 10,
                               alignment: Alignment.center,
-                              child: FittedBox(
-                                  fit: BoxFit.contain,
-                                  child: Padding(
-                                      padding: const EdgeInsets.all(2.0),
-                                      child: Text(session.name![0],
-                                          style: TextStyle(fontSize: 40.sp, color: Colors.white)))))
-                          : Image.asset("assets/images/default_face.webp", width: 44.r, height: 44.r)
-                      : null,
-                  errorImage: session.type == SessionType.private ? null : "assets/images/default_group_head.webp",
-                  placeholderImage: session.type == SessionType.private
-                      ? "assets/images/default_face.webp"
-                      : "assets/images/default_group_head.webp"),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20), color: const Color(0xffFF4255)))))
+                ]),
+              ),
               SizedBox(width: 13.w),
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
@@ -99,7 +115,7 @@ class ItemSession extends StatelessWidget {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),
                     Visibility(
-                        visible: session.unReadCount > 0,
+                        visible: session.unReadCount > 0 && !session.isDisturb,
                         child: Container(
                             height: 13.h,
                             width: 26.w,
@@ -107,7 +123,10 @@ class ItemSession extends StatelessWidget {
                             decoration:
                                 BoxDecoration(borderRadius: BorderRadius.circular(20), color: const Color(0xffFF4255)),
                             child: Text("${session.unReadCount}",
-                                style: GoogleFonts.roboto(color: Colors.white, fontSize: 11.sp, height: 1))))
+                                style: GoogleFonts.roboto(color: Colors.white, fontSize: 11.sp, height: 1)))),
+                    Visibility(
+                        visible: session.isDisturb,
+                        child: Icon(IconFont.unDisturb, color: ColorUtil.color_999999, size: 18.sp))
                   ])
                 ]),
               )
