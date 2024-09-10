@@ -68,8 +68,6 @@ import 'package:vura/modules/im/session_supadmin/binding.dart';
 import 'package:vura/modules/im/session_supadmin/page.dart';
 import 'package:vura/modules/im/sessions/binding.dart';
 import 'package:vura/modules/im/sessions/page.dart';
-import 'package:vura/modules/im/transfer_to_member/binding.dart';
-import 'package:vura/modules/im/transfer_to_member/page.dart';
 import 'package:vura/modules/package/publish/binding.dart';
 import 'package:vura/modules/package/publish/page.dart';
 import 'package:vura/modules/package/result/binding.dart';
@@ -143,10 +141,6 @@ abstract class AppPages {
     GetPage(name: RoutePath.CHARGE_WAY_PAGE, page: () => const ChargeWayPage(), binding: ChargeWayBinding()),
     GetPage(name: RoutePath.ADD_CHARGE_WAY_PAGE, page: () => const AddWayPage(), binding: AddWayBinding()),
     GetPage(name: RoutePath.TRANSFER_PAGE, page: () => const TransferPage(), binding: TransferBinding()),
-    GetPage(
-        name: RoutePath.TRANSFER_TO_MEMBER_PAGE,
-        page: () => const TransferToMemberPage(),
-        binding: TransferToMemberBinding()),
     GetPage(
         name: RoutePath.GROUP_SESSION_DETAIL_PAGE,
         page: () => GroupSessionDetailPage(tag: Get.arguments[Keys.ID]),

@@ -11,6 +11,7 @@ import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
+import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/chat/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
@@ -143,9 +144,21 @@ class ItemReceiveMessage extends StatelessWidget {
                           const Icon(IconFont.transfer_to_member, color: ColorUtil.color_333333)
                         ])),
                     onPressed: () {
-                      Get.offNamed(RoutePath.TRANSFER_TO_MEMBER_PAGE, arguments: {
-                        "user": UserEntity(
-                            nickName: message.sendNickName, id: message.sendId, headImageThumb: message.sendHeadImage)
+                      UserEntity toUser = UserEntity(
+                          nickName: message.sendNickName,
+                          id: message.sendId,
+                          headImageThumb: message.sendHeadImage,
+                          headImage: message.sendHeadImage);
+
+                      Get.offNamed(RoutePath.PACKAGE_PUBLISH_PAGE, arguments: {
+                        Keys.ID: toUser.id,
+                        Keys.TYPE: SessionType.private,
+                        "user": toUser,
+                        "isTransfer": true
+                      })?.then((value) {
+                        if (value != null) {
+                          logic.transferToMember(value, toUser);
+                        }
                       });
                     }),
                 ...isManager

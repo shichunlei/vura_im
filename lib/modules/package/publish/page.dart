@@ -42,7 +42,25 @@ class PackagePublishPage extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                   child: Column(children: [
                     logic.type == SessionType.private
-                        ? const SizedBox()
+                        ? logic.isTransfer
+                            ? Container(
+                                margin: EdgeInsets.only(top: 13.h),
+                                height: 50.h,
+                                width: double.infinity,
+                                padding: EdgeInsets.symmetric(horizontal: 18.w),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
+                                child: Row(children: [
+                                  Text("发给谁",
+                                      style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp)),
+                                  const Spacer(),
+                                  AvatarRoundImage("${logic.user?.headImageThumb}",
+                                      height: 36.r, width: 36.r, radius: 4.r, name: logic.user?.nickName),
+                                  SizedBox(width: 11.w),
+                                  Text("${logic.user?.nickName}",
+                                      style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp))
+                                ]))
+                            : const SizedBox()
                         : Container(
                             height: 50.h,
                             width: double.infinity,
@@ -238,7 +256,8 @@ class PackagePublishPage extends StatelessWidget {
 
                           Get.bottomSheet(
                                   InputPayPasswordDialog(
-                                      amount: double.tryParse(logic.amountController.text), title: "红包金额"),
+                                      amount: double.tryParse(logic.amountController.text),
+                                      title: logic.isTransfer ? "转账金额" : "红包金额"),
                                   isScrollControlled: true)
                               .then((value) {
                             if (value != null) logic.sendRedPackage();

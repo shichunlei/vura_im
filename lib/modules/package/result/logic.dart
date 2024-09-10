@@ -3,6 +3,7 @@ import 'package:vura/base/base_object_logic.dart';
 import 'package:vura/entities/red_package_result.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/utils/string_util.dart';
 
 class PackageResultLogic extends BaseObjectLogic<RedPackageResultEntity?> {
   String? id;
@@ -37,7 +38,7 @@ class PackageResultLogic extends BaseObjectLogic<RedPackageResultEntity?> {
         for (var item in data.detailList) {
           _ += item.amount;
         }
-        balance.value = data.totalAmount - _;
+        balance.value = double.parse(StringUtil.formatPrice(data.totalAmount - _));
       }
     }
   }

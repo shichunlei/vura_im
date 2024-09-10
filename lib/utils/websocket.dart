@@ -152,6 +152,13 @@ class WebSocketManager {
     if (!_isConnected) reconnect();
   }
 
+  void switchAccount() {
+    close();
+    Future.delayed(const Duration(milliseconds: 200), () {
+      reconnect();
+    });
+  }
+
   void close() {
     // 关闭 WebSocket 连接
     _channel?.sink.close();

@@ -1,12 +1,14 @@
 import 'package:get/get.dart';
+import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/account_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/config.dart';
+import 'package:vura/modules/contacts/home/logic.dart';
+import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/account.dart';
 import 'package:vura/repository/user_repository.dart';
-import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/account_db_util.dart';
 import 'package:vura/utils/log_utils.dart';
 
@@ -44,7 +46,21 @@ class AccountLogic extends BaseListLogic<AccountEntity> {
         Log.e(e.toString());
       }
       if (result.id != null) AppConfig.setUserId(result.id!);
-      Get.offAllNamed(RoutePath.HOME_PAGE);
+      try {
+        Get.find<SessionLogic>().refreshData();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      try {
+        Get.find<ContactsLogic>().refreshData();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      webSocketManager.switchAccount();
+      // Get.offNamed(RoutePath.HOME_PAGE)?.then((value) {
+      //   webSocketManager.reconnect();
+      // });
+
     }
   }
 

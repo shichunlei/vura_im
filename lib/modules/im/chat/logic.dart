@@ -220,6 +220,33 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
     }
   }
 
+  /// 转账给他人
+  Future transferToMember(MessageEntity message, UserEntity toUser) async {
+    message.sessionId = toUser.id;
+    message.receiveHeadImage = toUser.headImage;
+    message.receiveNickName = toUser.nickName;
+    message.sessionType = SessionType.private;
+
+    MessageRealm(realm: Get.find<RootLogic>().realm).upsert(messageEntityToRealm(message));
+    SessionRealm(realm: Get.find<RootLogic>().realm)
+        .updateLastMessage(
+            SessionEntity(
+                id: toUser.id,
+                name: toUser.nickName,
+                type: SessionType.private,
+                headImage: toUser.headImage,
+                lastMessage: message,
+                lastMessageTime: message.sendTime),
+            message)
+        .then((value) {
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    });
+  }
+
   Future sendRedPackage(MessageEntity message) async {
     list.insert(0, message);
     list.refresh();

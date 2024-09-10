@@ -8,8 +8,7 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
-import 'package:vura/widgets/avatar_image.dart';
-import 'package:vura/widgets/obx_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/message_entity.dart';
 import 'package:vura/entities/red_package.dart';
+import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/root/logic.dart';
@@ -16,10 +17,14 @@ class PackagePublishLogic extends BaseLogic {
 
   String? id;
   late SessionType type;
+  bool isTransfer = false;
+  UserEntity? user;
 
   PackagePublishLogic() {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
+    isTransfer = Get.arguments?["isTransfer"] ?? false;
+    user = Get.arguments?["user"];
 
     amountController.addListener(update);
 
