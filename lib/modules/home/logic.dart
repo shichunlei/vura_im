@@ -47,11 +47,7 @@ class HomeLogic extends BaseLogic {
         case 3: // {"cmd":3,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"http://39.98.127.91:9001/box-im/image/20240825/1724562459243.jpg","id":"1828641371536359424","type":902,"content":"添加好友成功","sendTime":1724817052145}}
           if (data[Keys.TYPE] == MessageType.APPLY_ADD_FRIEND_SUCCESS.code) {
             // 对方同意您的好友申请，刷新好友列表
-            try {
-              Get.find<ContactsLogic>().refreshData();
-            } catch (e) {
-              Log.e(e.toString());
-            }
+            if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshData();
           }
           break;
         case 2: // {"cmd":2,"data":"您已在其他地方登陆，将被强制下线"}
@@ -70,8 +66,8 @@ class HomeLogic extends BaseLogic {
 
   @override
   void onInit() {
-    getUserInfo();
     super.onInit();
+    getUserInfo();
   }
 
   @override
@@ -84,11 +80,9 @@ class HomeLogic extends BaseLogic {
 
   Future loadOfflineMessage() async {
     String? groupLastMessageId, privateLastMessageId;
-    try {
+    if (Get.isRegistered<RootLogic>()) {
       groupLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryGroupLastMessageTime();
       privateLastMessageId = await MessageRealm(realm: Get.find<RootLogic>().realm).queryPrivateLastMessageTime();
-    } catch (e) {
-      Log.e(e.toString());
     }
 
     /// 拉取离线消息

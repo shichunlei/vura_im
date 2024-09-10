@@ -35,6 +35,7 @@ class PackageResultPage extends StatelessWidget {
               iconTheme: const IconThemeData(color: Colors.white)),
           body: BaseWidget(
               logic: logic,
+              bgColor: Colors.transparent,
               builder: (logic) {
                 return Column(children: [
                   SizedBox(height: 80.h),
@@ -49,45 +50,35 @@ class PackageResultPage extends StatelessWidget {
                       style: GoogleFonts.roboto(
                           fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
                   SizedBox(height: 44.h),
-                  ...logic.myRedPackage
-                      ? []
-                      : [
-                          Row(
-                              crossAxisAlignment: CrossAxisAlignment.baseline,
-                              textBaseline: TextBaseline.alphabetic,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: logic.myRedPackage
-                                  ? [
-                                      Text(logic.bean.value!.totalTime > 0 ? "已领取" : "未领取",
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 44.sp,
-                                              fontWeight: FontWeight.w600,
-                                              color: const Color(0xffDB5549)))
-                                    ]
-                                  : logic.bean.value!.totalTime > 0 &&
-                                          logic.bean.value!.detailList
-                                              .every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
-                                      ? [
-                                          Text("手慢了，已领完",
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 44.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: const Color(0xffDB5549)))
-                                        ]
-                                      : [
-                                          Text("${logic.bean.value?.amount}",
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 44.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: const Color(0xffDB5549))),
-                                          Text("幸运值",
-                                              style: GoogleFonts.roboto(
-                                                  fontSize: 15.sp,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: const Color(0xffDB5549)))
-                                        ]),
-                          SizedBox(height: 22.h)
-                        ],
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: logic.myRedPackage
+                          ? [
+                              Text(logic.bean.value!.totalTime > 0 ? "已领取" : "未领取",
+                                  style: GoogleFonts.roboto(
+                                      fontSize: 34.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                            ]
+                          : logic.bean.value!.totalTime > 0 &&
+                                  logic.bean.value!.detailList
+                                      .every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
+                              ? [
+                                  Text("手慢了，已领完",
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 34.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                ]
+                              : [
+                                  Text("${logic.bean.value?.amount}",
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 44.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: const Color(0xffDB5549))),
+                                  Text("幸运值",
+                                      style: GoogleFonts.roboto(
+                                          fontSize: 15.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                ]),
+                  SizedBox(height: 22.h),
                   Container(
                       margin: EdgeInsets.only(bottom: 11.h, left: 22.w),
                       alignment: Alignment.centerLeft,

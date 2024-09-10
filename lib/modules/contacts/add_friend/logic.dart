@@ -8,7 +8,6 @@ import 'package:vura/mixin/qr_scan_mixin.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/repository/contacts_repository.dart';
 import 'package:vura/repository/user_repository.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class AddFriendLogic extends BaseListLogic<UserEntity> with QrScanMixin, FriendMixin {
@@ -46,11 +45,7 @@ class AddFriendLogic extends BaseListLogic<UserEntity> with QrScanMixin, FriendM
       showToast(text: "已移除黑名单");
       list[index].friendship = YorNType.N;
       list.refresh();
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 }

@@ -8,6 +8,7 @@ import 'package:vura/application.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/session_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
@@ -184,39 +185,42 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
     }
   }
 
-  Future openRedPackage(BuildContext context, MessageEntity message, String? redPackageId, String? cover) async {
-    /// 单聊，群主，群管理，开启抢红包的个人
-    if (type == SessionType.private ||
-        session.value?.isAdmin == YorNType.Y ||
-        session.value?.isSupAdmin == YorNType.Y ||
-        members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isReceiveRedPacket ==
-            0) {
-      String? result = await SessionRepository.checkRedPackage(redPackageId);
-      if (result != null) {
-        if (result == YorNType.Y.name) {
-          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        } else if (result == YorNType.N.name) {
-          if (context.mounted) {
-            showRedPacket(context, () {
-              Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-            },
-                nickName: message.sendNickName,
-                headImage: message.sendHeadImage,
-                redPackageId: redPackageId,
-                coverImage: EnumToString.fromString(RedPackageCoverType.values, cover,
-                        defaultValue: RedPackageCoverType.cover_0)!
-                    .itemPath);
-          }
-        } else if (result == YorNType.F.name) {
-          showToast(text: "红包已抢完");
-          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        } else if (result == YorNType.EXPIRE.name) {
-          showToast(text: "红包已过期");
-          Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackageId});
-        } else {}
-      }
+  Future openRedPackage(BuildContext context, MessageEntity message, RedPackageEntity redPackage) async {
+    if (type == SessionType.private && redPackage.type == RedPackageType.SPECIAL.code) {
+      Get.toNamed(RoutePath.TRANSFER_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
     } else {
-      showToast(text: "群主设置了禁止领取VURA");
+      /// 单聊，群主，群管理，开启抢红包的个人
+      if (type == SessionType.private ||
+          session.value?.isAdmin == YorNType.Y ||
+          session.value?.isSupAdmin == YorNType.Y ||
+          members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isReceiveRedPacket ==
+              0) {
+        String? result = await SessionRepository.checkRedPackage(redPackage.id);
+        if (result != null) {
+          if (result == YorNType.Y.name) {
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+          } else if (result == YorNType.N.name) {
+            if (context.mounted) {
+              showRedPacket(context, () {
+                Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+              },
+                  nickName: message.sendNickName,
+                  headImage: message.sendHeadImage,
+                  redPackageId: redPackage.id,
+                  coverImage: EnumToString.fromString(RedPackageCoverType.values, redPackage.cover,
+                          defaultValue: RedPackageCoverType.cover_0)!
+                      .itemPath);
+            }
+          } else if (result == YorNType.F.name) {
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+          } else if (result == YorNType.EXPIRE.name) {
+            showToast(text: "红包已过期");
+            Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
+          } else {}
+        }
+      } else {
+        showToast(text: "群主设置了禁止领取VURA");
+      }
     }
   }
 

@@ -98,14 +98,18 @@ class PackagePublishLogic extends BaseLogic {
         : double.tryParse(double.parse(amountController.text).toStringAsFixed(2)); // 红包总金额
     params["totalPacket"] = type == SessionType.group ? int.tryParse(countController.text) : 1; // 红包总个数
     params["type"] = type == SessionType.private
-        ? 1
+        ? isTransfer
+            ? RedPackageType.SPECIAL.code
+            : RedPackageType.ONE.code
         : mines.isNotEmpty
-            ? 3
-            : 2; // 红包类型 1 单人红包 2 普通群红包 3 拼手气红包(红包雷)
+            ? RedPackageType.LUCKY.code
+            : RedPackageType.ORDINARY.code; // 红包类型
     Log.json(params);
 
     showLoading();
-    MessageEntity? message = await SessionRepository.sendRedPackage(params, type);
+    MessageEntity? message = isTransfer
+        ? await SessionRepository.sendTransfer(params)
+        : await SessionRepository.sendRedPackage(params, type);
     hiddenLoading();
     if (message != null) {
       try {

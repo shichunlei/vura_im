@@ -10,7 +10,6 @@ import 'package:vura/modules/root/logic.dart';
 import 'package:vura/realm/account.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/account_db_util.dart';
-import 'package:vura/utils/log_utils.dart';
 
 class AccountLogic extends BaseListLogic<AccountEntity> {
   var selectIndex = 0.obs;
@@ -40,27 +39,12 @@ class AccountLogic extends BaseListLogic<AccountEntity> {
     hiddenLoading();
 
     if (result != null) {
-      try {
-        Get.find<RootLogic>().setUserInfo(result);
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<RootLogic>()) Get.find<RootLogic>().setUserInfo(result);
       if (result.id != null) AppConfig.setUserId(result.id!);
-      try {
-        Get.find<SessionLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<SessionLogic>()) Get.find<SessionLogic>().refreshData();
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
       webSocketManager.switchAccount();
-      // Get.offNamed(RoutePath.HOME_PAGE)?.then((value) {
-      //   webSocketManager.reconnect();
-      // });
-
+      // Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
     }
   }
 

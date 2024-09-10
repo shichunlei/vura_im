@@ -40,11 +40,7 @@ class SessionMemberLogic extends BaseObjectLogic<MemberEntity?> with FriendMixin
     if (result.code == 200) {
       bean.value?.friendship == YorNType.N;
       bean.refresh();
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 

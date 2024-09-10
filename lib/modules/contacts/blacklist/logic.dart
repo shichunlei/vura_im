@@ -6,7 +6,6 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/contacts_repository.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/session_db_util.dart';
 
 class BlacklistLogic extends BaseListLogic<UserEntity> {
@@ -30,11 +29,7 @@ class BlacklistLogic extends BaseListLogic<UserEntity> {
       list.removeAt(index);
       list.refresh();
       if (list.isEmpty) pageState.value = ViewState.empty;
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 }

@@ -37,11 +37,7 @@ class UserInfoLogic extends BaseObjectLogic<UserEntity?> with FriendMixin {
       showToast(text: "已移除黑名单");
       bean.value?.friendship = YorNType.N;
       bean.refresh();
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 }

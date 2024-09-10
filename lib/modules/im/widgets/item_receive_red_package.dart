@@ -21,7 +21,7 @@ class ItemReceiveRedPackage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          logic.openRedPackage(context, message, redPackage.id,redPackage.cover);
+          logic.openRedPackage(context, message, redPackage);
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
@@ -38,35 +38,53 @@ class ItemReceiveRedPackage extends StatelessWidget {
                       width: 99.w)),
               Column(mainAxisSize: MainAxisSize.min, children: [
                 SizedBox(height: 13.h),
-                redPackage.type == 3
-                    ? Row(children: [
-                        SizedBox(width: 18.w),
-                        Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
-                        SizedBox(width: 13.w),
-                        Text("x${redPackage.totalAmount}",
-                            style:
-                                GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                        const Spacer(),
-                        Text("${redPackage.minesStr}",
-                            style:
-                                GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                        SizedBox(width: 15.w)
-                      ])
-                    : Container(
-                        padding: EdgeInsets.symmetric(horizontal: 13.w),
-                        height: 35.r,
-                        alignment: Alignment.centerLeft,
-                        child: Text("${redPackage.blessing}",
-                            style:
-                                GoogleFonts.roboto(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp))),
+                Row(children: [
+                  SizedBox(width: 18.w),
+                  Image.asset("assets/images/red_package.png", width: 35.r, height: 35.r),
+                  SizedBox(width: 13.w),
+                  ...redPackage.type == 3
+                      ? [
+                          Text("x${redPackage.totalAmount}",
+                              style:
+                                  GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                          const Spacer(),
+                          Text("${redPackage.minesStr}",
+                              style:
+                                  GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold))
+                        ]
+                      : redPackage.type == 4
+                          ? [
+                              Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("x${redPackage.totalAmount}",
+                                        style: GoogleFonts.roboto(
+                                            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp)),
+                                    Text("${redPackage.blessing}",
+                                        style: GoogleFonts.roboto(color: Colors.white, fontSize: 14.sp)),
+                                  ])
+                            ]
+                          : [
+                              Text("${redPackage.blessing}",
+                                  style: GoogleFonts.roboto(
+                                      color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17.sp))
+                            ],
+                  SizedBox(width: 15.w)
+                ]),
                 SizedBox(height: 13.h),
                 const Divider(height: 0, color: Colors.white12),
                 Container(
                     height: 38.h,
                     alignment: Alignment.centerLeft,
-                    padding: EdgeInsets.only(left: 13.w),
-                    child: Text("${redPackage.expireTime}",
-                        style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white)))
+                    padding: EdgeInsets.only(left: 13.w, right: 13.w),
+                    child: Row(children: [
+                      Text("${redPackage.expireTime}", style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white)),
+                      const Spacer(),
+                      Visibility(
+                          visible: redPackage.type == 4,
+                          child: Text("USDT转账", style: GoogleFonts.inter(fontSize: 11.sp, color: Colors.white))),
+                    ]))
               ])
             ])));
   }

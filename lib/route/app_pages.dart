@@ -72,6 +72,8 @@ import 'package:vura/modules/package/publish/binding.dart';
 import 'package:vura/modules/package/publish/page.dart';
 import 'package:vura/modules/package/result/binding.dart';
 import 'package:vura/modules/package/result/page.dart';
+import 'package:vura/modules/package/transfer/binding.dart';
+import 'package:vura/modules/package/transfer/page.dart';
 import 'package:vura/modules/setting/account/binding.dart';
 import 'package:vura/modules/setting/account/page.dart';
 import 'package:vura/modules/setting/home/binding.dart';
@@ -171,6 +173,10 @@ abstract class AppPages {
         name: RoutePath.PACKAGE_RESULT_PAGE,
         page: () => PackageResultPage(tag: Get.arguments[Keys.ID]),
         binding: PackageResultBinding()),
+    GetPage(
+        name: RoutePath.TRANSFER_RESULT_PAGE,
+        page: () => TransferResultPage(tag: Get.arguments[Keys.ID]),
+        binding: TransferResultBinding()),
     GetPage(
         name: RoutePath.PACKAGE_PUBLISH_PAGE, page: () => const PackagePublishPage(), binding: PackagePublishBinding()),
     GetPage(

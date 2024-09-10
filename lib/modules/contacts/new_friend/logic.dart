@@ -4,7 +4,6 @@ import 'package:vura/entities/apply_user.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/repository/contacts_repository.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
@@ -27,11 +26,7 @@ class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
       showToast(text: "已同意");
       list[index].applyStatus = "1";
       list.refresh();
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 

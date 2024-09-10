@@ -59,13 +59,10 @@ class FriendRealm {
     if (friend != null) {
       await _realm.writeAsync(() {
         friend.isDeleted = true;
+        friend.friendship = YorNType.N.name;
       });
       Log.d("deleteChannel===${friend.id}================>${friend.toEJson()}");
-      try {
-        Get.find<ContactsLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
   }
 

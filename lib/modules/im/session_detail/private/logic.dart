@@ -99,11 +99,7 @@ class PrivateSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     if (result.code == 200) {
       bean.value?.friendship = YorNType.Y;
       bean.refresh();
-      try {
-        Get.find<ContactsLogic>().refreshData();
-      } catch (e) {
-        Log.e(e.toString());
-      }
+      if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
     }
 
     SessionRealm(realm: Get.find<RootLogic>().realm).blacklistChannel(id, YorNType.Y);

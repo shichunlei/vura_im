@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/application.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/contacts/home/page.dart';
-import 'package:vura/modules/dashboard/mine/page.dart';
+import 'package:vura/modules/dashboard/me/page.dart';
 import 'package:vura/modules/im/session/page.dart';
 import 'package:vura/modules/user/lock_screen_dialog/dialog.dart';
 import 'package:vura/utils/color_util.dart';

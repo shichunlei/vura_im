@@ -162,12 +162,26 @@ enum TextSizeType {
 
 enum BookType {
   RED(label: "红包"),
+  RED_TRANSFER(label: "红包转账"),
   WIDTH_DRAW(label: "提现"),
   RECHARGE(label: "充值"),
   TRANSFER(label: "转账"),
-  INCOME(label: "到账");
+  INCOME(label: "到账"),
+  RED_REFUND(label: "红包退款");
 
   final String label;
 
   const BookType({required this.label});
+}
+
+enum RedPackageType {
+  ONE(code: 1, label: "单人红包"),
+  ORDINARY(code: 2, label: "普通群红包"),
+  LUCKY(code: 3, label: "拼手气红包"),
+  SPECIAL(code: 4, label: "专属红包");
+
+  final int code;
+  final String label;
+
+  const RedPackageType({required this.code, required this.label});
 }

@@ -452,6 +452,18 @@ class SessionRepository {
     }
   }
 
+  /// 发红包转账
+  ///
+  static Future<MessageEntity?> sendTransfer(Map<String, dynamic> params) async {
+    var data = await HttpUtils.getInstance().request("redPacket/sendTransfer", params: params, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      return MessageEntity.fromJson(result.data);
+    } else {
+      return null;
+    }
+  }
+
   /// 拆红包
   ///
   static Future<RedPackageBean?> openRedPackage(String? id) async {
