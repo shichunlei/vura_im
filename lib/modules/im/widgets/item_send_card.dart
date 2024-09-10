@@ -27,6 +27,7 @@ class ItemSendCard extends StatelessWidget {
           }
         },
         child: Container(
+            margin: EdgeInsets.only(top: 5.h),
             width: 227.w,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(

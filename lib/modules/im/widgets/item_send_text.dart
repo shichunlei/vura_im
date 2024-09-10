@@ -15,6 +15,7 @@ class ItemSendText extends StatelessWidget {
         onDoubleTap: () {},
         behavior: HitTestBehavior.translucent,
         child: Container(
+            margin: EdgeInsets.only(top: 5.h),
             padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.only(

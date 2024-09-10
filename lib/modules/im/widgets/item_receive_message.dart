@@ -60,12 +60,8 @@ class ItemReceiveMessage extends StatelessWidget {
                         message.sendNickName));
                   }
                 : null),
-        SizedBox(width: 10.w),
-        GestureDetector(
-            onLongPress: () {
-              /// todo 消息长按操作
-            },
-            child: buildMessageView(message.type))
+        SizedBox(width: 8.w),
+        buildMessageView(message.type)
       ])
     ]);
   }

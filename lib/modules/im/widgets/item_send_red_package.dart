@@ -38,6 +38,7 @@ class ItemSendRedPackage extends StatelessWidget {
         },
         behavior: HitTestBehavior.translucent,
         child: Container(
+            margin: EdgeInsets.only(top: 5.h),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(9.r),
                 gradient: LinearGradient(colors: [

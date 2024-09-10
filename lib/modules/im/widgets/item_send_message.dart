@@ -12,6 +12,7 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/modules/im/widgets/item_send_emoji.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
+import 'package:vura/widgets/avatar_image.dart';
 
 import 'item_send_card.dart';
 import 'item_send_image.dart';
@@ -37,12 +38,10 @@ class ItemSendMessage extends StatelessWidget {
               child: Text(DateUtil.getWechatTime(message.sendTime),
                   style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
       SizedBox(height: 5.h),
-      Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        GestureDetector(
-            onLongPress: () {
-              /// TODO 消息长按操作
-            },
-            child: buildMessageView(message.type))
+      Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
+        buildMessageView(message.type),
+        SizedBox(width: 8.w),
+        AvatarImageView("${message.sendHeadImage}", radius: 22.r, name: "${message.sendNickName}")
       ])
     ]);
   }
