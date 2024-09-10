@@ -77,19 +77,19 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         }
 
         /// 修改群配置  {"cmd":4,"data":{"addFriend":"N" ,"allMute":"" ,"vura":"N","id":"1829665405703159809","invite":"N","type":300}}
-        if (data[Keys.TYPE] == MessageType.UPDATE_GROUP_CONFIG && data[Keys.ID] == id) {
+        if (data[Keys.TYPE] == MessageType.UPDATE_GROUP_CONFIG && "${data[Keys.ID]}" == id) {
           session.value?.configObj = SessionConfigEntity.fromJson(data);
           session.refresh();
         }
 
         /// 禁言某人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":301}}
-        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_MUTE && data[Keys.GROUP_ID] == id) {
-          mute(data[Keys.USER_ID]);
+        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_MUTE && "${data[Keys.GROUP_ID]}" == id) {
+          mute("${data[Keys.USER_ID]}");
         }
 
         /// 解除禁言某人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":302}}
-        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_UN_MUTE && data[Keys.GROUP_ID] == id) {
-          noMute(data[Keys.USER_ID]);
+        if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_UN_MUTE && "${data[Keys.GROUP_ID]}" == id) {
+          noMute("${data[Keys.USER_ID]}");
         }
       }
     });
