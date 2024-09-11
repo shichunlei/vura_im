@@ -51,8 +51,15 @@ enum MessageType {
   RTC_GROUP_CANDIDATE(210, "同步candidate"),
   RTC_GROUP_DEVICE(211, "设备操作"),
   UPDATE_GROUP_CONFIG(300, "群配置修改"),
-  UPDATE_MEMBER_MUTE(301, "群禁言某人"),
-  UPDATE_MEMBER_UN_MUTE(302, "群解除某人禁言"),
+  UPDATE_MEMBER_MUTE(301, "群禁言某人"),// {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":301}}
+  UPDATE_MEMBER_UN_MUTE(302, "群解除某人禁言"),// {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":302}}
+  SET_SUP_ADMIN(303, "群设置管理员"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":303}}
+  REMOVE_SUP_ADMIN(304, "群解除管理员"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":304}}
+  TRANSFER_ADMIN(305, "转让群主"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":305}}
+  REMOVE_MEMBERS_FROM_GROUP(306, "群踢人"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":306}}
+  ADD_MEMBERS_TO_GROUP(307, "群加人"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":307}}
+  DISSOLUTION_GROUP(308, "解散群"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "type":308}}
+  LEAVE_GROUP(309, "主动退出群"), // {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544", "type":309}}
   APPLY_ADD_FRIEND(900, "申请添加好友通知"),
   APPLY_ADD_GROUP(901, "申请添加群聊通知"),
   APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知"),

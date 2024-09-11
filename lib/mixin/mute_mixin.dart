@@ -69,4 +69,18 @@ mixin SessionMembersMixin on BaseLogic {
     members.firstWhere((item) => item.userId == userId).isMute = YorNType.Y;
     members.refresh();
   }
+
+  void setSupAdmin(List<String?> userIds) {
+    for (var userId in userIds) {
+      members.firstWhere((item) => item.userId == userId).isSupAdmin = YorNType.Y;
+    }
+    members.refresh();
+  }
+
+  void resetSupAdmin(List<String?> userIds) {
+    for (var userId in userIds) {
+      members.firstWhere((item) => item.userId == userId).isSupAdmin = YorNType.N;
+    }
+    members.refresh();
+  }
 }

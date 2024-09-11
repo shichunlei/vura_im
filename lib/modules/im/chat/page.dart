@@ -72,6 +72,7 @@ class ChatPage extends StatelessWidget {
                           child: CustomIconButton(
                               icon: const Icon(Icons.more_vert),
                               onPressed: () {
+                                DeviceUtils.hideKeyboard(context);
                                 if (logic.type == SessionType.private) {
                                   Get.toNamed(RoutePath.PRIVATE_SESSION_DETAIL_PAGE, arguments: {Keys.ID: logic.id});
                                 }

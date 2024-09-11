@@ -8,7 +8,6 @@ import 'package:vura/mixin/friend_mixin.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/repository/contacts_repository.dart';
 import 'package:vura/repository/user_repository.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/toast_util.dart';
 
 class UserInfoLogic extends BaseObjectLogic<UserEntity?> with FriendMixin {

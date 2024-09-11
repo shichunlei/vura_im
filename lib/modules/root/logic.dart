@@ -5,7 +5,7 @@ import 'package:app_installer/app_installer.dart';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:realm/realm.dart' hide Session;
+import 'package:realm/realm.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/account_entity.dart';
 import 'package:vura/entities/login_entity.dart';

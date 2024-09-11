@@ -91,6 +91,39 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         if (data[Keys.TYPE] == MessageType.UPDATE_MEMBER_UN_MUTE.code) {
           noMute("${data[Keys.USER_ID]}");
         }
+
+        /// 群踢人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":306}}
+        if (data[Keys.TYPE] == MessageType.REMOVE_MEMBERS_FROM_GROUP.code) {
+          removeMembers((data["userIds"] as List).map((item) => item.toString()).toList());
+        }
+
+        /// 群加人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":307}}
+        if (data[Keys.TYPE] == MessageType.ADD_MEMBERS_TO_GROUP.code) getMembers(id);
+
+        /// 退群 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544", "type":309}}
+        if (data[Keys.TYPE] == MessageType.LEAVE_GROUP.code) removeMember("${data[Keys.USER_ID]}");
+
+        /// 解散群聊 {"cmd":4,"data":{"groupId":"1829665405703159809", "type":308}}
+        if (data[Keys.TYPE] == MessageType.DISSOLUTION_GROUP.code) {
+          /// 删除本地群聊
+          SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+          Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
+        }
+
+        /// 设置管理员 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":303}}
+        if (data[Keys.TYPE] == MessageType.SET_SUP_ADMIN.code) {
+          setSupAdmin((data["userIds"] as List).map((item) => item.toString()).toList());
+        }
+
+        /// 取消管理员 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":304}}
+        if (data[Keys.TYPE] == MessageType.REMOVE_SUP_ADMIN.code) {
+          resetSupAdmin((data["userIds"] as List).map((item) => item.toString()).toList());
+        }
+
+        /// 群主换让 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":305}}
+        if (data[Keys.TYPE] == MessageType.TRANSFER_ADMIN.code) {
+
+        }
       }
     });
 
