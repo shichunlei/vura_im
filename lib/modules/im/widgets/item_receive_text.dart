@@ -28,7 +28,6 @@ class ItemReceiveText extends StatelessWidget {
             constraints: BoxConstraints(maxWidth: 266.w, minWidth: 0, minHeight: 44.r),
             child: Obx(() {
               return Text('${message.content}',
-                  textAlign: TextAlign.justify,
                   style: TextStyle(
                       color: ColorUtil.color_333333,
                       fontSize: Get.find<RootLogic>().textSizeType.value.fontSize.sp,

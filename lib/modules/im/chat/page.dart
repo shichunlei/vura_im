@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:emoji_picker/emoji_picker.dart';
 import 'package:extended_list/extended_list.dart';
+import 'package:extended_text_field/extended_text_field.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -195,12 +196,15 @@ class ChatPage extends StatelessWidget {
                                                               decoration: BoxDecoration(
                                                                   borderRadius: BorderRadius.circular(11.r),
                                                                   color: Colors.white),
-                                                              child: TextField(
+                                                              child: ExtendedTextField(
                                                                   controller: logic.controller,
                                                                   maxLines: 1,
                                                                   textInputAction: TextInputAction.send,
                                                                   style: GoogleFonts.roboto(
                                                                       fontSize: 15.sp, color: ColorUtil.color_333333),
+                                                                  specialTextSpanBuilder:
+                                                                      logic.mySpecialTextSpanBuilder,
+                                                                  strutStyle: const StrutStyle(),
                                                                   onSubmitted: (v) {
                                                                     DeviceUtils.hideKeyboard(context);
                                                                     logic.sendMessage(v, MessageType.TEXT);

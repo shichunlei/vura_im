@@ -16,6 +16,7 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/mixin/mute_mixin.dart';
 import 'package:vura/mixin/session_detail_mixin.dart';
 import 'package:vura/modules/im/session/logic.dart';
+import 'package:vura/modules/im/widgets/at_text.dart';
 import 'package:vura/modules/package/widgets/red_package.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/common_repository.dart';
@@ -35,6 +36,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
   late SessionType type;
 
   TextEditingController controller = TextEditingController();
+
+  final MySpecialTextSpanBuilder mySpecialTextSpanBuilder = MySpecialTextSpanBuilder();
 
   int selectedBgIndex = 0;
 

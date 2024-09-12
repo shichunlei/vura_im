@@ -47,7 +47,7 @@ class SelectAtMemberDialog extends StatelessWidget {
                     : CustomIconButton(
                         icon: const Icon(Icons.keyboard_arrow_down, color: ColorUtil.color_333333),
                         onPressed: Get.back))),
-            body: ListView.builder(
+            body: ListView.separated(
                 itemBuilder: (_, index) {
                   return Obx(() {
                     return logic.isCheckBox.value
@@ -81,6 +81,7 @@ class SelectAtMemberDialog extends StatelessWidget {
                             });
                   });
                 },
-                itemCount: logic.members.length)));
+                itemCount: logic.members.length,
+                separatorBuilder: (BuildContext context, int index) => const Divider(height: 0))));
   }
 }
