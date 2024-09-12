@@ -9,10 +9,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:vura/entities/member_entity.dart';
 import 'package:vura/global/config.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
+import 'package:vura/modules/im/at/dialog.dart';
 import 'package:vura/modules/im/widgets/item_receive_message.dart';
 import 'package:vura/modules/im/widgets/item_send_message.dart';
 import 'package:vura/modules/im/widgets/item_system_message.dart';
@@ -202,6 +204,34 @@ class ChatPage extends StatelessWidget {
                                                                   onSubmitted: (v) {
                                                                     DeviceUtils.hideKeyboard(context);
                                                                     logic.sendMessage(v, MessageType.TEXT);
+                                                                  },
+                                                                  onChanged: (value) {
+                                                                    if (logic.type == SessionType.group &&
+                                                                        value.endsWith("@")) {
+                                                                      DeviceUtils.hideKeyboard(context);
+                                                                      Get.bottomSheet(
+                                                                              SelectAtMemberDialog(
+                                                                                  members: logic.members
+                                                                                      .where((item) =>
+                                                                                          item.userId !=
+                                                                                          Get.find<RootLogic>()
+                                                                                              .user
+                                                                                              .value
+                                                                                              ?.id)
+                                                                                      .toList()),
+                                                                              clipBehavior: Clip.antiAlias,
+                                                                              shape: RoundedRectangleBorder(
+                                                                                  borderRadius: BorderRadius.only(
+                                                                                      topLeft: Radius.circular(15.r),
+                                                                                      topRight: Radius.circular(15.r))),
+                                                                              isScrollControlled: true)
+                                                                          .then((value) {
+                                                                        if (value != null && value.isNotEmpty) {
+                                                                          logic.controller.text =
+                                                                              "${logic.controller.text.substring(0, logic.controller.text.length - 1)}${(value as List<MemberEntity>).map((item) => "@${item.showNickName}").toList().join(" ")} ";
+                                                                        }
+                                                                      });
+                                                                    }
                                                                   },
                                                                   decoration: InputDecoration(
                                                                       contentPadding:
