@@ -260,7 +260,7 @@ class PackagePublishPage extends StatelessWidget {
                                       title: logic.isTransfer ? "转账金额" : "红包金额"),
                                   isScrollControlled: true)
                               .then((value) {
-                            if (value != null) logic.sendRedPackage();
+                            if (value != null) logic.sendRedPackage(value);
                           });
                         },
                         radius: 40,

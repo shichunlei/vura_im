@@ -119,9 +119,16 @@ class CommonRepository {
   /// [remarks] 转账备注
   ///
   static Future<BaseBean> withdraw(
-      {required double money, required BookType type, String? remarks, String? account}) async {
+      {required double money, required BookType type, String? remarks, String? account, String? payPassword}) async {
     var data = await HttpUtils.getInstance().request("withdraw/apply",
-        params: {"money": money, "type": type.index, "remarks": remarks, "account": account}, showErrorToast: true);
+        params: {
+          "money": money,
+          "type": type.index,
+          "remarks": remarks,
+          "account": account,
+          "payPassword": payPassword
+        },
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
@@ -130,10 +137,13 @@ class CommonRepository {
   /// [userId] 用户ID
   /// [money] 转账金额
   /// [remarks] 转账备注
+  /// [payPassword] 支付密码
   ///
-  static Future<BaseBean> transferToMember({required double money, String? remarks, String? userId}) async {
+  static Future<BaseBean> transferToMember(
+      {required double money, String? remarks, String? userId, String? payPassword}) async {
     var data = await HttpUtils.getInstance().request("withdraw/redPacketApply",
-        params: {"money": money, "remarks": remarks, "userId": userId}, showErrorToast: true);
+        params: {"money": money, "remarks": remarks, "userId": userId, "payPassword": payPassword},
+        showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 

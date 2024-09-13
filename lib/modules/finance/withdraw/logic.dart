@@ -67,13 +67,14 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
     }
   }
 
-  Future withdraw() async {
+  Future withdraw(String password) async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
         type: BookType.WIDTH_DRAW,
         money: double.parse(controller.text),
         account: Get.find<RootLogic>().user.value?.walletCard,
-        remarks: "提现");
+        remarks: "提现",
+        payPassword: password);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "提现申请已提交");

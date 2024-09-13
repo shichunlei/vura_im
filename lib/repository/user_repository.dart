@@ -74,14 +74,27 @@ class UserRepository {
   ///
   /// [oldPassword] 旧密码
   /// [newPassword] 新密码
+  /// [rePassword] 确认密码
   /// [answer] 密保问题
   /// [code] 验证码
   /// [uuid] 校验验证码的UUID
   ///
   static Future<BaseBean> updatePassword(
-      {String? oldPassword, String? newPassword, String? answer, String? code, String? uuid}) async {
+      {String? oldPassword,
+      String? newPassword,
+      String? rePassword,
+      String? answer,
+      String? code,
+      String? uuid}) async {
     var data = await HttpUtils.getInstance().request('modifyPwd',
-        params: {"oldPassword": oldPassword, "newPassword": newPassword, "answer": answer, "code": code, "uuid": uuid},
+        params: {
+          "oldPassword": oldPassword,
+          "newPassword": newPassword,
+          "newPassword2": rePassword,
+          "answer": answer,
+          "code": code,
+          "uuid": uuid
+        },
         method: HttpUtils.PUT,
         showErrorToast: true);
     return BaseBean.fromJson(data);
@@ -263,7 +276,7 @@ class UserRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 设置支付密码
+  /// 校验支付密码
   ///
   /// [password] 支付密码
   ///

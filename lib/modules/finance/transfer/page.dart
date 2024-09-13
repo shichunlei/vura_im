@@ -208,7 +208,7 @@ class TransferPage extends StatelessWidget {
                                             isUsdt: true),
                                         isScrollControlled: true)
                                     .then((value) {
-                                  if (value != null) logic.transferToMember();
+                                  if (value != null) logic.transferToMember(value);
                                 });
                               },
                               margin: EdgeInsets.only(top: 8.h, bottom: 22.h),

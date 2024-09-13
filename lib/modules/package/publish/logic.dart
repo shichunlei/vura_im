@@ -84,7 +84,7 @@ class PackagePublishLogic extends BaseLogic {
 
   List<int?> mines = [];
 
-  Future sendRedPackage() async {
+  Future sendRedPackage(String? password) async {
     if (type == SessionType.group && StringUtil.isNotEmpty(valueController.text)) {
       mines = valueController.text.split(",").map((e) => int.tryParse(e)).toList();
     }
@@ -104,6 +104,7 @@ class PackagePublishLogic extends BaseLogic {
         : mines.isNotEmpty
             ? RedPackageType.LUCKY.code
             : RedPackageType.ORDINARY.code; // 红包类型
+    params["payPassword"] = password; // 支付密码
     Log.json(params);
 
     showLoading();

@@ -227,7 +227,7 @@ class WithdrawPage extends StatelessWidget {
                                                     showAccount: true),
                                                 isScrollControlled: true)
                                             .then((value) {
-                                          if (value != null) logic.withdraw();
+                                          if (value != null) logic.withdraw(value);
                                         });
                                       },
                                       margin: EdgeInsets.only(top: 44.h),

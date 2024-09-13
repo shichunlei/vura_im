@@ -217,7 +217,7 @@ class RechargePage extends StatelessWidget {
                                                     isUsdt: true),
                                                 isScrollControlled: true)
                                             .then((value) {
-                                          if (value != null) logic.recharge();
+                                          if (value != null) logic.recharge(value);
                                         });
                                       },
                                       margin: EdgeInsets.only(top: 44.h),

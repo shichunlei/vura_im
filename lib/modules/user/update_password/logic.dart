@@ -51,6 +51,7 @@ class UpdatePasswordLogic extends BaseLogic with AuthCodeMixin {
     BaseBean result = await UserRepository.updatePassword(
         oldPassword: oldPasswordController.text,
         newPassword: passwordController.text,
+        rePassword: rePasswordController.text,
         answer: securityIssuesController.text,
         code: codeController.text,
         uuid: base64Img.value?.uuid);

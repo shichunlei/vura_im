@@ -63,13 +63,14 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
     previousText.value = amountController.text;
   }
 
-  Future transfer() async {
+  Future transfer(String password) async {
     showLoading();
     BaseBean result = await CommonRepository.withdraw(
         type: BookType.TRANSFER,
         money: double.parse(amountController.text),
         account: addressController.text,
-        remarks: "转账");
+        remarks: "转账",
+        payPassword: password);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "转账成功");
@@ -82,10 +83,10 @@ class TransferLogic extends BaseObjectLogic<UserEntity?> {
     }
   }
 
-  Future transferToMember() async {
+  Future transferToMember(String password) async {
     showLoading();
     BaseBean result = await CommonRepository.transferToMember(
-        userId: user.value?.id, money: double.parse(amountController.text), remarks: "转账");
+        userId: user.value?.id, money: double.parse(amountController.text), remarks: "转账", payPassword: password);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "转账成功");
