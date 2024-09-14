@@ -26,7 +26,9 @@ void main() async {
     await Application.getInstance().initApp();
     return launchApp();
   }, (Object error, StackTrace stack) {
+    Log.e("---------------------------------ERROR start-----------------------------------");
     Log.e(error.toString());
+    Log.e("---------------------------------ERROR end-----------------------------------");
   });
 }
 

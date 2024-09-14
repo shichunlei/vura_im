@@ -69,7 +69,7 @@ class SessionPage extends StatelessWidget {
                 const Divider(height: 0),
                 Expanded(
                     child: logic.list.isEmpty
-                        ? const EmptyPage(text: "温馨提示：\n您现在还没有任何聊天消息\n快跟您的好友发起聊天吧~")
+                        ? const EmptyPage(text: "温馨提示：\n您现在还没有任何聊天消息\n快跟您的好友发起聊天吧~", bgColor: Colors.transparent)
                         : ListView.separated(
                             itemBuilder: (_, index) {
                               return ItemSession(
