@@ -40,6 +40,8 @@ import 'package:vura/modules/finance/charge/binding.dart';
 import 'package:vura/modules/finance/charge/page.dart';
 import 'package:vura/modules/finance/charge_way/binding.dart';
 import 'package:vura/modules/finance/charge_way/page.dart';
+import 'package:vura/modules/finance/pay_voucher/binding.dart';
+import 'package:vura/modules/finance/pay_voucher/page.dart';
 import 'package:vura/modules/finance/recharge/binding.dart';
 import 'package:vura/modules/finance/recharge/page.dart';
 import 'package:vura/modules/finance/transfer/binding.dart';
@@ -194,6 +196,7 @@ abstract class AppPages {
     GetPage(name: RoutePath.GOOGLE_VERIFY_PAGE, page: () => const GoogleVerifyPage(), binding: GoogleVerifyBinding()),
     GetPage(name: RoutePath.WALLET_PAGE, page: () => const WalletPage(), binding: WalletBinding()),
     GetPage(name: RoutePath.RECHARGE_PAGE, page: () => const RechargePage(), binding: RechargeBinding()),
+    GetPage(name: RoutePath.PAY_VOUCHER_PAGE, page: () => const PayVoucherPage(), binding: PayVoucherBinding()),
     GetPage(name: RoutePath.WITHDRAW_PAGE, page: () => const WithdrawPage(), binding: WithdrawBinding()),
   ];
 }

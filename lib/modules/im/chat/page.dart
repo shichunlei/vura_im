@@ -198,6 +198,7 @@ class ChatPage extends StatelessWidget {
                                                                   color: Colors.white),
                                                               child: ExtendedTextField(
                                                                   controller: logic.controller,
+                                                                  focusNode: logic.focusNode,
                                                                   maxLines: 1,
                                                                   textInputAction: TextInputAction.send,
                                                                   style: GoogleFonts.roboto(

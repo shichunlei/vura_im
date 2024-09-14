@@ -36,6 +36,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
   late SessionType type;
 
   TextEditingController controller = TextEditingController();
+  final FocusNode focusNode = FocusNode();
 
   final MySpecialTextSpanBuilder mySpecialTextSpanBuilder = MySpecialTextSpanBuilder();
 
@@ -124,9 +125,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         }
 
         /// 群主换让 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":305}}
-        if (data[Keys.TYPE] == MessageType.TRANSFER_ADMIN.code) {
-
-        }
+        if (data[Keys.TYPE] == MessageType.TRANSFER_ADMIN.code) {}
       }
     });
 
@@ -280,7 +279,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
   void updateRedPackageState(String? id) {
     list.firstWhere((item) => item.id == id).openRedPackage = true;
     list.refresh();
-    MessageRealm(realm: Get.find<RootLogic>().realm).updateRedPackageState(id);
+    MessageRealm(realm: Get.find<RootLogic>().realm).updateRedPackageState(id, this.id);
   }
 
   /// 转账给他人

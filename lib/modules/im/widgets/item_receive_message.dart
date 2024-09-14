@@ -108,7 +108,9 @@ class ItemReceiveMessage extends StatelessWidget {
                     color: Colors.transparent,
                     onPressed: () {
                       Get.back();
-                      logic.sendMessage("@${message.sendNickName}", MessageType.TEXT, ids: [message.sendId]);
+                      // logic.sendMessage("@${message.sendNickName}", MessageType.TEXT, ids: [message.sendId]);
+                      logic.controller.text = "@${message.sendNickName} ";
+                      logic.focusNode.requestFocus(); // 获取焦点
                     },
                     child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 22.w),

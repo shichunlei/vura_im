@@ -10,6 +10,7 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/http_utils.dart';
 import 'package:vura/utils/log_utils.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/utils/tool_util.dart';
 
 class CommonRepository {
@@ -117,16 +118,26 @@ class CommonRepository {
   /// [money] 转账金额
   /// [type] 类型 1-提现 2-充值 3-转账
   /// [remarks] 转账备注
+  /// [payAddress] 充值平台地址
+  /// [evidenceUrl] 凭证图片地址
   ///
   static Future<BaseBean> withdraw(
-      {required double money, required BookType type, String? remarks, String? account, String? payPassword}) async {
+      {required double money,
+      required BookType type,
+      String? remarks,
+      String? account,
+      String? payPassword,
+      String? payAddress,
+      String? evidenceUrl}) async {
     var data = await HttpUtils.getInstance().request("withdraw/apply",
         params: {
           "money": money,
           "type": type.index,
           "remarks": remarks,
           "account": account,
-          "payPassword": payPassword
+          "payPassword": payPassword,
+          if (StringUtil.isNotEmpty(payAddress)) "payAddress": payAddress,
+          if (StringUtil.isNotEmpty(evidenceUrl)) "evidenceUrl": evidenceUrl
         },
         showErrorToast: true);
     return BaseBean.fromJson(data);
@@ -164,6 +175,19 @@ class CommonRepository {
       return VersionEntity.fromJson(result.data);
     } else {
       return null;
+    }
+  }
+
+  /// 获取平台地址信息
+  ///
+  static Future<List<ImConfigEntity>> getImConfig() async {
+    var data = await HttpUtils.getInstance()
+        .request('im-platform/imConfig/getImConfigs', method: HttpUtils.GET, showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToList(data);
+    if (result.code == 200) {
+      return result.items.map((item) => ImConfigEntity.fromJson(item)).toList();
+    } else {
+      return [];
     }
   }
 }

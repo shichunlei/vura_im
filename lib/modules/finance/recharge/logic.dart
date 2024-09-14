@@ -59,12 +59,9 @@ class RechargeLogic extends BaseListLogic<WithdrawEntity> {
     BaseBean result = await CommonRepository.withdraw(
         type: BookType.RECHARGE,
         money: double.parse(controller.text),
-        account: Get
-            .find<RootLogic>()
-            .user
-            .value
-            ?.walletCard,
-        remarks: "充值", payPassword:password);
+        account: Get.find<RootLogic>().user.value?.walletCard,
+        remarks: "充值",
+        payPassword: password);
     hiddenLoading();
     if (result.code == 200) {
       showToast(text: "充值申请已提交");

@@ -47,5 +47,6 @@ abstract class RoutePath {
   static const String NUMBER_PASSWORD_PAGE = "/set_number_password"; // 设置数字密码
   static const String LOCK_SCREEN_PASSWORD_PAGE = "/lock_screen_password"; // 锁屏密码
   static const String RECHARGE_PAGE = "/recharge"; // 充值
+  static const String PAY_VOUCHER_PAGE = "/pay_voucher"; // 充值上传凭证
   static const String WITHDRAW_PAGE = "/withdraw"; // 提现
 }

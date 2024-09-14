@@ -53,8 +53,8 @@ class MessageRealm {
   }
 
   /// 打开红包
-  Future updateRedPackageState(String? id) async {
-    Message? message = findOne(id);
+  Future updateRedPackageState(String? id, String? sessionId) async {
+    Message? message = findOne(id, sessionId);
     if (message != null) {
       await _realm.writeAsync(() {
         message.openRedPackage = true;
@@ -83,8 +83,8 @@ class MessageRealm {
     });
   }
 
-  Message? findOne(String? id) {
-    return _realm.find<Message>("${AppConfig.userId}-$id");
+  Message? findOne(String? id, String? sessionId) {
+    return _realm.find<Message>("${AppConfig.userId}-$sessionId-$id");
   }
 }
 
@@ -110,7 +110,7 @@ MessageEntity messageRealmToEntity(Message message) {
 }
 
 Message messageEntityToRealm(MessageEntity message) {
-  return Message("${AppConfig.userId}-${message.id}",
+  return Message("${AppConfig.userId}-${message.sessionId}-${message.id}",
       id: message.id,
       userId: AppConfig.userId,
       sessionId: message.sessionId,

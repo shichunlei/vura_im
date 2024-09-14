@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
-import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/string_util.dart';
@@ -64,7 +64,7 @@ class RechargePage extends StatelessWidget {
                           child: SingleChildScrollView(
                             padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text("输入充值数量",
+                              Text("充值数量",
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600, color: ColorUtil.color_333333, fontSize: 15.sp)),
                               Container(
@@ -80,7 +80,7 @@ class RechargePage extends StatelessWidget {
                                       ],
                                       decoration: InputDecoration(
                                           contentPadding: EdgeInsets.zero,
-                                          hintText: "限额300~30000",
+                                          hintText: "请输入充值数量",
                                           hintStyle:
                                               GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
                               GridView.builder(
@@ -199,26 +199,12 @@ class RechargePage extends StatelessWidget {
                                         }
 
                                         if (StringUtil.isEmpty(logic.controller.text)) {
-                                          showToast(text: "请输入提现金额");
+                                          showToast(text: "请输入充值数量");
                                           return;
                                         }
 
-                                        if (int.parse(logic.controller.text) > 30000 ||
-                                            int.parse(logic.controller.text) < 300) {
-                                          showToast(text: "限额300~30000USDT");
-                                          return;
-                                        }
-
-                                        Get.bottomSheet(
-                                                InputPayPasswordDialog(
-                                                    amount: double.tryParse(logic.controller.text),
-                                                    title: "购买金额",
-                                                    tip: "支付账户",
-                                                    isUsdt: true),
-                                                isScrollControlled: true)
-                                            .then((value) {
-                                          if (value != null) logic.recharge(value);
-                                        });
+                                        Get.toNamed(RoutePath.PAY_VOUCHER_PAGE,
+                                            arguments: {"money": double.parse(logic.controller.text)});
                                       },
                                       margin: EdgeInsets.only(top: 44.h),
                                       child: Container(

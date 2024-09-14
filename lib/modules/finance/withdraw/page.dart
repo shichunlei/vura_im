@@ -64,7 +64,7 @@ class WithdrawPage extends StatelessWidget {
                           child: SingleChildScrollView(
                             padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                              Text("输入提现数量",
+                              Text("提现数量",
                                   style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w600, color: ColorUtil.color_333333, fontSize: 15.sp)),
                               Container(
@@ -80,7 +80,7 @@ class WithdrawPage extends StatelessWidget {
                                       ],
                                       decoration: InputDecoration(
                                           contentPadding: EdgeInsets.zero,
-                                          hintText: "限额300~30000",
+                                          hintText: "请输入提现数量",
                                           hintStyle:
                                               GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999)))),
                               GetBuilder<WithdrawLogic>(
@@ -208,15 +208,15 @@ class WithdrawPage extends StatelessWidget {
                                         }
 
                                         if (StringUtil.isEmpty(logic.controller.text)) {
-                                          showToast(text: "请输入提现金额");
+                                          showToast(text: "请输入提现数量");
                                           return;
                                         }
 
-                                        if (int.parse(logic.controller.text) > 30000 ||
-                                            int.parse(logic.controller.text) < 300) {
-                                          showToast(text: "限额300~30000USDT");
-                                          return;
-                                        }
+                                        // if (int.parse(logic.controller.text) > 30000 ||
+                                        //     int.parse(logic.controller.text) < 300) {
+                                        //   showToast(text: "限额300~30000USDT");
+                                        //   return;
+                                        // }
 
                                         Get.bottomSheet(
                                                 InputPayPasswordDialog(

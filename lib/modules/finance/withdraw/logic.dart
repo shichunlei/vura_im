@@ -5,6 +5,7 @@ import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/withdraw_entity.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/modules/finance/wallet/logic.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/common_repository.dart';
 import 'package:vura/utils/log_utils.dart';
@@ -80,6 +81,11 @@ class WithdrawLogic extends BaseListLogic<WithdrawEntity> {
       showToast(text: "提现申请已提交");
       try {
         Get.find<RootLogic>().refreshUserInfo();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+      try {
+        Get.find<WalletLogic>().refreshData();
       } catch (e) {
         Log.e(e.toString());
       }
