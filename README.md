@@ -42,7 +42,7 @@
 
 ## Android 包名
 
-    com.example.vura
+    com.example.vura.app
 
 ## 打包
 

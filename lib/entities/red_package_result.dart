@@ -19,6 +19,7 @@ class RedPackageResultEntity {
   int createTimestamp;
   YorNType isGreat;
   int totalTime;
+  String? minesStr;
 
   RedPackageResultEntity(
       {this.userId,
@@ -34,7 +35,8 @@ class RedPackageResultEntity {
       this.totalPacket = 0,
       this.createTimestamp = 0,
       this.detailList = const [],
-      this.totalTime = 0});
+      this.totalTime = 0,
+      this.minesStr});
 
   factory RedPackageResultEntity.fromJson(Map<String, dynamic> json) => _$RedPackageResultEntityFromJson(json);
 

@@ -10,6 +10,7 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
+import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -51,7 +52,13 @@ class PackageResultPage extends StatelessWidget {
                   Text("${logic.bean.value!.totalAmount}幸运值",
                       style: GoogleFonts.roboto(
                           fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549))),
-                  SizedBox(height: 44.h),
+                  SizedBox(height: 22.h),
+                  Visibility(
+                      visible: StringUtil.isNotEmpty(logic.bean.value?.minesStr),
+                      child: Text("雷值：${logic.bean.value?.minesStr}",
+                          style: GoogleFonts.roboto(
+                              fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))),
+                  SizedBox(height: 22.h),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
@@ -60,7 +67,7 @@ class PackageResultPage extends StatelessWidget {
                           ? [
                               Text(logic.bean.value!.totalTime > 0 ? "已领取" : "未领取",
                                   style: GoogleFonts.roboto(
-                                      fontSize: 34.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                      fontSize: 30.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
                             ]
                           : logic.bean.value!.totalTime > 0 &&
                                   logic.bean.value!.detailList
@@ -68,7 +75,7 @@ class PackageResultPage extends StatelessWidget {
                               ? [
                                   Text("手慢了，已领完",
                                       style: GoogleFonts.roboto(
-                                          fontSize: 34.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                          fontSize: 30.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
                                 ]
                               : [
                                   Text("${logic.bean.value?.amount}",
