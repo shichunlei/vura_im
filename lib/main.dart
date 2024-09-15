@@ -21,6 +21,7 @@ import 'global/messages.dart';
 import 'modules/root/binding.dart';
 
 void main() async {
+  ErrorWidget.builder = (FlutterErrorDetails details) => AppErrorWidget(details: details); // This line does the magic!
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
     await Application.getInstance().initApp();
@@ -115,5 +116,31 @@ class _MyAppState extends State<MyApp> {
                   initialRoute: initialRoute,
                   getPages: AppPages.routes);
             }));
+  }
+}
+
+class AppErrorWidget extends StatelessWidget {
+  final FlutterErrorDetails details;
+
+  const AppErrorWidget({super.key, required this.details});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+        color: Colors.white,
+        child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(mainAxisAlignment: MainAxisAlignment.center, mainAxisSize: MainAxisSize.min, children: [
+              const Icon(Icons.warning, size: 200, color: Colors.amber),
+              const SizedBox(height: 48),
+              const Text('So... something funny happened',
+                  textAlign: TextAlign.center, style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 16),
+              Text(
+                  'This error is crazy large it covers your whole screen. But no worries'
+                  ' though, we\'re working to fix it.\n${details.toString()}',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 16))
+            ])));
   }
 }

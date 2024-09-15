@@ -34,7 +34,8 @@ mixin FriendMixin on BaseLogic {
           Log.e(e.toString());
         }
       });
-      Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private});
+      Get.toNamed(RoutePath.CHAT_PAGE,
+          arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private, Keys.TITLE: user.nickName});
     } else {
       session.name = user.nickName;
       session.headImage = user.headImage;
@@ -42,7 +43,8 @@ mixin FriendMixin on BaseLogic {
       session.type = SessionType.private;
       session.deleted = false;
       await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session);
-      Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private});
+      Get.toNamed(RoutePath.CHAT_PAGE,
+          arguments: {Keys.ID: user.id, Keys.TYPE: SessionType.private, Keys.TITLE: user.nickName});
     }
   }
 
@@ -64,13 +66,15 @@ mixin FriendMixin on BaseLogic {
           Log.e(e.toString());
         }
       });
-      Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.userId, Keys.TYPE: SessionType.private});
+      Get.toNamed(RoutePath.CHAT_PAGE,
+          arguments: {Keys.ID: user.userId, Keys.TYPE: SessionType.private, Keys.TITLE: user.showNickName});
     } else {
       session.name = user.remarkNickName; // todo   并且没有头像缩略图
       session.headImage = user.headImage;
       session.type = SessionType.private;
       await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(session);
-      Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: user.userId, Keys.TYPE: SessionType.private});
+      Get.toNamed(RoutePath.CHAT_PAGE,
+          arguments: {Keys.ID: user.userId, Keys.TYPE: SessionType.private, Keys.TITLE: user.showNickName});
     }
   }
 

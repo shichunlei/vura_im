@@ -5,8 +5,8 @@ part 'message.realm.dart';
 @RealmModel()
 class _Message {
   @PrimaryKey()
-  String? _id;
-  String? id;
+  ObjectId? id;
+  String? messageId;
   String? userId;
   String? sendNickName; // 发送者昵称
   String? sendId; // 发送者ID

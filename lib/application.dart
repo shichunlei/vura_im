@@ -1,4 +1,5 @@
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:vura/utils/device_utils.dart';
 
 import 'entities/base_bean.dart';
 import 'entities/user_entity.dart';
@@ -28,6 +29,9 @@ class Application {
 
     PackageInfo version = await PackageInfo.fromPlatform();
     AppConfig.setVersion(version);
+
+    String? deviceId = await DeviceUtils.getDeviceId();
+    AppConfig.setDeviceId(deviceId);
 
     String accessToken = SpUtil.getString(Keys.ACCESS_TOKEN);
     if (StringUtil.isNotEmpty(accessToken)) {

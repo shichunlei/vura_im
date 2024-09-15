@@ -81,6 +81,8 @@ UserEntity friendRealmToEntity(Friend user) {
       headImageThumb: user.headImageThumb,
       signature: user.signature,
       no: user.userNo,
+      online: user.online,
+      leaveTimeStamp: user.leaveTimeStamp,
       friendship: EnumToString.fromString(YorNType.values, user.friendship, defaultValue: YorNType.Y)!,
       tagIndex: user.indexTag);
 }
@@ -98,5 +100,7 @@ Friend friendEntityToRealm(UserEntity user) {
       friendship: user.friendship.name,
       indexTag: user.tagIndex,
       userNo: user.no,
+      online: user.online,
+      leaveTimeStamp: user.leaveTimeStamp,
       isDeleted: false);
 }

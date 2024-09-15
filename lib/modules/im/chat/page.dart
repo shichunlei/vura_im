@@ -22,9 +22,9 @@ import 'package:vura/modules/im/widgets/item_system_message.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/log_utils.dart';
-import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/voice_record_view.dart';
@@ -50,19 +50,24 @@ class ChatPage extends StatelessWidget {
           Scaffold(
               backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
               appBar: AppBar(
-                  title: Obx(() {
-                    return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Text(logic.session.value?.name ?? "聊天"),
-                          Visibility(
-                              visible:
-                                  logic.type == SessionType.private && StringUtil.isNotEmpty(logic.session.value?.name),
-                              child: Text("一分钟前在线",
-                                  style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 10.sp)))
-                        ]);
-                  }),
+                  title: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(logic.title ?? "聊天"),
+                      logic.type == SessionType.private
+                          ? Text(
+                              logic.user == null
+                                  ? "不在线"
+                                  : logic.user!.online
+                                      ? "在线"
+                                      : logic.user!.leaveTimeStamp > 0
+                                          ? "${DateUtil.timeAgo(logic.user!.leaveTimeStamp)}在线"
+                                          : "不在线",
+                              style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 10.sp))
+                          : const SizedBox.shrink()
+                    ],
+                  ),
                   backgroundColor: logic.selectedBgIndex == 0 ? ColorUtil.secondBgColor : Colors.transparent,
                   centerTitle: true,
                   actions: [
@@ -232,8 +237,12 @@ class ChatPage extends StatelessWidget {
                                                                               isScrollControlled: true)
                                                                           .then((value) {
                                                                         if (value != null && value.isNotEmpty) {
+                                                                          logic.atUserIds.addAll(
+                                                                              (value as List<MemberEntity>)
+                                                                                  .map((item) => item.userId)
+                                                                                  .toList());
                                                                           logic.controller.text =
-                                                                              "${logic.controller.text.substring(0, logic.controller.text.length - 1)}${(value as List<MemberEntity>).map((item) => "@${item.showNickName}").toList().join(" ")} ";
+                                                                              "${logic.controller.text.substring(0, logic.controller.text.length - 1)}${value.map((item) => "@${item.showNickName}").toList().join(" ")} ";
                                                                         }
                                                                       });
                                                                     }

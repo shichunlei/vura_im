@@ -9,6 +9,7 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/chat/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/enum_to_string.dart';
+import 'package:vura/utils/string_util.dart';
 
 class ItemSendRedPackage extends StatelessWidget {
   final MessageEntity message;
@@ -63,13 +64,23 @@ class ItemSendRedPackage extends StatelessWidget {
                   SizedBox(width: 13.w),
                   ...redPackage.type == 3
                       ? [
-                          Text("x${redPackage.totalAmount}",
-                              style:
-                                  GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
-                          const Spacer(),
-                          Text("${redPackage.minesStr}",
-                              style:
-                                  GoogleFonts.inter(fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold))
+                          Expanded(
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                Row(children: [
+                                  Text("x${redPackage.totalAmount}",
+                                      style: GoogleFonts.inter(
+                                          fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
+                                  const Spacer(),
+                                  Text("${redPackage.minesStr}",
+                                      style: GoogleFonts.inter(
+                                          fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold))
+                                ]),
+                                Text(StringUtil.isEmpty(redPackage.blessing) ? "恭喜发财，大吉大利！" : "${redPackage.blessing}",
+                                    style: GoogleFonts.roboto(color: Colors.white, fontSize: 14.sp))
+                              ]))
                         ]
                       : redPackage.type == 4
                           ? [

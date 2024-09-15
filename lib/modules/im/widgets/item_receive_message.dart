@@ -13,11 +13,14 @@ import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/modules/im/chat/logic.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/device_utils.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/string_util.dart';
+import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'item_receive_card.dart';
@@ -51,7 +54,9 @@ class ItemReceiveMessage extends StatelessWidget {
         AvatarImageView("${message.sendHeadImage}",
             radius: 22.r,
             name: "${message.sendNickName}",
-            onTap: logic.type == SessionType.group && logic.members.any((item) => item.userId == message.sendId)
+            onTap: logic.type == SessionType.group &&
+                    logic.members.any((item) => item.userId == message.sendId) &&
+                    logic.members.any((item) => item.userId == Get.find<RootLogic>().user.value?.id)
                 ? () {
                     DeviceUtils.hideKeyboard(context);
                     Get.dialog(customDialog(
@@ -59,7 +64,9 @@ class ItemReceiveMessage extends StatelessWidget {
                         message.sendId,
                         message.sendNickName));
                   }
-                : null),
+                : () {
+                    Log.d("22222222222222222222222");
+                  }),
         SizedBox(width: 8.w),
         buildMessageView(message.type)
       ])
@@ -108,8 +115,24 @@ class ItemReceiveMessage extends StatelessWidget {
                     color: Colors.transparent,
                     onPressed: () {
                       Get.back();
+                      if (logic.type == SessionType.group &&
+                          logic.members.isNotEmpty &&
+                          (logic.session.value?.configObj?.allMute == YorNType.Y &&
+                                  logic.session.value?.isAdmin == YorNType.N &&
+                                  logic.session.value?.isSupAdmin == YorNType.N // 全体禁言后，只有群主和群管理员可以发言
+                              ||
+                              logic.members
+                                      .firstWhere((item) => item.userId == Get.find<RootLogic>().user.value?.id)
+                                      .isMute ==
+                                  YorNType.Y // 被单独设置为禁言
+                          )) {
+                        showToast(text: "您被禁言");
+                        return;
+                      }
+                      logic.atUserIds.add(message.sendId);
                       // logic.sendMessage("@${message.sendNickName}", MessageType.TEXT, ids: [message.sendId]);
-                      logic.controller.text = "@${message.sendNickName} ";
+                      logic.controller.text =
+                          "@${logic.members.firstWhere((item) => item.userId == message.sendId).showNickName} ";
                       logic.focusNode.requestFocus(); // 获取焦点
                     },
                     child: Container(

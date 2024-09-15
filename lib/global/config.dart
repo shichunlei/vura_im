@@ -22,5 +22,12 @@ class AppConfig {
     userId = id;
   }
 
+  static String? deviceId;
+
+  static void setDeviceId(String? id) {
+    Log.d("@@@@@@@@@@@@@@@@@@@===================>$id");
+    deviceId = id;
+  }
+
   static const int DEFAULT_TOP_TIME = 2524579200000;
 }

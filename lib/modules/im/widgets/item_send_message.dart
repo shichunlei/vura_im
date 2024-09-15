@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/emoji.dart';
 import 'package:vura/entities/file_entity.dart';
@@ -10,6 +11,7 @@ import 'package:vura/entities/package_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/modules/im/widgets/item_send_emoji.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
@@ -41,7 +43,8 @@ class ItemSendMessage extends StatelessWidget {
       Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.end, children: [
         buildMessageView(message.type),
         SizedBox(width: 8.w),
-        AvatarImageView("${message.sendHeadImage}", radius: 22.r, name: "${message.sendNickName}")
+        AvatarImageView("${Get.find<RootLogic>().user.value?.headImageThumb}",
+            radius: 22.r, name: "${Get.find<RootLogic>().user.value?.nickName}")
       ])
     ]);
   }

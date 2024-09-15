@@ -33,7 +33,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  # 扫码
   ai_barcode_scanner: ^5.2.1
+  # AndroidId
+  android_id: ^0.4.0
   animated_bottom_navigation_bar: ^1.3.3
   app_installer: ^1.2.0
   audioplayers: ^6.1.0

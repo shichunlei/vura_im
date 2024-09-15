@@ -100,7 +100,8 @@ class HttpUtils {
           queryParameters: method == GET || method == PUT ? params : null,
           options: Options(method: method, headers: {
             if (!refreshToken) Keys.ACCESS_TOKEN: accessToken,
-            if (refreshToken) Keys.REFRESH_TOKEN: refreshTokenValue
+            if (refreshToken) Keys.REFRESH_TOKEN: refreshTokenValue,
+            "deviceId": AppConfig.deviceId
           }));
 
       var res = BaseBean.fromJson(response.data);
@@ -236,6 +237,7 @@ class HeaderInterceptor extends Interceptor {
     options.headers[Keys.ACCESS_TOKEN] = accessToken;
     String refreshToken = SpUtil.getString(Keys.REFRESH_TOKEN);
     options.headers[Keys.REFRESH_TOKEN] = refreshToken;
+    options.headers["deviceId"] = AppConfig.deviceId;
     return handler.next(options);
   }
 }

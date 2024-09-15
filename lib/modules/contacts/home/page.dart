@@ -7,6 +7,7 @@ import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/permission_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
@@ -181,7 +182,13 @@ class ContactsPage extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               fontSize: 18.sp, color: ColorUtil.color_333333, fontWeight: FontWeight.w500)),
                       SizedBox(height: 5.r),
-                      Text("一天前在线", style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
+                      Text(
+                          user.online
+                              ? "在线"
+                              : user.leaveTimeStamp > 0
+                                  ? "${DateUtil.timeAgo(user.leaveTimeStamp)}在线"
+                                  : "不在线",
+                          style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                     ],
                   ),
                 )

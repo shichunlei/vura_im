@@ -34,6 +34,7 @@ import 'package:vura/utils/tool_util.dart';
 class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, SessionMembersMixin {
   String? id;
   late SessionType type;
+  String? title;
 
   TextEditingController controller = TextEditingController();
   final FocusNode focusNode = FocusNode();
@@ -46,6 +47,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
 
   var messagePlayingId = Rx<String?>(null);
 
+  var atUserIds = RxList<String?>([]);
+
   final _audioPlayer = AudioPlayer();
 
   var curState = PlayerState.stopped.obs;
@@ -53,6 +56,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
   ChatLogic() {
     id = Get.arguments[Keys.ID];
     type = Get.arguments[Keys.TYPE];
+    title = Get.arguments[Keys.TITLE];
 
     selectedBgIndex = SpUtil.getInt(Keys.CHAT_BG_IMAGE_INDEX, defValue: 0);
 
@@ -161,17 +165,31 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
   }
 
   /// 发送消息
-  Future sendMessage(String content, MessageType messageType, {List<String?> ids = const []}) async {
+  Future sendMessage(String content, MessageType messageType) async {
     if (StringUtil.isEmpty(content)) {
       showToast(text: "消息不能为空");
       return;
     }
+    if (atUserIds.isNotEmpty && StringUtil.isNotEmpty(controller.text)) {
+      // 校验被@的用户是否一致
+      for (var item in atUserIds) {
+        if (members.any((member) => member.userId == item)) {
+          if (!controller.text.contains("@${members.firstWhere((member) => member.userId == item).showNickName} ")) {
+            atUserIds.remove(item);
+          }
+        }
+      }
+    } else {
+      atUserIds.clear();
+    }
+
     MessageEntity? message = await SessionRepository.sendMessage(id, type,
         content: content,
         type: messageType,
         receiveHeadImage: session.value?.headImage,
         receiveNickName: session.value?.name,
-        atUserIds: ids);
+        atUserIds: atUserIds);
+    atUserIds.clear();
     if (message != null) {
       controller.clear();
       list.insert(0, message);

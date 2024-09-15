@@ -33,7 +33,7 @@ class MessageRealm {
     if (list.isEmpty) {
       return null;
     } else {
-      return list.first.id;
+      return list.first.messageId;
     }
   }
 
@@ -48,13 +48,13 @@ class MessageRealm {
     if (list.isEmpty) {
       return null;
     } else {
-      return list.first.id;
+      return list.first.messageId;
     }
   }
 
   /// 打开红包
   Future updateRedPackageState(String? id, String? sessionId) async {
-    Message? message = findOne(id, sessionId);
+    Message? message = findOneById(id, sessionId);
     if (message != null) {
       await _realm.writeAsync(() {
         message.openRedPackage = true;
@@ -76,21 +76,39 @@ class MessageRealm {
   }
 
   /// 更新/插入数据
-  Future<Message> upsert(Message message) async {
-    return await _realm.writeAsync(() {
-      Log.d("upsert----message------------->${message.id}");
-      return _realm.add(message, update: true);
-    });
+  Future upsert(Message message) async {
+    Message? _message = findOneById(message.messageId, message.sessionId);
+    Log.d("upsert----message------------->${message.id}");
+    if (_message == null) {
+      await _realm.writeAsync(() {
+        Log.d("upsert----message------------->${message.id}");
+        return _realm.add(message);
+      });
+    }
   }
 
-  Message? findOne(String? id, String? sessionId) {
-    return _realm.find<Message>("${AppConfig.userId}-$sessionId-$id");
+  Message? findOne(String? id) {
+    return _realm.find<Message>("$id");
+  }
+
+  Message? findOneById(String? id, String? sessionId) {
+    RealmResults<Message> list = _realm.all<Message>().query(
+        r"sessionId == $0 AND userId == $1 AND messageId == $2 AND deleted == false AND TRUEPREDICATE SORT(sendTime DESC)",
+        ["$sessionId", "${AppConfig.userId}", "$id"]);
+
+    if (list.isEmpty) {
+      Log.d("无---findOneById----$sessionId------------->$id");
+      return null;
+    } else {
+      Log.d("有---findOneById----$sessionId------------->$id");
+      return list.first;
+    }
   }
 }
 
 MessageEntity messageRealmToEntity(Message message) {
   return MessageEntity(
-      id: message.id,
+      id: message.messageId,
       sendNickName: message.sendNickName,
       sendId: message.sendId,
       sendHeadImage: message.sendHeadImage,
@@ -110,8 +128,8 @@ MessageEntity messageRealmToEntity(Message message) {
 }
 
 Message messageEntityToRealm(MessageEntity message) {
-  return Message("${AppConfig.userId}-${message.sessionId}-${message.id}",
-      id: message.id,
+  return Message(ObjectId(),
+      messageId: message.id,
       userId: AppConfig.userId,
       sessionId: message.sessionId,
       sendNickName: message.sendNickName,

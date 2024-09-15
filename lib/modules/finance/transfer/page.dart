@@ -223,7 +223,7 @@ class TransferPage extends StatelessWidget {
                           style: GoogleFonts.roboto(
                               color: ColorUtil.color_999999, fontWeight: FontWeight.w600, fontSize: 15.sp)),
                       SizedBox(height: 5.h),
-                      Text("到账数量=转账数量=手续费",
+                      Text("到账数量=转账数量-手续费",
                           style: GoogleFonts.roboto(
                               color: ColorUtil.color_999999, fontWeight: FontWeight.w600, fontSize: 15.sp)),
                       SizedBox(height: 5.h),

@@ -31,7 +31,8 @@ class ItemSession extends StatelessWidget {
             : null,
         color: Colors.transparent,
         onPressed: () {
-          Get.toNamed(RoutePath.CHAT_PAGE, arguments: {Keys.ID: session.id, Keys.TYPE: session.type});
+          Get.toNamed(RoutePath.CHAT_PAGE,
+              arguments: {Keys.ID: session.id, Keys.TYPE: session.type, Keys.TITLE: session.name});
         },
         onLongPress: onLongPress?.call,
         radius: 0,

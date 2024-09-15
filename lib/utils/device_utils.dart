@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:android_id/android_id.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -103,6 +104,19 @@ class DeviceUtils {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       Log.json(iosInfo.data);
       return iosInfo.name;
+    }
+
+    return 'unKnow';
+  }
+
+  static Future<String?> getDeviceId() async {
+    if (isAndroid) {
+      const androidIdPlugin = AndroidId();
+      return await androidIdPlugin.getId();
+    }
+    if (isIOS) {
+      IosDeviceInfo iosInfo = await DeviceInfoPlugin().iosInfo;
+      return iosInfo.identifierForVendor;
     }
 
     return 'unKnow';

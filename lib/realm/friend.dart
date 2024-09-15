@@ -18,4 +18,6 @@ class _Friend {
   bool isDeleted = false;
   String? friendship;
   String? userNo;
+  int leaveTimeStamp = 0;
+  bool online = false;
 }

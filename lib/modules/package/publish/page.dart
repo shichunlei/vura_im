@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/enum.dart';
-import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/package/input_pay_password/dialog.dart';
 import 'package:vura/modules/root/logic.dart';
 import 'package:vura/utils/color_util.dart';
@@ -114,27 +113,7 @@ class PackagePublishPage extends StatelessWidget {
                           Text("元", style: GoogleFonts.roboto(color: const Color(0xffDB5549), fontSize: 15.sp))
                         ])),
                     logic.type == SessionType.private
-                        ? Container(
-                            margin: EdgeInsets.only(top: 13.h),
-                            height: 50.h,
-                            width: double.infinity,
-                            padding: EdgeInsets.symmetric(horizontal: 18.w),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
-                            child: Row(children: [
-                              Expanded(
-                                  child: TextField(
-                                      controller: logic.textController,
-                                      style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
-                                      decoration: InputDecoration(
-                                          isCollapsed: true,
-                                          border: InputBorder.none,
-                                          contentPadding: EdgeInsets.only(right: 10.w),
-                                          hintText: "恭喜发财，大吉大利",
-                                          hintStyle:
-                                              GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
-                              const Icon(IconFont.face)
-                            ]))
+                        ? const SizedBox()
                         : Container(
                             margin: EdgeInsets.only(top: 13.h),
                             height: 50.h,
@@ -157,6 +136,23 @@ class PackagePublishPage extends StatelessWidget {
                                     contentPadding: EdgeInsets.only(right: 10.w),
                                     hintText: "请输入幸运值",
                                     hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
+                    Container(
+                        margin: EdgeInsets.only(top: 13.h),
+                        height: 50.h,
+                        width: double.infinity,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.symmetric(horizontal: 18.w),
+                        decoration:
+                            BoxDecoration(borderRadius: BorderRadius.circular(11.r), color: const Color(0xffFEFAFA)),
+                        child: TextField(
+                            controller: logic.textController,
+                            style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
+                            decoration: InputDecoration(
+                                isCollapsed: true,
+                                border: InputBorder.none,
+                                contentPadding: EdgeInsets.only(right: 10.w),
+                                hintText: "恭喜发财，大吉大利",
+                                hintStyle: GoogleFonts.roboto(fontSize: 15.sp, color: ColorUtil.color_999999)))),
                     Container(
                         margin: EdgeInsets.only(top: 13.h),
                         width: double.infinity,

@@ -25,6 +25,7 @@ class UserEntity extends ISuspensionBean {
   String? walletRemark; // 钱包备注
   String? payPassword;
   String? no;
+  int leaveTimeStamp;
 
   UserEntity(
       {this.id,
@@ -47,7 +48,8 @@ class UserEntity extends ISuspensionBean {
       this.walletCard,
       this.walletRemark,
       this.payPassword,
-      this.no});
+      this.no,
+      this.leaveTimeStamp = 0});
 
   factory UserEntity.fromJson(Map<String, dynamic> json) {
     String nickName = json['nickName'] ?? "";
@@ -81,7 +83,8 @@ class UserEntity extends ISuspensionBean {
         vura: EnumToString.fromString(YorNType.values, json['vura'], defaultValue: YorNType.N)!,
         payPassword: json['payPassword'] as String?,
         no: json['no'] as String?,
-        tagIndex: tag);
+        tagIndex: tag,
+        leaveTimeStamp: (json['leaveTimeStamp'] as num?)?.toInt() ?? 0);
   }
 
   Map<String, dynamic> toJson() => {
