@@ -10,10 +10,12 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/modules/contacts/home/logic.dart';
 import 'package:vura/modules/im/session/logic.dart';
 import 'package:vura/modules/root/logic.dart';
+import 'package:vura/modules/setting/account/logic.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/dialog_util.dart';
+import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/widgets.dart';
@@ -61,6 +63,12 @@ class AddAccountLogic extends BaseLogic {
         if (Get.isRegistered<SessionLogic>()) Get.find<SessionLogic>().refreshData();
         if (Get.isRegistered<ContactsLogic>()) Get.find<ContactsLogic>().refreshList();
         webSocketManager.switchAccount();
+        try {
+          Get.find<AccountLogic>().addAccount(accountController.text, "${user.nickName}", passwordController.text);
+        } catch (e) {
+          Log.e(e.toString());
+        }
+        Get.back();
       }
     } else if (result.code == 999) {
       show(builder: (BuildContext context) {
@@ -81,31 +89,6 @@ class AddAccountLogic extends BaseLogic {
       showToast(text: "${result.message}");
       hiddenLoading();
     }
-
-    // showLoading();
-    // UserEntity? result = await UserRepository.login(
-    //     userName: accountController.text,
-    //     password: passwordController.text,
-    //     deviceId: deviceId,
-    //     deviceName: deviceName);
-    // hiddenLoading();
-
-    // if (result != null) {
-    //   if (context.mounted) DeviceUtils.hideKeyboard(context);
-    //   try {
-    //     await AccountRealm(realm: Get.find<RootLogic>().realm).upsert(Account(accountController.text,
-    //         password: passwordController.text,
-    //         userNo: result.no,
-    //         nickName: result.nickName,
-    //         headImageThumb: result.headImageThumb,
-    //         headImage: result.headImage));
-    //     Get.find<RootLogic>().setUserInfo(result);
-    //   } catch (e) {
-    //     Log.e(e.toString());
-    //   }
-    //   if (result.id != null) AppConfig.setUserId(result.id!);
-    //   Get.offAllNamed(RoutePath.HOME_PAGE);
-    // }
   }
 
   var obscureText = true.obs;
