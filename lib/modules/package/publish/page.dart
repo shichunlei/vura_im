@@ -126,8 +126,7 @@ class PackagePublishPage extends StatelessWidget {
                                 controller: logic.valueController,
                                 style: GoogleFonts.roboto(color: ColorUtil.color_333333, fontSize: 15.sp),
                                 inputFormatters: [
-                                  FilteringTextInputFormatter.allow(RegExp(r'[0-9,]')), // 只允许输入数字和逗号
-                                  LengthLimitingTextInputFormatter(17) //限制长度
+                                  FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), // 只允许输入数字和逗号
                                 ],
                                 onChanged: logic.validateInput,
                                 keyboardType: TextInputType.number,

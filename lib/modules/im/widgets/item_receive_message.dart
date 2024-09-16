@@ -52,9 +52,11 @@ class ItemReceiveMessage extends StatelessWidget {
       SizedBox(height: 5.h),
       Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
         AvatarImageView(
-            logic.members.any((item) => item.userId == message.sendId)
-                ? "${logic.members.firstWhere((item) => item.userId == message.sendId).headImage}"
-                : "${message.sendHeadImage}",
+            logic.type == SessionType.group
+                ? logic.members.any((item) => item.userId == message.sendId)
+                    ? "${logic.members.firstWhere((item) => item.userId == message.sendId).headImage}"
+                    : "${message.sendHeadImage}"
+                : logic.user.value?.headImage ?? "${message.sendHeadImage}",
             radius: 22.r,
             name: "${message.sendNickName}",
             onTap: logic.type == SessionType.group &&

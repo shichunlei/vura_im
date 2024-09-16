@@ -66,14 +66,13 @@ class PackagePublishLogic extends BaseLogic {
   }
 
   void validateInput(String text) {
-    String _text = text.replaceAll(',', ''); // 移除已有的逗号
-    if (_text.isNotEmpty) {
+    if (text.isNotEmpty) {
       // 分割输入的数字
-      List<String> numbers = _text.split('').where((s) => s.isNotEmpty).toList();
+      List<String> numbers = text.split('').where((s) => s.isNotEmpty).toList();
       // 移除重复数字
       List<String> uniqueNumbers = numbers.toSet().toList();
       // 重新组合为字符串，保留逗号分隔符
-      String newText = uniqueNumbers.join(',');
+      String newText = uniqueNumbers.join('');
       // 如果内容有变化，更新输入框内容并调整光标位置
       if (newText != text) {
         valueController.value =
