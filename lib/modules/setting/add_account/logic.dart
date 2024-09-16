@@ -70,7 +70,7 @@ class AddAccountLogic extends BaseLogic {
             confirmText: "去校验",
             cancelText: "再想想",
             onConfirm: () {
-              Get.toNamed(RoutePath.CHECK_SECURITY_ISSUES_PAGE, arguments: {
+              Get.offNamed(RoutePath.CHECK_SECURITY_ISSUES_PAGE, arguments: {
                 "password": passwordController.text,
                 "userName": accountController.text,
                 "switchAccount": true
