@@ -56,15 +56,17 @@ class ChatPage extends StatelessWidget {
                     children: [
                       Text(logic.title ?? "聊天"),
                       logic.type == SessionType.private
-                          ? Text(
-                              logic.user == null
-                                  ? "不在线"
-                                  : logic.user!.online
-                                      ? "在线"
-                                      : logic.user!.leaveTimeStamp > 0
-                                          ? "${DateUtil.timeAgo(logic.user!.leaveTimeStamp)}在线"
-                                          : "不在线",
-                              style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 10.sp))
+                          ? Obx(() {
+                              return Text(
+                                  logic.user.value == null
+                                      ? "不在线"
+                                      : logic.user.value!.online
+                                          ? "在线"
+                                          : logic.user.value!.leaveTimeStamp > 0
+                                              ? "${DateUtil.timeAgo(logic.user.value!.leaveTimeStamp)}在线"
+                                              : "不在线",
+                                  style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 10.sp));
+                            })
                           : const SizedBox.shrink()
                     ],
                   ),
@@ -103,7 +105,8 @@ class ChatPage extends StatelessWidget {
                               padding: EdgeInsets.only(bottom: 15.h, left: 12.w, right: 12.w),
                               reverse: true,
                               itemBuilder: (_, index) {
-                                if (logic.list[index].type == MessageType.TIP_TEXT.code) {
+                                if (logic.list[index].type == MessageType.TIP_TEXT.code ||
+                                    logic.list[index].type == MessageType.RED_PACKET_TIP_TEXT.code) {
                                   return ItemSystemMessage(
                                       message: logic.list[index],
                                       showTime: index == logic.list.length - 1 ||

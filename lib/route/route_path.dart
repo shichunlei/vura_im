@@ -2,6 +2,7 @@ abstract class RoutePath {
   static const String HOME_PAGE = "/home";
   static const String LOGIN_PAGE = '/login'; // 登录页
   static const String REGISTER_PAGE = '/register'; // 注册页
+  static const String CHECK_SECURITY_ISSUES_PAGE = '/check_security_issues'; // 密保问题校验
   static const String UPDATE_PASSWORD_PAGE = '/update_password'; // 修改密码页
   static const String SET_PASSWORD_PAGE = '/set_password'; // 忘记密码页
   static const String SETTING_PAGE = '/setting'; // 设置页

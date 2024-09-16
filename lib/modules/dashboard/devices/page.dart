@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/utils/color_util.dart';
+import 'package:vura/utils/date_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
@@ -30,6 +31,8 @@ class DevicesPage extends StatelessWidget {
           ]),
           body: BaseWidget(
               logic: logic,
+              bgColor: Colors.transparent,
+              showEmpty: false,
               builder: (logic) {
                 return SingleChildScrollView(
                   child: Column(children: [
@@ -83,7 +86,10 @@ class DevicesPage extends StatelessWidget {
                                             fontWeight: FontWeight.w600));
                                   }),
                                   SizedBox(height: 11.h),
-                                  Text("12.999",
+                                  Text(
+                                      logic.currentIndex.value > -1
+                                          ? "${DateUtil.getDateStrByMs(logic.list[logic.currentIndex.value].updateTime)}"
+                                          : "刚刚",
                                       style: GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp))
                                 ]))
                           ])
@@ -110,17 +116,13 @@ class DevicesPage extends StatelessWidget {
                                               mainAxisSize: MainAxisSize.min,
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: [
-                                            Text("iPhone 12 Pro Max",
+                                            Text("${logic.list[index].deviceName}",
                                                 style: GoogleFonts.roboto(
                                                     color: ColorUtil.color_333333,
                                                     fontSize: 18.sp,
                                                     fontWeight: FontWeight.w600)),
-                                            Text("ios Plus",
-                                                style: GoogleFonts.roboto(
-                                                    color: ColorUtil.color_999999,
-                                                    fontSize: 13.sp,
-                                                    fontWeight: FontWeight.w600)),
-                                            Text("美国 昨天 12:34",
+                                            SizedBox(height: 11.h),
+                                            Text("${DateUtil.getDateStrByMs(logic.list[index].updateTime)}",
                                                 style:
                                                     GoogleFonts.roboto(color: ColorUtil.color_999999, fontSize: 13.sp))
                                           ]))
@@ -129,7 +131,7 @@ class DevicesPage extends StatelessWidget {
                               separatorBuilder: (_, index) {
                                 return const Divider(height: 0);
                               },
-                              itemCount: 3,
+                              itemCount: logic.list.length,
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true)
                         ]))

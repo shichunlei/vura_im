@@ -36,6 +36,7 @@ mixin ReceiveMessageMixin on BaseLogic {
           }
         } else if (data[Keys.TYPE] < MessageType.RECALL.code ||
             data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+            data[Keys.TYPE] == MessageType.RED_PACKET_TIP_TEXT.code ||
             data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
           MessageEntity message = MessageEntity.fromJson(data);
           String? myUserId = AppConfig.userId;
@@ -101,6 +102,7 @@ mixin ReceiveMessageMixin on BaseLogic {
           }
         } else if (data[Keys.TYPE] < MessageType.RECALL.code ||
             data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+            data[Keys.TYPE] == MessageType.RED_PACKET_TIP_TEXT.code ||
             data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
           MessageEntity message = MessageEntity.fromJson(data);
           message.sessionType = SessionType.group;

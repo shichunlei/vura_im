@@ -51,7 +51,10 @@ class ItemReceiveMessage extends StatelessWidget {
                   style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
       SizedBox(height: 5.h),
       Row(crossAxisAlignment: CrossAxisAlignment.start, mainAxisAlignment: MainAxisAlignment.start, children: [
-        AvatarImageView("${message.sendHeadImage}",
+        AvatarImageView(
+            logic.members.any((item) => item.userId == message.sendId)
+                ? "${logic.members.firstWhere((item) => item.userId == message.sendId).headImage}"
+                : "${message.sendHeadImage}",
             radius: 22.r,
             name: "${message.sendNickName}",
             onTap: logic.type == SessionType.group &&
@@ -172,8 +175,12 @@ class ItemReceiveMessage extends StatelessWidget {
                               UserEntity toUser = UserEntity(
                                   nickName: message.sendNickName,
                                   id: message.sendId,
-                                  headImageThumb: message.sendHeadImage,
-                                  headImage: message.sendHeadImage);
+                                  headImageThumb: logic.members.any((item) => item.userId == message.sendId)
+                                      ? "${logic.members.firstWhere((item) => item.userId == message.sendId).headImage}"
+                                      : "${message.sendHeadImage}",
+                                  headImage: logic.members.any((item) => item.userId == message.sendId)
+                                      ? "${logic.members.firstWhere((item) => item.userId == message.sendId).headImage}"
+                                      : "${message.sendHeadImage}");
 
                               Get.offNamed(RoutePath.PACKAGE_PUBLISH_PAGE, arguments: {
                                 Keys.ID: toUser.id,
@@ -181,9 +188,7 @@ class ItemReceiveMessage extends StatelessWidget {
                                 "user": toUser,
                                 "isTransfer": true
                               })?.then((value) {
-                                if (value != null) {
-                                  logic.transferToMember(value, toUser);
-                                }
+                                if (value != null) logic.transferToMember(value, toUser);
                               });
                             })
                       ]

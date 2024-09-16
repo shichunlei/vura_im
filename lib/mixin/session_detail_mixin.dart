@@ -11,18 +11,18 @@ import 'package:vura/utils/session_db_util.dart';
 mixin SessionDetailMixin on BaseLogic {
   Rx<SessionEntity?> session = Rx<SessionEntity?>(null);
 
-  UserEntity? user;
+  var user = Rx<UserEntity?>(null);
 
   void getSessionDetail(String? id, SessionType type) async {
     if (type == SessionType.private) {
-      user = await UserRepository.getUserInfoById(id);
-      if (user != null) {
+      user.value = await UserRepository.getUserInfoById(id);
+      if (user.value != null) {
         await SessionRealm(realm: Get.find<RootLogic>().realm).updateSessionInfo(SessionEntity(
-            id: user?.id,
+            id: user.value?.id,
             type: SessionType.private,
-            name: user?.nickName,
-            headImage: user?.headImage,
-            headImageThumb: user?.headImageThumb));
+            name: user.value?.nickName,
+            headImage: user.value?.headImage,
+            headImageThumb: user.value?.headImageThumb));
 
         session.value = await SessionRealm(realm: Get.find<RootLogic>().realm).querySessionById(id, type);
       }

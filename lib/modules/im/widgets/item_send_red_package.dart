@@ -74,7 +74,7 @@ class ItemSendRedPackage extends StatelessWidget {
                                       style: GoogleFonts.inter(
                                           fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold)),
                                   const Spacer(),
-                                  Text("${redPackage.minesStr}",
+                                  Text("${redPackage.minesStr}".replaceAll(",", ""),
                                       style: GoogleFonts.inter(
                                           fontSize: 15.sp, color: Colors.white, fontWeight: FontWeight.bold))
                                 ]),

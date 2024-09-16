@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/widgets/photo_browser.dart';
 
 class ItemReceiveImage extends StatelessWidget {
   final MessageEntity message;
@@ -13,7 +14,13 @@ class ItemReceiveImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).push(PageRouteBuilder(
+              opaque: false,
+              pageBuilder: ((context, animation, secondaryAnimation) {
+                return PhotoBrowserPage([file.originUrl]);
+              })));
+        },
         behavior: HitTestBehavior.translucent,
         child: Padding(
             padding: EdgeInsets.only(top: 5.h),

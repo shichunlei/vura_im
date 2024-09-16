@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vura/entities/message_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 
@@ -22,7 +23,15 @@ class ItemSystemMessage extends StatelessWidget {
               child: Text(DateUtil.getWechatTime(message.sendTime),
                   style: GoogleFonts.roboto(color: ColorUtil.color_666666, fontSize: 13.sp)))),
       SizedBox(height: 5.h),
-      Container(alignment: Alignment.center, child: Text("${message.content}", textAlign: TextAlign.center))
+      Container(
+          alignment: Alignment.center,
+          child: Text(
+              message.type == MessageType.TIP_TEXT.code
+                  ? "${message.content}"
+                  : message.type == MessageType.RED_PACKET_TIP_TEXT.code
+                      ? "${message.sendNickName}领取了您的红包"
+                      : "",
+              textAlign: TextAlign.center))
     ]);
   }
 }

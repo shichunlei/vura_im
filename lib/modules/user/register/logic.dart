@@ -19,6 +19,9 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
 
   late bool isAddAccount;
 
+  String? deviceId;
+  String? deviceName;
+
   RegisterLogic() {
     isAddAccount = Get.arguments?["isAddAccount"] ?? false;
 
@@ -28,12 +31,19 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
     passwordController.addListener(update);
     codeController.addListener(update);
     securityIssuesController.addListener(update);
+
+    getDeviceInfo();
   }
 
   @override
   void onInit() {
     getAuthCode();
     super.onInit();
+  }
+
+  void getDeviceInfo() async {
+    deviceId = await DeviceUtils.getDeviceId();
+    deviceName = await DeviceUtils.getDeviceName();
   }
 
   var obscureText = true.obs;
@@ -63,14 +73,16 @@ class RegisterLogic extends BaseLogic with AuthCodeMixin {
         nickName: nicknameController.text,
         answer: securityIssuesController.text,
         code: codeController.text,
-        uuid: base64Img.value?.uuid);
+        uuid: base64Img.value?.uuid,
+        deviceName: deviceName,
+        deviceId: deviceId);
     hiddenLoading();
 
     if (result.code == 200) {
       showToast(text: "注册成功");
       if (isAddAccount) {
         try {
-          Get.find<AccountLogic>().addAccount(accountController.text, nicknameController.text,passwordController.text,);
+          Get.find<AccountLogic>().addAccount(accountController.text, nicknameController.text, passwordController.text);
         } catch (e) {
           Log.e(e.toString());
         }

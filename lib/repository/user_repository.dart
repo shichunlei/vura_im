@@ -14,20 +14,15 @@ class UserRepository {
   /// [userName] 用户名
   /// [password] 密码
   ///
-  static Future<UserEntity?> login({String? userName, String? password}) async {
-    var data = await HttpUtils.getInstance()
-        .request('login', params: {"userName": userName, "password": password, "terminal": 1}, showErrorToast: true);
-    BaseBean result = BaseBean.fromJsonToObject(data);
-    if (result.code == 200) {
-      LoginEntity? login = LoginEntity.fromJson(result.data);
-
-      SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
-      SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
-
-      return await getUserInfo();
-    } else {
-      return null;
-    }
+  static Future<BaseBean> login({String? userName, String? password, String? deviceId, String? deviceName}) async {
+    var data = await HttpUtils.getInstance().request('login', params: {
+      "userName": userName,
+      "password": password,
+      "terminal": 1,
+      "deviceId": deviceId,
+      "deviceName": deviceName
+    });
+    return BaseBean.fromJsonToObject(data);
   }
 
   /// 注册
@@ -40,7 +35,14 @@ class UserRepository {
   /// [uuid] 校验验证码的UUID
   ///
   static Future<BaseBean> register(
-      {String? userName, String? password, String? nickName, String? answer, String? code, String? uuid}) async {
+      {String? userName,
+      String? password,
+      String? nickName,
+      String? answer,
+      String? code,
+      String? uuid,
+      String? deviceId,
+      String? deviceName}) async {
     var data = await HttpUtils.getInstance().request('register',
         params: {
           "userName": userName,
@@ -48,13 +50,15 @@ class UserRepository {
           "nickName": nickName,
           "answer": answer,
           "code": code,
-          "uuid": uuid
+          "uuid": uuid,
+          "deviceId": deviceId,
+          "deviceName": deviceName
         },
         showErrorToast: true);
     return BaseBean.fromJson(data);
   }
 
-  /// 忘记密码 TODO
+  /// 忘记密码
   ///
   /// [userName] 用户名
   /// [password] 密码
@@ -286,5 +290,35 @@ class UserRepository {
         method: HttpUtils.GET,
         showErrorToast: true);
     return BaseBean.fromJson(data);
+  }
+
+  /// 校验密保问题
+  ///
+  /// [userName] 用户名
+  /// [password] 密码
+  ///
+  static Future<UserEntity?> checkSecurityIssues(
+      {String? userName, String? password, String? deviceId, String? deviceName, String? answer}) async {
+    var data = await HttpUtils.getInstance().request('answerCheck',
+        params: {
+          "userName": userName,
+          "password": password,
+          "terminal": 0,
+          "deviceId": deviceId,
+          "deviceName": deviceName,
+          "answer": answer
+        },
+        showErrorToast: true);
+    BaseBean result = BaseBean.fromJsonToObject(data);
+    if (result.code == 200) {
+      LoginEntity? login = LoginEntity.fromJson(result.data);
+
+      SpUtil.setString(Keys.ACCESS_TOKEN, "${login.accessToken}");
+      SpUtil.setString(Keys.REFRESH_TOKEN, "${login.refreshToken}");
+
+      return await getUserInfo();
+    } else {
+      return null;
+    }
   }
 }

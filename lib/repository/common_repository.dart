@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:vura/entities/base64.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/bill_record_entity.dart';
+import 'package:vura/entities/device_entity.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/version_entity.dart';
@@ -186,6 +187,18 @@ class CommonRepository {
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => ImConfigEntity.fromJson(item)).toList();
+    } else {
+      return [];
+    }
+  }
+
+  /// 设备列表
+  ///
+  static Future<List<DeviceEntity>> getDeviceList() async {
+    var data = await HttpUtils.getInstance().request('user/device/list', method: HttpUtils.GET);
+    BaseBean result = BaseBean.fromJsonToList(data);
+    if (result.code == 200) {
+      return result.items.map((item) => DeviceEntity.fromJson(item)).toList();
     } else {
       return [];
     }

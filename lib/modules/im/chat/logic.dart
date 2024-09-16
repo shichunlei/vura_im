@@ -270,6 +270,11 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
             if (context.mounted) {
               showRedPacket(context, () {
                 updateRedPackageState(message.id);
+                try {
+                  Get.find<RootLogic>().refreshUserInfo();
+                } catch (e) {
+                  Log.e(e.toString());
+                }
                 Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
               },
                   nickName: message.sendNickName,

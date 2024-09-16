@@ -55,10 +55,9 @@ class PackageResultPage extends StatelessWidget {
                   SizedBox(height: 22.h),
                   Visibility(
                       visible: StringUtil.isNotEmpty(logic.bean.value?.minesStr),
-                      child: Text("雷值：${logic.bean.value?.minesStr}",
-                          style: GoogleFonts.roboto(
-                              fontSize: 20.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))),
-                  SizedBox(height: 22.h),
+                      child: Text("${logic.bean.value?.minesStr}".replaceAll(",", ""),
+                          style: GoogleFonts.roboto(fontSize: 25.sp, color: ColorUtil.color_666666))),
+                  SizedBox(height: StringUtil.isNotEmpty(logic.bean.value?.minesStr) ? 11.h : 22.h),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
@@ -67,7 +66,9 @@ class PackageResultPage extends StatelessWidget {
                           ? [
                               Text(logic.bean.value!.totalTime > 0 ? "已领取" : "未领取",
                                   style: GoogleFonts.roboto(
-                                      fontSize: 30.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                      fontSize: StringUtil.isNotEmpty(logic.bean.value?.minesStr) ? 20.sp : 30.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: const Color(0xffDB5549)))
                             ]
                           : logic.bean.value!.totalTime > 0 &&
                                   logic.bean.value!.detailList
@@ -75,12 +76,14 @@ class PackageResultPage extends StatelessWidget {
                               ? [
                                   Text("手慢了，已领完",
                                       style: GoogleFonts.roboto(
-                                          fontSize: 30.sp, fontWeight: FontWeight.w600, color: const Color(0xffDB5549)))
+                                          fontSize: StringUtil.isNotEmpty(logic.bean.value?.minesStr) ? 20.sp : 30.sp,
+                                          fontWeight: FontWeight.w600,
+                                          color: const Color(0xffDB5549)))
                                 ]
                               : [
                                   Text("${logic.bean.value?.amount}",
                                       style: GoogleFonts.roboto(
-                                          fontSize: 44.sp,
+                                          fontSize: StringUtil.isNotEmpty(logic.bean.value?.minesStr) ? 20.sp : 44.sp,
                                           fontWeight: FontWeight.w600,
                                           color: const Color(0xffDB5549))),
                                   Text("幸运值",

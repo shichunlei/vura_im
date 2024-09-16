@@ -82,6 +82,8 @@ import 'package:vura/modules/setting/home/binding.dart';
 import 'package:vura/modules/setting/home/page.dart';
 import 'package:vura/modules/setting/line/binding.dart';
 import 'package:vura/modules/setting/line/page.dart';
+import 'package:vura/modules/user/check_security_issues/binding.dart';
+import 'package:vura/modules/user/check_security_issues/page.dart';
 import 'package:vura/modules/user/info/binding.dart';
 import 'package:vura/modules/user/info/page.dart';
 import 'package:vura/modules/user/lock_screen/binding.dart';
@@ -109,6 +111,10 @@ abstract class AppPages {
     GetPage(name: RoutePath.REGISTER_PAGE, page: () => const RegisterPage(), binding: RegisterBinding()),
     GetPage(
         name: RoutePath.UPDATE_PASSWORD_PAGE, page: () => const UpdatePasswordPage(), binding: UpdatePasswordBinding()),
+    GetPage(
+        name: RoutePath.CHECK_SECURITY_ISSUES_PAGE,
+        page: () => const CheckSecurityIssuesPage(),
+        binding: CheckSecurityIssuesBinding()),
     GetPage(name: RoutePath.SET_PASSWORD_PAGE, page: () => const SetPasswordPage(), binding: SetPasswordBinding()),
     GetPage(name: RoutePath.MY_INFO_PAGE, page: () => const PersonalPage(), binding: PersonalBinding()),
     GetPage(name: RoutePath.SETTING_PAGE, page: () => const SettingPage(), binding: SettingBinding()),
