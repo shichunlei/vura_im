@@ -36,7 +36,7 @@ mixin ReceiveMessageMixin on BaseLogic {
           }
         } else if (data[Keys.TYPE] < MessageType.RECALL.code ||
             data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
-            data[Keys.TYPE] == MessageType.RED_PACKET_TIP_TEXT.code ||
+            data[Keys.TYPE] == MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code ||
             data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
           MessageEntity message = MessageEntity.fromJson(data);
           String? myUserId = AppConfig.userId;
@@ -102,7 +102,7 @@ mixin ReceiveMessageMixin on BaseLogic {
           }
         } else if (data[Keys.TYPE] < MessageType.RECALL.code ||
             data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
-            data[Keys.TYPE] == MessageType.RED_PACKET_TIP_TEXT.code ||
+            data[Keys.TYPE] == MessageType.GROUP_RED_PACKET_TIP_TEXT.code ||
             data[Keys.TYPE] >= MessageType.RED_PACKAGE.code) {
           MessageEntity message = MessageEntity.fromJson(data);
           message.sessionType = SessionType.group;
@@ -129,6 +129,30 @@ mixin ReceiveMessageMixin on BaseLogic {
               }
             }
           });
+        } else if (data[Keys.TYPE] >= 300 && data[Keys.TYPE] < 400) {
+          /// 群踢人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":306}}
+          if (data[Keys.TYPE] == MessageType.REMOVE_MEMBERS_FROM_GROUP.code) {
+            // removeMembers(id, (data["userIds"] as List).map((item) => item.toString()).toList());
+          }
+
+          /// 解散群聊 {"cmd":4,"data":{"groupId":"1829665405703159809", "type":308}}
+          if (data[Keys.TYPE] == MessageType.DISSOLUTION_GROUP.code) {
+            /// 删除本地群聊
+            SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(data["groupId"], SessionType.group);
+          }
+
+          /// 设置管理员 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":303}}
+          if (data[Keys.TYPE] == MessageType.SET_SUP_ADMIN.code) {
+            // setSupAdmin((data["userIds"] as List).map((item) => item.toString()).toList());
+          }
+
+          /// 取消管理员 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":304}}
+          if (data[Keys.TYPE] == MessageType.REMOVE_SUP_ADMIN.code) {
+            // resetSupAdmin((data["userIds"] as List).map((item) => item.toString()).toList());
+          }
+
+          /// 群主换让 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":305}}
+          if (data[Keys.TYPE] == MessageType.TRANSFER_ADMIN.code) {}
         }
       }
     });

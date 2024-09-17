@@ -5,7 +5,10 @@ import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/member_entity.dart';
 import 'package:vura/global/enum.dart';
+import 'package:vura/modules/root/logic.dart';
 import 'package:vura/repository/session_repository.dart';
+import 'package:vura/route/route_path.dart';
+import 'package:vura/utils/session_db_util.dart';
 
 mixin SessionMembersMixin on BaseLogic {
   RxList<MemberEntity> members = RxList<MemberEntity>([]);
@@ -45,19 +48,29 @@ mixin SessionMembersMixin on BaseLogic {
     showLoading();
     BaseBean result = await SessionRepository.kickMemberFromSession(id, [userId]);
     hiddenLoading();
-    if (result.code == 200) removeMember(userId);
+    if (result.code == 200) removeMember(id, userId);
   }
 
-  void removeMember(String? userId) {
+  void removeMember(String? id, String? userId) {
     members.removeWhere((item) => item.userId == userId);
     members.refresh();
+    if (userId == Get.find<RootLogic>().user.value?.id) {
+      SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+      // 退群的人有当前用户
+      Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
+    }
   }
 
-  void removeMembers(List<String?> userIds) {
+  void removeMembers(String? id, List<String?> userIds) {
     for (var userId in userIds) {
       members.removeWhere((item) => item.userId == userId);
     }
     members.refresh();
+    if (userIds.any((userId) => userId == Get.find<RootLogic>().user.value?.id)) {
+      SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+      // 被踢的人有当前用户
+      Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
+    }
   }
 
   void noMute(String? userId) {

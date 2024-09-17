@@ -7,7 +7,6 @@ import 'package:vura/global/keys.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/device_utils.dart';
-import 'package:vura/utils/string_util.dart';
 import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';

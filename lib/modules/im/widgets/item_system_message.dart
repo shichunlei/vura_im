@@ -28,7 +28,8 @@ class ItemSystemMessage extends StatelessWidget {
           child: Text(
               message.type == MessageType.TIP_TEXT.code
                   ? "${message.content}"
-                  : message.type == MessageType.RED_PACKET_TIP_TEXT.code
+                  : message.type == MessageType.GROUP_RED_PACKET_TIP_TEXT.code ||
+                          message.type == MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code
                       ? "${message.sendNickName}领取了您的红包"
                       : "",
               textAlign: TextAlign.center))

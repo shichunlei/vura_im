@@ -86,7 +86,7 @@ class ItemReceiveMessage extends StatelessWidget {
     if (type == MessageType.ID_CARD.code && StringUtil.isNotEmpty(message.content)) {
       return ItemReceiveCard(message: message, user: UserEntity.fromJson(json.decode(message.content!)));
     }
-    if (type == MessageType.EMOJI.code && message.content != null) {
+    if ((type == MessageType.EMOJI.code || type == 1000) && message.content != null) {
       return ItemReceiveEmoji(message: message, emoji: EmojiEntity.fromJson(json.decode(message.content!)));
     }
     if (type == MessageType.AUDIO.code && message.content != null) {

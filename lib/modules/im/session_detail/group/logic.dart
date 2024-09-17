@@ -53,7 +53,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
       members.refresh();
 
       try {
-        Get.find<ChatLogic>(tag: id).removeMembers(users.map((item) => item.userId).toList());
+        Get.find<ChatLogic>(tag: id).removeMembers(id, users.map((item) => item.userId).toList());
       } catch (e) {
         Log.e(e.toString());
       }

@@ -90,6 +90,28 @@ class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin
     list.refresh();
   }
 
+  /// 退出群聊
+  Future quitSession(String? id) async {
+    showLoading();
+    BaseBean result = await SessionRepository.quitSession(id);
+    hiddenLoading();
+    if (result.code == 200) {
+      /// 删除本地群聊
+      SessionRealm(realm: rootLogic.realm).deleteChannel(id, SessionType.group);
+    }
+  }
+
+  /// 解散群聊
+  Future deleteSession(String? id) async {
+    showLoading();
+    BaseBean result = await SessionRepository.deleteSession(id);
+    hiddenLoading();
+    if (result.code == 200) {
+      /// 删除本地群聊
+      SessionRealm(realm: rootLogic.realm).deleteChannel(id, SessionType.group);
+    }
+  }
+
   @override
   void onClose() {
     webSocketManager.removeCallbacks("SessionLogic");

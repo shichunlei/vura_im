@@ -13,8 +13,7 @@ import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:vura/widgets/radius_inkwell_widget.dart';
-import 'package:vura/widgets/round_image.dart';
+import 'package:vura/widgets/widgets.dart';
 
 class ItemSession extends StatelessWidget {
   final SessionEntity session;
@@ -100,7 +99,8 @@ class ItemSession extends StatelessWidget {
                                 ? "${getUserName(session.lastMessage)}[图片]"
                                 : session.lastMessage?.type == MessageType.AUDIO.code
                                     ? "${getUserName(session.lastMessage)}[语音]"
-                                    : session.lastMessage?.type == MessageType.EMOJI.code
+                                    : session.lastMessage?.type == MessageType.EMOJI.code ||
+                                            session.lastMessage?.type == 1000
                                         ? "${getUserName(session.lastMessage)}[表情]"
                                         : session.lastMessage?.type == MessageType.VIDEO.code
                                             ? "${getUserName(session.lastMessage)}[视频]"
@@ -111,7 +111,12 @@ class ItemSession extends StatelessWidget {
                                                     ? "${getUserName(session.lastMessage)}[红包]"
                                                     : session.lastMessage?.type == MessageType.ID_CARD.code
                                                         ? "${getUserName(session.lastMessage)}[个人名片]"
-                                                        : "${getUserName(session.lastMessage)}${session.lastMessage?.content ?? ""}",
+                                                        : session.lastMessage?.type ==
+                                                                    MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code ||
+                                                                session.lastMessage?.type ==
+                                                                    MessageType.GROUP_RED_PACKET_TIP_TEXT.code
+                                                            ? "${session.lastMessage?.sendNickName}领取了您的红包"
+                                                            : "${getUserName(session.lastMessage)}${session.lastMessage?.content ?? ""}",
                             style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),

@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:vura/entities/base64.dart';
 import 'package:vura/entities/base_bean.dart';
 import 'package:vura/entities/bill_record_entity.dart';
-import 'package:vura/entities/device_entity.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/global/enum.dart';

@@ -68,6 +68,7 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
         if (id == data["sendId"] &&
             (data[Keys.TYPE] < MessageType.RECALL.code ||
                 data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+                data[Keys.TYPE] == MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code ||
                 data[Keys.TYPE] >= MessageType.RED_PACKAGE.code)) {
           list.insert(0, MessageEntity.fromJson(data));
           list.refresh();
@@ -79,7 +80,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
           list.insert(0, MessageEntity.fromJson(data));
           list.refresh();
         }
-        if (data[Keys.TYPE] == MessageType.TIP_TEXT.code) {
+        if (data[Keys.TYPE] == MessageType.TIP_TEXT.code ||
+            data[Keys.TYPE] == MessageType.GROUP_RED_PACKET_TIP_TEXT.code) {
           list.insert(0, MessageEntity.fromJson(data));
           list.refresh();
         }
@@ -102,14 +104,14 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
 
         /// 群踢人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":306}}
         if (data[Keys.TYPE] == MessageType.REMOVE_MEMBERS_FROM_GROUP.code) {
-          removeMembers((data["userIds"] as List).map((item) => item.toString()).toList());
+          removeMembers(id, (data["userIds"] as List).map((item) => item.toString()).toList());
         }
 
         /// 群加人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":307}}
         if (data[Keys.TYPE] == MessageType.ADD_MEMBERS_TO_GROUP.code) getMembers(id);
 
         /// 退群 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544", "type":309}}
-        if (data[Keys.TYPE] == MessageType.LEAVE_GROUP.code) removeMember("${data[Keys.USER_ID]}");
+        if (data[Keys.TYPE] == MessageType.LEAVE_GROUP.code) removeMember(id, "${data[Keys.USER_ID]}");
 
         /// 解散群聊 {"cmd":4,"data":{"groupId":"1829665405703159809", "type":308}}
         if (data[Keys.TYPE] == MessageType.DISSOLUTION_GROUP.code) {
@@ -260,7 +262,8 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
           session.value?.isAdmin == YorNType.Y ||
           session.value?.isSupAdmin == YorNType.Y ||
           members.firstWhereOrNull((item) => item.userId == Get.find<RootLogic>().user.value?.id)?.isReceiveRedPacket ==
-              0) {
+                  0 &&
+              session.value?.configObj?.vura == YorNType.N) {
         String? result = await SessionRepository.checkRedPackage(redPackage.id);
         if (result != null) {
           if (result == YorNType.Y.name) {
@@ -289,7 +292,6 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
             Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
           } else if (result == YorNType.EXPIRE.name) {
             updateRedPackageState(message.id);
-            showToast(text: "红包已过期");
             Get.toNamed(RoutePath.PACKAGE_RESULT_PAGE, arguments: {Keys.ID: redPackage.id});
           } else {}
         }

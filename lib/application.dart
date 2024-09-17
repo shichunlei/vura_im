@@ -1,5 +1,4 @@
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:vura/utils/device_utils.dart';
 
 import 'entities/base_bean.dart';
 import 'entities/user_entity.dart';

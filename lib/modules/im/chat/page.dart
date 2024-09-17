@@ -106,7 +106,8 @@ class ChatPage extends StatelessWidget {
                               reverse: true,
                               itemBuilder: (_, index) {
                                 if (logic.list[index].type == MessageType.TIP_TEXT.code ||
-                                    logic.list[index].type == MessageType.RED_PACKET_TIP_TEXT.code) {
+                                    logic.list[index].type == MessageType.GROUP_RED_PACKET_TIP_TEXT.code ||
+                                    logic.list[index].type == MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code) {
                                   return ItemSystemMessage(
                                       message: logic.list[index],
                                       showTime: index == logic.list.length - 1 ||

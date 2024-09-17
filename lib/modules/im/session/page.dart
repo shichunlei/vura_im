@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:vura/entities/user_entity.dart';
+import 'package:vura/global/enum.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/im/widgets/item_session.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
-import 'package:vura/widgets/appbar_bottom_search_view.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
@@ -43,9 +43,7 @@ class SessionPage extends StatelessWidget {
                     });
                   })
             ],
-            centerTitle: false,
-            bottom: AppBarBottomSearchView(
-                searchBgColor: Colors.white, onSubmitted: (String value) {}, hintText: "Search".tr)),
+            centerTitle: false),
         body: BaseWidget(
             logic: logic,
             showEmpty: false,
@@ -122,7 +120,10 @@ class SessionPage extends StatelessWidget {
                   }),
               const Divider(height: .5),
               RadiusInkWellWidget(
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                  radius: 0,
+                  borderRadius: logic.list[index].type == SessionType.group
+                      ? null
+                      : BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
                   color: Colors.transparent,
                   child: Container(
                       height: 50.h,
@@ -132,7 +133,30 @@ class SessionPage extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                     logic.removeSession(index);
-                  })
+                  }),
+              ...logic.list[index].type == SessionType.group && !logic.list[index].deleted && !logic.list[index].quit
+                  ? [
+                      const Divider(height: .5),
+                      RadiusInkWellWidget(
+                          borderRadius:
+                              BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                          color: Colors.transparent,
+                          child: Container(
+                              height: 50.h,
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              child: Text(logic.list[index].isAdmin == YorNType.Y ? "删除并解散群聊" : "删除并退出群聊",
+                                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600))),
+                          onPressed: () {
+                            Get.back();
+                            if (logic.list[index].isAdmin == YorNType.Y) {
+                              logic.deleteSession(logic.list[index].id);
+                            } else {
+                              logic.quitSession(logic.list[index].id);
+                            }
+                          })
+                    ]
+                  : []
             ]))
       ]);
     });
