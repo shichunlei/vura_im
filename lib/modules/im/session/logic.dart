@@ -60,7 +60,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin
     if (sessions.isNotEmpty) {
       for (var item in sessions) {
         item.type = SessionType.group;
-        await SessionRealm(realm: rootLogic.realm).saveChannel(item);
+        await SessionRealm(realm: rootLogic.realm).saveChannel(item, refreshList: false);
       }
       refreshList();
     }
@@ -82,6 +82,12 @@ class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin
     list.refresh();
     await SessionRealm(realm: rootLogic.realm)
         .setChannelDisturb(list[index].id, list[index].isDisturb, list[index].type);
+  }
+
+  Future removeSession(int index) async {
+    await SessionRealm(realm: rootLogic.realm).removeChannel(list[index].id, list[index].type);
+    list.removeAt(index);
+    list.refresh();
   }
 
   @override

@@ -98,14 +98,14 @@ class _MyAppState extends State<MyApp> {
                       primaryColor: ColorUtil.mainColor,
                       brightness: Brightness.light,
                       colorScheme: ColorScheme.fromSeed(
-                          seedColor: const Color(0xff83C240),
+                          seedColor: ColorUtil.mainColor,
                           brightness: Brightness.light,
                           surfaceTint: Colors.transparent),
                       scaffoldBackgroundColor: const Color(0xfffafafa),
                       dividerColor: ColorUtil.lineColor,
                       dividerTheme: const DividerThemeData(color: ColorUtil.lineColor),
                       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-                          backgroundColor: Colors.white, selectedItemColor: Color(0xff83C240)),
+                          backgroundColor: Colors.white, selectedItemColor: ColorUtil.mainColor),
                       appBarTheme: AppBarTheme(
                           systemOverlayStyle: SystemUiOverlayStyle.dark,
                           elevation: 0,

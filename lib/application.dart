@@ -30,9 +30,6 @@ class Application {
     PackageInfo version = await PackageInfo.fromPlatform();
     AppConfig.setVersion(version);
 
-    String? deviceId = await DeviceUtils.getDeviceId();
-    AppConfig.setDeviceId(deviceId);
-
     String accessToken = SpUtil.getString(Keys.ACCESS_TOKEN);
     if (StringUtil.isNotEmpty(accessToken)) {
       /// 已登录，刷新token

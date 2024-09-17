@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/icon_font.dart';
 import 'package:vura/modules/im/sessions/create/page.dart';
 import 'package:vura/modules/im/sessions/join/page.dart';
+import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/keep_alive_view.dart';
@@ -33,7 +35,13 @@ class SessionsPage extends StatelessWidget {
                 controller: logic.tabController),
             centerTitle: true,
             actions: [
-              CustomIconButton(onPressed: () {}, icon: const Icon(IconFont.add_group, color: ColorUtil.color_333333))
+              CustomIconButton(
+                  onPressed: () {
+                    Get.toNamed(RoutePath.SELECT_CONTACTS_PAGE, arguments: {"isCheckBox": true})?.then((value) {
+                      if (value != null && value is List<UserEntity>) logic.createSession(value);
+                    });
+                  },
+                  icon: const Icon(IconFont.add_group, color: ColorUtil.color_333333))
             ]),
         body: BaseWidget(
             logic: logic,

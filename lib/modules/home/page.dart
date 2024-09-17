@@ -115,7 +115,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             Text("message".tr,
                                 style: GoogleFonts.roboto(
                                     fontSize: 11.sp,
-                                    color: !isActive ? ColorUtil.color_999999 : const Color(0xff83C240)))
+                                    color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
                           ])
                         : Column(mainAxisSize: MainAxisSize.min, children: [
                             SizedBox(height: 5.h),
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             Text("mine".tr,
                                 style: GoogleFonts.roboto(
                                     fontSize: 11.sp,
-                                    color: !isActive ? ColorUtil.color_999999 : const Color(0xff83C240)))
+                                    color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
                           ]);
                   });
             })));

@@ -108,7 +108,7 @@ class SessionPage extends StatelessWidget {
                           style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600)))),
               const Divider(height: .5),
               RadiusInkWellWidget(
-                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                  radius: 0,
                   color: Colors.transparent,
                   child: Container(
                       height: 50.h,
@@ -119,6 +119,19 @@ class SessionPage extends StatelessWidget {
                   onPressed: () {
                     Get.back();
                     logic.setDisturb(index);
+                  }),
+              const Divider(height: .5),
+              RadiusInkWellWidget(
+                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(8.r), bottomLeft: Radius.circular(8.r)),
+                  color: Colors.transparent,
+                  child: Container(
+                      height: 50.h,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text("删除会话", style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600))),
+                  onPressed: () {
+                    Get.back();
+                    logic.removeSession(index);
                   })
             ]))
       ]);

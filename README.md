@@ -43,21 +43,3 @@
 ## Android 包名
 
     com.example.vura.app
-
-## 打包
-
-- Android
-
-```bash
-  flutter clean
-  flutter pub get
-  flutter build apk --release --no-tree-shake-icons --verbose
-```
-
-- iOS
-
-```bash
-  flutter clean
-  flutter pub get
-  flutter build ios --release --no-tree-shake-icons --verbose
-```

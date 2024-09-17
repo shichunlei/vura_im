@@ -60,7 +60,7 @@ class ChargeWayPage extends StatelessWidget {
                                             padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                                             child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                                               Row(children: [
-                                                Text("地址${StringUtil.numToChinese(index + 1)}",
+                                                Text("地址",
                                                     style: GoogleFonts.roboto(
                                                         fontWeight: FontWeight.bold,
                                                         color: ColorUtil.color_333333,

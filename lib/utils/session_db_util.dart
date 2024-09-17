@@ -26,7 +26,7 @@ class SessionRealm {
     return _realm
         .all<Channel>()
         .query(
-            r"userId == $0 AND deleted == $1 AND id <> null AND friendship == $2 AND TRUEPREDICATE SORT(moveTop DESC ,moveTopTime ASC ,lastMessageTime DESC)",
+            r"userId == $0 AND deleted == $1 AND id <> null AND isShowList == true AND friendship == $2 AND TRUEPREDICATE SORT(moveTop DESC ,moveTopTime ASC ,lastMessageTime DESC)",
             ["${AppConfig.userId}", false, "Y"])
         .map((item) => sessionRealmToEntity(item))
         .toList();
@@ -52,7 +52,7 @@ class SessionRealm {
     });
   }
 
-  Future saveChannel(SessionEntity session) async {
+  Future saveChannel(SessionEntity session, {bool refreshList = true}) async {
     Channel? _session = findOne("${AppConfig.userId}-${session.id}-${session.type.name}");
     if (_session != null) {
       await _realm.writeAsync(() {
@@ -73,11 +73,12 @@ class SessionRealm {
         _session.showNickName = session.showNickName;
       });
       Log.d("saveChannel===${_session.id}================>${_session.toEJson()}");
-
-      try {
-        Get.find<SessionLogic>().refreshList();
-      } catch (e) {
-        Log.e(e.toString());
+      if (refreshList) {
+        try {
+          Get.find<SessionLogic>().refreshList();
+        } catch (e) {
+          Log.e(e.toString());
+        }
       }
     } else {
       await upsert(sessionEntityToRealm(session));
@@ -133,6 +134,7 @@ class SessionRealm {
         } else {
           _session.unReadCount = _session.unReadCount + 1;
         }
+        _session.isShowList = true;
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {
@@ -254,6 +256,17 @@ class SessionRealm {
       } catch (e) {
         Log.e(e.toString());
       }
+    }
+  }
+
+  /// 移除会话（当有新消息了会再次显示）
+  Future removeChannel(String? id, SessionType sessionType) async {
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
+    if (session != null) {
+      await _realm.writeAsync(() {
+        session.isShowList = false;
+      });
+      Log.d("removeChannel===${session.id}================>${session.toEJson()}");
     }
   }
 

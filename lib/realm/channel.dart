@@ -33,4 +33,5 @@ class _Channel {
   int unReadCount = 0; // 未读数
   String? no; // 群编码
   String? draft; // 草稿
+  bool isShowList = true;
 }

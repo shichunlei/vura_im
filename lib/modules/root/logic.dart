@@ -37,8 +37,7 @@ class RootLogic extends BaseLogic {
   var textSizeType = TextSizeType.one.obs;
 
   RootLogic() {
-    var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema],
-        schemaVersion: 6, shouldDeleteIfMigrationNeeded: false);
+    var config = Configuration.local([Channel.schema, Message.schema, Friend.schema, Account.schema], schemaVersion: 7);
     realm = Realm(config);
 
     textSizeType.value = EnumToString.fromString(

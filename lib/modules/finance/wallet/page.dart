@@ -63,7 +63,7 @@ class WalletPage extends StatelessWidget {
                       Container(
                           margin: EdgeInsets.only(top: 22.h, left: 22.w, right: 22.w),
                           decoration:
-                              BoxDecoration(borderRadius: BorderRadius.circular(18.r), color: const Color(0xff83C240)),
+                              BoxDecoration(borderRadius: BorderRadius.circular(18.r), color: ColorUtil.mainColor),
                           height: 93.h,
                           child: Row(children: [
                             Expanded(

@@ -81,7 +81,7 @@ class MinePage extends StatelessWidget {
                 behavior: HitTestBehavior.translucent,
                 child: Container(
                     decoration:
-                        BoxDecoration(color: const Color(0xff83C240), borderRadius: BorderRadius.circular(20.r)),
+                        BoxDecoration(color: ColorUtil.mainColor, borderRadius: BorderRadius.circular(20.r)),
                     margin: EdgeInsets.symmetric(horizontal: 22.w),
                     padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 22.h),
                     child: Column(mainAxisSize: MainAxisSize.min, children: [

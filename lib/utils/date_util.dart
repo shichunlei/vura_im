@@ -79,107 +79,12 @@ const Map<int, int> MONTH_DAY = {
 
 /// Date Util.
 class DateUtil {
-  static const List<String> MONTH_LIST = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Jul',
-    'Aug',
-    'Sept',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
-
-  static const List<String> WEEKDAY_LIST = ['Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun'];
-
-  static const List<String> EN_WEEKDAY_LIST = [
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-    "Sunday"
-  ];
-
-  static const List<String> SHORT_WEEKDAY_LIST = ["M", "T", "W", "T", "F", "S", "S"];
-
   static const List<String> ZH_LONG_WEEKDAY_LIST = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
-
-  static const List<String> ZH_WEEKDAY_LIST = ["周一", "周二", "周三", "周四", "周五", "周六", "周日"];
-
-  static const List<String> ZH_SHORT_WEEKDAY_LIST = ["一", "二", "三", "四", "五", "六", "日"];
-
-  static const List<String> MONTH_ZH_LIST = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
-
-  static const List<String> MONTH_NUM_LIST = [
-    '1月',
-    '2月',
-    '3月',
-    '4月',
-    '5月',
-    '6月',
-    '7月',
-    '8月',
-    '9月',
-    '10月',
-    '11月',
-    '12月'
-  ];
-
-  /// get DateTime By DateStr.
-  static DateTime? getDateTime(String dateStr, {bool? isUtc}) {
-    DateTime? dateTime = DateTime.tryParse(dateStr);
-    if (isUtc != null) {
-      if (isUtc) {
-        dateTime = dateTime!.toUtc();
-      } else {
-        dateTime = dateTime!.toLocal();
-      }
-    }
-    return dateTime;
-  }
 
   /// get DateTime By Milliseconds.
   static DateTime getDateTimeByMs(int? milliseconds, {bool isUtc = false}) {
     if (milliseconds == null) return DateTime.now();
     return DateTime.fromMillisecondsSinceEpoch(milliseconds, isUtc: isUtc);
-  }
-
-  /// get DateMilliseconds By DateStr.
-  static int getDateMsByTimeStr(String dateStr, {bool isUtc = false}) {
-    DateTime dateTime = DateTime.parse(dateStr);
-    if (isUtc) {
-      dateTime = dateTime.toUtc();
-    } else {
-      dateTime = dateTime.toLocal();
-    }
-    return dateTime.millisecondsSinceEpoch;
-  }
-
-  /// get Now Date Milliseconds.
-  static int getNowDateMs() {
-    return DateTime.now().millisecondsSinceEpoch;
-  }
-
-  /// get Now Date Str.(yyyy-MM-dd HH:mm:ss)
-  static String? getNowDateStr() {
-    return getDateStrByDateTime(DateTime.now());
-  }
-
-  /// get DateStr By DateStr.
-  /// dateStr         date String.
-  /// format          DateFormat type.
-  /// dateSeparate    date separate.
-  /// timeSeparate    time separate.
-  static String? getDateStrByTimeStr(String dateStr,
-      {DateFormat format = DateFormat.NORMAL, String? dateSeparate, String? timeSeparate, bool? isUtc}) {
-    return getDateStrByDateTime(getDateTime(dateStr, isUtc: isUtc),
-        format: format, dateSeparate: dateSeparate, timeSeparate: timeSeparate);
   }
 
   /// get DateStr By Milliseconds.
@@ -335,125 +240,11 @@ class DateUtil {
     return time;
   }
 
-  /// format date by milliseconds.
-  /// milliseconds 日期毫秒
-  static String formatDateMs(int? milliseconds, {bool isUtc = false, String? format}) {
-    return formatDate(getDateTimeByMs(milliseconds, isUtc: isUtc), format: format);
-  }
-
-  /// format date by date str.
-  /// dateStr 日期字符串
-  static String formatDateStr(String dateStr, {bool? isUtc, String? format}) {
-    return formatDate(getDateTime(dateStr, isUtc: isUtc), format: format);
-  }
-
-  /// format date by DateTime.
-  /// format 转换格式(已提供常用格式 DataFormats，可以自定义格式："yyyy/MM/dd HH:mm:ss")
-  /// 格式要求
-  /// year -> yyyy/yy   month -> MM/M    day -> dd/d
-  /// hour -> HH/H      minute -> mm/m   second -> ss/s
-  static String formatDate(DateTime? dateTime, {bool? isUtc, String? format}) {
-    if (dateTime == null) return "";
-    format = format ?? DataFormats.NORMAL;
-    if (format.contains("yy")) {
-      String year = dateTime.year.toString();
-      if (format.contains("yyyy")) {
-        format = format.replaceAll("yyyy", year);
-      } else {
-        format = format.replaceAll("yy", year.substring(year.length - 2, year.length));
-      }
-    }
-
-    format = _comFormat(dateTime.month, format, 'M', 'MM');
-    format = _comFormat(dateTime.day, format, 'd', 'dd');
-    format = _comFormat(dateTime.hour, format, 'H', 'HH');
-    format = _comFormat(dateTime.minute, format, 'm', 'mm');
-    format = _comFormat(dateTime.second, format, 's', 'ss');
-    format = _comFormat(dateTime.millisecond, format, 'S', 'SSS');
-
-    return format;
-  }
-
-  /// com format.
-  static String _comFormat(int value, String format, String single, String full) {
-    if (format.contains(single)) {
-      if (format.contains(full)) {
-        format = format.replaceAll(full, value < 10 ? '0$value' : value.toString());
-      } else {
-        format = format.replaceAll(single, value.toString());
-      }
-    }
-    return format;
-  }
-
-  /// get WeekDay By Milliseconds.
-  static String? getWeekDayByMs(int? milliseconds, {bool isUtc = false}) {
-    DateTime dateTime = getDateTimeByMs(milliseconds, isUtc: isUtc);
-    return getWeekDay(dateTime);
-  }
-
-  /// get WeekDay By DateStr.
-  static String? getWeekDayByDateStr(String date, {bool isUtc = false}) {
-    DateTime? dateTime = getDateTime(date, isUtc: isUtc);
-    return getWeekDay(dateTime);
-  }
-
-  /// get ZH WeekDay By Milliseconds.
-  static String? getZHWeekDayByMs(int? milliseconds, {bool isUtc = false}) {
-    DateTime dateTime = getDateTimeByMs(milliseconds, isUtc: isUtc);
-    return getZHLongWeekDay(dateTime);
-  }
-
-  /// get ZH WeekDay By DateStr.
-  static String? getZHWeekDayByDateStr(String date, {bool isUtc = false, int type = 0}) {
-    DateTime? dateTime = getDateTime(date, isUtc: isUtc);
-    if (type == 0) {
-      return getZHLongWeekDay(dateTime);
-    } else if (type == 2) {
-      return getZHWeekDay(dateTime);
-    } else {
-      return getWeekDayNum(dateTime);
-    }
-  }
-
-  /// get WeekDay.
-  static String? getWeekDay(DateTime? dateTime) {
-    if (dateTime == null) return null;
-    String weekday = EN_WEEKDAY_LIST[dateTime.weekday - 1];
-    return weekday;
-  }
-
-  /// get WeekDay.
-  static String getWeekDay2(DateTime dateTime) {
-    String weekday = WEEKDAY_LIST[dateTime.weekday - 1];
-
-    return weekday;
-  }
-
   /// get ZH WeekDay.
   static String? getZHLongWeekDay(DateTime? dateTime) {
     if (dateTime == null) return null;
     String weekday = ZH_LONG_WEEKDAY_LIST[dateTime.weekday - 1];
     return weekday;
-  }
-
-  /// get ZH WeekDay.
-  static String? getZHWeekDay(DateTime? dateTime) {
-    if (dateTime == null) return null;
-    String weekday = ZH_WEEKDAY_LIST[dateTime.weekday - 1];
-    return weekday;
-  }
-
-  static String? getWeekDayNum(DateTime? dateTime) {
-    if (dateTime == null) return null;
-    String weekday = ZH_SHORT_WEEKDAY_LIST[dateTime.weekday - 1];
-    return weekday;
-  }
-
-  /// Return whether it is leap year.
-  /// 是否为闰年
-  static bool isLeapYearByDateTime(DateTime dateTime) {
-    return isLeapYearByYear(dateTime.year);
   }
 
   /// Return whether it is leap year.
@@ -487,12 +278,6 @@ class DateUtil {
 
   /// get day of year.
   /// 在今年的第几天.
-  static int getDayOfYearByMillis(int millis, {bool isUtc = false}) {
-    return getDayOfYear(DateTime.fromMillisecondsSinceEpoch(millis, isUtc: isUtc));
-  }
-
-  /// get day of year.
-  /// 在今年的第几天.
   static int getDayOfYear(DateTime dateTime) {
     int year = dateTime.year;
     int month = dateTime.month;
@@ -504,12 +289,6 @@ class DateUtil {
       days = days + 1;
     }
     return days;
-  }
-
-  /// year is equal.
-  /// 是否同年.
-  static bool yearIsEqualByMillis(int millis, int locMillis) {
-    return yearIsEqual(DateTime.fromMillisecondsSinceEpoch(millis), DateTime.fromMillisecondsSinceEpoch(locMillis));
   }
 
   /// year is equal.
@@ -549,179 +328,6 @@ class DateUtil {
     DateTime now = nNow.millisecondsSinceEpoch > oOld.millisecondsSinceEpoch ? nNow : oOld;
     return (now.weekday >= old.weekday) &&
         (now.millisecondsSinceEpoch - old.millisecondsSinceEpoch <= 7 * 24 * 60 * 60 * 1000);
-  }
-
-  /// 是否为同一天
-  static bool isEqualDay(DateTime dateTime1, DateTime dateTime2) {
-    if (dateTime1.year == dateTime2.year && dateTime1.month == dateTime2.month && dateTime1.day == dateTime2.day) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /// 是否为同一天
-  static bool isEqualDayByMs(int? milliseconds1, int? milliseconds2) {
-    if (milliseconds1 == null || milliseconds2 == null) return false;
-    return isEqualDay(
-        DateTime.fromMillisecondsSinceEpoch(milliseconds1), DateTime.fromMillisecondsSinceEpoch(milliseconds2));
-  }
-
-  /// 是否为同一天
-  static bool isEqualDayByMsAndDateTime(DateTime dateTime, int? milliseconds) {
-    if (milliseconds == null) return false;
-    return isEqualDay(dateTime, DateTime.fromMillisecondsSinceEpoch(milliseconds));
-  }
-
-  /// 是否为同一天
-  static bool isEqualMouth(DateTime dateTime, DateTime dateTime2) {
-    return dateTime.year == dateTime2.year && dateTime2.month == dateTime.month;
-  }
-
-  static bool isAtSameMomentAs(DateTime dateTime1, DateTime dateTime2) {
-    if (dateTime1.year == dateTime2.year &&
-        dateTime1.month == dateTime2.month &&
-        dateTime1.day == dateTime2.day &&
-        dateTime1.hour == dateTime2.hour &&
-        dateTime1.minute == dateTime2.minute) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  /// 是否过期
-  static bool isExpired(String dateStr) {
-    return getNowDateMs() > getDateMsByTimeStr(dateStr);
-  }
-
-  /// 获取指定日期所在周的第一天
-  static DateTime getWeekFirstDay({DateTime? currentDate, bool firstDayOfWeekIsMonday = true}) {
-    currentDate ??= DateTime.now();
-
-    if (firstDayOfWeekIsMonday) {
-      // 计算日期与本周第一天之间的天数差
-      int daysSinceMonday = currentDate.weekday - DateTime.monday;
-
-      // 如果日期已经是周一，则直接返回
-      if (daysSinceMonday == 0) {
-        return currentDate;
-      }
-
-      // 否则，减去天数差以获取本周第一天
-      return currentDate.subtract(Duration(days: daysSinceMonday));
-    } else {
-      int dayOfWeek = currentDate.weekday;
-
-      // 如果日期已经是周日，则直接返回
-      if (dayOfWeek == DateTime.sunday) {
-        return currentDate;
-      }
-
-      return currentDate.subtract(Duration(days: dayOfWeek));
-    }
-  }
-
-  /// 获取指定日期所在周的最后一天，如果一周第一天是周一，则最后一天为周日，如果第一天为周日，则最后一天为周六
-  static DateTime getWeekEndDay({DateTime? currentDate, bool firstDayOfWeekIsMonday = true}) {
-    currentDate ??= DateTime.now();
-
-    if (firstDayOfWeekIsMonday) {
-      // 计算日期与本周周日之间的天数差
-      int daysUntilSunday = DateTime.sunday - currentDate.weekday;
-
-      // 如果日期已经是周日，则直接返回
-      if (daysUntilSunday == 0) {
-        return currentDate;
-      }
-
-      // 否则，加上天数差以获取本周周日的日期
-      return currentDate.add(Duration(days: daysUntilSunday));
-    } else {
-      int dayOfWeek = currentDate.weekday;
-
-      // 如果日期已经是周六，则直接返回
-      if (dayOfWeek == DateTime.saturday) {
-        return currentDate;
-      }
-
-      if (dayOfWeek == DateTime.sunday) {
-        return currentDate.add(const Duration(days: 6));
-      }
-
-      return currentDate.add(Duration(days: DateTime.saturday - dayOfWeek));
-    }
-  }
-
-  /// 获取指定日期所在周的日期列表
-  static List<DateTime> getWeekDays({DateTime? date, bool firstDayOfWeekIsMonday = true}) {
-    DateTime firstDate = getWeekFirstDay(currentDate: date, firstDayOfWeekIsMonday: firstDayOfWeekIsMonday);
-
-    List<DateTime> weeks = [];
-
-    for (int i = 0; i < 7; i++) {
-      weeks.add(getDateTimeByMs(firstDate.millisecondsSinceEpoch + i * 24 * 3600 * 1000));
-    }
-
-    return weeks;
-  }
-
-  /// 获取指定日期所在周的日期列表
-  static List<String?> getStrWeekDays({DateTime? date, DateFormat? format, bool firstDayOfWeekIsMonday = true}) {
-    DateTime firstDate = getWeekFirstDay(currentDate: date, firstDayOfWeekIsMonday: firstDayOfWeekIsMonday);
-
-    List<String?> weeks = [];
-
-    for (int i = 0; i < 7; i++) {
-      weeks.add(getDateStrByMs(firstDate.millisecondsSinceEpoch + i * 24 * 3600 * 1000,
-          format: format ?? DateFormat.YEAR_MONTH_DAY));
-    }
-
-    return weeks;
-  }
-
-  /// 获取给定月份的最后一天
-  static DateTime getLastDayOfMouth(DateTime date) {
-    int mouth = date.month;
-    int lastDay = 30;
-
-    if (mouth == 2 && isLeapYearByDateTime(date)) {
-      lastDay = 29;
-    } else {
-      lastDay = MONTH_DAY[mouth]!;
-    }
-
-    return DateTime(date.year, mouth, lastDay, 23, 59, 59);
-  }
-
-  static List<int> getRangMsByDay({DateTime? datetime}) {
-    DateTime dataTime;
-
-    if (datetime == null) {
-      dataTime = DateTime.now();
-    } else {
-      dataTime = datetime;
-    }
-
-    return [
-      DateTime(dataTime.year, dataTime.month, dataTime.day, 0, 0, 0, 0).millisecondsSinceEpoch,
-      DateTime(dataTime.year, dataTime.month, dataTime.day, 23, 59, 59).millisecondsSinceEpoch
-    ];
-  }
-
-  static List<DateTime> getRangDateTimeByDay({DateTime? datetime}) {
-    DateTime dataTime;
-
-    if (datetime == null) {
-      dataTime = DateTime.now();
-    } else {
-      dataTime = datetime;
-    }
-
-    return [
-      DateTime(dataTime.year, dataTime.month, dataTime.day, 0, 0, 0, 0),
-      DateTime(dataTime.year, dataTime.month, dataTime.day, 23, 59, 59)
-    ];
   }
 
   static String getWechatTime(int duration) {

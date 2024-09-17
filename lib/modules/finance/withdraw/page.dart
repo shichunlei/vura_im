@@ -23,7 +23,7 @@ class WithdrawPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Container(color: const Color(0xff83C240), width: double.infinity, height: double.infinity),
+      Container(color: ColorUtil.mainColor, width: double.infinity, height: double.infinity),
       Image.asset("assets/images/recharge_top_bg.webp", width: double.infinity, fit: BoxFit.fitWidth),
       Scaffold(
           backgroundColor: Colors.transparent,
@@ -117,7 +117,7 @@ class WithdrawPage extends StatelessWidget {
                                                   borderRadius: BorderRadius.circular(10.r),
                                                   border: Border.all(
                                                       color: logic.selectIndex.value == index
-                                                          ? const Color(0xff83C240)
+                                                          ? ColorUtil.mainColor
                                                           : const Color(0xffF1F6F7),
                                                       width: 1)),
                                               child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -129,14 +129,14 @@ class WithdrawPage extends StatelessWidget {
                                                       Text("${logic.list[index].usdt}",
                                                           style: GoogleFonts.roboto(
                                                               color: logic.selectIndex.value == index
-                                                                  ? const Color(0xff83C240)
+                                                                  ? ColorUtil.mainColor
                                                                   : ColorUtil.color_333333,
                                                               fontSize: 22.sp,
                                                               fontWeight: FontWeight.bold)),
                                                       Text("u",
                                                           style: GoogleFonts.roboto(
                                                               color: logic.selectIndex.value == index
-                                                                  ? const Color(0xff83C240)
+                                                                  ? ColorUtil.mainColor
                                                                   : ColorUtil.color_333333,
                                                               fontSize: 12.sp,
                                                               fontWeight: FontWeight.w600))
@@ -144,7 +144,7 @@ class WithdrawPage extends StatelessWidget {
                                                 Text("≈￥${StringUtil.formatPrice(logic.list[index].money)}",
                                                     style: GoogleFonts.roboto(
                                                         color: logic.selectIndex.value == index
-                                                            ? const Color(0xff83C240)
+                                                            ? ColorUtil.mainColor
                                                             : ColorUtil.color_999999,
                                                         fontSize: 13.sp))
                                               ]));

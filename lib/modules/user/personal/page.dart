@@ -52,7 +52,7 @@ class PersonalPage extends StatelessWidget {
                                   width: 22.r,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
-                                      color: const Color(0xff83C240), borderRadius: BorderRadius.circular(200)),
+                                      color: ColorUtil.mainColor, borderRadius: BorderRadius.circular(200)),
                                   child: Icon(IconFont.edit, color: Colors.white, size: 13.r))))
                     ])),
                 Container(
