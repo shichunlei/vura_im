@@ -40,11 +40,4 @@ class NewFriendLogic extends BaseListLogic<ApplyUserEntity> {
       showToast(text: "已拒绝");
     }
   }
-
-  Future ignore(int index) async {
-    showLoading();
-    BaseBean result = await ContactsRepository.ignore(list[index].applyId);
-    hiddenLoading();
-    if (result.code == 200) {}
-  }
 }

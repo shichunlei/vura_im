@@ -120,15 +120,6 @@ class ContactsRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 忽略申请 TODO
-  ///
-  /// [id] 用户ID
-  ///
-  static Future<BaseBean> ignore(String? id) async {
-    var data = await HttpUtils.getInstance().request('apply/ignore', params: {Keys.APPLY_ID: id}, showErrorToast: true);
-    return BaseBean.fromJson(data);
-  }
-
   /// 申请添加好友
   ///
   /// [id] 用户ID

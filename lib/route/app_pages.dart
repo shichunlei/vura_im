@@ -8,6 +8,8 @@ import 'package:vura/modules/contacts/new_friend/binding.dart';
 import 'package:vura/modules/contacts/new_friend/page.dart';
 import 'package:vura/modules/contacts/phone_contacts/binding.dart';
 import 'package:vura/modules/contacts/phone_contacts/page.dart';
+import 'package:vura/modules/contacts/search/binding.dart';
+import 'package:vura/modules/contacts/search/page.dart';
 import 'package:vura/modules/contacts/select/binding.dart';
 import 'package:vura/modules/contacts/select/page.dart';
 import 'package:vura/modules/dashboard/devices/binding.dart';
@@ -137,6 +139,7 @@ abstract class AppPages {
         name: RoutePath.LOCK_SCREEN_PASSWORD_PAGE,
         page: () => const LockScreenPasswordPage(),
         binding: LockScreenPasswordBinding()),
+    GetPage(name: RoutePath.SEARCH_PAGE, page: () => const SearchPage(), binding: SearchBinding()),
     GetPage(
         name: RoutePath.GESTURE_PASSWORD_PAGE,
         page: () => const SetGesturePasswordPage(),

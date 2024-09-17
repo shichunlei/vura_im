@@ -5,7 +5,6 @@ import 'package:vura/entities/bill_record_entity.dart';
 import 'package:vura/entities/device_entity.dart';
 import 'package:vura/entities/file_entity.dart';
 import 'package:vura/entities/rate_entity.dart';
-import 'package:vura/entities/version_entity.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/utils/date_util.dart';
@@ -159,26 +158,6 @@ class CommonRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 设置锁屏密码 TODO
-  ///
-  static Future<BaseBean> setLockScreenPassword({String? password}) async {
-    var data =
-        await HttpUtils.getInstance().request("withdraw/apply", params: {"password": password}, showErrorToast: true);
-    return BaseBean.fromJson(data);
-  }
-
-  /// 版本检查 TODO
-  ///
-  static Future<VersionEntity?> checkVersion() async {
-    var data = await HttpUtils.getInstance().request('version', method: HttpUtils.GET, showErrorToast: true);
-    BaseBean result = BaseBean.fromJsonToObject(data);
-    if (result.code == 200) {
-      return VersionEntity.fromJson(result.data);
-    } else {
-      return null;
-    }
-  }
-
   /// 获取平台地址信息
   ///
   static Future<List<ImConfigEntity>> getImConfig() async {
@@ -187,18 +166,6 @@ class CommonRepository {
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
       return result.items.map((item) => ImConfigEntity.fromJson(item)).toList();
-    } else {
-      return [];
-    }
-  }
-
-  /// 设备列表
-  ///
-  static Future<List<DeviceEntity>> getDeviceList() async {
-    var data = await HttpUtils.getInstance().request('user/device/list', method: HttpUtils.GET);
-    BaseBean result = BaseBean.fromJsonToList(data);
-    if (result.code == 200) {
-      return result.items.map((item) => DeviceEntity.fromJson(item)).toList();
     } else {
       return [];
     }

@@ -26,8 +26,8 @@ class SessionRealm {
     return _realm
         .all<Channel>()
         .query(
-            r"userId == $0 AND deleted == $1 AND id <> null AND isShowList == true AND friendship == $2 AND TRUEPREDICATE SORT(moveTop DESC ,moveTopTime ASC ,lastMessageTime DESC)",
-            ["${AppConfig.userId}", false, "Y"])
+            r"userId == $0 AND deleted == $1 AND id <> null AND friendship == $2 AND isShowList == $3 AND TRUEPREDICATE SORT(moveTop DESC ,moveTopTime ASC ,lastMessageTime DESC)",
+            ["${AppConfig.userId}", false, "Y", true])
         .map((item) => sessionRealmToEntity(item))
         .toList();
   }

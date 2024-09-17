@@ -9,8 +9,6 @@ enum ViewState {
   noNetwork, // 没网
 }
 
-enum LoginFrom { h5, web, app }
-
 enum RefreshState { none, refresh, load, error }
 
 enum MessageType {
@@ -19,6 +17,7 @@ enum MessageType {
   FILE(2, "文件消息"),
   AUDIO(3, "语音消息"),
   VIDEO(4, "视频消息"),
+  EMOJI(5, "Emoji消息"),
   RECALL(10, "撤回"),
   READ_ED(11, "已读"),
   RECEIPT(12, "消息已读回执"),
@@ -74,25 +73,12 @@ enum MessageType {
   APPLY_ADD_FRIEND_SUCCESS(902, "申请添加好友成功通知"),
   RED_PACKAGE(904, "单人红包"),
   ID_CARD(905, "个人名片"),
-  GROUP_RED_PACKAGE(906, "群红包"),
-  EMOJI(1000, "表情");
+  GROUP_RED_PACKAGE(906, "群红包");
 
   final int code;
   final String label;
 
   const MessageType(this.code, this.label);
-}
-
-enum MessageStatus {
-  UN_SEND(0, "未发送"),
-  SEND_ED(1, "已发送"),
-  RECALL(2, "撤回"),
-  READ_ED(3, "已读");
-
-  final int code;
-  final String label;
-
-  const MessageStatus(this.code, this.label);
 }
 
 enum WebSocketCode {

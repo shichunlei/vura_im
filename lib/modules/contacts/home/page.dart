@@ -8,8 +8,6 @@ import 'package:vura/global/icon_font.dart';
 import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/date_util.dart';
-import 'package:vura/utils/permission_util.dart';
-import 'package:vura/utils/toast_util.dart';
 import 'package:vura/widgets/avatar_image.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
@@ -36,11 +34,12 @@ class ContactsPage extends StatelessWidget {
               CustomIconButton(
                   icon: const Icon(IconFont.search),
                   onPressed: () async {
-                    if (await PermissionUtil.checkContactsPermissionStatus(context)) {
-                      Get.toNamed(RoutePath.PHONE_CONTACTS_PAGE);
-                    } else {
-                      showToast(text: '请先打开访问通讯录权限');
-                    }
+                    // if (await PermissionUtil.checkContactsPermissionStatus(context)) {
+                    //   Get.toNamed(RoutePath.PHONE_CONTACTS_PAGE);
+                    // } else {
+                    //   showToast(text: '请先打开访问通讯录权限');
+                    // }
+                    Get.toNamed(RoutePath.SEARCH_PAGE);
                   })
             ],
             centerTitle: false),

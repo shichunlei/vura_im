@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:vura/entities/base_bean.dart';
+import 'package:vura/entities/device_entity.dart';
 import 'package:vura/entities/login_entity.dart';
 import 'package:vura/entities/user_entity.dart';
 import 'package:vura/global/enum.dart';
@@ -242,16 +243,13 @@ class UserRepository {
     }
   }
 
-  /// 获取用户设备终端 TODO
+  /// 获取用户设备终端
   ///
-  /// [userIds]
-  ///
-  static Future<List<UserEntity>> getUserDevices(String? userIds) async {
-    var data = await HttpUtils.getInstance()
-        .request('user/terminal/online', method: HttpUtils.GET, params: {"userIds": userIds});
+  static Future<List<DeviceEntity>> getDeviceList() async {
+    var data = await HttpUtils.getInstance().request('user/device/list', method: HttpUtils.GET);
     BaseBean result = BaseBean.fromJsonToList(data);
     if (result.code == 200) {
-      return result.items.map((item) => UserEntity.fromJson(item)).toList();
+      return result.items.map((item) => DeviceEntity.fromJson(item)).toList();
     } else {
       return [];
     }

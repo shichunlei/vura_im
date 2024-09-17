@@ -123,10 +123,7 @@ class GroupSessionDetailPage extends StatelessWidget {
                                 ]);
                               }
 
-                              return ItemSessionUser(
-                                  member: logic.members[index],
-                                  groupId: logic.id,
-                                  addFriend: logic.bean.value?.configObj?.addFriend == YorNType.N);
+                              return ItemSessionUser(member: logic.members[index], groupId: logic.id, tag: tag);
                             },
                             itemCount: min(
                                     logic.members.length,
@@ -146,8 +143,11 @@ class GroupSessionDetailPage extends StatelessWidget {
                                     : 9),
                             child: GestureDetector(
                                 onTap: () {
-                                  Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE,
-                                      arguments: {Keys.ID: logic.id, Keys.TITLE: "群成员"});
+                                  Get.toNamed(RoutePath.SESSION_MEMBERS_PAGE, arguments: {
+                                    Keys.ID: logic.id,
+                                    Keys.TITLE: "群成员",
+                                    "canViewMemberInfo": logic.bean.value?.configObj?.addFriend == YorNType.N
+                                  });
                                 },
                                 behavior: HitTestBehavior.translucent,
                                 child: Padding(

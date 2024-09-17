@@ -1,18 +1,10 @@
-import 'dart:io';
-import 'dart:math';
-
-import 'package:app_installer/app_installer.dart';
-import 'package:dio/dio.dart';
 import 'package:get/get.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:realm/realm.dart';
 import 'package:vura/base/base_logic.dart';
 import 'package:vura/entities/account_entity.dart';
 import 'package:vura/entities/login_entity.dart';
 import 'package:vura/entities/rate_entity.dart';
 import 'package:vura/entities/user_entity.dart';
-import 'package:vura/entities/version_entity.dart';
-import 'package:vura/global/config.dart';
 import 'package:vura/global/enum.dart';
 import 'package:vura/global/keys.dart';
 import 'package:vura/realm/account.dart';
@@ -23,11 +15,8 @@ import 'package:vura/repository/common_repository.dart';
 import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/account_db_util.dart';
 import 'package:vura/utils/enum_to_string.dart';
-import 'package:vura/utils/log_utils.dart';
 import 'package:vura/utils/sp_util.dart';
 import 'package:vura/utils/string_util.dart';
-import 'package:vura/utils/toast_util.dart';
-import 'package:vura/widgets/dialog/version_upgrade_dialog.dart';
 
 class RootLogic extends BaseLogic {
   late Realm realm;
@@ -158,56 +147,5 @@ class RootLogic extends BaseLogic {
     } else {
       exchangeRate.value = 7.15;
     }
-  }
-
-  VersionEntity? version;
-
-  Future checkVersion({bool isAuto = true}) async {
-    if (!isAuto) showLoading();
-    version = await CommonRepository.checkVersion();
-    hiddenLoading();
-    if (version != null && version!.versionCode > int.parse(AppConfig.version!.buildNumber)) {
-      Get.dialog(const VersionUpgradeDialog(), barrierDismissible: false);
-    } else {
-      if (!isAuto) showToast(text: "No Updates".tr);
-    }
-  }
-
-  var progress = .0.obs;
-
-  void goStore() {
-    AppInstaller.goStore("", "", review: false);
-  }
-
-  var isDownloading = false.obs;
-  late File file;
-
-  /// 安装apk
-  Future downloadAndroid() async {
-    isDownloading.value = true;
-    progress.value = .0;
-    Directory? storageDir = await getExternalStorageDirectory();
-    String saveName = '${storageDir?.path}/VURA v${version!.version}.apk';
-    file = File(saveName);
-    if (file.existsSync()) file.deleteSync();
-    file.createSync();
-    try {
-      await Dio().download("${version!.download}", saveName, onReceiveProgress: (num received, num total) {
-        if (total > 0) {
-          progress.value = min(double.parse((received / total).toStringAsFixed(2)), 1);
-          if (received >= total) installApk();
-        }
-      });
-    } catch (e) {
-      Log.d('download failed:$e');
-      showToast(text: "APP下载失败");
-      isDownloading.value = false;
-      progress.value = .0;
-    }
-  }
-
-  /// 安装APK
-  void installApk() async {
-    await AppInstaller.installApk(file.path);
   }
 }

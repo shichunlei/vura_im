@@ -16,7 +16,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 修改会话 TODO
+  /// 修改会话
   ///
   /// [id] 群ID
   /// [headImage] 群头像
@@ -125,7 +125,7 @@ class SessionRepository {
     return BaseBean.fromJson(data);
   }
 
-  /// 群成员列表 TODO
+  /// 群成员列表
   ///
   /// [id] 群ID
   ///
@@ -139,7 +139,7 @@ class SessionRepository {
     }
   }
 
-  /// 群成员详情 todo
+  /// 群成员详情
   ///
   /// [groupId] 群ID
   /// [userId] 成员ID
@@ -155,7 +155,7 @@ class SessionRepository {
     }
   }
 
-  /// 设置群成员是否可以抢红包 todo
+  /// 设置群成员是否可以抢红包
   ///
   /// [id] ID
   /// [isProhibitRedPacket] 是否禁止抢红包

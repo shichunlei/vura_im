@@ -239,4 +239,10 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
       Log.e(e.toString());
     }
   }
+
+  void updateSessionConfig(SessionConfigEntity config) {
+    bean.value!.configObj = config;
+    bean.refresh();
+    Log.d("updateSessionConfig==========================");
+  }
 }

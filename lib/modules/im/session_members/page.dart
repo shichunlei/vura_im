@@ -113,21 +113,23 @@ class SessionMembersPage extends StatelessWidget {
                                             color: ColorUtil.color_333333,
                                             fontWeight: FontWeight.w500)),
                                     SizedBox(height: 5.r),
-                                    Text("ID:${logic.list[index].userId}",
+                                    Text("ID:${logic.list[index].userNo}",
                                         style: GoogleFonts.roboto(fontSize: 11.sp, color: ColorUtil.color_999999))
                                   ])),
-                              RadiusInkWellWidget(
-                                  child: Container(
-                                      width: 62.w,
-                                      height: 26.h,
-                                      alignment: Alignment.center,
-                                      child: Text("查看详情",
-                                          style: GoogleFonts.roboto(
-                                              color: Colors.white, fontSize: 11.sp, fontWeight: FontWeight.w600))),
-                                  onPressed: () {
-                                    Get.toNamed(RoutePath.SESSION_MEMBER_PAGE,
-                                        arguments: {Keys.ID: logic.list[index].userId, Keys.GROUP_ID: logic.id});
-                                  })
+                              Visibility(
+                                  visible: logic.canViewMemberInfo,
+                                  child: RadiusInkWellWidget(
+                                      onPressed: () {
+                                        Get.toNamed(RoutePath.SESSION_MEMBER_PAGE,
+                                            arguments: {Keys.ID: logic.list[index].userId, Keys.GROUP_ID: logic.id});
+                                      },
+                                      child: Container(
+                                          width: 62.w,
+                                          height: 26.h,
+                                          alignment: Alignment.center,
+                                          child: Text("查看详情",
+                                              style: GoogleFonts.roboto(
+                                                  color: Colors.white, fontSize: 11.sp, fontWeight: FontWeight.w600)))))
                             ])));
                   },
                   separatorBuilder: (_, index) {

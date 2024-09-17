@@ -43,11 +43,11 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     if (config.code == 200) {
       showToast(text: "设置成功");
       bean.refresh();
-      await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+      updateSessionDetailConfig();
     }
   }
 
-  ///
+  /// 禁止群成员互加好友
   Future updateAddFriendConfig(bool value) async {
     bean.value!.addFriend = value ? YorNType.Y : YorNType.N;
     showLoading();
@@ -56,7 +56,7 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     if (config.code == 200) {
       showToast(text: "设置成功");
       bean.refresh();
-      await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+      updateSessionDetailConfig();
     }
   }
 
@@ -69,10 +69,11 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     if (config.code == 200) {
       showToast(text: "设置成功");
       bean.refresh();
-      await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+      updateSessionDetailConfig();
     }
   }
 
+  /// 邀请确认
   Future updateInviteConfig(bool value) async {
     bean.value!.invite = value ? YorNType.Y : YorNType.N;
     showLoading();
@@ -81,10 +82,20 @@ class SessionManagerLogic extends BaseObjectLogic<SessionConfigEntity?> {
     if (config.code == 200) {
       showToast(text: "设置成功");
       bean.refresh();
-      await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+      updateSessionDetailConfig();
     }
   }
 
+  void updateSessionDetailConfig() async {
+    await SessionRealm(realm: Get.find<RootLogic>().realm).setChannelConfig(id, bean.value!);
+    try {
+      Get.find<GroupSessionDetailLogic>(tag: id).updateSessionConfig(bean.value!);
+    } catch (e) {
+      Log.e(e.toString());
+    }
+  }
+
+  /// 转让群主
   Future updateAdmin(String? userId) async {
     showLoading();
     BaseBean result = await SessionRepository.setAdmin(id, userId);

@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:vura/base/base_list_logic.dart';
 import 'package:vura/entities/device_entity.dart';
-import 'package:vura/repository/common_repository.dart';
+import 'package:vura/repository/user_repository.dart';
 import 'package:vura/utils/device_utils.dart';
 
 class DevicesLogic extends BaseListLogic<DeviceEntity> {
@@ -22,7 +22,7 @@ class DevicesLogic extends BaseListLogic<DeviceEntity> {
 
   @override
   Future<List<DeviceEntity>> loadData() async {
-    return await CommonRepository.getDeviceList();
+    return await UserRepository.getDeviceList();
   }
 
   var currentIndex = (-1).obs;
