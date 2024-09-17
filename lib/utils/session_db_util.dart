@@ -135,6 +135,7 @@ class SessionRealm {
           _session.unReadCount = _session.unReadCount + 1;
         }
         _session.isShowList = true;
+        _session.quit = false;
       });
       Log.d("updateLastMessage===${_session.id}================>${_session.toEJson()}");
     } else {

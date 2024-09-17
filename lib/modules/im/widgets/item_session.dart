@@ -96,27 +96,27 @@ class ItemSession extends StatelessWidget {
                     Expanded(
                         child: Text(
                             session.lastMessage?.type == MessageType.IMAGE.code
-                                ? "${getUserName(session.lastMessage)}[图片]"
+                                ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[图片]"
                                 : session.lastMessage?.type == MessageType.AUDIO.code
-                                    ? "${getUserName(session.lastMessage)}[语音]"
+                                    ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[语音]"
                                     : session.lastMessage?.type == MessageType.EMOJI.code ||
                                             session.lastMessage?.type == 1000
-                                        ? "${getUserName(session.lastMessage)}[表情]"
+                                        ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[表情]"
                                         : session.lastMessage?.type == MessageType.VIDEO.code
-                                            ? "${getUserName(session.lastMessage)}[视频]"
+                                            ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[视频]"
                                             : session.lastMessage?.type == MessageType.FILE.code
-                                                ? "${getUserName(session.lastMessage)}[文件]"
+                                                ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[文件]"
                                                 : session.lastMessage?.type == MessageType.RED_PACKAGE.code ||
                                                         session.lastMessage?.type == MessageType.GROUP_RED_PACKAGE.code
-                                                    ? "${getUserName(session.lastMessage)}[红包]"
+                                                    ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[红包]"
                                                     : session.lastMessage?.type == MessageType.ID_CARD.code
-                                                        ? "${getUserName(session.lastMessage)}[个人名片]"
+                                                        ? "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}[个人名片]"
                                                         : session.lastMessage?.type ==
                                                                     MessageType.PRIVATE_RED_PACKET_TIP_TEXT.code ||
                                                                 session.lastMessage?.type ==
                                                                     MessageType.GROUP_RED_PACKET_TIP_TEXT.code
                                                             ? "${session.lastMessage?.sendNickName}领取了您的红包"
-                                                            : "${getUserName(session.lastMessage)}${session.lastMessage?.content ?? ""}",
+                                                            : "${session.type == SessionType.group ? getUserName(session.lastMessage) : ""}${session.lastMessage?.content ?? ""}",
                             style: GoogleFonts.roboto(fontSize: 13.sp, color: ColorUtil.color_999999),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis)),
@@ -141,13 +141,10 @@ class ItemSession extends StatelessWidget {
 
   String getUserName(MessageEntity? lastMessage) {
     if (lastMessage?.type == MessageType.TIP_TEXT.code) return "";
-    if (lastMessage?.sessionType == SessionType.group) {
-      return lastMessage?.sendId == Get.find<RootLogic>().user.value?.id
-          ? ""
-          : StringUtil.isNotEmpty(lastMessage?.sendNickName)
-              ? "${lastMessage?.sendNickName}:"
-              : "";
-    }
-    return "";
+    return lastMessage?.sendId == Get.find<RootLogic>().user.value?.id
+        ? ""
+        : StringUtil.isNotEmpty(lastMessage?.sendNickName)
+            ? "${lastMessage?.sendNickName}:"
+            : "";
   }
 }

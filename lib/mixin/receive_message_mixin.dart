@@ -153,6 +153,9 @@ mixin ReceiveMessageMixin on BaseLogic {
 
           /// 群主换让 {"cmd":4,"data":{"groupId":"1829665405703159809", "userId":"1826517087758188544","type":305}}
           if (data[Keys.TYPE] == MessageType.TRANSFER_ADMIN.code) {}
+
+          /// 群加人 {"cmd":4,"data":{"groupId":"1829665405703159809", "userIds": ["1826517087758188544"], "type":307}}
+          if (data[Keys.TYPE] == MessageType.ADD_MEMBERS_TO_GROUP.code) {}
         }
       }
     });
