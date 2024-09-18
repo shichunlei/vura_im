@@ -70,11 +70,15 @@ class PackageResultPage extends StatelessWidget {
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffDB5549)))
                             ]
-                          : logic.bean.value!.totalTime > 0 &&
-                                  logic.bean.value!.detailList
-                                      .every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
+                          : logic.bean.value!.detailList
+                                  .every((item) => item.userId != Get.find<RootLogic>().user.value?.id)
                               ? [
-                                  Text("手慢了，已领完",
+                                  Text(
+                                      logic.bean.value!.totalTime > 0
+                                          ? "手慢了，已领完"
+                                          : logic.bean.value!.expireStatus == 1
+                                              ? "红包已过期"
+                                              : "",
                                       style: GoogleFonts.roboto(
                                           fontSize: StringUtil.isNotEmpty(logic.bean.value?.minesStr) ? 20.sp : 30.sp,
                                           fontWeight: FontWeight.w600,

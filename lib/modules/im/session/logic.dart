@@ -97,7 +97,7 @@ class SessionLogic extends BaseListLogic<SessionEntity> with ReceiveMessageMixin
     hiddenLoading();
     if (result.code == 200) {
       /// 删除本地群聊
-      SessionRealm(realm: rootLogic.realm).deleteChannel(id, SessionType.group);
+      SessionRealm(realm: rootLogic.realm).quitChannel(id, SessionType.group);
     }
   }
 

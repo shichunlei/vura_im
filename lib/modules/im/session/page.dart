@@ -1,3 +1,4 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:vura/route/route_path.dart';
 import 'package:vura/utils/color_util.dart';
 import 'package:vura/utils/dialog_util.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
+import 'package:vura/widgets/custom_refresh_widget.dart';
 import 'package:vura/widgets/obx_widget.dart';
 import 'package:vura/widgets/radius_inkwell_widget.dart';
 import 'package:vura/widgets/state_view/empty_page.dart';
@@ -28,7 +30,14 @@ class SessionPage extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
             backgroundColor: ColorUtil.secondBgColor,
-            title: Text("message".tr),
+            title: Obx(() {
+              return logic.loadingGroupMessages.value || logic.loadingPrivateMessages.value
+                  ? Row(mainAxisSize: MainAxisSize.min, children: [
+                      const Text("同步中"),
+                      AnimatedTextKit(animatedTexts: [WavyAnimatedText('...')], isRepeatingAnimation: true)
+                    ])
+                  : Text("message".tr);
+            }),
             actions: [
               CustomIconButton(
                   icon: const Icon(IconFont.message, color: ColorUtil.color_333333),
@@ -68,17 +77,20 @@ class SessionPage extends StatelessWidget {
                 Expanded(
                     child: logic.list.isEmpty
                         ? const EmptyPage(text: "温馨提示：\n您现在还没有任何聊天消息\n快跟您的好友发起聊天吧~", bgColor: Colors.transparent)
-                        : ListView.separated(
-                            itemBuilder: (_, index) {
-                              return ItemSession(
-                                  session: logic.list[index],
-                                  onLongPress: () {
-                                    showToolDialog(index);
-                                  });
-                            },
-                            itemCount: logic.list.length,
-                            separatorBuilder: (BuildContext context, int index) =>
-                                Divider(height: 0, indent: 18.w, endIndent: 18.w, color: Colors.transparent)))
+                        : OnlyRefreshWidget(
+                            controller: logic.easyRefreshController,
+                            onRefresh: () async => await logic.refreshData(),
+                            child: ListView.separated(
+                                itemBuilder: (_, index) {
+                                  return ItemSession(
+                                      session: logic.list[index],
+                                      onLongPress: () {
+                                        showToolDialog(index);
+                                      });
+                                },
+                                itemCount: logic.list.length,
+                                separatorBuilder: (BuildContext context, int index) =>
+                                    Divider(height: 0, indent: 18.w, endIndent: 18.w, color: Colors.transparent))))
               ]);
             }));
   }

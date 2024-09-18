@@ -25,6 +25,7 @@ class ContactsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: ColorUtil.secondBgColor,
         appBar: AppBar(
             backgroundColor: Colors.transparent,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:vura/modules/im/widgets/item_session.dart';
-import 'package:vura/widgets/obx_widget.dart';
+import 'package:vura/widgets/widgets.dart';
 
 import 'logic.dart';
 
@@ -17,14 +17,19 @@ class MyCreateSessionsPage extends StatelessWidget {
         body: BaseWidget(
             logic: logic,
             builder: (logic) {
-              return ListView.separated(
-                  padding: EdgeInsets.only(top: 10.h),
-                  itemBuilder: (_, index) {
-                    return ItemSession(session: logic.list[index]);
+              return OnlyRefreshWidget(
+                  controller: logic.easyRefreshController,
+                  onRefresh: () async {
+                    await logic.refreshData();
                   },
-                  itemCount: logic.list.length,
-                  separatorBuilder: (BuildContext context, int index) =>
-                      Divider(height: 0, indent: 18.w, endIndent: 18.w));
+                  child: ListView.separated(
+                      padding: EdgeInsets.only(top: 10.h),
+                      itemBuilder: (_, index) {
+                        return ItemSession(session: logic.list[index]);
+                      },
+                      itemCount: logic.list.length,
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(height: 0, indent: 18.w, endIndent: 18.w)));
             }));
   }
 }

@@ -96,6 +96,7 @@ class SessionRealm {
         _session.headImage = session.headImage;
         _session.headImageThumb = session.headImageThumb;
         _session.deleted = session.deleted;
+        _session.quit = session.quit;
         _session.no = session.no;
         if (session.type == SessionType.group) {
           if (session.notice != null) _session.notice = session.notice;
@@ -186,6 +187,22 @@ class SessionRealm {
         session.isDisturb = isDisturb;
       });
       Log.d("setChannelTop===${session.id}================>${session.toEJson()}");
+      try {
+        Get.find<SessionLogic>().refreshList();
+      } catch (e) {
+        Log.e(e.toString());
+      }
+    }
+  }
+
+  /// 退出会话
+  Future quitChannel(String? id, SessionType sessionType) async {
+    Channel? session = findOne("${AppConfig.userId}-$id-${sessionType.name}");
+    if (session != null) {
+      await _realm.writeAsync(() {
+        session.quit = true;
+      });
+      Log.d("deleteChannel===${session.id}================>${session.toEJson()}");
       try {
         Get.find<SessionLogic>().refreshList();
       } catch (e) {

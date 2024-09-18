@@ -63,7 +63,6 @@ class ChatLogic extends BaseListLogic<MessageEntity> with SessionDetailMixin, Se
     controller.addListener(update);
 
     webSocketManager.listen("ChatLogic-$id-$type", (int cmd, Map<String, dynamic> data) {
-      Log.d("ChatLogic == 》接收到消息: $cmd, 数据: $data");
       if (cmd == WebSocketCode.PRIVATE_MESSAGE.code) {
         if (id == data["sendId"] &&
             (data[Keys.TYPE] < MessageType.RECALL.code ||

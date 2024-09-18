@@ -75,7 +75,7 @@ class GroupSessionDetailLogic extends BaseObjectLogic<SessionEntity?> {
     hiddenLoading();
     if (result.code == 200) {
       /// 删除本地群聊
-      SessionRealm(realm: Get.find<RootLogic>().realm).deleteChannel(id, SessionType.group);
+      SessionRealm(realm: Get.find<RootLogic>().realm).quitChannel(id, SessionType.group);
       Get.until((route) => route.settings.name == RoutePath.HOME_PAGE);
     }
   }

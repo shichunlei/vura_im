@@ -29,7 +29,6 @@ class HomeLogic extends BaseLogic {
 
   HomeLogic() {
     webSocketManager.listen("HomeLogic", (int cmd, Map<String, dynamic> data) {
-      Log.d("HomeLogic == 》接收到消息: $cmd, 数据: $data");
       switch (cmd) {
         case 6: // {"cmd":6,"data":{"sendNickName":"煎饼果子","sendId":"1826517087758188544","sendHeadImage":"","recvId":"1826547880958230528","id":"1826549763462529024","type":900,"content":"申请添加您为好友","sendTime":1724318373933}}
           show(builder: (_) {
@@ -68,14 +67,6 @@ class HomeLogic extends BaseLogic {
   void onInit() {
     super.onInit();
     getUserInfo();
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-
-    /// todo
-    // Future.delayed(const Duration(seconds: 2), Get.find<RootLogic>().checkVersion);
   }
 
   Future loadOfflineMessage() async {
