@@ -212,12 +212,6 @@ class WithdrawPage extends StatelessWidget {
                                           return;
                                         }
 
-                                        // if (int.parse(logic.controller.text) > 30000 ||
-                                        //     int.parse(logic.controller.text) < 300) {
-                                        //   showToast(text: "限额300~30000USDT");
-                                        //   return;
-                                        // }
-
                                         Get.bottomSheet(
                                                 InputPayPasswordDialog(
                                                     amount: double.tryParse(logic.controller.text),
