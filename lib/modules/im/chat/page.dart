@@ -196,11 +196,10 @@ class ChatPage extends StatelessWidget {
                                                         }))
                                                 : Container(
                                                     margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-                                                    height: 50.h,
-                                                    child: Row(children: [
+                                                    child: Row(crossAxisAlignment: CrossAxisAlignment.end, children: [
                                                       Expanded(
                                                           child: Container(
-                                                              height: 50.h,
+                                                              constraints: BoxConstraints(minHeight: 50.h),
                                                               alignment: Alignment.centerLeft,
                                                               decoration: BoxDecoration(
                                                                   borderRadius: BorderRadius.circular(11.r),
@@ -208,17 +207,13 @@ class ChatPage extends StatelessWidget {
                                                               child: ExtendedTextField(
                                                                   controller: logic.controller,
                                                                   focusNode: logic.focusNode,
-                                                                  maxLines: 1,
-                                                                  textInputAction: TextInputAction.send,
+                                                                  maxLines: 4,
+                                                                  minLines: 1,
                                                                   style: GoogleFonts.roboto(
                                                                       fontSize: 15.sp, color: ColorUtil.color_333333),
                                                                   specialTextSpanBuilder:
                                                                       logic.mySpecialTextSpanBuilder,
                                                                   strutStyle: const StrutStyle(),
-                                                                  onSubmitted: (v) {
-                                                                    DeviceUtils.hideKeyboard(context);
-                                                                    logic.sendMessage(v, MessageType.TEXT);
-                                                                  },
                                                                   onChanged: (value) {
                                                                     if (logic.type == SessionType.group &&
                                                                         value.endsWith("@")) {
@@ -252,8 +247,8 @@ class ChatPage extends StatelessWidget {
                                                                     }
                                                                   },
                                                                   decoration: InputDecoration(
-                                                                      contentPadding:
-                                                                          EdgeInsets.symmetric(horizontal: 10.w),
+                                                                      contentPadding: EdgeInsets.symmetric(
+                                                                          horizontal: 10.w, vertical: 5.h),
                                                                       hintText: "请输入您想说的话",
                                                                       border: InputBorder.none,
                                                                       hintStyle: GoogleFonts.roboto(
