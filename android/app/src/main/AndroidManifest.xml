@@ -34,6 +34,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:label="vura"
+        android:allowBackup="false"
         android:requestLegacyExternalStorage="true"
         android:usesCleartextTraffic="true">
         <activity

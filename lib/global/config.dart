@@ -3,8 +3,8 @@ import 'package:vura/utils/log_utils.dart';
 
 class AppConfig {
   /// base_url
-  static String baseUrl = "http://39.98.127.91:8888/";
-  static String wsUrl = 'ws://39.98.127.91:8878/im';
+  static String baseUrl = "http://18.167.141.201:8888/";
+  static String wsUrl = 'ws://18.167.141.201:8878/im';
 
   /// 版本信息
   static PackageInfo? _version;
