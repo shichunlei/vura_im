@@ -100,7 +100,10 @@ dependencies:
   timelines_plus: ^1.0.3
   # 仿微信录制音频
   xbr_plugin_record:
-    path: ../../cses/flutter_third_plugins/xbr_plugin_record
+    git:
+      url: git@git.wehanyu.com:flutter-cloud/flutter_third_plugins.git
+      path: xbr_plugin_record
+      ref: 58062e780243f52271fdafaedac4ff0e7e82e3a8
 
 dev_dependencies:
   flutter_test:
