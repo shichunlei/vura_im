@@ -27,7 +27,7 @@ class ItemReceiveText extends StatelessWidget {
                 color: Colors.white),
             constraints: BoxConstraints(maxWidth: 266.w, minWidth: 0, minHeight: 44.r),
             child: Obx(() {
-              return Text('${message.content}',
+              return Text('${message.content}'.replaceAll(r'\n', "\n"),
                   style: TextStyle(
                       color: ColorUtil.color_333333,
                       fontSize: Get.find<RootLogic>().textSizeType.value.fontSize.sp,
