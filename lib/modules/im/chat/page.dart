@@ -27,7 +27,7 @@ import 'package:vura/utils/device_utils.dart';
 import 'package:vura/utils/log_utils.dart';
 import 'package:vura/widgets/custom_icon_button.dart';
 import 'package:vura/widgets/obx_widget.dart';
-import 'package:vura/widgets/voice_record_view.dart';
+import 'package:xbr_plugin_record/widgets/voice_record_view.dart';
 
 import 'logic.dart';
 

@@ -54,11 +54,11 @@ dependencies:
   # Emoji表情
   emoji_picker:
     path: ../emoji_picker
-  extended_image: ^8.2.3
+  extended_image: ^8.2.4
   extended_list: ^3.0.2
-  extended_text_field: ^15.0.0
+  extended_text_field: ^16.0.0
   # 获取通讯录联系人
-  fast_contacts: ^3.1.4
+  fast_contacts: ^4.0.0
   flutter_cache_manager: ^3.4.1
   # 刷新，加载组件
   flutter_easyrefresh_strong: ^2.2.1
@@ -93,7 +93,7 @@ dependencies:
   share_plus: ^10.0.2
   # 本地化存储
   shared_preferences: ^2.3.1
-  synchronized: ^3.1.0+1
+  synchronized: ^3.3.0+2
   # DIO LOG拦截器
   talker_dio_logger: ^4.4.1
   # 时间线
@@ -115,7 +115,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
-  build_runner: ^2.4.11
+  build_runner: ^2.4.12
   flutter_launcher_icons: ^0.13.1
 
 flutter_launcher_icons:
