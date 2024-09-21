@@ -13,6 +13,7 @@ class RedPackageResultEntity {
   YorNType isMine;
   List<RedPackageResultEntity> detailList;
   String? senderNickName;
+  String? senderUserId;
   String? senderHeadImage;
   double totalAmount;
   int totalPacket;
