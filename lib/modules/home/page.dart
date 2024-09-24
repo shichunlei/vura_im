@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        onPopInvokedWithResult: (bool didPop, result) {
+        onPopInvoked: (bool didPop) {
           if (didPop) return;
           if (logic.closeOnConfirm()) SystemNavigator.pop(); // 系统级别导航栈 退出程序
         },
