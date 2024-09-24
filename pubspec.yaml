@@ -54,7 +54,7 @@ dependencies:
   # Emoji表情
   emoji_picker:
     path: ../emoji_picker
-  extended_image: ^8.2.4
+  extended_image: ^8.3.0
   extended_list: ^3.0.2
   extended_text_field: ^16.0.0
   # 获取通讯录联系人
@@ -119,7 +119,7 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
   build_runner: ^2.4.12
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.0
 
 flutter_launcher_icons:
   android: "ic_launcher"

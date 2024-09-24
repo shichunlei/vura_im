@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-        onPopInvoked: (bool didPop) {
+        onPopInvokedWithResult: (bool didPop, result) {
           if (didPop) return;
           if (logic.closeOnConfirm()) SystemNavigator.pop(); // 系统级别导航栈 退出程序
         },
@@ -114,16 +114,14 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             Icon(isActive ? IconFont.tab_message_selected : IconFont.tab_message, size: 22),
                             Text("message".tr,
                                 style: GoogleFonts.roboto(
-                                    fontSize: 11.sp,
-                                    color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
+                                    fontSize: 11.sp, color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
                           ])
                         : Column(mainAxisSize: MainAxisSize.min, children: [
                             SizedBox(height: 5.h),
                             Icon(isActive ? IconFont.tab_mine_selected : IconFont.tab_mine, size: 22),
                             Text("mine".tr,
                                 style: GoogleFonts.roboto(
-                                    fontSize: 11.sp,
-                                    color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
+                                    fontSize: 11.sp, color: !isActive ? ColorUtil.color_999999 : ColorUtil.mainColor))
                           ]);
                   });
             })));

@@ -22,7 +22,7 @@ class LockScreenDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
         canPop: false,
-        onPopInvoked: (bool didPop) {},
+        onPopInvokedWithResult: (bool didPop, result) {},
         child: Scaffold(
             resizeToAvoidBottomInset: false,
             backgroundColor: Colors.white,
